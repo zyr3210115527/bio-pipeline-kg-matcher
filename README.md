@@ -2,6 +2,11 @@
 
 面向自然语言的生信工作流规划器。运行时工具唯一真源是真实 Neo4j 实例：当前登记 24 个 tool，包括 12 个 atomic tool、11 个完整 pipeline tool 和 1 个 task pipeline。公共推荐只使用 12 个 atomic tool；pipeline-level 节点仅供目录查询。
 
+> **agent 端同门快速开始（clone 即可跑，基于 Neo4j）：**
+> clone 本仓库后，按 [`docs/MCP连接与运行指南.md`](docs/MCP连接与运行指南.md) 一步步做即可 ——
+> 恢复自带的 `datagraph-staging.dump` → 配 `.env.local`（`DATA_MATCHER_MODE=neo4j`）→
+> `python3 server.py` 起 MCP → `health_check` 自检 → 接入你的 agent 客户端。
+
 ## Top-3 编排
 
 - **分析请求**：一次 LLM 同时生成业务 pipeline 推荐和 1-5 条按匹配度排序的原子链；返回最多 3 条 Neo4j 工具/数据推荐，并逐条校验原子链。
@@ -95,6 +100,7 @@ RUN_REAL_INTEGRATION=1 python3 -m unittest discover -s tests -p 'test_runtime_in
 ## 相关文档
 
 - `项目说明.md`：原系统设计与 benchmark 说明；
+- `docs/MCP连接与运行指南.md`：**agent 端 clone-and-run 全流程（基于 Neo4j，恢复 dump→起 MCP→接入客户端）**；
 - `MCP连接文档.md`：MCP 接入说明；
 - `docs/bio_pipelines_bug_report.md`：14 个 pipeline 静态审查与质量门禁依据；
 - `docs/mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md`：agent 端 `tool-chain/v2` 字段与迁移说明；

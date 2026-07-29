@@ -28,8 +28,14 @@ web-dist/
 *.tgz
 *.gz
 *.bak
+# ...but ship the ONE canonical Neo4j backend dump so the repo is clone-and-run.
+!docs/mcp_delivery/neo4j/datagraph-staging.dump
 
 # --- backups & staging (local only) ---
 docs/backups/
 .neo4j_datagraph_staging/
 incoming/
+
+# --- Finder/OS duplicate folders (e.g. "mcp_delivery 2") ---
+* [0-9]/
+*/* [0-9]/
