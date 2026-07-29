@@ -32,7 +32,9 @@ def _lazy_call_llm(system: str, user: str) -> Optional[Dict[str, Any]]:
 HERE = Path(__file__).resolve().parent
 # The packaged router is self-contained; keep all catalog paths inside it.
 PROJECT_ROOT = HERE
-CSV_DIR = PROJECT_ROOT / "data" / "csv"
+CSV_DIR = Path(
+    os.environ.get("DATA_CSV_DIR", str(PROJECT_ROOT / "data" / "csv"))
+).expanduser()
 
 DISEASE_ALIASES = {
     "胶质瘤": ["胶质瘤", "glioma", "CGGA"],
@@ -660,11 +662,11 @@ def _read_csv(path: Path) -> List[Dict[str, str]]:
 
 
 class CsvKGDataMatcher:
-    def __init__(self, csv_dir: Path = CSV_DIR):
-        self.csv_dir = csv_dir
-        self.entity_dir = csv_dir / "entities" if (csv_dir / "entities").is_dir() else csv_dir
-        self.relation_dir = csv_dir / "relations"
-        self.data_schema = "normalized-v2" if self.entity_dir != csv_dir else "legacy-flat"
+    def __init__(self, csv_dir: Optional[Path] = None):
+        self.csv_dir = Path(csv_dir or os.environ.get("DATA_CSV_DIR", str(CSV_DIR))).expanduser()
+        self.entity_dir = self.csv_dir / "entities" if (self.csv_dir / "entities").is_dir() else self.csv_dir
+        self.relation_dir = self.csv_dir / "relations"
+        self.data_schema = "normalized-v2" if self.entity_dir != self.csv_dir else "legacy-flat"
         self.study = _read_csv(self.entity_dir / "study.csv")
         self.project = _read_csv(self.entity_dir / "project.csv")
         self.sample = _read_csv(self.entity_dir / "sample.csv")
@@ -675,13 +677,13 @@ class CsvKGDataMatcher:
             if row.get("sample_accession")
         }
 
-        legacy_t1 = _read_csv(csv_dir / "T11.csv") or _read_csv(csv_dir / "merge_metainfo.csv")
+        legacy_t1 = _read_csv(self.csv_dir / "T11.csv") or _read_csv(self.csv_dir / "merge_metainfo.csv")
         normalized_t1 = _read_csv(self.entity_dir / "T1.csv") if self.data_schema == "normalized-v2" else []
         self.t1 = self._load_normalized_t1(normalized_t1, legacy_t1) if normalized_t1 else legacy_t1
         if self.data_schema == "normalized-v2":
             self.t2 = _read_csv(self.entity_dir / "T2.csv")
         else:
-            self.t2 = _read_csv(csv_dir / "T2.1csv") or _read_csv(csv_dir / "T2.csv")
+            self.t2 = _read_csv(self.csv_dir / "T2.1csv") or _read_csv(self.csv_dir / "T2.csv")
         self.project_by_study: Dict[str, Dict[str, str]] = {}
         for row in self.project:
             for st in re.split(r"[,，]", row.get("study_accession") or ""):
@@ -728,15 +730,18 @@ class CsvKGDataMatcher:
         for row in normalized_rows:
             name = self._clean_data_name(row.get("dataName") or "")
             legacy = legacy_by_name.get(name, {})
+            file_name = legacy.get("file_name") or legacy.get("files") or name
             adapted.append({
                 "study_accession": row.get("studyAccession") or legacy.get("study_accession") or "",
                 "sample_accession": row.get("sampleAccession") or legacy.get("sample_accession") or "",
                 "run_accession": row.get("runAccession") or legacy.get("run_accession") or "",
                 "data_type": row.get("strategy") or legacy.get("data_type") or "",
                 "Read Pair": legacy.get("Read Pair") or self._guess_read_pair(name),
-                "files": name,
+                "files": file_name,
+                "file_id": name,
+                "file_name": file_name,
                 "format": format_by_name.get(name) or legacy.get("format") or self._infer_format(name),
-                "file_path": legacy.get("file_path") or name,
+                "file_path": legacy.get("file_path") or file_name,
                 "file_description": legacy.get("file_description") or row.get("sampleDescription") or "",
                 "Experiment": row.get("experimentAccession") or legacy.get("Experiment") or "",
                 "Platform": row.get("platform") or legacy.get("Platform") or "",
@@ -933,12 +938,20 @@ class CsvKGDataMatcher:
         requested = [self._clean_data_name(str(value).strip()) for value in file_names if value]
         by_name: Dict[str, List[Dict[str, Any]]] = {}
         for source, row in [("T1", item) for item in self.t1] + [("T2", item) for item in self.t2]:
-            name = self._clean_data_name(
-                str(row.get("files") or row.get("file") or row.get("t2_id") or "")
-            )
-            if not name:
-                continue
-            by_name.setdefault(name, []).append(self._file_record(source, row, "文件名精确匹配"))
+            aliases: Set[str] = set()
+            for key in ("files", "file_name", "file_id", "file", "t2_id"):
+                raw = str(row.get(key) or "")
+                if not raw:
+                    continue
+                aliases.add(self._clean_data_name(raw))
+                # Composite-key quirk: reference rows key the file as
+                # "<file_name>::<file_path>"; also alias the bare file name so a
+                # reviewed bare-name lookup (e.g. expected_data) resolves.
+                if "::" in raw:
+                    aliases.add(self._clean_data_name(raw.split("::", 1)[0]))
+            record = self._file_record(source, row, "文件名精确匹配")
+            for name in {alias for alias in aliases if alias}:
+                by_name.setdefault(name, []).append(record)
 
         assets: List[Dict[str, Any]] = []
         missing: List[str] = []
@@ -971,10 +984,19 @@ class CsvKGDataMatcher:
     def _file_record(
         self, source: str, row: Dict[str, Any], match_reason: str
     ) -> Dict[str, Any]:
-        file_name = row.get("files") or row.get("file") or row.get("t2_id")
+        def _bare(value: Any) -> Any:
+            # Strip the "::<path>" composite-key suffix from display names only;
+            # leaves "(N bytes)" and plain names untouched.
+            text = str(value or "")
+            return text.split("::", 1)[0] if "::" in text else value
+
+        file_name = _bare(row.get("file_name") or row.get("files") or row.get("file") or row.get("t2_id"))
+        file_id = _bare(row.get("file_id") or row.get("files") or row.get("t2_id"))
         return {
             "source": source,
             "t2_id": row.get("t2_id") if source == "T2" else None,
+            "file_id": file_id,
+            "file_name": file_name,
             "files": file_name,
             "format": row.get("format") or row.get("file_type") or "",
             "strategy": row.get("strategy") or row.get("data_type") or row.get("Experiment") or "",
@@ -1231,7 +1253,7 @@ class CsvKGDataMatcher:
         seen = set()
         out = []
         for item in files:
-            key = _lower(item.get("files") or item.get("file_path") or "")
+            key = _lower(item.get("file_name") or item.get("files") or item.get("file_path") or item.get("file_id") or "")
             if not key or key in seen:
                 continue
             seen.add(key)
