@@ -1,4 +1,4 @@
-# 数据图 Diff：我的活图 vs 师姐 CSV 全量数据
+# 数据图 Diff：我的活图 vs 昨天CSV 全量数据
 
 > 审计日期：2026-07-29
 > 我方基准：当前活图（= `docs/mcp_delivery/neo4j/datagraph-staging.dump`）
