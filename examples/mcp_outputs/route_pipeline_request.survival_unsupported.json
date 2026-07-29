@@ -1,0 +1,35 @@
+{
+  "schema_version": "tool-chain/v2",
+  "selection_status": "unsupported",
+  "candidate_count": 0,
+  "candidates": [],
+  "recommendation_count": 0,
+  "recommendations": [],
+  "unsupported_reason": "Kaplan-Meier生存分析和Cox回归需要分组变量（如基因突变状态或表达分层）及生存数据，用户仅提供临床随访表格，缺少必要的分组信息；且当前atomic目录未包含直接进行生存分析的原子工具，暂不支持生成可执行候选链。",
+  "intent": {
+    "query_text": "只有临床随访表格，想直接做 Kaplan-Meier 生存分析和 Cox 回归",
+    "analysis_goal": "生存分析",
+    "disease": null,
+    "omics_type": null,
+    "input_hint": "xls",
+    "quant_hint": null,
+    "requested_outputs": [],
+    "study_accessions": [],
+    "source": "rule",
+    "ambiguous": false
+  },
+  "planner_metadata": {
+    "used": true,
+    "status": "ok",
+    "model": "deepseek-v4-flash",
+    "prompt_tokens": 7660,
+    "completion_tokens": 498,
+    "total_tokens": 8158,
+    "calls": 1,
+    "stages": [
+      "atomic_candidate_generation"
+    ]
+  },
+  "data_matcher_mode": "neo4j",
+  "mcp_timing_ms": 6929.4
+}

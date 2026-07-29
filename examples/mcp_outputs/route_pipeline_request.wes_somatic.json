@@ -1,11 +1,128 @@
 {
   "schema_version": "tool-chain/v2",
-  "selection_status": "no_candidate",
+  "selection_status": "information",
   "candidate_count": 0,
   "candidates": [],
-  "recommendation_count": 0,
-  "recommendations": [],
-  "unsupported_reason": "LLM 未返回可评估的原子工具候选链。",
+  "recommendation_count": 1,
+  "recommendations": [
+    {
+      "rank": 1,
+      "match_id": "recommendation-7370fe2ac41d0b12",
+      "pipeline_id": "wes_somatic_pair",
+      "match_note": "完全匹配用户所需的配对 WES 体细胞突变检测流程，但该流程尚未在 Neo4j 中原子化",
+      "tool": {
+        "tool_id": "wes_somatic_pair",
+        "catalog_status": "missing_from_neo4j",
+        "source": "neo4j"
+      },
+      "data": {
+        "status": "available",
+        "source": "neo4j",
+        "assets": [
+          {
+            "name": "HRR365787_f1.fastq.gz (5257986684 bytes)",
+            "graph_status": "available",
+            "source": "T1",
+            "t2_id": null,
+            "file_id": "HRR365787_f1.fastq.gz (5257986684 bytes)",
+            "file_name": "HRR365787_f1.fastq.gz (5257986684 bytes)",
+            "files": "HRR365787_f1.fastq.gz (5257986684 bytes)",
+            "format": "fq.gz",
+            "strategy": "WES",
+            "data_level": "1",
+            "study_accession": "HRA001272",
+            "sample_accession": "HRS280681",
+            "run_accession": "HRR365787",
+            "individual_accession": "HRI147483",
+            "individual_name": "",
+            "sample_name": "",
+            "specimen_types": "Patient Solid Tissue",
+            "read_pair": "R1",
+            "file_path": "HRR365787_f1.fastq.gz (5257986684 bytes)",
+            "match_reason": "格式匹配 fq.gz; strategy 匹配 WES; 样本角色可识别",
+            "sample_role": "tumor"
+          },
+          {
+            "name": "HRR365787_r2.fastq.gz (5462306849 bytes)",
+            "graph_status": "available",
+            "source": "T1",
+            "t2_id": null,
+            "file_id": "HRR365787_r2.fastq.gz (5462306849 bytes)",
+            "file_name": "HRR365787_r2.fastq.gz (5462306849 bytes)",
+            "files": "HRR365787_r2.fastq.gz (5462306849 bytes)",
+            "format": "fq.gz",
+            "strategy": "WES",
+            "data_level": "1",
+            "study_accession": "HRA001272",
+            "sample_accession": "HRS280681",
+            "run_accession": "HRR365787",
+            "individual_accession": "HRI147483",
+            "individual_name": "",
+            "sample_name": "",
+            "specimen_types": "Patient Solid Tissue",
+            "read_pair": "R2",
+            "file_path": "HRR365787_r2.fastq.gz (5462306849 bytes)",
+            "match_reason": "格式匹配 fq.gz; strategy 匹配 WES; 样本角色可识别",
+            "sample_role": "tumor"
+          },
+          {
+            "name": "HRR365786_f1.fastq.gz (4527811966 bytes)",
+            "graph_status": "available",
+            "source": "T1",
+            "t2_id": null,
+            "file_id": "HRR365786_f1.fastq.gz (4527811966 bytes)",
+            "file_name": "HRR365786_f1.fastq.gz (4527811966 bytes)",
+            "files": "HRR365786_f1.fastq.gz (4527811966 bytes)",
+            "format": "fq.gz",
+            "strategy": "WES",
+            "data_level": "1",
+            "study_accession": "HRA001272",
+            "sample_accession": "HRS280680",
+            "run_accession": "HRR365786",
+            "individual_accession": "HRI147483",
+            "individual_name": "",
+            "sample_name": "",
+            "specimen_types": "Peritumoral",
+            "read_pair": "R1",
+            "file_path": "HRR365786_f1.fastq.gz (4527811966 bytes)",
+            "match_reason": "格式匹配 fq.gz; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+            "sample_role": "normal"
+          },
+          {
+            "name": "HRR365786_r2.fastq.gz (4444651333 bytes)",
+            "graph_status": "available",
+            "source": "T1",
+            "t2_id": null,
+            "file_id": "HRR365786_r2.fastq.gz (4444651333 bytes)",
+            "file_name": "HRR365786_r2.fastq.gz (4444651333 bytes)",
+            "files": "HRR365786_r2.fastq.gz (4444651333 bytes)",
+            "format": "fq.gz",
+            "strategy": "WES",
+            "data_level": "1",
+            "study_accession": "HRA001272",
+            "sample_accession": "HRS280680",
+            "run_accession": "HRR365786",
+            "individual_accession": "HRI147483",
+            "individual_name": "",
+            "sample_name": "",
+            "specimen_types": "Peritumoral",
+            "read_pair": "R2",
+            "file_path": "HRR365786_r2.fastq.gz (4444651333 bytes)",
+            "match_reason": "格式匹配 fq.gz; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+            "sample_role": "normal"
+          }
+        ],
+        "matched_count": 4,
+        "expected_count": 4,
+        "missing_asset_names": [],
+        "study_accessions": [
+          "HRA001272"
+        ]
+      },
+      "source": "llm+neo4j",
+      "reference_case_id": null
+    }
+  ],
   "intent": {
     "query_text": "肿瘤和正常配对的 WES 数据，想做体细胞突变检测得到 VCF",
     "analysis_goal": "体细胞变异检测",
@@ -21,11 +138,17 @@
     "ambiguous": false
   },
   "planner_metadata": {
-    "used": false,
-    "status": "force_rule",
-    "calls": 0,
-    "stages": []
+    "used": true,
+    "status": "ok",
+    "model": "deepseek-v4-flash",
+    "prompt_tokens": 7661,
+    "completion_tokens": 893,
+    "total_tokens": 8554,
+    "calls": 1,
+    "stages": [
+      "atomic_candidate_generation"
+    ]
   },
   "data_matcher_mode": "neo4j",
-  "mcp_timing_ms": 1210.0
+  "mcp_timing_ms": 10466.7
 }
