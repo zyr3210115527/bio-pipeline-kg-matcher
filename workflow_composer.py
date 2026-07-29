@@ -222,6 +222,11 @@ class RegisteredMethodCatalog:
             "name": str(slot.get("slot_name") or slot.get("slot_id") or "data_file"),
             "type": str(slot.get("wdl_type") or "File"),
             "is_file": True,
+            # Real PipelineBuilder WDL parameter name + fully-qualified WDL key,
+            # sourced from the workflow knowledge cards (interface.params name/target).
+            # Empty for slots that have no direct file parameter (e.g. sample-lookup inputs).
+            "builder_param": str(slot.get("builder_param") or ""),
+            "wdl_target": str(slot.get("wdl_target") or ""),
             "optional": not bool(slot.get("required")),
             "artifact": artifacts[0] if artifacts else None,
             "formats": [str(value) for value in slot.get("formats") or [] if value],
