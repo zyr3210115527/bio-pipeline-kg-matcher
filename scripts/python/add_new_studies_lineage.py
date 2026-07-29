@@ -115,26 +115,33 @@ def infer_physical_format(name: str) -> str:
 # --------------------------------------------------------------------------- #
 # Translate her rows -> my lowercase node property dicts
 # --------------------------------------------------------------------------- #
-def build_payload(import_dir: Path) -> Dict[str, object]:
+def build_payload(import_dir: Path, studies: "set[str] | None" = None) -> Dict[str, object]:
+    """Translate the senior's raw CSVs for ``studies`` into my lowercase schema.
+
+    ``studies`` defaults to the 6 NEW studies (original Phase-2 behaviour); pass a
+    different set to translate any subset of her dataset (e.g. the 13 shared
+    originals for a full "align to hers" resync).
+    """
+    studies = set(studies) if studies is not None else NEW_STUDIES
     E = import_dir / "entities"
     R = import_dir / "relations"
 
-    study = [r for r in load_csv(E / "study.csv") if r["study_accession"] in NEW_STUDIES]
+    study = [r for r in load_csv(E / "study.csv") if r["study_accession"] in studies]
     project_rows = load_csv(E / "project.csv")
-    project = [r for r in project_rows if r.get("study_accession") in NEW_STUDIES]
-    individual = [r for r in load_csv(E / "individual.csv") if r.get("study_accession") in NEW_STUDIES]
+    project = [r for r in project_rows if r.get("study_accession") in studies]
+    individual = [r for r in load_csv(E / "individual.csv") if r.get("study_accession") in studies]
     sample_all = load_csv(E / "sample.csv")
-    sample = [r for r in sample_all if r.get("study_accession") in NEW_STUDIES]
+    sample = [r for r in sample_all if r.get("study_accession") in studies]
     sample_study = {r["sample_accession"]: r.get("study_accession", "") for r in sample_all}
     sample_strategy = {r["sample_accession"]: r.get("experimental_strategy", "") for r in sample_all}
     t1_all = load_csv(E / "T1.csv")
-    t1 = [r for r in t1_all if sample_study.get(r.get("sample_accession", "")) in NEW_STUDIES]
-    t2 = [r for r in load_csv(E / "T2.csv") if r.get("study_accession") in NEW_STUDIES]
+    t1 = [r for r in t1_all if sample_study.get(r.get("sample_accession", "")) in studies]
+    t2 = [r for r in load_csv(E / "T2.csv") if r.get("study_accession") in studies]
 
     sip = {
         r["study_accession"]: r["project_accession"]
         for r in load_csv(R / "study_in_project.csv")
-        if r["study_accession"] in NEW_STUDIES
+        if r["study_accession"] in studies
     }
 
     # ---- nodes (my schema) ----
