@@ -222,6 +222,11 @@ class RegisteredMethodCatalog:
             "name": str(slot.get("slot_name") or slot.get("slot_id") or "data_file"),
             "type": str(slot.get("wdl_type") or "File"),
             "is_file": True,
+            # Real PipelineBuilder WDL parameter name + fully-qualified WDL key,
+            # sourced from the workflow knowledge cards (interface.params name/target).
+            # Empty for slots that have no direct file parameter (e.g. sample-lookup inputs).
+            "builder_param": str(slot.get("builder_param") or ""),
+            "wdl_target": str(slot.get("wdl_target") or ""),
             "optional": not bool(slot.get("required")),
             "artifact": artifacts[0] if artifacts else None,
             "formats": [str(value) for value in slot.get("formats") or [] if value],
@@ -370,7 +375,7 @@ class WorkflowComposer:
             }
         prompt = '''你是生信工作流候选链规划器。你只负责流程编排，不执行任务，也不讨论线程、内存等运行参数。
 
-一次性生成 1 到 5 条按匹配程度排序的候选链，通常只需 1 到 3 条真正不同的完整链。所有候选都必须只由下方 Neo4j 目录中的 atomic tool 组成；禁止输出 pipeline/task_pipeline 节点。为保证 JSON 完整，analysis 每个字段只写一句短句，match_note 和 reason 各不超过一句，不重复抄写规则或目录。
+一次性生成 1 到 5 条按匹配程度排序的候选链。所有候选都必须只由下方 Neo4j 目录中的 atomic tool 组成；禁止输出 pipeline/task_pipeline 节点。候选数量策略：如果用户明确限定了唯一方法、唯一终产物或“只要/只能”某个方案，可以只返回 1 条；否则只要目录中存在 2 条以上完整、数据和 NEXT 合同都不同的合法方案，必须返回至少 2 条，优先返回 2 到 3 条。特别是用户没有明确提出 TMB 或其他单一终点时，不得擅自替用户收敛到一个方案，应返回不同终点/工具侧重的完整候选，并在 match_note 说明差异。严禁为了凑数复制链、截短链或返回无数据的链。为保证 JSON 完整，analysis 每个字段只写一句短句，match_note 和 reason 各不超过一句，不重复抄写规则或目录。
 
 只输出一个 JSON 对象，不要 Markdown：
 {
@@ -401,12 +406,25 @@ class WorkflowComposer:
 }
 
 候选规则：
-0. recommendations 是业务流程推荐，pipeline_id 只能来自下方“业务 pipeline 目录”；按匹配度给 1 到 3 条，不得用 atomic tool 代替。candidates 是可执行 atomic 链，两者含义不同。即使业务流程尚未原子化，也必须保留正确的 recommendation，同时按不支持规则令 candidates 为空。
-1. rank 必须唯一，1 最贴合；第一条必须是覆盖完整目标的首选链，其余才是不同工具组合或侧重的替代链。不要为了凑数复制、截短或给出明显不完整的链。
+0. recommendations 是业务流程推荐，pipeline_id 只能来自下方“业务 pipeline 目录”；按匹配度给 1 到 3 条，不得用 atomic tool 代替。candidates 是可执行 atomic 链，两者含义不同。业务流程必须同时匹配用户明确给出的输入类型、样本布局和最终目标；只覆盖部分目标、只消费同类数据、或会执行用户明确排除步骤的流程不能推荐。若没有完整匹配项，recommendations 必须为空。即使完整匹配的业务流程尚未原子化，也应保留正确 recommendation，同时令 candidates 为空。
+1. rank 必须唯一，1 最贴合；第一条必须是覆盖完整目标的首选链，其余必须是覆盖同一完整目标的不同工具组合、终点侧重或数据资产组合。用户未指定单一终点时，若存在合法替代方案必须保留 rank 2/3；不要为了凑数复制、截短或给出明显不完整的链。
 2. 每个 input 名、from.output 名、tool_id 必须逐字匹配目录。tool_id 只能取每行开头 `-` 后、第一根 `|` 前的小写名称（如 fastp、star、samtools）；T01/T02 之类编号不是 tool_id，绝对不能输出。from 只能引用前序 step；每条 from 和 depends_on 都必须存在对应 NEXT 边，数据连接还必须匹配目录中的 output->input 数据边。
 3. 除首个根步骤外，每步必须通过 from 或 depends_on 与前序相连。MultiQC 只汇总 QC 日志，步骤必须写 `inputs: {}` 并只用 depends_on 连接需要汇总的前序步骤，执行合同会自动聚合 QC 来源；禁止为 MultiQC 编造或直接绑定任何 input。它不解析表达矩阵、变异表或富集结果。
 4. raw count 与 TPM/FPKM 不可互换；uBAM 不等于 aligned BAM；STAR transcriptome_bam 只给 RSEM，aligned_bam 才能给 SAMtools。STAR 的 clean_fastq_read 是可承载双端 R1/R2 的成对 reads bundle；不要因为目录只有一个语义槽就把双端 RNA-seq 判为不支持。
+4a. candidates 先按 Neo4j 内部 tool/slot/NEXT 合同生成；MCP 会把通过的链转换为公开执行端 tool_id 和 Knowledge Card I/O，并原样回验。不得输出执行端命名空间中的 input/output，也不得混用两套 tool_id；候选必须在公开合同回验后仍然成立。
 5. reference/index/annotation 等执行端管理资产使用 reference_file。用户样本数据必须明确 asset_role；不要把运行参数当资产。
+6. 用户写出的“只要、不要、不做、不能修改、已有、只有”都是硬约束。不得增加被排除步骤，不得用其他 assay 的流程兜底，也不得把已有结果倒推成原始输入。若输入与方法冲突（例如 MAF 做 STAR、RNA-seq 用 DNA 体细胞流程），recommendations 和 candidates 都必须为空并说明冲突。
+6a. 用户不需要写出每一步工具名。若用户只描述 assay、输入数据和最终目标（例如“完整 bulk RNA-seq 分析并得到表达矩阵”），必须根据 Neo4j 的 tool、slot、artifact 和 NEXT/data 边反推出完整合法链；不能因为没有出现 STAR、SAMtools 等字样就拒绝或只返回空流程。只有在存在多个终点或方法分支时，才按用户明确约束和候选匹配度排序。
+7. 不得从“一对双端 FASTQ”推断 tumor/normal。只有用户明确说明 tumor-normal 配对，或明确给出两个样本及其 tumor/normal 角色时，才能推荐 wes_somatic_pair 或生成四 FASTQ 配对链；缺少角色时应说明样本布局不足，不能自行补角色。
+8. 最终产物是完整性门禁：若用户要求的最后产物需要未登记工具或当前合同无法到达，整条 candidates 必须为空，不能返回只做到上游中间产物的前缀链。pipeline recommendation 只是业务信息，不等于 atomic candidate 可执行。
+
+当前目录/执行合同的已知边界：
+- 这些边界是 candidates 生成前的强制短路条件，优先级高于目录中显示的 NEXT。命中后必须直接输出 `"candidates": []`，不得先尝试构造步骤、不得输出“理论可行但会被校验器拒绝”的候选。
+- paired-end FASTQ 的 FastQC 当前只有单一泛化 raw_fastq_read 槽，无法忠实表达 R1/R2 两个独立输入；禁止创建 fastqc_r1/fastqc_r2 两个并行根，也禁止只取一个 mate 冒充双端质控。若用户只要求双端 FastQC/质控且不允许修剪，candidates 为空。
+- 当前 Knowledge Card 合同尚不能把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递。只要最终目标需要过滤 VCF、标准化 VCF 或功能注释 VCF，且起点是 FASTQ/BAM、路径必须经过 GATK -> BCFtools 或 GATK -> BCFtools -> SnpEff，就必须立即令 candidates 为空；即使 Neo4j 目录显示这些 NEXT，也绝对不能生成这些步骤。
+- 单样本 GATK 的 sorted_dedup_bam 目录槽虽存在，但当前外部 Knowledge Card 只支持 tumor-normal 四槽形式；单样本 GATK candidates 为空。
+- MultiQC 只能 depends_on 目录中明确允许 NEXT 到 multiqc 且能产生 QC 报告的步骤。不得让 MultiQC 依赖 BWA、BCFtools 或其他未列出 multiqc NEXT 的步骤。
+- FastQC 输出的是 quality_control_report，不是 reads。`FastQC -> STAR` 没有 NEXT 且数据类型不相容，绝对禁止；若需要先做 FastQC 再做 STAR，中间必须使用目录允许的 fastp 或 trim_galore，并由其 clean_fastq_read 连接 STAR。任何 depends_on 也必须逐项出现在 source 的 order_next/data_next 中，不能用“仅表示顺序”为理由越过 NEXT。
 
 配对 tumor/normal 的硬约束：
 - GATK 输入有两个互斥变体。单样本分析必须且只能绑定 sorted_dedup_bam，禁止使用 tumor_bam/tumor_bai/normal_bam/normal_bai；只有明确的 tumor-normal 配对分析才使用下面的四槽变体。
@@ -418,6 +436,7 @@ class WorkflowComposer:
 - 若完整需求需要当前 atomic 目录尚未拆出的能力，例如差异表达、GO/KEGG/Reactome 富集、WGCNA 共表达网络、生存分析或其他未登记方法，candidates 必须为空，并在 unsupported_reason 明确说明“这类分析尚未原子化，暂不支持”。
 - 若目录槽位或 NEXT 边无法忠实表达目标，也返回空 candidates 和具体 unsupported_reason；禁止编造工具、槽位、边或内部步骤。
 - candidates 非空时 unsupported_reason 必须为 null。
+- candidates 为空时必须用一句具体原因填写 unsupported_reason；不能只写“无法生成”，应指出是输入冲突、样本角色不足、未原子化、槽位缺失或执行合同缺口。recommendations 非空也不能省略该原因，因为业务流程信息不等于原子候选可执行。
 
 Neo4j atomic 方法目录：
 ''' + "\n".join(self._method_menu_lines()) + '''
@@ -480,9 +499,32 @@ Neo4j atomic 方法目录：
             min(3, max(1, int(top_k))),
         )
 
+        # Keep the common reviewed RNA-seq upstream path usable when the LLM
+        # returns only the business recommendation. The chain is still built
+        # from the Neo4j atomic registry and passes the same data/contract
+        # gates as an LLM-produced candidate.
+        if not accepted and not normalized and self._eligible_rnaseq_fallback(text, intent, recommendations):
+            fallback = {
+                "rank": 1,
+                "match_note": "确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。",
+                "steps": self._deterministic_rnaseq_candidate_steps(),
+            }
+            fallback_methods, fallback_validation = self._validate_custom_steps(fallback["steps"])
+            if fallback_validation.get("ok"):
+                candidate, rejection = self._build_top3_candidate(
+                    text, intent, fallback, fallback_methods, fallback_validation
+                )
+                if candidate:
+                    accepted.append(candidate)
+                    metadata = dict(metadata)
+                    metadata["deterministic_fallback"] = "rnaseq_upstream_from_neo4j_contract"
+                elif rejection:
+                    rejected.append(rejection)
+
         unsupported_reason = str(
             (decision or {}).get("unsupported_reason") or ""
         ).strip() or None
+        atomic_unavailable_reason = unsupported_reason
         if accepted:
             selection_status = "ready"
             unsupported_reason = None
@@ -497,6 +539,14 @@ Neo4j atomic 方法目录：
                 "候选链未同时通过目录校验和完整用户样本数据匹配。"
                 if normalized else
                 "LLM 未返回可评估的原子工具候选链。"
+            )
+        if not accepted and not atomic_unavailable_reason and rejected:
+            rejected_stages = ", ".join(sorted({
+                str(item.get("stage") or "validation") for item in rejected
+            }))
+            atomic_unavailable_reason = (
+                f"LLM 生成的原子候选未通过 {rejected_stages}；"
+                "业务流程推荐仅作为信息展示。"
             )
 
         result = {
@@ -517,6 +567,9 @@ Neo4j atomic 方法目录：
             "analysis": (decision or {}).get("analysis"),
             "extensions": {
                 "rejected_candidates": rejected,
+                "atomic_candidate_unavailable_reason": (
+                    atomic_unavailable_reason if not accepted else None
+                ),
                 "method_catalog_status": {
                     **METHOD_CATALOG_STATUS,
                     "registered_method_count": len(self.registered_methods.methods),
@@ -580,7 +633,9 @@ Neo4j atomic 方法目录：
         top_k: int,
     ) -> List[Dict[str, Any]]:
         reference = exact_reference(text)
+        recommendation_source = "llm+neo4j"
         if reference:
+            recommendation_source = "reviewed_reference+neo4j"
             values = [{
                 "rank": 1,
                 "pipeline_id": reference["expected_pipeline_id"],
@@ -590,6 +645,13 @@ Neo4j atomic 方法目录：
             values = self._normalize_recommendation_values(
                 decision.get("recommendations") or []
             )
+            if not values and self._deterministic_pipeline_recommendation(text, intent):
+                values = [{
+                    "rank": 1,
+                    "pipeline_id": "rnaseq_singletask",
+                    "match_note": "确定性规则识别为双端 bulk RNA-seq 上游质控和表达定量。",
+                }]
+                recommendation_source = "deterministic_rule+neo4j"
 
         recommendations: List[Dict[str, Any]] = []
         for value in values[:top_k]:
@@ -605,6 +667,7 @@ Neo4j atomic 方法目录：
                 ensure_ascii=False,
                 sort_keys=True,
             )
+            execution_params, execution_params_missing = self._execution_params(method, data)
             recommendations.append({
                 "rank": value["rank"],
                 "match_id": "recommendation-" + hashlib.sha256(
@@ -614,10 +677,30 @@ Neo4j atomic 方法目录：
                 "match_note": value.get("match_note") or "",
                 "tool": self._recommendation_tool(pipeline_id, method),
                 "data": data,
-                "source": "reviewed_reference+neo4j" if reference else "llm+neo4j",
+                "execution_params": execution_params,
+                "execution_params_missing": execution_params_missing,
+                "source": recommendation_source,
                 "reference_case_id": reference.get("case_id") if reference else None,
             })
         return recommendations
+
+    @staticmethod
+    def _deterministic_pipeline_recommendation(
+        text: str,
+        intent: Dict[str, Any],
+    ) -> bool:
+        normalized = re.sub(r"\s+", "", str(text or "").lower())
+        if any(term in normalized for term in ("maf", "vcf", "wes", "体细胞突变", "肿瘤-正常")):
+            return False
+        if "rna" not in normalized and "rnaseq" not in normalized:
+            return False
+        if "fastqc" in normalized and not any(
+            term in normalized for term in ("定量", "表达", "star", "rsem", "完整流程")
+        ):
+            return False
+        if not any(term in normalized for term in ("fastq", "fq.gz", "表达定量", "上游", "star", "rsem")):
+            return False
+        return str(intent.get("omics_type") or "").lower() in {"bulk rna-seq", "rna-seq", "rnaseq"}
 
     def _recommendation_tool(
         self,
@@ -694,6 +777,109 @@ Neo4j atomic 方法目录：
             "missing_asset_names": [],
             "study_accessions": studies,
         }
+
+    @staticmethod
+    def _real_execution_path(asset: Dict[str, Any]) -> str:
+        """Return the asset's real filesystem path, or "" if it is not a
+        confirmed path. ``data.assets`` from the graph carry ``file_path`` that
+        for T2 products (maf/tsv/xlsx…) is a real ``/...`` path, but for T1
+        fastq is either ``NOT_FOUND`` or the ``"<name> (<n> bytes)"`` placeholder
+        (no real location in the upstream CSV). We never fabricate a path."""
+        path = str(asset.get("file_path") or "").strip()
+        if not path.startswith("/"):
+            return ""
+        if "NOT_FOUND" in path:
+            return ""
+        if re.search(r"\(\d+\s*bytes\)\s*$", path):
+            return ""
+        return path
+
+    def _execution_asset_role(self, asset: Dict[str, Any]) -> str:
+        """Canonical role for a ``data.assets`` item (which carries no
+        ``input_role``), derived from file name + physical format + read pair,
+        mapped into the same vocabulary as ``_canonical_asset_role``."""
+        name = str(asset.get("files") or asset.get("name") or "")
+        fmt = str(asset.get("format") or "").lower()
+        read_pair = str(asset.get("read_pair") or "").lower()
+        role = self._role_for_input(name)
+        if role in {"fastq_r1", "fastq_r2", "fastq_file"}:
+            if read_pair == "r1":
+                return "fastq_r1"
+            if read_pair == "r2":
+                return "fastq_r2"
+            return role
+        if role != "data_file":
+            return role
+        if "maf" in fmt:
+            return "maf_file"
+        if "vcf" in fmt:
+            return "vcf_file"
+        if "bam" in fmt:
+            return "bam_file"
+        if "fastq" in fmt or fmt.startswith("fq"):
+            if read_pair == "r1":
+                return "fastq_r1"
+            if read_pair == "r2":
+                return "fastq_r2"
+            return "fastq_file"
+        return "data_file"
+
+    def _execution_params(
+        self,
+        method: Optional[RegisteredMethod],
+        data: Dict[str, Any],
+    ) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
+        """Convert this recommendation's confirmed data assets into
+        directly-usable PipelineBuilder params, keyed by the **real WDL param
+        name** (``io_slot.builder_param``, e.g. ``maf_file``) — not the slot
+        name and not ``wdl_target``. Only KG-confirmed file inputs with a real
+        path are mapped; anything unresolved is reported in the missing list
+        rather than guessed (no fabricated paths)."""
+        params: Dict[str, Any] = {}
+        missing: List[Dict[str, Any]] = []
+        if method is None:
+            return params, missing
+        assets = list((data or {}).get("assets") or [])
+        usage: Dict[str, int] = {}
+        for slot in method.inputs or []:
+            builder_param = str(slot.get("builder_param") or "").strip()
+            if not builder_param:
+                # slots without a builder_param are sample-lookup / reference
+                # index inputs with card defaults — not direct data params.
+                continue
+            slot_name = str(slot.get("name") or "")
+            role = self._canonical_asset_role(slot_name, str(slot.get("input_role") or ""))
+            if role == "reference_file":
+                # Reference/index resources (genome index, gtf, PoN, known-sites…)
+                # carry knowledge-card defaults and are not user data — never map
+                # nor report them as missing (师兄 rule 4).
+                continue
+            candidates = []
+            for asset in assets:
+                if self._execution_asset_role(asset) != role:
+                    continue
+                path = self._real_execution_path(asset)
+                if path:
+                    candidates.append((asset, path))
+            if not candidates:
+                missing.append({
+                    "param": builder_param,
+                    "slot": slot_name,
+                    "role": role,
+                    "reason": "no_confirmed_path",
+                })
+                continue
+            # Prefer a study-level aggregate (dotted format e.g. ".maf") over
+            # per-run files when several match a single-valued slot.
+            candidates.sort(
+                key=lambda ap: 0 if str(ap[0].get("format") or "").strip().startswith(".") else 1
+            )
+            index = usage.get(role, 0)
+            if index >= len(candidates):
+                index = len(candidates) - 1
+            params[builder_param] = candidates[index][1]
+            usage[role] = index + 1
+        return params, missing
 
     def _partial_recommendation_assets(
         self,
@@ -1050,7 +1236,16 @@ Neo4j atomic 方法目录：
             return None
         if any(hint in normalized for hint in self.RECOMMENDATION_HINTS):
             return None
-        browse = any(hint.lower() in normalized for hint in self.CAPABILITY_BROWSE_HINTS)
+        compact = re.sub(r"\s+", "", normalized)
+        browse = any(
+            hint.lower() in normalized or re.sub(r"\s+", "", hint.lower()) in compact
+            for hint in self.CAPABILITY_BROWSE_HINTS
+        )
+        browse = browse or bool(re.search(
+            r"(?:有哪些|哪些|列出|查看|查询).{0,24}(?:流程|pipeline|工具|方法)",
+            normalized,
+            flags=re.IGNORECASE,
+        ))
         browse = browse or any(
             re.match(pattern, normalized, flags=re.IGNORECASE)
             for pattern in self.CAPABILITY_GENERIC_PATTERNS
@@ -1323,6 +1518,81 @@ Neo4j atomic 方法目录：
         self._apply_capability_contract(result, plan)
         return result
 
+    @staticmethod
+    def _deterministic_rnaseq_candidate_steps() -> List[Dict[str, Any]]:
+        return [
+            {
+                "step_id": "fastp",
+                "tool_id": "fastp",
+                "inputs": {
+                    "raw_fastq_read_r1": {"asset_role": "fastq_r1"},
+                    "raw_fastq_read_r2": {"asset_role": "fastq_r2"},
+                },
+            },
+            {
+                "step_id": "star",
+                "tool_id": "star",
+                "inputs": {
+                    "clean_fastq_read": {
+                        "from": {"step_id": "fastp", "output": "clean_fastq_read"}
+                    },
+                    "genome_annotation": {"asset_role": "reference_file"},
+                },
+            },
+            {
+                "step_id": "rsem",
+                "tool_id": "rsem",
+                "inputs": {
+                    "transcriptome_bam": {
+                        "from": {"step_id": "star", "output": "transcriptome_bam"}
+                    },
+                    "genome_annotation": {"asset_role": "reference_file"},
+                },
+            },
+            {
+                "step_id": "samtools",
+                "tool_id": "samtools",
+                "inputs": {
+                    "aligned_bam": {
+                        "from": {"step_id": "star", "output": "aligned_bam"}
+                    },
+                },
+                "depends_on": ["star"],
+            },
+            {
+                "step_id": "featurecounts",
+                "tool_id": "featurecounts",
+                "inputs": {
+                    "sorted_dedup_bam": {
+                        "from": {"step_id": "samtools", "output": "sorted_dedup_bam"}
+                    },
+                    "genome_annotation": {"asset_role": "reference_file"},
+                },
+                "depends_on": ["samtools"],
+            },
+            {
+                "step_id": "multiqc",
+                "tool_id": "multiqc",
+                "inputs": {},
+                "depends_on": ["fastp", "rsem", "featurecounts"],
+            },
+        ]
+
+    @staticmethod
+    def _eligible_rnaseq_fallback(
+        text: str,
+        intent: Dict[str, Any],
+        recommendations: Sequence[Dict[str, Any]],
+    ) -> bool:
+        if not any(item.get("pipeline_id") == "rnaseq_singletask" for item in recommendations):
+            return False
+        normalized = re.sub(r"\s+", "", str(text or "").lower())
+        if not any(term in normalized for term in ("rna-seq", "rnaseq", "fastq", "fq.gz", "表达定量")):
+            return False
+        if any(term in normalized for term in ("maf", "vcf", "wes", "体细胞突变", "肿瘤-正常")):
+            return False
+        return str(intent.get("omics_type") or "").lower() in {"", "rna-seq", "bulk rna-seq", "rnaseq"} or "rna" in normalized
+
     def _validate_custom_steps(
         self,
         raw_steps: Sequence[Dict[str, Any]],
@@ -1363,6 +1633,12 @@ Neo4j atomic 方法目录：
             if not isinstance(bindings, dict):
                 errors.append(f"{step_id}.inputs 必须是对象")
                 bindings = {}
+            raw_dependencies = raw_step.get("depends_on") or []
+            if isinstance(raw_dependencies, str):
+                raw_dependencies = [raw_dependencies]
+            elif not isinstance(raw_dependencies, list):
+                errors.append(f"{step_id}.depends_on 必须是数组或字符串")
+                raw_dependencies = []
             clean_bindings: Dict[str, Dict[str, Any]] = {}
             for input_name, binding in bindings.items():
                 if input_name not in input_specs:
@@ -1413,6 +1689,10 @@ Neo4j atomic 方法目录：
                     clean_bindings[input_name] = {"from": {"step_id": source_step, "output": source_output}}
                     continue
                 errors.append(f"{step_id}.{input_name} 缺少 asset_role 或 from")
+            if tool_id != "multiqc" and input_specs and not clean_bindings:
+                errors.append(f"{step_id} 必须至少绑定一个已注册输入")
+            if tool_id == "multiqc" and not clean_bindings and not raw_dependencies:
+                errors.append(f"{step_id} 必须绑定 qc_files 或依赖至少一个 QC 前序步骤")
             selected_variant, variant_error = self._matching_input_variant(
                 method, set(clean_bindings), step_id
             )
@@ -1433,9 +1713,6 @@ Neo4j atomic 方法目录：
                 ):
                     required_external.append(target)
             depends_on: List[str] = []
-            raw_dependencies = raw_step.get("depends_on") or []
-            if isinstance(raw_dependencies, str):
-                raw_dependencies = [raw_dependencies]
             for dependency in raw_dependencies:
                 dependency_id = str(dependency or "")
                 if dependency_id not in tool_by_step:
