@@ -1,0 +1,3134 @@
+{
+  "bootstrap": {
+    "counts": {
+      "labels": {
+        "artifact_type": 12,
+        "format": 18,
+        "function": 24,
+        "io_slot": 44,
+        "tool_id": 24
+      },
+      "nodes": 122,
+      "relationship_types": {
+        "ALLOW_FORMAT": 79,
+        "HAS_FUNCTION": 24,
+        "HAS_INPUT_SLOT": 25,
+        "HAS_OUTPUT_SLOT": 19,
+        "HAS_STEP": 7,
+        "MANIFEST_AS": 41,
+        "NEXT": 14,
+        "PRODUCES": 19,
+        "REQUIRES": 25
+      },
+      "relationships": 253
+    },
+    "database": {
+      "id": "8A8C64A6A1FEBD990559665D313BB5D0100124DD14BB639B7BF14EE1AF99D6FD",
+      "name": "catalog-gate"
+    },
+    "fingerprint": "bdd04bd94a8f73e35c4dff377ea04b9a1466120053c107b50029d68528b042ec"
+  },
+  "changed_nodes": [
+    {
+      "csv_bootstrap": {
+        "identity": "artifact_type:expression_abundance_matrix",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "expression_abundance_matrix",
+          "description": "TPM / FPKM"
+        }
+      },
+      "identity": "artifact_type:expression_abundance_matrix",
+      "production": {
+        "identity": "artifact_type:expression_abundance_matrix",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "expression_abundance_matrix",
+          "description": "Gene-by-sample TPM or FPKM expression matrix",
+          "is_generic": false
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "artifact_type:expression_count_matrix",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "expression_count_matrix",
+          "description": "Raw Counts"
+        }
+      },
+      "identity": "artifact_type:expression_count_matrix",
+      "production": {
+        "identity": "artifact_type:expression_count_matrix",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "expression_count_matrix",
+          "description": "Gene-by-sample raw count matrix",
+          "is_generic": false
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "artifact_type:quality_control_report",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "quality_control_report",
+          "description": "Quality Control Report"
+        }
+      },
+      "identity": "artifact_type:quality_control_report",
+      "production": {
+        "identity": "artifact_type:quality_control_report",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "quality_control_report",
+          "description": "Quality control reports and logs",
+          "is_generic": true
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "artifact_type:raw_fastq_read",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "raw_fastq_read",
+          "description": "Raw FASTQ"
+        }
+      },
+      "identity": "artifact_type:raw_fastq_read",
+      "production": {
+        "identity": "artifact_type:raw_fastq_read",
+        "labels": [
+          "ArtifactType",
+          "artifact_type"
+        ],
+        "properties": {
+          "artifact_type": "raw_fastq_read",
+          "description": "One mate of paired-end raw FASTQ reads",
+          "is_generic": false
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "format:bam",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "format": "bam"
+        }
+      },
+      "identity": "format:bam",
+      "production": {
+        "identity": "format:bam",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "description": "Aligned reads format",
+          "format": "bam"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "format:fq.gz",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "format": "fq.gz"
+        }
+      },
+      "identity": "format:fq.gz",
+      "production": {
+        "identity": "format:fq.gz",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "description": "Raw sequencing reads format (gzipped)",
+          "format": "fq.gz"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "format:json",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "format": "json"
+        }
+      },
+      "identity": "format:json",
+      "production": {
+        "identity": "format:json",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "description": "JSON format",
+          "format": "json"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "format:tsv",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "format": "tsv"
+        }
+      },
+      "identity": "format:tsv",
+      "production": {
+        "identity": "format:tsv",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "description": "Tab-separated values format",
+          "format": "tsv"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "format:txt",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "format": "txt"
+        }
+      },
+      "identity": "format:txt",
+      "production": {
+        "identity": "format:txt",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "description": "Plain text format",
+          "format": "txt"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "format:vcf",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "format": "vcf"
+        }
+      },
+      "identity": "format:vcf",
+      "production": {
+        "identity": "format:vcf",
+        "labels": [
+          "Format",
+          "format"
+        ],
+        "properties": {
+          "description": "Variant call format",
+          "format": "vcf"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:bwa::output::aligned_bam",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Aligned SAM/BAM",
+          "direction": "output",
+          "required": false,
+          "slot_id": "bwa::output::aligned_bam",
+          "slot_name": "aligned_bam",
+          "tool_id": "bwa"
+        }
+      },
+      "identity": "io_slot:bwa::output::aligned_bam",
+      "production": {
+        "identity": "io_slot:bwa::output::aligned_bam",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "bam-artifact-contract-fix-2026-07-22",
+          "description": "Aligned SAM/BAM",
+          "direction": "output",
+          "required": false,
+          "slot_id": "bwa::output::aligned_bam",
+          "slot_name": "aligned_bam",
+          "tool_id": "bwa"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:fastqc::input::clean_fastq_read",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Clean FASTQ",
+          "direction": "input",
+          "required": false,
+          "slot_id": "fastqc::input::clean_fastq_read",
+          "slot_name": "clean_fastq_read",
+          "tool_id": "fastqc"
+        }
+      },
+      "identity": "io_slot:fastqc::input::clean_fastq_read",
+      "production": {
+        "identity": "io_slot:fastqc::input::clean_fastq_read",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Clean FASTQ",
+          "direction": "input",
+          "one_of_group": "fastq_reads",
+          "required": false,
+          "slot_id": "fastqc::input::clean_fastq_read",
+          "slot_name": "clean_fastq_read",
+          "tool_id": "fastqc"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:fastqc::input::raw_fastq_read",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Raw FASTQ",
+          "direction": "input",
+          "required": false,
+          "slot_id": "fastqc::input::raw_fastq_read",
+          "slot_name": "raw_fastq_read",
+          "tool_id": "fastqc"
+        }
+      },
+      "identity": "io_slot:fastqc::input::raw_fastq_read",
+      "production": {
+        "identity": "io_slot:fastqc::input::raw_fastq_read",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Raw FASTQ",
+          "direction": "input",
+          "one_of_group": "fastq_reads",
+          "required": false,
+          "slot_id": "fastqc::input::raw_fastq_read",
+          "slot_name": "raw_fastq_read",
+          "tool_id": "fastqc"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:fastqc::output::quality_control_report",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Quality Control Report",
+          "direction": "output",
+          "required": false,
+          "slot_id": "fastqc::output::quality_control_report",
+          "slot_name": "quality_control_report",
+          "tool_id": "fastqc"
+        }
+      },
+      "identity": "io_slot:fastqc::output::quality_control_report",
+      "production": {
+        "identity": "io_slot:fastqc::output::quality_control_report",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "qc-report-contract-fix-2026-07-22",
+          "description": "Quality Control Report",
+          "direction": "output",
+          "required": false,
+          "slot_id": "fastqc::output::quality_control_report",
+          "slot_name": "quality_control_report",
+          "tool_id": "fastqc"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:multiqc::input::quality_control_report",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Quality Control Report",
+          "direction": "input",
+          "required": false,
+          "slot_id": "multiqc::input::quality_control_report",
+          "slot_name": "quality_control_report",
+          "tool_id": "multiqc"
+        }
+      },
+      "identity": "io_slot:multiqc::input::quality_control_report",
+      "production": {
+        "identity": "io_slot:multiqc::input::quality_control_report",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "qc-report-contract-fix-2026-07-22",
+          "description": "Quality Control Report",
+          "direction": "input",
+          "required": false,
+          "slot_id": "multiqc::input::quality_control_report",
+          "slot_name": "quality_control_report",
+          "tool_id": "multiqc"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:multiqc::output::quality_control_report",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Quality Control Report",
+          "direction": "output",
+          "required": false,
+          "slot_id": "multiqc::output::quality_control_report",
+          "slot_name": "quality_control_report",
+          "tool_id": "multiqc"
+        }
+      },
+      "identity": "io_slot:multiqc::output::quality_control_report",
+      "production": {
+        "identity": "io_slot:multiqc::output::quality_control_report",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "qc-report-contract-fix-2026-07-22",
+          "description": "Quality Control Report",
+          "direction": "output",
+          "required": false,
+          "slot_id": "multiqc::output::quality_control_report",
+          "slot_name": "quality_control_report",
+          "tool_id": "multiqc"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:samtools::input::aligned_bam",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Aligned SAM/BAM",
+          "direction": "input",
+          "required": true,
+          "slot_id": "samtools::input::aligned_bam",
+          "slot_name": "aligned_bam",
+          "tool_id": "samtools"
+        }
+      },
+      "identity": "io_slot:samtools::input::aligned_bam",
+      "production": {
+        "identity": "io_slot:samtools::input::aligned_bam",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "bam-artifact-contract-fix-2026-07-22",
+          "description": "Aligned SAM/BAM",
+          "direction": "input",
+          "required": true,
+          "slot_id": "samtools::input::aligned_bam",
+          "slot_name": "aligned_bam",
+          "tool_id": "samtools"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "io_slot:star::output::aligned_bam",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "sister-tool-csv",
+          "description": "Aligned SAM/BAM",
+          "direction": "output",
+          "required": false,
+          "slot_id": "star::output::aligned_bam",
+          "slot_name": "aligned_bam",
+          "tool_id": "star"
+        }
+      },
+      "identity": "io_slot:star::output::aligned_bam",
+      "production": {
+        "identity": "io_slot:star::output::aligned_bam",
+        "labels": [
+          "IOSlot",
+          "io_slot"
+        ],
+        "properties": {
+          "catalog_source": "bam-artifact-contract-fix-2026-07-22",
+          "description": "Genome-aligned BAM from STAR",
+          "direction": "output",
+          "required": false,
+          "slot_id": "star::output::aligned_bam",
+          "slot_name": "aligned_bam",
+          "tool_id": "star"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:diff_expr_go",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T13",
+          "catalog_source": "sister-tool-csv",
+          "description": "差异分析及 GO 富集",
+          "omics": "RNA-seq",
+          "tool_id": "diff_expr_go",
+          "tool_kind": "pipeline",
+          "tool_name": "diff_expr_go"
+        }
+      },
+      "identity": "tool_id:diff_expr_go",
+      "production": {
+        "identity": "tool_id:diff_expr_go",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T13",
+          "catalog_source": "sister-tool-csv",
+          "description": "基于表达矩阵进行差异基因分析（limma）并针对上下调基因分别进行 GO 功能富集（clusterProfiler）。\r\n适用于 FPKM/TPM 定量数据的两组比较场景，输出差异基因列表及 GO 富集结果表。",
+          "input_format": "tsv",
+          "omics": "RNA-seq",
+          "output_format": "tsv",
+          "tool_id": "diff_expr_go",
+          "tool_kind": "pipeline",
+          "tool_name": "diff_expr_go"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:diff_expr_kegg",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T14",
+          "catalog_source": "sister-tool-csv",
+          "description": "差异分析及通路富集",
+          "omics": "RNA-seq",
+          "tool_id": "diff_expr_kegg",
+          "tool_kind": "pipeline",
+          "tool_name": "diff_expr_kegg"
+        }
+      },
+      "identity": "tool_id:diff_expr_kegg",
+      "production": {
+        "identity": "tool_id:diff_expr_kegg",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T14",
+          "catalog_source": "sister-tool-csv",
+          "description": "基于 limma 包进行两组样本差异表达分析，并使用 ReactomePA 对上下调基因进行通路富集。\r\n适用于人类基因表达矩阵（FPKM/TPM），输出差异基因列表及富集结果。",
+          "input_format": "tsv",
+          "omics": "RNA-seq",
+          "output_format": "tsv",
+          "tool_id": "diff_expr_kegg",
+          "tool_kind": "pipeline",
+          "tool_name": "diff_expr_kegg"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:driver_gene_gender_analysis",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T15",
+          "catalog_source": "sister-tool-csv",
+          "description": "驱动基因性别分层分析",
+          "omics": "WES",
+          "tool_id": "driver_gene_gender_analysis",
+          "tool_kind": "pipeline",
+          "tool_name": "driver_gene_gender"
+        }
+      },
+      "identity": "tool_id:driver_gene_gender_analysis",
+      "production": {
+        "identity": "tool_id:driver_gene_gender_analysis",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T15",
+          "catalog_source": "sister-tool-csv",
+          "description": "该流程基于 WES MAF 文件、临床表和 MetaInfo 表，对驱动基因的突变频率进行性别分层分析。\r\n通过卡方检验比较男性和女性样本中每个驱动基因的突变率，并输出统计结果表、诊断表及多种可视化图表（分组柱状图、瀑布图、热图、火山图）。",
+          "input_format": "maf, xls, xlsx",
+          "omics": "WES",
+          "output_format": "gz, pdf, png, tsv",
+          "tool_id": "driver_gene_gender_analysis",
+          "tool_kind": "pipeline",
+          "tool_name": "driver_gene_gender"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:her2_pfs_survival",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T16",
+          "catalog_source": "sister-tool-csv",
+          "description": "表达与生存关联分析",
+          "omics": "RNA-seq",
+          "tool_id": "her2_pfs_survival",
+          "tool_kind": "pipeline",
+          "tool_name": "her2_pfs_survival"
+        }
+      },
+      "identity": "tool_id:her2_pfs_survival",
+      "production": {
+        "identity": "tool_id:her2_pfs_survival",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T16",
+          "catalog_source": "sister-tool-csv",
+          "description": "基于 TPM 表达矩阵、临床信息及样本元信息，分析特定基因（默认 HER2）表达水平与无进展生存期（PFS）的关联。\r\n流程自动匹配样本 accession，执行 Winsorizing 处理，生成 KM 生存曲线、Logrank 统计量及质量控制报告。",
+          "input_format": "tsv, xls, xlsx",
+          "omics": "RNA-seq",
+          "output_format": "json, pdf, png, tsv, txt",
+          "tool_id": "her2_pfs_survival",
+          "tool_kind": "pipeline",
+          "tool_name": "her2_pfs_survival"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:immune_infiltration_iobr",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T17",
+          "catalog_source": "sister-tool-csv",
+          "description": "免疫浸润估计",
+          "omics": "RNA-seq",
+          "tool_id": "immune_infiltration_iobr",
+          "tool_kind": "pipeline",
+          "tool_name": "immune_infiltration"
+        }
+      },
+      "identity": "tool_id:immune_infiltration_iobr",
+      "production": {
+        "identity": "tool_id:immune_infiltration_iobr",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T17",
+          "catalog_source": "sister-tool-csv",
+          "description": "基于 IOBR 包的 CIBERSORT 算法进行免疫细胞浸润分析流程。\r\n输入基因表达 TPM 矩阵、临床信息和样本元数据，输出免疫细胞比例估计、可靠性评估及可视化图表。\r\n适用于批量 RNA-seq 数据的肿瘤微环境免疫细胞组成分析。",
+          "input_format": "tsv, xls, xlsx",
+          "omics": "RNA-seq",
+          "output_format": "json, pdf, png, tsv, txt",
+          "tool_id": "immune_infiltration_iobr",
+          "tool_kind": "pipeline",
+          "tool_name": "immune_infiltration"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:paired_fastq_to_unmapped_bam",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T18",
+          "catalog_source": "sister-tool-csv",
+          "description": "FASTQ 转 uBAM",
+          "omics": "WES",
+          "tool_id": "paired_fastq_to_unmapped_bam",
+          "tool_kind": "pipeline",
+          "tool_name": "fq_to_ubam"
+        }
+      },
+      "identity": "tool_id:paired_fastq_to_unmapped_bam",
+      "production": {
+        "identity": "tool_id:paired_fastq_to_unmapped_bam",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T18",
+          "catalog_source": "sister-tool-csv",
+          "description": "将双端 FASTQ 测序数据转换为未比对的 BAM 文件 (uBAM)，并添加完整的 Read Group 信息。\r\n适用于 GATK 最佳实践流程的起始步骤，输出可用于后续变异检测流程的标准化 BAM 文件。",
+          "input_format": "fq.gz",
+          "omics": "WES",
+          "output_format": "list, bam",
+          "tool_id": "paired_fastq_to_unmapped_bam",
+          "tool_kind": "pipeline",
+          "tool_name": "fq_to_ubam"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:rnaseq_unsupervised_cluster",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T19",
+          "catalog_source": "sister-tool-csv",
+          "description": "无监督聚类分析",
+          "omics": "RNA-seq",
+          "tool_id": "rnaseq_unsupervised_cluster",
+          "tool_kind": "pipeline",
+          "tool_name": "rnaseq_cluster"
+        }
+      },
+      "identity": "tool_id:rnaseq_unsupervised_cluster",
+      "production": {
+        "identity": "tool_id:rnaseq_unsupervised_cluster",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T19",
+          "catalog_source": "sister-tool-csv",
+          "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+          "input_format": "tsv",
+          "omics": "RNA-seq",
+          "output_format": "pdf, png, tsv, txt",
+          "tool_id": "rnaseq_unsupervised_cluster",
+          "tool_kind": "pipeline",
+          "tool_name": "rnaseq_cluster"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:survival_analysis",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T20",
+          "catalog_source": "sister-tool-csv",
+          "description": "突变与生存关联",
+          "omics": "WES",
+          "tool_id": "survival_analysis",
+          "tool_kind": "pipeline",
+          "tool_name": "survival_analysis"
+        }
+      },
+      "identity": "tool_id:survival_analysis",
+      "production": {
+        "identity": "tool_id:survival_analysis",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T20",
+          "catalog_source": "sister-tool-csv",
+          "description": "基于 WDL 1.0 和 Cromwell 的生存分析流程，用于评估指定基因突变状态与无进展生存期（PFS）的关系。\r\n流程整合了突变提取、Log-rank 检验、Kaplan-Meier 曲线绘制及单因素 Cox 回归分析，最终生成汇总报告。",
+          "input_format": "maf, xlsx",
+          "omics": "WES",
+          "output_format": "pdf, png, txt",
+          "tool_id": "survival_analysis",
+          "tool_kind": "pipeline",
+          "tool_name": "survival_analysis"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:tmb_survival_analysis",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T21",
+          "catalog_source": "sister-tool-csv",
+          "description": "TMB 与生存分析",
+          "omics": "WES",
+          "tool_id": "tmb_survival_analysis",
+          "tool_kind": "pipeline",
+          "tool_name": "tmb_survival"
+        }
+      },
+      "identity": "tool_id:tmb_survival_analysis",
+      "production": {
+        "identity": "tool_id:tmb_survival_analysis",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T21",
+          "catalog_source": "sister-tool-csv",
+          "description": "从MAF文件和临床数据计算病人级肿瘤突变负荷（TMB），按TMB中位数将病人分为高/低组，\r\n进行Kaplan-Meier生存分析和log-rank检验，输出生存曲线、TMB分布图及统计结果表。\r\n适用于肿瘤队列的预后分析场景。",
+          "input_format": "maf, xlsx",
+          "omics": "WES",
+          "output_format": "json, pdf, png, tsv",
+          "tool_id": "tmb_survival_analysis",
+          "tool_kind": "pipeline",
+          "tool_name": "tmb_survival"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:wes_somatic_maf_landscape",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T22",
+          "catalog_source": "sister-tool-csv",
+          "description": "体细胞突变景观分析",
+          "omics": "WES",
+          "tool_id": "wes_somatic_maf_landscape",
+          "tool_kind": "pipeline",
+          "tool_name": "wes_maf_landscape"
+        }
+      },
+      "identity": "tool_id:wes_somatic_maf_landscape",
+      "production": {
+        "identity": "tool_id:wes_somatic_maf_landscape",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T22",
+          "catalog_source": "sister-tool-csv",
+          "description": "本流程用于全外显子测序（WES）队列的体细胞突变景观分析。输入标准 MAF 文件，经过滤处理后绘制 Top N 突变基因 Oncoplot 及突变类型分布图。适用于癌症基因组学中的突变谱可视化与总结。",
+          "input_format": "maf",
+          "omics": "WES",
+          "output_format": "maf, pdf, png, tsv",
+          "tool_id": "wes_somatic_maf_landscape",
+          "tool_kind": "pipeline",
+          "tool_name": "wes_maf_landscape"
+        }
+      }
+    },
+    {
+      "csv_bootstrap": {
+        "identity": "tool_id:wgcna",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T23",
+          "catalog_source": "sister-tool-csv",
+          "description": "加权共表达网络构建",
+          "omics": "RNA-seq",
+          "tool_id": "wgcna",
+          "tool_kind": "pipeline",
+          "tool_name": "wgcna"
+        }
+      },
+      "identity": "tool_id:wgcna",
+      "production": {
+        "identity": "tool_id:wgcna",
+        "labels": [
+          "Tool",
+          "tool_id"
+        ],
+        "properties": {
+          "catalog_id": "T23",
+          "catalog_source": "sister-tool-csv",
+          "description": "基于基因表达矩阵和临床表型数据执行 WGCNA 共表达网络分析，包括样本 QC、模块识别、模块 - 性状关联、hub 基因筛选及 bootstrap 稳定性评估。\r\n适用于转录组数据的系统性分析，输出模块划分结果、关键 hub 基因列表及功能富集分析结果。",
+          "input_format": "tsv, xls, xlsx",
+          "omics": "RNA-seq",
+          "output_format": "gz, pdf, png, tsv",
+          "tool_id": "wgcna",
+          "tool_kind": "pipeline",
+          "tool_name": "wgcna"
+        }
+      }
+    }
+  ],
+  "extra_relationships": [
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "io_slot:star::output::aligned_bam",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "artifact_type:aligned_bam",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "artifact_type:expression_abundance_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "artifact_type:expression_count_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "artifact_type:quality_control_report",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "artifact_type:raw_fastq_read",
+      "type": "MANIFEST_AS"
+    }
+  ],
+  "missing_nodes": [
+    "artifact_type:analysis_figure",
+    "artifact_type:analysis_summary",
+    "artifact_type:binary_mutation_matrix",
+    "artifact_type:clinical_survival_table",
+    "artifact_type:clinical_table",
+    "artifact_type:cluster_assignment_table",
+    "artifact_type:cluster_stability_table",
+    "artifact_type:differential_expression_table",
+    "artifact_type:enrichment_result_table",
+    "artifact_type:expression_tpm_matrix",
+    "artifact_type:file_list",
+    "artifact_type:hub_gene_table",
+    "artifact_type:immune_fraction_matrix",
+    "artifact_type:mutation_statistics_table",
+    "artifact_type:sample_metadata",
+    "artifact_type:sample_metainfo",
+    "artifact_type:somatic_maf",
+    "artifact_type:survival_statistics",
+    "artifact_type:tmb_table",
+    "artifact_type:unmapped_bam",
+    "artifact_type:wgcna_module_table",
+    "format:csv",
+    "format:dir",
+    "format:gz",
+    "format:list",
+    "format:maf",
+    "format:pdf",
+    "format:png",
+    "format:xls",
+    "format:xlsx",
+    "function:HER2 表达与无进展生存期分析",
+    "function:RNA-seq 无监督聚类分析流程",
+    "function:WES 体细胞突变 MAF 景观分析流程",
+    "function:WGCNA 加权基因共表达网络分析",
+    "function:免疫浸润分析 (IOBR CIBERSORT)",
+    "function:双端 FASTQ 转未比对 BAM",
+    "function:差异表达与 GO 富集分析",
+    "function:差异表达与 Reactome 通路富集分析流程",
+    "function:生存分析流程",
+    "function:肿瘤突变负荷生存分析流程",
+    "function:驱动基因突变频率性别分层分析",
+    "io_slot:diff_expr_go::in::expression",
+    "io_slot:diff_expr_go::out::differential",
+    "io_slot:diff_expr_go::out::enrichment",
+    "io_slot:diff_expr_kegg::in::expression",
+    "io_slot:diff_expr_kegg::out::differential",
+    "io_slot:diff_expr_kegg::out::enrichment",
+    "io_slot:driver_gene_gender_analysis::in::clinical",
+    "io_slot:driver_gene_gender_analysis::in::maf",
+    "io_slot:driver_gene_gender_analysis::in::metainfo",
+    "io_slot:driver_gene_gender_analysis::out::figures",
+    "io_slot:driver_gene_gender_analysis::out::matrix",
+    "io_slot:driver_gene_gender_analysis::out::statistics",
+    "io_slot:her2_pfs_survival::in::clinical",
+    "io_slot:her2_pfs_survival::in::expression",
+    "io_slot:her2_pfs_survival::in::metainfo",
+    "io_slot:her2_pfs_survival::out::figures",
+    "io_slot:her2_pfs_survival::out::statistics",
+    "io_slot:her2_pfs_survival::out::summary",
+    "io_slot:immune_infiltration_iobr::in::clinical",
+    "io_slot:immune_infiltration_iobr::in::expression",
+    "io_slot:immune_infiltration_iobr::in::metainfo",
+    "io_slot:immune_infiltration_iobr::out::figures",
+    "io_slot:immune_infiltration_iobr::out::fractions",
+    "io_slot:immune_infiltration_iobr::out::qc",
+    "io_slot:paired_fastq_to_unmapped_bam::in::fastq_1",
+    "io_slot:paired_fastq_to_unmapped_bam::in::fastq_2",
+    "io_slot:paired_fastq_to_unmapped_bam::out::bam",
+    "io_slot:paired_fastq_to_unmapped_bam::out::list",
+    "io_slot:rnaseq_unsupervised_cluster::in::counts",
+    "io_slot:rnaseq_unsupervised_cluster::out::assignments",
+    "io_slot:rnaseq_unsupervised_cluster::out::figures",
+    "io_slot:rnaseq_unsupervised_cluster::out::stability",
+    "io_slot:survival_analysis::in::clinical",
+    "io_slot:survival_analysis::in::maf",
+    "io_slot:survival_analysis::in::metainfo",
+    "io_slot:survival_analysis::out::figures",
+    "io_slot:survival_analysis::out::statistics",
+    "io_slot:tmb_survival_analysis::in::clinical",
+    "io_slot:tmb_survival_analysis::in::maf",
+    "io_slot:tmb_survival_analysis::in::metainfo",
+    "io_slot:tmb_survival_analysis::out::figures",
+    "io_slot:tmb_survival_analysis::out::statistics",
+    "io_slot:tmb_survival_analysis::out::tmb",
+    "io_slot:wes_somatic_maf_landscape::in::maf",
+    "io_slot:wes_somatic_maf_landscape::out::figures",
+    "io_slot:wes_somatic_maf_landscape::out::maf",
+    "io_slot:wes_somatic_maf_landscape::out::statistics",
+    "io_slot:wgcna::in::clinical",
+    "io_slot:wgcna::in::counts",
+    "io_slot:wgcna::in::metainfo",
+    "io_slot:wgcna::out::archives",
+    "io_slot:wgcna::out::figures",
+    "io_slot:wgcna::out::hub_genes",
+    "io_slot:wgcna::out::modules",
+    "io_slot:wgcna::out::qc"
+  ],
+  "missing_relationships": [
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:diff_expr_go::in::expression",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:diff_expr_go::out::differential",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:diff_expr_go::out::enrichment",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:diff_expr_kegg::in::expression",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:diff_expr_kegg::out::differential",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:diff_expr_kegg::out::enrichment",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::maf",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::metainfo",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:gz",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::matrix",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::matrix",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::statistics",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::expression",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::metainfo",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::statistics",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:json",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::summary",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::summary",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::expression",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::metainfo",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::fractions",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:json",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::qc",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::qc",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::qc",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:html",
+      "properties": {},
+      "start": "io_slot:multiqc::input::quality_control_report",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:multiqc::input::quality_control_report",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:zip",
+      "properties": {},
+      "start": "io_slot:multiqc::input::quality_control_report",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::in::fastq_1",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::in::fastq_2",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:bam",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::out::bam",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:list",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::out::list",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::in::counts",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::assignments",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::stability",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::maf",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::metainfo",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:survival_analysis::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:survival_analysis::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "io_slot:survival_analysis::out::statistics",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::maf",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::metainfo",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:json",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::statistics",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::statistics",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::tmb",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::in::maf",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::maf",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::statistics",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "io_slot:wgcna::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:wgcna::in::clinical",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:wgcna::in::counts",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "io_slot:wgcna::in::metainfo",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:gz",
+      "properties": {},
+      "start": "io_slot:wgcna::out::archives",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "io_slot:wgcna::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "io_slot:wgcna::out::figures",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:wgcna::out::hub_genes",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:wgcna::out::modules",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "io_slot:wgcna::out::qc",
+      "type": "ALLOW_FORMAT"
+    },
+    {
+      "end": "function:差异表达与 GO 富集分析",
+      "properties": {},
+      "start": "tool_id:diff_expr_go",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:差异表达与 Reactome 通路富集分析流程",
+      "properties": {},
+      "start": "tool_id:diff_expr_kegg",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:驱动基因突变频率性别分层分析",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:HER2 表达与无进展生存期分析",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:免疫浸润分析 (IOBR CIBERSORT)",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:双端 FASTQ 转未比对 BAM",
+      "properties": {},
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:RNA-seq 无监督聚类分析流程",
+      "properties": {},
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:生存分析流程",
+      "properties": {},
+      "start": "tool_id:survival_analysis",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:肿瘤突变负荷生存分析流程",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:WES 体细胞突变 MAF 景观分析流程",
+      "properties": {},
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "function:WGCNA 加权基因共表达网络分析",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "HAS_FUNCTION"
+    },
+    {
+      "end": "io_slot:diff_expr_go::in::expression",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:diff_expr_go",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:diff_expr_kegg::in::expression",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:diff_expr_kegg",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:driver_gene_gender_analysis::in::clinical",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:driver_gene_gender_analysis::in::maf",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:driver_gene_gender_analysis::in::metainfo",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:her2_pfs_survival::in::clinical",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:her2_pfs_survival::in::expression",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:her2_pfs_survival::in::metainfo",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:immune_infiltration_iobr::in::clinical",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:immune_infiltration_iobr::in::expression",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:immune_infiltration_iobr::in::metainfo",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:paired_fastq_to_unmapped_bam::in::fastq_1",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:paired_fastq_to_unmapped_bam::in::fastq_2",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:rnaseq_unsupervised_cluster::in::counts",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:survival_analysis::in::clinical",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:survival_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:survival_analysis::in::maf",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:survival_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:survival_analysis::in::metainfo",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:survival_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:tmb_survival_analysis::in::clinical",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:tmb_survival_analysis::in::maf",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:tmb_survival_analysis::in::metainfo",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wes_somatic_maf_landscape::in::maf",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::in::clinical",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::in::counts",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::in::metainfo",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_INPUT_SLOT"
+    },
+    {
+      "end": "io_slot:diff_expr_go::out::differential",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:diff_expr_go",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:diff_expr_go::out::enrichment",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:diff_expr_go",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:diff_expr_kegg::out::differential",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:diff_expr_kegg",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:diff_expr_kegg::out::enrichment",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:diff_expr_kegg",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:driver_gene_gender_analysis::out::figures",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:driver_gene_gender_analysis::out::matrix",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:driver_gene_gender_analysis::out::statistics",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:her2_pfs_survival::out::figures",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:her2_pfs_survival::out::statistics",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:her2_pfs_survival::out::summary",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:her2_pfs_survival",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:immune_infiltration_iobr::out::figures",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:immune_infiltration_iobr::out::fractions",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:immune_infiltration_iobr::out::qc",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:paired_fastq_to_unmapped_bam::out::bam",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:paired_fastq_to_unmapped_bam::out::list",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:rnaseq_unsupervised_cluster::out::assignments",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:rnaseq_unsupervised_cluster::out::figures",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:rnaseq_unsupervised_cluster::out::stability",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:survival_analysis::out::figures",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:survival_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:survival_analysis::out::statistics",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:survival_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:tmb_survival_analysis::out::figures",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:tmb_survival_analysis::out::statistics",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:tmb_survival_analysis::out::tmb",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wes_somatic_maf_landscape::out::figures",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wes_somatic_maf_landscape::out::maf",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wes_somatic_maf_landscape::out::statistics",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::out::archives",
+      "properties": {
+        "order": 5
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::out::figures",
+      "properties": {
+        "order": 4
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::out::hub_genes",
+      "properties": {
+        "order": 2
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::out::modules",
+      "properties": {
+        "order": 1
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "io_slot:wgcna::out::qc",
+      "properties": {
+        "order": 3
+      },
+      "start": "tool_id:wgcna",
+      "type": "HAS_OUTPUT_SLOT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:diff_expr_go",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:diff_expr_kegg",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "tool_id:survival_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "tool_id:survival_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xls",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "INPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:analysis_figure",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:png",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:analysis_figure",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:json",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:analysis_summary",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:analysis_summary",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:txt",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:analysis_summary",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:gz",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:binary_mutation_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:binary_mutation_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:clinical_survival_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xls",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:clinical_survival_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:clinical_survival_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:clinical_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xls",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:clinical_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:clinical_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:cluster_assignment_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:cluster_stability_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:differential_expression_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:enrichment_result_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:expression_abundance_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xls",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:expression_abundance_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:expression_abundance_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:expression_count_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:expression_tpm_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:list",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:file_list",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:hub_gene_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:immune_fraction_matrix",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:mutation_statistics_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:json",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:quality_control_report",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:quality_control_report",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:txt",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:quality_control_report",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:raw_fastq_read",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:html",
+      "properties": {},
+      "start": "artifact_type:sample_metadata",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:log",
+      "properties": {},
+      "start": "artifact_type:sample_metadata",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "artifact_type:sample_metadata",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:zip",
+      "properties": {},
+      "start": "artifact_type:sample_metadata",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xls",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:sample_metainfo",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:xlsx",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:sample_metainfo",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:maf",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:somatic_maf",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:fq.gz",
+      "properties": {},
+      "start": "artifact_type:sorted_dedup_bam",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:json",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:survival_statistics",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:survival_statistics",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:txt",
+      "properties": {
+        "primary": false
+      },
+      "start": "artifact_type:survival_statistics",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:tmb_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:bam",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:unmapped_bam",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:sam",
+      "properties": {},
+      "start": "artifact_type:unmapped_bam",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {
+        "primary": true
+      },
+      "start": "artifact_type:wgcna_module_table",
+      "type": "MANIFEST_AS"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:diff_expr_go",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:diff_expr_kegg",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:gz",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:driver_gene_gender_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:json",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "tool_id:her2_pfs_survival",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:json",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "tool_id:immune_infiltration_iobr",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:bam",
+      "properties": {},
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:list",
+      "properties": {},
+      "start": "tool_id:paired_fastq_to_unmapped_bam",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "tool_id:rnaseq_unsupervised_cluster",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:txt",
+      "properties": {},
+      "start": "tool_id:survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:json",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:tmb_survival_analysis",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:maf",
+      "properties": {},
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:wes_somatic_maf_landscape",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:gz",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:pdf",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:png",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "format:tsv",
+      "properties": {},
+      "start": "tool_id:wgcna",
+      "type": "OUTPUT"
+    },
+    {
+      "end": "artifact_type:differential_expression_table",
+      "properties": {},
+      "start": "io_slot:diff_expr_go::out::differential",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:enrichment_result_table",
+      "properties": {},
+      "start": "io_slot:diff_expr_go::out::enrichment",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:differential_expression_table",
+      "properties": {},
+      "start": "io_slot:diff_expr_kegg::out::differential",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:enrichment_result_table",
+      "properties": {},
+      "start": "io_slot:diff_expr_kegg::out::enrichment",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:binary_mutation_matrix",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::matrix",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:mutation_statistics_table",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::out::statistics",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:survival_statistics",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::statistics",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_summary",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::out::summary",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:immune_fraction_matrix",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::fractions",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:quality_control_report",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::out::qc",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:unmapped_bam",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::out::bam",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:file_list",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::out::list",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:cluster_assignment_table",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::assignments",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:cluster_stability_table",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::out::stability",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:survival_analysis::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:survival_statistics",
+      "properties": {},
+      "start": "io_slot:survival_analysis::out::statistics",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:survival_statistics",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::statistics",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:tmb_table",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::out::tmb",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:somatic_maf",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::maf",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:mutation_statistics_table",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::out::statistics",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_summary",
+      "properties": {},
+      "start": "io_slot:wgcna::out::archives",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:analysis_figure",
+      "properties": {},
+      "start": "io_slot:wgcna::out::figures",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:hub_gene_table",
+      "properties": {},
+      "start": "io_slot:wgcna::out::hub_genes",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:wgcna_module_table",
+      "properties": {},
+      "start": "io_slot:wgcna::out::modules",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:quality_control_report",
+      "properties": {},
+      "start": "io_slot:wgcna::out::qc",
+      "type": "PRODUCES"
+    },
+    {
+      "end": "artifact_type:expression_abundance_matrix",
+      "properties": {},
+      "start": "io_slot:diff_expr_go::in::expression",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:expression_abundance_matrix",
+      "properties": {},
+      "start": "io_slot:diff_expr_kegg::in::expression",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:clinical_table",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::clinical",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:somatic_maf",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::maf",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:sample_metainfo",
+      "properties": {},
+      "start": "io_slot:driver_gene_gender_analysis::in::metainfo",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:clinical_survival_table",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::clinical",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:expression_tpm_matrix",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::expression",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:sample_metainfo",
+      "properties": {},
+      "start": "io_slot:her2_pfs_survival::in::metainfo",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:clinical_table",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::clinical",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:expression_tpm_matrix",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::expression",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:sample_metainfo",
+      "properties": {},
+      "start": "io_slot:immune_infiltration_iobr::in::metainfo",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:raw_fastq_read",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::in::fastq_1",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:raw_fastq_read",
+      "properties": {},
+      "start": "io_slot:paired_fastq_to_unmapped_bam::in::fastq_2",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:expression_count_matrix",
+      "properties": {},
+      "start": "io_slot:rnaseq_unsupervised_cluster::in::counts",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:clinical_survival_table",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::clinical",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:somatic_maf",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::maf",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:sample_metainfo",
+      "properties": {},
+      "start": "io_slot:survival_analysis::in::metainfo",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:clinical_survival_table",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::clinical",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:somatic_maf",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::maf",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:sample_metainfo",
+      "properties": {},
+      "start": "io_slot:tmb_survival_analysis::in::metainfo",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:somatic_maf",
+      "properties": {},
+      "start": "io_slot:wes_somatic_maf_landscape::in::maf",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:clinical_table",
+      "properties": {},
+      "start": "io_slot:wgcna::in::clinical",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:expression_count_matrix",
+      "properties": {},
+      "start": "io_slot:wgcna::in::counts",
+      "type": "REQUIRES"
+    },
+    {
+      "end": "artifact_type:sample_metainfo",
+      "properties": {},
+      "start": "io_slot:wgcna::in::metainfo",
+      "type": "REQUIRES"
+    }
+  ],
+  "production": {
+    "counts": {
+      "labels": {
+        "artifact_type": 33,
+        "format": 27,
+        "function": 35,
+        "io_slot": 99,
+        "tool_id": 24
+      },
+      "nodes": 218,
+      "relationship_types": {
+        "ALLOW_FORMAT": 155,
+        "HAS_FUNCTION": 35,
+        "HAS_INPUT_SLOT": 49,
+        "HAS_OUTPUT_SLOT": 50,
+        "HAS_STEP": 7,
+        "INPUT": 21,
+        "MANIFEST_AS": 81,
+        "NEXT": 14,
+        "OUTPUT": 37,
+        "PRODUCES": 50,
+        "REQUIRES": 49
+      },
+      "relationships": 548
+    },
+    "database": {
+      "id": "3B6484DB41F1C2BDC776FB5F93C6DEAD92BA99CB55BB62B4DC4BAE9A5284C7B1",
+      "name": "neo4j"
+    },
+    "fingerprint": "439dff931e236038985e50ce7f821e69736917f38440dfa408735ac89f57de1f"
+  },
+  "schema_version": "catalog-bootstrap-diff/v1"
+}

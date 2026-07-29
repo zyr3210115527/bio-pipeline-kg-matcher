@@ -1,0 +1,1967 @@
+{
+  "schema_version": "top3-prompt-quality/v1",
+  "recorded_at": "2026-07-28T06:39:19.502373+00:00",
+  "llm": {
+    "configured": true,
+    "model": "deepseek-v4-pro",
+    "endpoint_host": "api.deepseek.com",
+    "last_status": "ok"
+  },
+  "case_count": 12,
+  "passed": 10,
+  "failed": 2,
+  "cases": [
+    {
+      "id": "fastqc_only",
+      "query": "我有双端 bulk RNA-seq FASTQ，只做原始数据 FastQC 质控，不修剪、不比对，也不要表达定量。",
+      "elapsed_s": 12.854,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "unsupported",
+        "candidate_chains": [],
+        "recommendations": [],
+        "unsupported_reason": "目录中 FastQC 仅支持单一泛化 raw_fastq_read 槽位，无法表达双端 FASTQ 的 R1/R2 两个独立文件，且不允许修剪或创建并行根步骤，因此无法生成原子候选链。",
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": "目录中 FastQC 仅支持单一泛化 raw_fastq_read 槽位，无法表达双端 FASTQ 的 R1/R2 两个独立文件，且不允许修剪或创建并行根步骤，因此无法生成原子候选链。",
+        "intent": {
+          "query_text": "我有双端 bulk RNA-seq FASTQ，只做原始数据 FastQC 质控，不修剪、不比对，也不要表达定量。",
+          "analysis_goal": "RNA-seq 表达定量",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "qc"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7447,
+          "completion_tokens": 684,
+          "total_tokens": 8131,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "双端 bulk RNA-seq FASTQ",
+          "data_path": "原始双端 FASTQ -> FastQC 质控报告",
+          "coverage": "仅需要 FastQC 质控，不修剪、不比对、不定量",
+          "checks": "闭集仅 FastQC；双端 FASTQ 当前 FastQC 仅有单一 raw_fastq_read 槽位，无法忠实地表达 R1/R2 两个独立输入；最终产物 quality_control_report 无法由不存在的双端 FastQC 步骤生成。"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "目录中 FastQC 仅支持单一泛化 raw_fastq_read 槽位，无法表达双端 FASTQ 的 R1/R2 两个独立文件，且不允许修剪或创建并行根步骤，因此无法生成原子候选链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "目录中 FastQC 仅支持单一泛化 raw_fastq_read 槽位，无法表达双端 FASTQ 的 R1/R2 两个独立文件，且不允许修剪或创建并行根步骤，因此无法生成原子候选链。"
+      }
+    },
+    {
+      "id": "rnaseq_count_only",
+      "query": "对双端 bulk RNA-seq FASTQ 做质控、修剪和 STAR 比对，最终只要基因 raw count 矩阵，不要 RSEM、TPM 或 FPKM。",
+      "elapsed_s": 73.145,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "ready",
+        "candidate_chains": [
+          [
+            "fastp",
+            "star",
+            "samtools",
+            "featurecounts"
+          ],
+          [
+            "trim_galore",
+            "star",
+            "samtools",
+            "featurecounts"
+          ]
+        ],
+        "recommendations": [],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 2,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "首选 fastp 一步完成质控和修剪，更贴合“质控、修剪”需求，且输出直接兼容 STAR",
+            "workflow_mode": "custom",
+            "match_id": "match-0f117b6d47319343",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000074",
+            "assets": [
+              {
+                "asset_id": "HRA000074-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_f1.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000074-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_r2.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_trim_qc",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000074-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000074-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_trim_qc"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "star_align",
+                "tool_id": "star_rrna_and_genome_alignment",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_trim_qc",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_trim_qc",
+                      "output": "trimmed_r2"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim_qc"
+                ]
+              },
+              {
+                "step_id": "samtools_process",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "genome_bam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_process"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "featurecounts",
+                "tool_id": "featurecounts_gene_counting",
+                "inputs": {
+                  "bam": {
+                    "from": {
+                      "step_id": "samtools_process",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "samtools_process"
+                ]
+              }
+            ],
+            "selection_reason": "首选 fastp 一步完成质控和修剪，更贴合“质控、修剪”需求，且输出直接兼容 STAR",
+            "extensions": {
+              "paired_wes_matcher": false,
+              "required_asset_roles": [
+                "fastq_file"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "star",
+                "samtools",
+                "featurecounts"
+              ],
+              "data_combination": {
+                "kind": "custom_role_bundle",
+                "study_accession": "HRA000074",
+                "match_reason": "满足已校验自定义工具链的数据角色"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          },
+          {
+            "rank": 2,
+            "match_note": "使用 trim_galore 进行修剪，可作为轻量替代方案，但质控报告不如 fastp 丰富",
+            "workflow_mode": "custom",
+            "match_id": "match-31c2be69ec9b17f8",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000074",
+            "assets": [
+              {
+                "asset_id": "HRA000074-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_f1.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000074-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_r2.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "trim_galore_trim",
+                "tool_id": "trim_galore",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000074-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000074-fastq_r2-2"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "star_align",
+                "tool_id": "star_rrna_and_genome_alignment",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "trim_galore_trim",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "trim_galore_trim",
+                      "output": "trimmed_r2"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "trim_galore_trim"
+                ]
+              },
+              {
+                "step_id": "samtools_process",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "genome_bam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_process"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "featurecounts",
+                "tool_id": "featurecounts_gene_counting",
+                "inputs": {
+                  "bam": {
+                    "from": {
+                      "step_id": "samtools_process",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "samtools_process"
+                ]
+              }
+            ],
+            "selection_reason": "使用 trim_galore 进行修剪，可作为轻量替代方案，但质控报告不如 fastp 丰富",
+            "extensions": {
+              "paired_wes_matcher": false,
+              "required_asset_roles": [
+                "fastq_file"
+              ],
+              "internal_tool_ids": [
+                "trim_galore",
+                "star",
+                "samtools",
+                "featurecounts"
+              ],
+              "data_combination": {
+                "kind": "custom_role_bundle",
+                "study_accession": "HRA000074",
+                "match_reason": "满足已校验自定义工具链的数据角色"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对双端 bulk RNA-seq FASTQ 做质控、修剪和 STAR 比对，最终只要基因 raw count 矩阵，不要 RSEM、TPM 或 FPKM。",
+          "analysis_goal": "RNA-seq 表达定量",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "FPKM",
+          "requested_outputs": [],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7457,
+          "completion_tokens": 4282,
+          "total_tokens": 11739,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 bulk RNA-seq",
+          "data_path": "原始双端 FASTQ 经质控修剪后 STAR 比对，再经 SAMtools 排序去重，最终由 featureCounts 得到 raw count 矩阵",
+          "coverage": "使用 fastp 或 trim_galore 覆盖质控修剪，STAR 覆盖比对，samtools 覆盖 BAM 处理，featureCounts 覆盖计数，完整满足目标",
+          "checks": "所有步骤的输入输出名匹配目录，数据边 NEXT 边均存在，最终产物为 expression_count_matrix，排除 RSEM/TPM/FPKM"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": null,
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 2 条通过校验且数据完整的原子工具候选链。"
+      }
+    },
+    {
+      "id": "rnaseq_abundance_only",
+      "query": "对双端 bulk RNA-seq FASTQ 做质控、修剪和 STAR 比对，最终只要 RSEM 的 TPM/FPKM 表达丰度，不要 featureCounts 或 raw count。",
+      "elapsed_s": 94.853,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "ready",
+        "candidate_chains": [
+          [
+            "fastp",
+            "star",
+            "rsem",
+            "multiqc"
+          ],
+          [
+            "fastp",
+            "star",
+            "rsem"
+          ]
+        ],
+        "recommendations": [],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 2,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "最完整的自动化质控与定量流程，包含 MultiQC 汇总报告，符合常规生信实践。",
+            "workflow_mode": "custom",
+            "match_id": "match-f05b4e996ea35ac5",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000074",
+            "assets": [
+              {
+                "asset_id": "HRA000074-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_f1.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000074-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_r2.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_trim",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000074-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000074-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_trim"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "star_align",
+                "tool_id": "star_rrna_and_genome_alignment",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r2"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim"
+                ]
+              },
+              {
+                "step_id": "rsem_quant",
+                "tool_id": "rsem_quantification",
+                "inputs": {
+                  "transcriptome_bam": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "transcriptome_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "multiqc_summary",
+                "tool_id": "multiqc",
+                "inputs": {
+                  "qc_files": {
+                    "sources": [
+                      {
+                        "from": {
+                          "step_id": "fastp_trim",
+                          "output": "html_report"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "fastp_trim",
+                          "output": "json_report"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "rsem_quant",
+                          "output": "stat_files"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "rsem_quant",
+                          "output": "rsem_log"
+                        }
+                      }
+                    ],
+                    "flatten": true
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim",
+                  "star_align",
+                  "rsem_quant"
+                ]
+              }
+            ],
+            "selection_reason": "最完整的自动化质控与定量流程，包含 MultiQC 汇总报告，符合常规生信实践。",
+            "extensions": {
+              "paired_wes_matcher": false,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "star",
+                "rsem",
+                "multiqc"
+              ],
+              "data_combination": {
+                "kind": "custom_role_bundle",
+                "study_accession": "HRA000074",
+                "match_reason": "满足已校验自定义工具链的数据角色"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          },
+          {
+            "rank": 2,
+            "match_note": "精简版快速获得表达丰度，跳过 MultiQC 汇总，适合仅需定量矩阵的场景。",
+            "workflow_mode": "custom",
+            "match_id": "match-e00571c6d95afeae",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000074",
+            "assets": [
+              {
+                "asset_id": "HRA000074-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_f1.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000074-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_r2.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_trim",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000074-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000074-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_trim"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "star_align",
+                "tool_id": "star_rrna_and_genome_alignment",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r2"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim"
+                ]
+              },
+              {
+                "step_id": "rsem_quant",
+                "tool_id": "rsem_quantification",
+                "inputs": {
+                  "transcriptome_bam": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "transcriptome_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              }
+            ],
+            "selection_reason": "精简版快速获得表达丰度，跳过 MultiQC 汇总，适合仅需定量矩阵的场景。",
+            "extensions": {
+              "paired_wes_matcher": false,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "star",
+                "rsem"
+              ],
+              "data_combination": {
+                "kind": "custom_role_bundle",
+                "study_accession": "HRA000074",
+                "match_reason": "满足已校验自定义工具链的数据角色"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对双端 bulk RNA-seq FASTQ 做质控、修剪和 STAR 比对，最终只要 RSEM 的 TPM/FPKM 表达丰度，不要 featureCounts 或 raw count。",
+          "analysis_goal": "RNA-seq 表达定量",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "FPKM",
+          "requested_outputs": [],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7462,
+          "completion_tokens": 5762,
+          "total_tokens": 13224,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 bulk RNA-seq，无配对或分组。",
+          "data_path": "原始双端 FASTQ 经 fastp 质控修剪后，通过 STAR 比对获得 transcriptome BAM，再以 RSEM 进行表达定量得到含 TPM/FPKM 的丰度矩阵。",
+          "coverage": "覆盖质控、修剪、比对、定量全流程，最终产物为 expression_abundance_matrix，不含 featureCounts 或 raw count。",
+          "checks": "闭集使用 fastp、star、rsem、multiqc；槽位无误；NEXT 满足 fastp→star→rsem 数据依赖；单样本维度正确；产物符合目标。"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": null,
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 2 条通过校验且数据完整的原子工具候选链。"
+      }
+    },
+    {
+      "id": "terminal_wgcna",
+      "query": "已有 bulk RNA-seq count 矩阵和临床性状表，做 WGCNA 并输出模块、模块性状关联和 hub genes。",
+      "elapsed_s": 55.515,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "wgcna"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-7880a6641805a735",
+            "pipeline_id": "wgcna",
+            "match_note": "完全匹配用户 WGCNA 分析需求",
+            "tool": {
+              "tool_id": "wgcna",
+              "catalog_id": "T23",
+              "tool_kind": "pipeline",
+              "name": "wgcna",
+              "description": "基于基因表达矩阵和临床表型数据执行 WGCNA 共表达网络分析，包括样本 QC、模块识别、模块 - 性状关联、hub 基因筛选及 bootstrap 稳定性评估。\r\n适用于转录组数据的系统性分析，输出模块划分结果、关键 hub 基因列表及功能富集分析结果。",
+              "inputs": [
+                {
+                  "name": "clinical_table",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": false,
+                  "artifact": "clinical_table",
+                  "formats": [
+                    "xls",
+                    "xlsx"
+                  ],
+                  "description": "Clinical phenotype table containing grade and gender",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "count_matrix",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": false,
+                  "artifact": "expression_count_matrix",
+                  "formats": [
+                    "tsv"
+                  ],
+                  "description": "Raw gene count matrix processed with DESeq2 VST",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "sample_metainfo",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": false,
+                  "artifact": "sample_metainfo",
+                  "formats": [
+                    "xlsx"
+                  ],
+                  "description": "Individual Sample Run mapping workbook",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "archives",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "analysis_summary",
+                  "formats": [
+                    "gz"
+                  ],
+                  "description": "Prepare and analysis result archives",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "figures",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "analysis_figure",
+                  "formats": [
+                    "png",
+                    "pdf"
+                  ],
+                  "description": "WGCNA preparation and analysis figures",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "hub_genes",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "hub_gene_table",
+                  "formats": [
+                    "tsv"
+                  ],
+                  "description": "Stable and all hub genes",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "module_results",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "wgcna_module_table",
+                  "formats": [
+                    "tsv"
+                  ],
+                  "description": "Module and module-trait results",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "quality_control",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "quality_control_report",
+                  "formats": [
+                    "tsv"
+                  ],
+                  "description": "QC and trait matrix tables",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                }
+              ],
+              "catalog_status": "registered",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "missing_from_graph",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRA000071-Clinical-1.0.xlsx",
+                  "graph_status": "available",
+                  "source": "T2",
+                  "t2_id": "HRA000071::/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-Clinical-1.0.xlsx",
+                  "files": "HRA000071-Clinical-1.0.xlsx",
+                  "format": "xlsx",
+                  "strategy": "clinical",
+                  "data_level": "",
+                  "study_accession": "HRA000071",
+                  "sample_accession": null,
+                  "run_accession": null,
+                  "individual_accession": null,
+                  "individual_name": null,
+                  "sample_name": null,
+                  "specimen_types": null,
+                  "read_pair": null,
+                  "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-Clinical-1.0.xlsx",
+                  "match_reason": "格式匹配 xlsx; 优先使用处理后的 T2 数据; strategy 匹配 clinical; 文件语义匹配: Clinical",
+                  "input_role": "clinical"
+                },
+                {
+                  "name": "HRA000071-MetaInfo-1.0.xlsx",
+                  "graph_status": "available",
+                  "source": "T2",
+                  "t2_id": "HRA000071::/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-MetaInfo-1.0.xlsx",
+                  "files": "HRA000071-MetaInfo-1.0.xlsx",
+                  "format": "xlsx",
+                  "strategy": "HRA000074",
+                  "data_level": "",
+                  "study_accession": "HRA000071",
+                  "sample_accession": null,
+                  "run_accession": null,
+                  "individual_accession": null,
+                  "individual_name": null,
+                  "sample_name": null,
+                  "specimen_types": null,
+                  "read_pair": null,
+                  "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-MetaInfo-1.0.xlsx",
+                  "match_reason": "格式匹配 xlsx; 优先使用处理后的 T2 数据; strategy 匹配 HRA000074; 文件语义匹配: MetaInfo",
+                  "input_role": "metainfo"
+                }
+              ],
+              "matched_count": 2,
+              "expected_count": 3,
+              "missing_asset_names": [],
+              "missing_data_roles": [
+                "expression"
+              ],
+              "study_accessions": [
+                "HRA000071"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "已有 bulk RNA-seq count 矩阵和临床性状表，做 WGCNA 并输出模块、模块性状关联和 hub genes。",
+          "analysis_goal": "WGCNA",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "tsv",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7446,
+          "completion_tokens": 1128,
+          "total_tokens": 8574,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "用户已提供 bulk RNA-seq count 矩阵和临床性状表，所有样本在同一个表达矩阵中。",
+          "data_path": "直接从 count 矩阵和临床表输入到 WGCNA 的模块、性状关联和 hub genes 输出。",
+          "coverage": "业务流程 wgcna 完整覆盖了 WGCNA 分析的所有要求。",
+          "checks": "原子工具目录缺少网络分析和模块检测工具，无法构建可执行原子链；但业务流程推荐可行。"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "WGCNA 分析尚未原子化，当前目录中无对应原子工具，暂不支持生成可执行链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    },
+    {
+      "id": "cellranger_10x",
+      "query": "10x 单细胞 RNA-seq 双端 FASTQ 做 Cell Ranger，输出 filtered feature-barcode matrix。",
+      "elapsed_s": 11.963,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "cellranger_workflow"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-5b0b9d151e1c7022",
+            "pipeline_id": "cellranger_workflow",
+            "match_note": "匹配10x单细胞RNA-seq Cell Ranger分析需求",
+            "tool": {
+              "tool_id": "cellranger_workflow",
+              "catalog_status": "missing_from_neo4j",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "available",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRR572934_f1.fq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR572934_f1.fq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "scRNA-Seq",
+                  "data_level": "1",
+                  "study_accession": "HRA001748",
+                  "sample_accession": "HRS321572",
+                  "run_accession": "HRR572934",
+                  "individual_accession": "HRI179841",
+                  "individual_name": "A001",
+                  "sample_name": "A001_ICC",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001748/HRR572934_f1.fq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 scRNA-Seq; 文件语义匹配: HRR572934"
+                },
+                {
+                  "name": "HRR572934_r2.fq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR572934_r2.fq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "scRNA-Seq",
+                  "data_level": "1",
+                  "study_accession": "HRA001748",
+                  "sample_accession": "HRS321572",
+                  "run_accession": "HRR572934",
+                  "individual_accession": "HRI179841",
+                  "individual_name": "A001",
+                  "sample_name": "A001_ICC",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001748/HRR572934_r2.fq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 scRNA-Seq; 文件语义匹配: HRR572934"
+                }
+              ],
+              "matched_count": 2,
+              "expected_count": 2,
+              "missing_asset_names": [],
+              "study_accessions": [
+                "HRA001748"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "10x 单细胞 RNA-seq 双端 FASTQ 做 Cell Ranger，输出 filtered feature-barcode matrix。",
+          "analysis_goal": "CellRanger 单细胞分析",
+          "disease": null,
+          "omics_type": "scRNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "filtered feature"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7442,
+          "completion_tokens": 651,
+          "total_tokens": 8093,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本10x单细胞RNA-seq",
+          "data_path": "从双端FASTQ到filtered feature-barcode matrix",
+          "coverage": "Cell Ranger流程覆盖目标产物",
+          "checks": "无可用原子工具，候选链为空"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "Cell Ranger流程尚未原子化，暂无可执行的atomic工具链",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    },
+    {
+      "id": "paired_wes_annotated_vcf",
+      "query": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+      "elapsed_s": 64.538,
+      "assessment": {
+        "passed": false,
+        "failures": [
+          "model produced a candidate that the deterministic validator rejected"
+        ],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "wes_somatic_pair"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": [
+          {
+            "rank": 1,
+            "stage": "contract_validation",
+            "errors": [
+              "step_bcftools missing required Knowledge Card input filtered_vcf_index",
+              "step_bcftools.filtered_vcf rejects Knowledge Card source gatk_wes_somatic.unfiltered_vcf"
+            ],
+            "paired_wes_matcher": true
+          }
+        ]
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-2179f735fcfb610a",
+            "pipeline_id": "wes_somatic_pair",
+            "match_note": "专门针对配对 WES 从 FASTQ 到 somatic VCF 的业务流程，但尚未原子化",
+            "tool": {
+              "tool_id": "wes_somatic_pair",
+              "catalog_status": "missing_from_neo4j",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "available",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRR232644_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232644_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232645_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                },
+                {
+                  "name": "HRR232645_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                }
+              ],
+              "matched_count": 4,
+              "expected_count": 4,
+              "missing_asset_names": [],
+              "study_accessions": [
+                "HRA000873"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7446,
+          "completion_tokens": 4490,
+          "total_tokens": 11936,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "配对肿瘤/正常各一对双端 FASTQ，需分样本质控比对后汇合变异检测",
+          "data_path": "从四 FASTQ 经 fastp 质控、bwa 比对、samtools 处理、GATK 变异检测、bcftools 过滤到 snpeff 功能注释 VCF",
+          "coverage": "候选链覆盖完整路径，每条链通过分样本步骤和联合 GATK 实现 somatic VCF 注释",
+          "checks": "所有工具、槽位及 NEXT 边均匹配目录；配对四槽 GATK 正确绑定；最终产物为 annotated_vcf"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "contract_validation",
+              "errors": [
+                "step_bcftools missing required Knowledge Card input filtered_vcf_index",
+                "step_bcftools.filtered_vcf rejects Knowledge Card source gatk_wes_somatic.unfiltered_vcf"
+              ],
+              "paired_wes_matcher": true
+            }
+          ],
+          "atomic_candidate_unavailable_reason": null,
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    },
+    {
+      "id": "maf_cannot_star",
+      "query": "我只有一个体细胞突变 MAF 文件，请用 STAR 做转录组比对并生成基因 count 矩阵。",
+      "elapsed_s": 10.411,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "unsupported",
+        "candidate_chains": [],
+        "recommendations": [],
+        "unsupported_reason": "输入为体细胞突变 MAF 文件，而 STAR 转录组比对需要 FASTQ 测序数据，上下游数据类型冲突，无法生成基因 count 矩阵。",
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": "输入为体细胞突变 MAF 文件，而 STAR 转录组比对需要 FASTQ 测序数据，上下游数据类型冲突，无法生成基因 count 矩阵。",
+        "intent": {
+          "query_text": "我只有一个体细胞突变 MAF 文件，请用 STAR 做转录组比对并生成基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "maf",
+          "quant_hint": "counts",
+          "requested_outputs": [
+            "maf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7443,
+          "completion_tokens": 511,
+          "total_tokens": 7954,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "用户仅提供一个体细胞突变 MAF 文件，未提供原始测序数据，样本布局不明确",
+          "data_path": "输入是 MAF 文件，期望输出基因 count 矩阵，但缺少 RNA-seq 所需的 FASTQ 输入，数据形态无法衔接",
+          "coverage": "候选链均无法覆盖目标，因为 STAR 比对需要 FASTQ 而非 MAF",
+          "checks": "闭集检查：MAF 不属于任何 atomic tool 的输入；STAR 输入需 clean_fastq_read。最终产物无法生成，因为缺少必要的 FASTQ 输入。"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "输入为体细胞突变 MAF 文件，而 STAR 转录组比对需要 FASTQ 测序数据，上下游数据类型冲突，无法生成基因 count 矩阵。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "输入为体细胞突变 MAF 文件，而 STAR 转录组比对需要 FASTQ 测序数据，上下游数据类型冲突，无法生成基因 count 矩阵。"
+      }
+    },
+    {
+      "id": "qc_without_read_changes",
+      "query": "双端 FASTQ 只需要质量评估和汇总报告，任何 reads 都不能被修剪或修改。",
+      "elapsed_s": 10.18,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "unsupported",
+        "candidate_chains": [],
+        "recommendations": [],
+        "unsupported_reason": "双端 FASTQ 质控要求同时评估两个 mate，但现有 FastQC 工具仅具备单一泛化输入槽，无法在不修剪的前提下正确表达双端独立质控需求。",
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": "双端 FASTQ 质控要求同时评估两个 mate，但现有 FastQC 工具仅具备单一泛化输入槽，无法在不修剪的前提下正确表达双端独立质控需求。",
+        "intent": {
+          "query_text": "双端 FASTQ 只需要质量评估和汇总报告，任何 reads 都不能被修剪或修改。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": null,
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7439,
+          "completion_tokens": 551,
+          "total_tokens": 7990,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 FASTQ",
+          "data_path": "raw FASTQ → FastQC reports → MultiQC 汇总",
+          "coverage": "仅包含质量评估与汇总，不进行任何修剪或数据处理",
+          "checks": "双端 FASTQ 的 FastQC 当前仅有单一输入槽，无法忠实表达 R1/R2；不允许修剪，因此无法构建合规链"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "双端 FASTQ 质控要求同时评估两个 mate，但现有 FastQC 工具仅具备单一泛化输入槽，无法在不修剪的前提下正确表达双端独立质控需求。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "双端 FASTQ 质控要求同时评估两个 mate，但现有 FastQC 工具仅具备单一泛化输入槽，无法在不修剪的前提下正确表达双端独立质控需求。"
+      }
+    },
+    {
+      "id": "fastq_to_ubam",
+      "query": "同一样本的双端 FASTQ 转成带 read group 的 unmapped BAM，不做参考基因组比对。",
+      "elapsed_s": 10.444,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "paired_fastq_to_unmapped_bam"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-368063b0c2be34c7",
+            "pipeline_id": "paired_fastq_to_unmapped_bam",
+            "match_note": "完全匹配用户需求：双端 FASTQ 转带 read group 的 unmapped BAM",
+            "tool": {
+              "tool_id": "paired_fastq_to_unmapped_bam",
+              "catalog_id": "T18",
+              "tool_kind": "pipeline",
+              "name": "fq_to_ubam",
+              "description": "将双端 FASTQ 测序数据转换为未比对的 BAM 文件 (uBAM)，并添加完整的 Read Group 信息。\r\n适用于 GATK 最佳实践流程的起始步骤，输出可用于后续变异检测流程的标准化 BAM 文件。",
+              "inputs": [
+                {
+                  "name": "fastq_1",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": false,
+                  "artifact": "raw_fastq_read",
+                  "formats": [
+                    "fq.gz"
+                  ],
+                  "description": "Paired-end Read 1 FASTQ",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "fastq_2",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": false,
+                  "artifact": "raw_fastq_read",
+                  "formats": [
+                    "fq.gz"
+                  ],
+                  "description": "Paired-end Read 2 FASTQ from the same sample",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "unmapped_bam",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "unmapped_bam",
+                  "formats": [
+                    "bam"
+                  ],
+                  "description": "Unmapped BAM with read-group metadata",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                },
+                {
+                  "name": "file_list",
+                  "type": "File",
+                  "is_file": true,
+                  "optional": true,
+                  "artifact": "file_list",
+                  "formats": [
+                    "list"
+                  ],
+                  "description": "Optional uBAM file list",
+                  "dimension": "",
+                  "dimension_value": "",
+                  "variant": "",
+                  "variant_alias_for": ""
+                }
+              ],
+              "catalog_status": "registered",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "available",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRR024685_f1.fq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR024685_f1.fq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000071",
+                  "sample_accession": "HRS023383",
+                  "run_accession": "HRR024685",
+                  "individual_accession": "HRI023383",
+                  "individual_name": "INDIVIDUAL_HRA000071_23383",
+                  "sample_name": "B_CGGA_1217",
+                  "specimen_types": "Blood",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_f1.fq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES"
+                },
+                {
+                  "name": "HRR024685_r2.fq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR024685_r2.fq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000071",
+                  "sample_accession": "HRS023383",
+                  "run_accession": "HRR024685",
+                  "individual_accession": "HRI023383",
+                  "individual_name": "INDIVIDUAL_HRA000071_23383",
+                  "sample_name": "B_CGGA_1217",
+                  "specimen_types": "Blood",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_r2.fq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES"
+                }
+              ],
+              "matched_count": 2,
+              "expected_count": 2,
+              "missing_asset_names": [],
+              "study_accessions": [
+                "HRA000071"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "同一样本的双端 FASTQ 转成带 read group 的 unmapped BAM，不做参考基因组比对。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": null,
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "bam"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7443,
+          "completion_tokens": 572,
+          "total_tokens": 8015,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单个样本的双端 FASTQ 数据",
+          "data_path": "从原始双端 FASTQ 转换到带 read group 的 unmapped BAM",
+          "coverage": "该业务流程直接覆盖用户完整目标",
+          "checks": "样本布局为单样本双端，不涉及配对，最终产物为 unmapped BAM，当前仅推荐业务 pipeline"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "该业务流程（paired_fastq_to_unmapped_bam）尚未原子化，暂不支持生成可执行原子链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    },
+    {
+      "id": "upstream_then_wgcna",
+      "query": "从双端 bulk RNA-seq FASTQ 开始完成上游处理，并继续做 WGCNA 模块和 hub gene 分析。",
+      "elapsed_s": 31.385,
+      "assessment": {
+        "passed": false,
+        "failures": [
+          "missing expected business recommendation: wgcna"
+        ],
+        "selection_status": "unsupported",
+        "candidate_chains": [],
+        "recommendations": [],
+        "unsupported_reason": "WGCNA 分析尚未原子化，且从双端 FASTQ 到 WGCNA 的注册业务流程不存在，暂不支持完整链。",
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": "WGCNA 分析尚未原子化，且从双端 FASTQ 到 WGCNA 的注册业务流程不存在，暂不支持完整链。",
+        "intent": {
+          "query_text": "从双端 bulk RNA-seq FASTQ 开始完成上游处理，并继续做 WGCNA 模块和 hub gene 分析。",
+          "analysis_goal": "WGCNA",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7446,
+          "completion_tokens": 1643,
+          "total_tokens": 9089,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "双端 bulk RNA-seq 单样本",
+          "data_path": "从双端 FASTQ 出发，经上游处理得到表达矩阵，再进行 WGCNA 分析",
+          "coverage": "上游处理流程可覆盖到表达矩阵，但 WGCNA 分析需原子化工具，当前无法覆盖完整目标",
+          "checks": "闭集检查：WGCNA 为未原子化方法；槽位检查：无可用槽位；NEXT 检查：无 WGCNA 原子链；样本维度：单样本 RNA-seq；最终产物：WGCNA 模块与 hub gene 无法到达"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "WGCNA 分析尚未原子化，且从双端 FASTQ 到 WGCNA 的注册业务流程不存在，暂不支持完整链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "WGCNA 分析尚未原子化，且从双端 FASTQ 到 WGCNA 的注册业务流程不存在，暂不支持完整链。"
+      }
+    },
+    {
+      "id": "ambiguous_fastq_to_maf",
+      "query": "我有一对双端 FASTQ，帮我一直分析到 MAF 突变文件。",
+      "elapsed_s": 16.538,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "unsupported",
+        "candidate_chains": [],
+        "recommendations": [],
+        "unsupported_reason": "缺少肿瘤-正常配对信息且无 VCF 到 MAF 的转换工具，无法完成从 FASTQ 到 MAF 的体细胞突变分析",
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": "缺少肿瘤-正常配对信息且无 VCF 到 MAF 的转换工具，无法完成从 FASTQ 到 MAF 的体细胞突变分析",
+        "intent": {
+          "query_text": "我有一对双端 FASTQ，帮我一直分析到 MAF 突变文件。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "maf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7436,
+          "completion_tokens": 911,
+          "total_tokens": 8347,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本，未声明肿瘤-正常配对，不可推断角色",
+          "data_path": "双端 FASTQ → 修剪/比对 → BAM → 变异检测 → VCF → MAF，但缺少 VCF 到 MAF 的转换工具",
+          "coverage": "无法覆盖，因为没有从 FASTQ 直接生成 MAF 的完整路径",
+          "checks": "缺少肿瘤-正常配对信息，无法使用 GATK 体细胞变异检测；当前目录无 VCF 转 MAF 工具"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "缺少肿瘤-正常配对信息且无 VCF 到 MAF 的转换工具，无法完成从 FASTQ 到 MAF 的体细胞突变分析",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "缺少肿瘤-正常配对信息且无 VCF 到 MAF 的转换工具，无法完成从 FASTQ 到 MAF 的体细胞突变分析"
+      }
+    },
+    {
+      "id": "contradictory_rna_bwa",
+      "query": "这是 bulk RNA-seq 双端 FASTQ，请用 BWA 做 DNA 体细胞变异检测并输出 somatic VCF。",
+      "elapsed_s": 14.354,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "unsupported",
+        "candidate_chains": [],
+        "recommendations": [],
+        "unsupported_reason": "输入为 RNA-seq 双端 FASTQ，但要求使用 BWA 进行 DNA 体细胞变异检测，方法与数据类型冲突，且缺少肿瘤-正常配对样本角色，无法生成有效候选链。",
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 0,
+        "recommendations": [],
+        "unsupported_reason": "输入为 RNA-seq 双端 FASTQ，但要求使用 BWA 进行 DNA 体细胞变异检测，方法与数据类型冲突，且缺少肿瘤-正常配对样本角色，无法生成有效候选链。",
+        "intent": {
+          "query_text": "这是 bulk RNA-seq 双端 FASTQ，请用 BWA 做 DNA 体细胞变异检测并输出 somatic VCF。",
+          "analysis_goal": "体细胞变异检测",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7446,
+          "completion_tokens": 812,
+          "total_tokens": 8258,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 RNA-seq FASTQ，无肿瘤-正常配对指定",
+          "data_path": "RNA-seq FASTQ 无法直接用于 DNA 体细胞变异检测流程",
+          "coverage": "无有效路径，BWA 用于 DNA，STAR 用于 RNA，方法不匹配",
+          "checks": "输入数据类型 (RNA-seq) 与要求工具 (BWA) 冲突；缺少肿瘤-正常配对信息；somatic VCF 需要配对分析"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "输入为 RNA-seq 双端 FASTQ，但要求使用 BWA 进行 DNA 体细胞变异检测，方法与数据类型冲突，且缺少肿瘤-正常配对样本角色，无法生成有效候选链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "输入为 RNA-seq 双端 FASTQ，但要求使用 BWA 进行 DNA 体细胞变异检测，方法与数据类型冲突，且缺少肿瘤-正常配对样本角色，无法生成有效候选链。"
+      }
+    }
+  ]
+}

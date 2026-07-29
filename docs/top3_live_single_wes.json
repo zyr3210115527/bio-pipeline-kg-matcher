@@ -1,0 +1,196 @@
+{
+  "schema_version": "top3-live-probe/v1",
+  "recorded_at": "2026-07-28T04:24:38.156443+00:00",
+  "name": "single_wes",
+  "query": "对单个 WES 样本的双端 FASTQ 做 fastp 质控、BWA 比对、SAMtools BAM 整理，并用 GATK 产出未过滤 VCF；不要求 VCF 过滤和注释。",
+  "run_count": 3,
+  "latency_s": {
+    "min": 54.704,
+    "max": 62.226,
+    "mean": 58.441,
+    "p50": 58.392,
+    "p95": 61.843
+  },
+  "runs": [
+    {
+      "run": 1,
+      "elapsed_s": 58.392,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "LLM 未返回可评估的原子工具候选链。",
+        "intent": {
+          "query_text": "对单个 WES 样本的双端 FASTQ 做 fastp 质控、BWA 比对、SAMtools BAM 整理，并用 GATK 产出未过滤 VCF；不要求 VCF 过滤和注释。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf",
+            "bam"
+          ],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": false,
+          "status": "failed_or_unavailable",
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": null,
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "LLM 未返回可评估的原子工具候选链。"
+      }
+    },
+    {
+      "run": 2,
+      "elapsed_s": 54.704,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "候选链未同时通过目录校验和完整用户样本数据匹配。",
+        "intent": {
+          "query_text": "对单个 WES 样本的双端 FASTQ 做 fastp 质控、BWA 比对、SAMtools BAM 整理，并用 GATK 产出未过滤 VCF；不要求 VCF 过滤和注释。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf",
+            "bam"
+          ],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2406,
+          "completion_tokens": 3620,
+          "total_tokens": 6026,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 WES",
+          "data_path": "双端 FASTQ → fastp 质控 → BWA 比对 → SAMtools 排序去重 → GATK 变异检测得到未过滤 VCF",
+          "coverage": "完整覆盖用户指定的所有处理步骤",
+          "checks": "所有输入输出闭集匹配，NEXT 边存在，最终产物为 unfiltered_vcf"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "validation",
+              "errors": [
+                "样本维度不匹配: samtools_step 不能绑定 gatk_step.tumor_bai; 期望 sample_role=tumor"
+              ]
+            }
+          ],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "候选链未同时通过目录校验和完整用户样本数据匹配。"
+      }
+    },
+    {
+      "run": 3,
+      "elapsed_s": 62.226,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "候选链未同时通过目录校验和完整用户样本数据匹配。",
+        "intent": {
+          "query_text": "对单个 WES 样本的双端 FASTQ 做 fastp 质控、BWA 比对、SAMtools BAM 整理，并用 GATK 产出未过滤 VCF；不要求 VCF 过滤和注释。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf",
+            "bam"
+          ],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2406,
+          "completion_tokens": 4368,
+          "total_tokens": 6774,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单个WES样本，双端FASTQ",
+          "data_path": "原始双端FASTQ经过fastp质控、BWA比对、SAMtools排序去重索引，再经GATK变异检出得到未过滤VCF",
+          "coverage": "完全覆盖从原始数据到未过滤VCF所需的所有步骤",
+          "checks": "工具、输入输出及路径均符合目录定义，无缺失或冲突"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "validation",
+              "errors": [
+                "样本维度不匹配: samtools 不能绑定 gatk.tumor_bam; 期望 sample_role=tumor",
+                "样本维度不匹配: samtools 不能绑定 gatk.tumor_bai; 期望 sample_role=tumor",
+                "gatk 输入变体无唯一解: bound=[], complete_variants=[], expected={'single': ['sorted_dedup_bam'], 'paired': ['tumor_bam', 'tumor_bai', 'normal_bam', 'normal_bai']}"
+              ]
+            }
+          ],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "候选链未同时通过目录校验和完整用户样本数据匹配。"
+      }
+    }
+  ]
+}

@@ -1,0 +1,694 @@
+{
+  "schema_version": "top3-live-probe/v1",
+  "recorded_at": "2026-07-28T04:38:40.995543+00:00",
+  "name": "rnaseq_after_prompt",
+  "query": "对双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并同时生成表达丰度和基因 count 矩阵。",
+  "run_count": 3,
+  "latency_s": {
+    "min": 68.398,
+    "max": 95.621,
+    "mean": 78.191,
+    "p50": 70.554,
+    "p95": 93.114
+  },
+  "runs": [
+    {
+      "run": 1,
+      "elapsed_s": 95.621,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "候选链未同时通过目录校验和完整用户样本数据匹配。",
+        "intent": {
+          "query_text": "对双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并同时生成表达丰度和基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2486,
+          "completion_tokens": 5936,
+          "total_tokens": 8422,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端RNA-seq",
+          "data_path": "原始双端FASTQ经fastp质控修剪后，STAR同时产生基因组比对BAM和转录组BAM，前者经samtools排序去重后由featureCounts生成基因计数矩阵，后者直接由RSEM生成表达丰度矩阵，最后汇总质控报告",
+          "coverage": "覆盖双端质控修剪、比对、基因计数和表达丰度定量全流程，并生成汇总QC报告",
+          "checks": "所有步骤均为目录内原子工具，数据连接匹配NEXT边，无闭集问题，最终产物包含计数矩阵和丰度矩阵，依赖关系正确无冲突"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "validation",
+              "errors": [
+                "NEXT data 边不匹配: fastqc.quality_control_report -> multiqc.quality_control_report (fastqc -> multiqc)"
+              ]
+            }
+          ],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "候选链未同时通过目录校验和完整用户样本数据匹配。"
+      }
+    },
+    {
+      "run": 2,
+      "elapsed_s": 70.554,
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "candidate_tool_ids": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting",
+          "rsem_quantification",
+          "multiqc"
+        ]
+      ],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "使用 fastp 修剪双端并直接传递成对 bundle 给 STAR，全程仅用已验证的 atomic 连接，简洁可靠。",
+            "workflow_mode": "custom",
+            "match_id": "match-ed37777dcd59649c",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000074",
+            "assets": [
+              {
+                "asset_id": "HRA000074-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_f1.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000074-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_r2.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_trim",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000074-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000074-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_trim"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "star_align",
+                "tool_id": "star_rrna_and_genome_alignment",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r2"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim"
+                ]
+              },
+              {
+                "step_id": "samtools_process",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "genome_bam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_process"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "featurecounts_quant",
+                "tool_id": "featurecounts_gene_counting",
+                "inputs": {
+                  "bam": {
+                    "from": {
+                      "step_id": "samtools_process",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "samtools_process"
+                ]
+              },
+              {
+                "step_id": "rsem_quant",
+                "tool_id": "rsem_quantification",
+                "inputs": {
+                  "transcriptome_bam": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "transcriptome_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "multiqc_report",
+                "tool_id": "multiqc",
+                "inputs": {
+                  "qc_files": {
+                    "sources": [
+                      {
+                        "from": {
+                          "step_id": "fastp_trim",
+                          "output": "html_report"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "fastp_trim",
+                          "output": "json_report"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "flagstat"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "stats"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "idxstats"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "markdup_metrics"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "featurecounts_quant",
+                          "output": "summary"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "featurecounts_quant",
+                          "output": "featurecounts_log"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "rsem_quant",
+                          "output": "stat_files"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "rsem_quant",
+                          "output": "rsem_log"
+                        }
+                      }
+                    ],
+                    "flatten": true
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim",
+                  "star_align",
+                  "samtools_process",
+                  "featurecounts_quant",
+                  "rsem_quant"
+                ]
+              }
+            ],
+            "selection_reason": "使用 fastp 修剪双端并直接传递成对 bundle 给 STAR，全程仅用已验证的 atomic 连接，简洁可靠。",
+            "extensions": {
+              "paired_wes_matcher": false,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "star",
+                "samtools",
+                "featurecounts",
+                "rsem",
+                "multiqc"
+              ],
+              "data_combination": {
+                "kind": "custom_role_bundle",
+                "study_accession": "HRA000074",
+                "match_reason": "满足已校验自定义工具链的数据角色"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并同时生成表达丰度和基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2486,
+          "completion_tokens": 4694,
+          "total_tokens": 7180,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 RNA-seq",
+          "data_path": "从原始双端 FASTQ 经 fastp 质控修剪，由 STAR 比对获得 aligned BAM 和转录本 BAM，分别用 RSEM 量化表达丰度和 featureCounts 生成基因计数矩阵",
+          "coverage": "完整覆盖表达丰度与基因计数两大目标产物",
+          "checks": "闭集：仅使用登记 atomic 工具；槽位：fastp 双端输入、STAR 双端 bundle、aligned_bam→samtools→sorted_dedup_bam→featureCounts，transcriptome_bam→RSEM；NEXT：全匹配目录边；样本维度：单样本无配对；最终产物：expression_abundance_matrix 与 expression_count_matrix 均生成"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条通过校验且数据完整的原子工具候选链。"
+      }
+    },
+    {
+      "run": 3,
+      "elapsed_s": 68.398,
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "candidate_tool_ids": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting",
+          "rsem_quantification",
+          "multiqc"
+        ]
+      ],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "使用 fastp 修剪双端 reads，STAR 比对后经 samtools+featureCounts 和 RSEM 同时生成 count 与丰度",
+            "workflow_mode": "custom",
+            "match_id": "match-b401afb75b14926c",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000074",
+            "assets": [
+              {
+                "asset_id": "HRA000074-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_f1.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000074-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000074/HRR025859_r2.fq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS024297",
+                "run_accession": "HRR025859",
+                "individual_accession": "HRI024297",
+                "sample_role": null,
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_trim",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000074-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000074-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_trim"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "star_align",
+                "tool_id": "star_rrna_and_genome_alignment",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_trim",
+                      "output": "trimmed_r2"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim"
+                ]
+              },
+              {
+                "step_id": "samtools_process",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "genome_bam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_process"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "featurecounts_gene",
+                "tool_id": "featurecounts_gene_counting",
+                "inputs": {
+                  "bam": {
+                    "from": {
+                      "step_id": "samtools_process",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "samtools_process"
+                ]
+              },
+              {
+                "step_id": "rsem_quant",
+                "tool_id": "rsem_quantification",
+                "inputs": {
+                  "transcriptome_bam": {
+                    "from": {
+                      "step_id": "star_align",
+                      "output": "transcriptome_bam"
+                    }
+                  },
+                  "paired_end": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "star_align"
+                ]
+              },
+              {
+                "step_id": "multiqc_report",
+                "tool_id": "multiqc",
+                "inputs": {
+                  "qc_files": {
+                    "sources": [
+                      {
+                        "from": {
+                          "step_id": "fastp_trim",
+                          "output": "html_report"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "fastp_trim",
+                          "output": "json_report"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "flagstat"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "stats"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "idxstats"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "samtools_process",
+                          "output": "markdup_metrics"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "featurecounts_gene",
+                          "output": "summary"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "featurecounts_gene",
+                          "output": "featurecounts_log"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "rsem_quant",
+                          "output": "stat_files"
+                        }
+                      },
+                      {
+                        "from": {
+                          "step_id": "rsem_quant",
+                          "output": "rsem_log"
+                        }
+                      }
+                    ],
+                    "flatten": true
+                  }
+                },
+                "depends_on": [
+                  "fastp_trim",
+                  "star_align",
+                  "samtools_process",
+                  "featurecounts_gene",
+                  "rsem_quant"
+                ]
+              }
+            ],
+            "selection_reason": "使用 fastp 修剪双端 reads，STAR 比对后经 samtools+featureCounts 和 RSEM 同时生成 count 与丰度",
+            "extensions": {
+              "paired_wes_matcher": false,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "star",
+                "samtools",
+                "featurecounts",
+                "rsem",
+                "multiqc"
+              ],
+              "data_combination": {
+                "kind": "custom_role_bundle",
+                "study_accession": "HRA000074",
+                "match_reason": "满足已校验自定义工具链的数据角色"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并同时生成表达丰度和基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2486,
+          "completion_tokens": 4945,
+          "total_tokens": 7431,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "双端 RNA-seq 单样本",
+          "data_path": "原始 FASTQ 经 fastp 质控修剪、STAR 比对，并行基因计数和转录本定量",
+          "coverage": "候选链完整覆盖质控、比对、基因 count 和表达丰度生成",
+          "checks": "所有槽位匹配目录注册，NEXT 边合理，最终产物为 expression_count_matrix 和 expression_abundance_matrix"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条通过校验且数据完整的原子工具候选链。"
+      }
+    }
+  ]
+}

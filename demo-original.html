@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BioRouter · 生信 Pipeline 智能路由</title>
+<style>
+  :root{
+    --bg:#f7f8fa;
+    --panel:#ffffff;
+    --panel-2:#fbfcfe;
+    --ink:#1c2434;
+    --ink-soft:#5b6577;
+    --ink-faint:#8a93a6;
+    --line:#e9edf3;
+    --line-soft:#f0f3f8;
+    --brand:#4f46e5;
+    --brand-soft:#eef0ff;
+    --brand-ink:#4338ca;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f4;
+    --amber:#b45309;
+    --amber-soft:#fdf3e3;
+    --rose:#e11d48;
+    --rose-soft:#fdeaef;
+    --green:#059669;
+    --green-soft:#e7f6ef;
+    --shadow:0 1px 2px rgba(18,28,45,.04),0 8px 24px rgba(18,28,45,.06);
+    --shadow-lg:0 12px 40px rgba(18,28,45,.10);
+    --radius:16px;
+    --radius-sm:10px;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    overflow:hidden;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:264px;
+    flex-shrink:0;
+    background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%);
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    padding:20px 16px;
+    gap:18px;
+  }
+  .brand{display:flex;align-items:center;gap:11px;padding:4px 6px}
+  .brand .logo{
+    width:38px;height:38px;border-radius:11px;flex-shrink:0;
+    background:linear-gradient(135deg,#6366f1,#0d9488);
+    display:grid;place-items:center;color:#fff;font-weight:700;font-size:18px;
+    box-shadow:0 4px 14px rgba(79,70,229,.28);
+  }
+  .brand h1{font-size:15.5px;font-weight:650;letter-spacing:-.2px}
+  .brand p{font-size:11.5px;color:var(--ink-faint);margin-top:2px}
+
+  .side-label{font-size:11px;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.6px;padding:0 8px;margin-bottom:2px}
+  .examples{display:flex;flex-direction:column;gap:6px}
+  .ex{
+    text-align:left;border:1px solid transparent;background:transparent;
+    padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;
+    font-size:13px;color:var(--ink-soft);line-height:1.45;transition:.15s;
+    display:flex;gap:9px;align-items:flex-start;font-family:inherit;
+  }
+  .ex:hover{background:var(--brand-soft);color:var(--brand-ink);border-color:#e4e6ff}
+  .ex .dot{width:6px;height:6px;border-radius:50%;background:var(--brand);margin-top:6px;flex-shrink:0;opacity:.7}
+  .ex.warn .dot{background:var(--amber)}
+
+  .side-foot{margin-top:auto;padding:12px 10px;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--ink-faint);line-height:1.6}
+  .side-foot b{color:var(--ink-soft);font-weight:600}
+
+  /* ---------- Main ---------- */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{
+    height:56px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.8);
+    backdrop-filter:blur(8px);display:flex;align-items:center;gap:12px;padding:0 24px;flex-shrink:0;
+  }
+  .topbar .title{font-size:14.5px;font-weight:600}
+  .topbar .pill{
+    font-size:11.5px;padding:4px 10px;border-radius:20px;font-weight:600;
+    background:var(--teal-soft);color:var(--teal);display:flex;align-items:center;gap:5px;
+  }
+  .topbar .pill .live{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .topbar .spacer{flex:1}
+  .topbar .meta{font-size:12px;color:var(--ink-faint)}
+
+  .chat{flex:1;overflow-y:auto;padding:28px 0 20px;scroll-behavior:smooth}
+  .chat-inner{max-width:820px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:26px}
+
+  /* welcome */
+  .welcome{text-align:center;padding:48px 20px 24px;animation:fade .4s ease}
+  .welcome .halo{
+    width:64px;height:64px;border-radius:18px;margin:0 auto 20px;
+    background:linear-gradient(135deg,#6366f1,#0d9488);display:grid;place-items:center;
+    color:#fff;font-size:28px;box-shadow:0 10px 30px rgba(79,70,229,.3);
+  }
+  .welcome h2{font-size:23px;font-weight:680;letter-spacing:-.4px;margin-bottom:10px}
+  .welcome p{color:var(--ink-soft);font-size:14px;line-height:1.6;max-width:480px;margin:0 auto}
+  .welcome .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .welcome .chips span{font-size:12px;background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:20px;color:var(--ink-soft);box-shadow:var(--shadow)}
+
+  /* messages */
+  .msg{display:flex;gap:13px;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .msg .avatar{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:grid;place-items:center;font-size:14px;font-weight:600}
+  .msg.user{flex-direction:row-reverse}
+  .msg.user .avatar{background:var(--ink);color:#fff}
+  .msg.user .bubble{background:var(--brand);color:#fff;border-radius:14px 14px 4px 14px;padding:11px 15px;font-size:14px;line-height:1.55;max-width:75%;box-shadow:0 4px 14px rgba(79,70,229,.22)}
+  .msg.bot .avatar{background:linear-gradient(135deg,#6366f1,#0d9488);color:#fff}
+  .msg.bot .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+
+  /* thinking */
+  .thinking{display:flex;align-items:center;gap:9px;color:var(--ink-faint);font-size:13px;padding:4px 0}
+  .thinking .dots{display:flex;gap:4px}
+  .thinking .dots i{width:7px;height:7px;border-radius:50%;background:var(--brand);opacity:.5;animation:bounce 1.2s infinite}
+  .thinking .dots i:nth-child(2){animation-delay:.15s}
+  .thinking .dots i:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+  /* cards */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .card-h{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line-soft)}
+  .card-h .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+  .card-h h3{font-size:13.5px;font-weight:650;flex:1}
+  .card-h .tag{font-size:11px;color:var(--ink-faint);font-weight:500}
+  .card-b{padding:15px 16px}
+
+  /* intent chips */
+  .kv{display:flex;flex-wrap:wrap;gap:8px}
+  .kv .chip{display:flex;align-items:center;gap:7px;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:12.5px}
+  .kv .chip b{color:var(--ink-faint);font-weight:500}
+  .kv .chip s{text-decoration:none;color:var(--ink);font-weight:600}
+  .src-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--brand-soft);color:var(--brand-ink)}
+  .src-badge.rule{background:#eef1f5;color:var(--ink-soft)}
+
+  /* pipeline ranking */
+  .pipe{padding:11px 0;border-bottom:1px solid var(--line-soft)}
+  .pipe:last-child{border-bottom:none;padding-bottom:0}
+  .pipe:first-child{padding-top:0}
+  .pipe-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .pipe-rank{width:20px;height:20px;border-radius:6px;background:#eef1f5;color:var(--ink-soft);font-size:11px;font-weight:700;display:grid;place-items:center;flex-shrink:0}
+  .pipe.best .pipe-rank{background:var(--brand);color:#fff}
+  .pipe-name{font-size:13.5px;font-weight:600;flex:1;min-width:0}
+  .pipe-id{font-family:var(--mono);font-size:11px;color:var(--ink-faint);background:var(--panel-2);padding:2px 7px;border-radius:6px;border:1px solid var(--line)}
+  .pipe-conf{display:flex;align-items:center;gap:8px}
+  .bar{width:90px;height:6px;border-radius:4px;background:#eef1f5;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#6366f1,#0d9488)}
+  .pipe.best .bar i{background:linear-gradient(90deg,#6366f1,#818cf8)}
+  .conf-num{font-size:12px;font-weight:700;color:var(--brand-ink);width:34px;text-align:right}
+  .pipe-reason{font-size:12px;color:var(--ink-soft);line-height:1.5;padding-left:30px}
+  .pipe-steps{display:flex;flex-wrap:wrap;gap:4px;padding-left:30px;margin-top:7px}
+  .pipe-steps .st{font-size:11px;font-family:var(--mono);background:var(--panel-2);border:1px solid var(--line);color:var(--ink-soft);padding:2px 7px;border-radius:6px}
+  .pipe-steps .arw{color:var(--ink-faint);font-size:11px;align-self:center}
+
+  /* feasibility */
+  .feas{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:var(--radius);border:1px solid}
+  .feas.ok{background:var(--green-soft);border-color:#c7ebd8}
+  .feas.no{background:var(--rose-soft);border-color:#f7ccd6}
+  .feas .fic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:15px;flex-shrink:0;color:#fff}
+  .feas.ok .fic{background:var(--green)}
+  .feas.no .fic{background:var(--rose)}
+  .feas .ft{flex:1}
+  .feas .ft .h{font-size:13px;font-weight:700;margin-bottom:3px}
+  .feas.ok .ft .h{color:var(--green)}
+  .feas.no .ft .h{color:var(--rose)}
+  .feas .ft .m{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+  .roles{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .roles .r{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;display:flex;align-items:center;gap:4px}
+  .roles .r.have{background:#fff;color:var(--green);border:1px solid #c7ebd8}
+  .roles .r.miss{background:#fff;color:var(--rose);border:1px solid #f7ccd6}
+
+  /* selection summary */
+  .summary{background:linear-gradient(135deg,#f6f7ff,#eef0ff);border:1px solid #e4e6ff;border-radius:var(--radius);padding:15px 17px;display:flex;gap:12px;align-items:flex-start}
+  .summary .qic{font-size:18px;flex-shrink:0;margin-top:1px}
+  .summary p{font-size:13.5px;line-height:1.62;color:#3730a3;font-weight:500}
+
+  /* agent input */
+  .agent-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .agent-h .lbl{font-size:12.5px;font-weight:650;color:var(--ink)}
+  .agent-h .sub{font-size:11.5px;color:var(--ink-faint)}
+  .agent-h button{margin-left:auto;font-family:inherit;font-size:11.5px;font-weight:600;color:var(--brand-ink);background:var(--brand-soft);border:1px solid #e4e6ff;padding:5px 11px;border-radius:7px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px}
+  .agent-h button:hover{background:#e4e6ff}
+  .code{background:#0f1729;border-radius:var(--radius-sm);padding:14px 16px;overflow-x:auto;position:relative}
+  .code .fl{display:flex;align-items:center;gap:8px;padding:3px 0;font-family:var(--mono);font-size:12px;line-height:1.6}
+  .code .fl .idx{color:#4b5675;width:16px;flex-shrink:0;text-align:right;user-select:none}
+  .code .fl .pth{color:#a5b4fc;word-break:break-all}
+  .code .fl .role{margin-left:auto;font-size:10px;color:#64748b;background:#1e293b;padding:1px 7px;border-radius:5px;flex-shrink:0}
+  .code .pid{margin-top:9px;padding-top:9px;border-top:1px solid #1e293b;font-family:var(--mono);font-size:12px;color:#5eead4}
+  .code .pid b{color:#475569;font-weight:400;margin-right:6px}
+
+  /* debug */
+  details.debug{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--panel)}
+  details.debug summary{list-style:none;cursor:pointer;padding:11px 15px;font-size:12.5px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:8px;user-select:none}
+  details.debug summary::-webkit-details-marker{display:none}
+  details.debug summary .caret{transition:.2s;color:var(--ink-faint)}
+  details.debug[open] summary .caret{transform:rotate(90deg)}
+  details.debug summary .tk{margin-left:auto;font-size:11px;color:var(--ink-faint);font-weight:500;font-family:var(--mono)}
+  .debug-body{padding:0 15px 14px;border-top:1px solid var(--line-soft)}
+  .dbg-file{padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:12px}
+  .dbg-file:last-child{border-bottom:none}
+  .dbg-file .fn{font-family:var(--mono);font-size:11.5px;color:var(--brand-ink);font-weight:600;margin-bottom:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .dbg-file .fn .badge{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:5px;background:#eef1f5;color:var(--ink-faint)}
+  .dbg-file .fn .badge.t2{background:var(--teal-soft);color:var(--teal)}
+  .dbg-file .fn .badge.t1{background:#eef2ff;color:var(--brand-ink)}
+  .dbg-file .fn .badge.ex{background:var(--amber-soft);color:var(--amber)}
+  .dbg-file .rs{color:var(--ink-soft);line-height:1.5;font-size:11.5px}
+  .dbg-file .rs em{font-style:normal;background:#fff6d6;padding:0 3px;border-radius:3px;color:#8a6d1a}
+
+  /* composer */
+  .composer{border-top:1px solid var(--line);background:rgba(255,255,255,.9);backdrop-filter:blur(8px);padding:16px 24px 20px;flex-shrink:0}
+  .composer-inner{max-width:820px;margin:0 auto}
+  .input-wrap{display:flex;align-items:flex-end;gap:10px;background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:9px 9px 9px 16px;box-shadow:var(--shadow);transition:.18s}
+  .input-wrap:focus-within{border-color:#c7c9ff;box-shadow:0 0 0 4px var(--brand-soft),var(--shadow)}
+  .input-wrap textarea{flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:14px;line-height:1.5;color:var(--ink);background:transparent;max-height:120px;padding:6px 0}
+  .input-wrap textarea::placeholder{color:var(--ink-faint)}
+  .send{width:38px;height:38px;border-radius:11px;border:none;background:var(--brand);color:#fff;cursor:pointer;display:grid;place-items:center;transition:.15s;flex-shrink:0}
+  .send:hover{background:#4338ca;transform:translateY(-1px)}
+  .send:disabled{background:#c7cbd6;cursor:not-allowed;transform:none}
+  .composer .hint{text-align:center;font-size:11px;color:var(--ink-faint);margin-top:10px}
+  .composer .hint b{color:var(--ink-soft);font-weight:600}
+
+  .chat::-webkit-scrollbar{width:9px}
+  .chat::-webkit-scrollbar-thumb{background:#dfe3ea;border-radius:6px;border:2px solid var(--bg)}
+  .chat::-webkit-scrollbar-thumb:hover{background:#cdd3dd}
+
+  @media(max-width:760px){.sidebar{display:none}.chat-inner,.composer-inner{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">B</div>
+      <div>
+        <h1>BioRouter</h1>
+        <p>生信 Pipeline 智能路由</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="side-label">示例问题</div>
+      <div class="examples" id="examples"></div>
+    </div>
+
+    <div class="side-foot">
+      <b>闭集路由 · KG 数据匹配</b><br>
+      14 个 WDL 流程 · DeepSeek-V4 意图理解<br>
+      LLM 为主 · 规则保底 · 全程可回溯
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="title">智能路由对话</div>
+      <div class="pill" id="modePill"><span class="live"></span>连接中…</div>
+      <div class="spacer"></div>
+      <div class="meta">自然语言 → 流程 + 数据</div>
+    </div>
+
+    <div class="chat" id="chat">
+      <div class="chat-inner" id="chatInner">
+        <div class="welcome" id="welcome">
+          <div class="halo">🧬</div>
+          <h2>把生信需求说成一句话</h2>
+          <p>描述你的数据和分析目标，系统会理解意图、从 14 个 WDL 流程里选出最合适的，并匹配好本地知识图谱里的数据文件，直接给出可执行的输入。</p>
+          <div class="chips">
+            <span>🎯 意图理解</span>
+            <span>🧭 流程推荐</span>
+            <span>🗂️ 数据匹配</span>
+            <span>✅ 可行性检查</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="composer-inner">
+        <div class="input-wrap">
+          <textarea id="input" rows="1" placeholder="例如：我有胶质瘤的 maf、clinical、metainfo，想做 TMB 生存分析"></textarea>
+          <button class="send" id="send" title="发送">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-5 8 5 8-16-8z" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <div class="hint">连上后端可 <b>任意提问</b>（DeepSeek 实时路由）· 回车发送，Shift+回车换行</div>
+      </div>
+    </div>
+  </main>
+
+<script>
+const DATA = [{"q": "我有胶质瘤的 maf、clinical、metainfo，想做 TMB 生存分析", "intent": {"analysis_goal": "TMB 生存分析", "disease": "胶质瘤", "omics_type": "WES/MAF", "input_hint": "maf", "requested_outputs": ["生存曲线"], "source": "llm"}, "pipelines": [{"pipeline_id": "tmb_survival_analysis", "name": "肿瘤突变负荷生存分析流程", "confidence": 0.97, "reason": "命中 tmb, TMB, 生存分析, MAF, WES/MAF，适合TMB 与生存分析。 LLM 闭集选择也命中。", "steps": ["PreparePatientTMB", "AnalyzeTMBSurvival"]}, {"pipeline_id": "driver_gene_gender_analysis", "name": "驱动基因突变频率性别分层分析", "confidence": 0.65, "reason": "命中 MAF, WES, WES/MAF, maf，适合驱动基因突变频率性别分层分析。", "steps": ["analyze_driver_gene_gender"]}, {"pipeline_id": "wes_somatic_maf_landscape", "name": "WES 体细胞突变 MAF 景观分析流程", "confidence": 0.65, "reason": "命中 WES, MAF, WES/MAF, maf，适合WES MAF 突变景观分析。", "steps": ["prepare_maf_for_landscape", "plot_top30_mutation_landscape"]}, {"pipeline_id": "survival_analysis", "name": "生存分析流程", "confidence": 0.57, "reason": "命中 生存分析, WES/MAF, maf，适合指定基因突变状态与生存分析。", "steps": ["ExtractMutation", "LogRankTest", "CoxRegression", "SummarizeResults"]}, {"pipeline_id": "her2_pfs_survival", "name": "HER2 表达与无进展生存期分析", "confidence": 0.42, "reason": "命中 生存分析，适合HER2 表达与 PFS 生存分析。", "steps": ["analyze_her2_pfs"]}], "feasibility": {"ok": true, "required_roles": ["maf", "clinical", "metainfo"], "present_roles": ["maf", "clinical", "metainfo"], "missing_roles": [], "required_file_count": 3, "actual_file_count": 3, "message": "所需数据角色齐全，可以执行。"}, "selection_summary": "胶质瘤队列HRA000071的T2处理后数据：体细胞突变MAF、临床XLSX和样本信息XLSX，癌种匹配且格式正确，满足TMB生存分析需求。", "files": ["/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-SomaticSNV-1.0.maf", "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-Clinical-1.0.xlsx", "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-MetaInfo-1.0.xlsx"], "pipeline_id": "tmb_survival_analysis", "file_details": [{"path": "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-SomaticSNV-1.0.maf", "files": "HRA000071-SomaticSNV-1.0.maf", "input_role": "maf", "format": "MAF", "source": "T2", "match_reason": "癌种/队列匹配; 格式匹配 MAF; 优先使用处理后的 T2 数据; 文件语义匹配: SomaticSNV"}, {"path": "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-Clinical-1.0.xlsx", "files": "HRA000071-Clinical-1.0.xlsx", "input_role": "clinical", "format": "XLSX", "source": "T2", "match_reason": "癌种/队列匹配; 格式匹配 XLSX; 优先使用处理后的 T2 数据; 文件语义匹配: Clinical"}, {"path": "/hpcdisk1/cbb_group/data/analysis/HRA000071/HRA000071-MetaInfo-1.0.xlsx", "files": "HRA000071-MetaInfo-1.0.xlsx", "input_role": "metainfo", "format": "XLSX", "source": "T2", "match_reason": "癌种/队列匹配; 格式匹配 XLSX; 优先使用处理后的 T2 数据; 文件语义匹配: MetaInfo"}], "llm": {"total_tokens": 2943}}, {"q": "配对 WES 数据完成体细胞变异检测", "intent": {"analysis_goal": "体细胞变异检测", "disease": null, "omics_type": "WES/MAF", "input_hint": "fq.gz", "requested_outputs": ["vcf", "maf"], "source": "llm"}, "pipelines": [{"pipeline_id": "wes_somatic_pair", "name": "体细胞 WES 配对样本变异检测流程", "confidence": 0.99, "reason": "命中 配对 wes, 体细胞变异, 变异检测, WES, fq.gz，适合配对 WES 体细胞变异检测。 LLM 闭集选择也命中。", "steps": ["PreprocessTumor / PreprocessSample", "PreprocessNormal / PreprocessSample", "Mutect2Pair", "PostprocessAndAnnotate", "MultiQC"]}, {"pipeline_id": "driver_gene_gender_analysis", "name": "驱动基因突变频率性别分层分析", "confidence": 0.6, "reason": "命中 MAF, WES, WES/MAF，适合驱动基因突变频率性别分层分析。", "steps": ["analyze_driver_gene_gender"]}, {"pipeline_id": "wes_somatic_maf_landscape", "name": "WES 体细胞突变 MAF 景观分析流程", "confidence": 0.6, "reason": "命中 WES, MAF, WES/MAF，适合WES MAF 突变景观分析。", "steps": ["prepare_maf_for_landscape", "plot_top30_mutation_landscape"]}, {"pipeline_id": "tmb_survival_analysis", "name": "肿瘤突变负荷生存分析流程", "confidence": 0.52, "reason": "命中 MAF, WES/MAF，适合TMB 与生存分析。", "steps": ["PreparePatientTMB", "AnalyzeTMBSurvival"]}, {"pipeline_id": "survival_analysis", "name": "生存分析流程", "confidence": 0.45, "reason": "命中 WES/MAF，适合指定基因突变状态与生存分析。", "steps": ["ExtractMutation", "LogRankTest", "CoxRegression", "SummarizeResults"]}], "feasibility": {"ok": true, "required_roles": ["fastq"], "present_roles": ["fastq"], "missing_roles": [], "required_file_count": 4, "actual_file_count": 4, "message": "所需数据角色齐全，可以执行。"}, "selection_summary": "选中WES配对样本HRR365660和HRR365661的R1/R2 FASTQ文件，格式与策略匹配，满足体细胞变异检测所需全部数据角色。", "files": ["/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365660_f1.fastq.gz", "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365660_r2.fastq.gz", "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365661_f1.fastq.gz", "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365661_r2.fastq.gz"], "pipeline_id": "wes_somatic_pair", "file_details": [{"path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365660_f1.fastq.gz", "files": "HRR365660_f1.fastq.gz", "input_role": "fastq", "format": "fastq.gz", "source": "T1", "match_reason": "格式匹配 fastq.gz; strategy 匹配 WES,RNA-seq; 文件语义匹配: HRR365660; pipeline 数据集精排 +28"}, {"path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365660_r2.fastq.gz", "files": "HRR365660_r2.fastq.gz", "input_role": "fastq", "format": "fastq.gz", "source": "T1", "match_reason": "格式匹配 fastq.gz; strategy 匹配 WES,RNA-seq; 文件语义匹配: HRR365660; pipeline 数据集精排 +28"}, {"path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365661_f1.fastq.gz", "files": "HRR365661_f1.fastq.gz", "input_role": "fastq", "format": "fastq.gz", "source": "T1", "match_reason": "格式匹配 fastq.gz; strategy 匹配 WES,RNA-seq; 文件语义匹配: HRR365661; pipeline 数据集精排 +28"}, {"path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA001272/HRR365661_r2.fastq.gz", "files": "HRR365661_r2.fastq.gz", "input_role": "fastq", "format": "fastq.gz", "source": "T1", "match_reason": "格式匹配 fastq.gz; strategy 匹配 WES,RNA-seq; 文件语义匹配: HRR365661; pipeline 数据集精排 +28"}], "llm": {"total_tokens": 2913}}, {"q": "差异表达之后做 KEGG 通路富集", "intent": {"analysis_goal": "差异表达与KEGG通路富集", "disease": null, "omics_type": null, "input_hint": null, "requested_outputs": ["富集结果"], "source": "llm"}, "pipelines": [{"pipeline_id": "diff_expr_kegg", "name": "差异表达与 Reactome 通路富集分析流程", "confidence": 0.99, "reason": "命中 kegg, 通路富集, 差异表达，适合差异表达与通路富集。 LLM 闭集选择也命中。", "steps": ["DiffExprKegg"]}, {"pipeline_id": "diff_expr_go", "name": "差异表达与 GO 富集分析流程", "confidence": 0.42, "reason": "命中 差异表达，适合差异表达与 GO 富集。", "steps": ["DiffExprGo"]}], "feasibility": {"ok": true, "required_roles": ["expression"], "present_roles": ["expression"], "missing_roles": [], "required_file_count": 1, "actual_file_count": 1, "message": "所需数据角色齐全，可以执行。"}, "selection_summary": "选用示例数据集HRA000074的FPKM表达矩阵，满足差异表达与KEGG通路富集分析所需的表达数据角色。", "files": ["/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-FPKM-1.0.tsv"], "pipeline_id": "diff_expr_kegg", "file_details": [{"path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-FPKM-1.0.tsv", "files": "HRA000074-Genes-FPKM-1.0.tsv", "input_role": "expression", "format": "tsv", "source": "EXAMPLE", "match_reason": "格式匹配 tsv; 命中 pipeline example_inputs 示例文件; 示例文件属于当前推荐 pipeline; strategy 匹配 RNA-Seq; 文件语义匹配: FPKM"}], "llm": {"total_tokens": 2914}}, {"q": "我只有食管癌的 MAF 文件，想做生存分析", "intent": {"analysis_goal": "TMB 生存分析", "disease": "食管癌", "omics_type": "WES/MAF", "input_hint": "maf", "requested_outputs": ["生存曲线"], "source": "llm"}, "pipelines": [{"pipeline_id": "tmb_survival_analysis", "name": "肿瘤突变负荷生存分析流程", "confidence": 0.97, "reason": "命中 tmb, TMB, 生存分析, MAF, WES/MAF，适合TMB 与生存分析。 LLM 闭集选择也命中。", "steps": ["PreparePatientTMB", "AnalyzeTMBSurvival"]}, {"pipeline_id": "driver_gene_gender_analysis", "name": "驱动基因突变频率性别分层分析", "confidence": 0.65, "reason": "命中 MAF, WES, WES/MAF, maf，适合驱动基因突变频率性别分层分析。", "steps": ["analyze_driver_gene_gender"]}, {"pipeline_id": "wes_somatic_maf_landscape", "name": "WES 体细胞突变 MAF 景观分析流程", "confidence": 0.65, "reason": "命中 WES, MAF, WES/MAF, maf，适合WES MAF 突变景观分析。", "steps": ["prepare_maf_for_landscape", "plot_top30_mutation_landscape"]}, {"pipeline_id": "survival_analysis", "name": "生存分析流程", "confidence": 0.57, "reason": "命中 生存分析, WES/MAF, maf，适合指定基因突变状态与生存分析。", "steps": ["ExtractMutation", "LogRankTest", "CoxRegression", "SummarizeResults"]}, {"pipeline_id": "her2_pfs_survival", "name": "HER2 表达与无进展生存期分析", "confidence": 0.42, "reason": "命中 生存分析，适合HER2 表达与 PFS 生存分析。", "steps": ["analyze_her2_pfs"]}], "feasibility": {"ok": true, "required_roles": ["maf", "clinical", "metainfo"], "present_roles": ["maf", "clinical", "metainfo"], "missing_roles": [], "required_file_count": 3, "actual_file_count": 3, "message": "所需数据角色齐全，可以执行。"}, "selection_summary": "食管癌队列HRA000021的T2处理后数据，包含体细胞突变、临床和样本信息，满足TMB生存分析所需全部角色。", "files": ["/hpcdisk1/cbb_group/data/analysis/HRA000021/SomaticSNV-VCF-files", "/hpcdisk1/cbb_group/data/analysis/HRA000021/HRA000021-Clinical-1.0.xlsx", "/hpcdisk1/cbb_group/data/analysis/HRA000021/HRA000021-MetaInfo-1.0.xlsx.xlsx"], "pipeline_id": "tmb_survival_analysis", "file_details": [{"path": "/hpcdisk1/cbb_group/data/analysis/HRA000021/SomaticSNV-VCF-files", "files": "SomaticSNV-VCF-files", "input_role": "maf", "format": "DIR", "source": "T2", "match_reason": "癌种/队列匹配; 优先使用处理后的 T2 数据; 文件语义匹配: Clinical, SomaticSNV"}, {"path": "/hpcdisk1/cbb_group/data/analysis/HRA000021/HRA000021-Clinical-1.0.xlsx", "files": "HRA000021-Clinical-1.0.xlsx", "input_role": "clinical", "format": "XLSX", "source": "T2", "match_reason": "癌种/队列匹配; 格式匹配 XLSX; 优先使用处理后的 T2 数据; 文件语义匹配: Clinical"}, {"path": "/hpcdisk1/cbb_group/data/analysis/HRA000021/HRA000021-MetaInfo-1.0.xlsx.xlsx", "files": "HRA000021-MetaInfo-1.0.xlsx.xlsx", "input_role": "metainfo", "format": "XLSX", "source": "T2", "match_reason": "癌种/队列匹配; 格式匹配 XLSX; 优先使用处理后的 T2 数据; 文件语义匹配: Clinical, MetaInfo"}], "llm": {"total_tokens": 2969}}, {"q": "用胃癌数据做 HER2 表达与 PFS 生存分析", "intent": {"analysis_goal": "HER2 表达与 PFS 生存分析", "disease": "胃癌", "omics_type": null, "input_hint": null, "requested_outputs": ["生存曲线"], "source": "llm"}, "pipelines": [{"pipeline_id": "her2_pfs_survival", "name": "HER2 表达与无进展生存期分析", "confidence": 0.99, "reason": "命中 her2, pfs, HER2, PFS, 生存分析，适合HER2 表达与 PFS 生存分析。 LLM 闭集选择也命中。", "steps": ["analyze_her2_pfs"]}, {"pipeline_id": "survival_analysis", "name": "生存分析流程", "confidence": 0.42, "reason": "命中 生存分析，适合指定基因突变状态与生存分析。", "steps": ["ExtractMutation", "LogRankTest", "CoxRegression", "SummarizeResults"]}, {"pipeline_id": "tmb_survival_analysis", "name": "肿瘤突变负荷生存分析流程", "confidence": 0.42, "reason": "命中 生存分析，适合TMB 与生存分析。", "steps": ["PreparePatientTMB", "AnalyzeTMBSurvival"]}, {"pipeline_id": "wes_somatic_maf_landscape", "name": "WES 体细胞突变 MAF 景观分析流程", "confidence": 0.42, "reason": "命中 R，适合WES MAF 突变景观分析。", "steps": ["prepare_maf_for_landscape", "plot_top30_mutation_landscape"]}], "feasibility": {"ok": false, "required_roles": ["expression", "clinical", "metainfo"], "present_roles": [], "missing_roles": ["expression", "clinical", "metainfo"], "required_file_count": 3, "actual_file_count": 0, "message": "缺少表达矩阵、临床数据（Clinical）、样本信息（MetaInfo），无法执行「her2_pfs_survival」，请补充对应数据后再运行。"}, "selection_summary": "为「胃癌」HER2 表达与 PFS 生存分析选出 HER2 表达与无进展生存期分析，但缺少表达矩阵、临床数据（Clinical）、样本信息（MetaInfo），无法执行「her2_pfs_survival」，请补充对应数据后再运行。", "files": [], "pipeline_id": "her2_pfs_survival", "file_details": [], "llm": {"total_tokens": 2928}}];
+
+const chat = document.getElementById('chat');
+const chatInner = document.getElementById('chatInner');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+const examplesEl = document.getElementById('examples');
+
+// build example list from data
+DATA.forEach(c=>{
+  const b=document.createElement('button');
+  const warn = c.feasibility && c.feasibility.ok===false;
+  b.className='ex'+(warn?' warn':'');
+  b.innerHTML='<span class="dot"></span><span>'+c.q+'</span>';
+  b.onclick=()=>ask(c.q);
+  examplesEl.appendChild(b);
+});
+
+function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function highlightReason(s){
+  return esc(s).replace(/(癌种\/队列匹配|格式匹配 [A-Za-z.]+|处理后的 T2 数据|示例文件属于当前推荐 pipeline|pipeline 数据集精排 \+\d+|strategy 匹配 [A-Za-z,-]+)/g,'<em>$1</em>');
+}
+function roleLabel(r){return {fastq:'FASTQ',expression:'表达矩阵',clinical:'临床',metainfo:'样本信息',maf:'MAF',bam:'BAM',vcf:'VCF'}[r]||r}
+function srcBadge(s){const m={T2:'t2',T1:'t1',EXAMPLE:'ex'};return '<span class="badge '+(m[s]||'')+'">'+esc(s||'?')+'</span>'}
+
+function scrollDown(){requestAnimationFrame(()=>{chat.scrollTop=chat.scrollHeight})}
+
+function addUser(q){
+  const w=document.getElementById('welcome'); if(w) w.remove();
+  const m=document.createElement('div');m.className='msg user';
+  m.innerHTML='<div class="avatar">我</div><div class="bubble">'+esc(q)+'</div>';
+  chatInner.appendChild(m);scrollDown();
+}
+
+function findCase(q){
+  let c=DATA.find(x=>x.q===q);
+  if(c) return c;
+  const ql=q.toLowerCase();
+  c=DATA.find(x=>{const k=x.q.toLowerCase();return k.includes(ql)||ql.includes(k.slice(0,6))});
+  return c||null;
+}
+
+function ask(q){
+  q=(q||'').trim(); if(!q) return;
+  addUser(q);
+  input.value='';autosize();
+  sendBtn.disabled=true;
+
+  const bot=document.createElement('div');bot.className='msg bot';
+  bot.innerHTML='<div class="avatar">B</div><div class="body"><div class="thinking"><span id="thinkTxt">正在理解意图并匹配流程</span><span class="dots"><i></i><i></i><i></i></span></div></div>';
+  chatInner.appendChild(bot);scrollDown();
+  const body=bot.querySelector('.body');
+  const thinkTxt=body.querySelector('#thinkTxt');
+
+  // 优先请求后端实时路由；失败则回退到内置示例（离线兜底）。
+  const started=Date.now();
+  fetch('/api/ask',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({query:q,top_k:5})
+  })
+  .then(r=>{ if(!r.ok) return r.json().then(e=>Promise.reject(e)); return r.json(); })
+  .then(c=>{
+    // 保证 thinking 动画至少显示片刻，避免闪烁
+    const wait=Math.max(0,500-(Date.now()-started));
+    setTimeout(()=>{
+      if(!c || (!(c.pipelines&&c.pipelines.length) && c.status==='no_pipeline')){
+        body.innerHTML='<div class="card"><div class="card-b" style="color:var(--ink-soft);font-size:13.5px;line-height:1.6">该需求超出了当前 14 个流程的闭集范围，或关键词未命中。换一种说法，或点击左侧示例问题试试。</div></div>';
+        scrollDown();sendBtn.disabled=false;return;
+      }
+      renderAnswer(body,c);sendBtn.disabled=false;
+    },wait);
+  })
+  .catch(err=>{
+    // 后端不可用 → 离线兜底
+    const c=findCase(q);
+    setTimeout(()=>{
+      if(c){
+        renderAnswer(body,c);
+      }else{
+        const msg=(err&&err.error)?esc(err.error):'未连接到后端服务';
+        body.innerHTML='<div class="card"><div class="card-b" style="color:var(--ink-soft);font-size:13.5px;line-height:1.6">'
+          +'当前为<b>离线模式</b>（'+msg+'）：仅内置了侧边栏示例问题的真实路由结果。<br>要让任意问题都能实时路由，请在项目目录运行 <code style="font-family:var(--mono);background:var(--panel-2);padding:1px 6px;border-radius:5px;border:1px solid var(--line)">python3 app.py</code> 后刷新本页。'
+          +'</div></div>';
+      }
+      scrollDown();sendBtn.disabled=false;
+    },500);
+  });
+}
+
+function renderAnswer(body,c){
+  const it=c.intent||{};
+  const feas=c.feasibility||{};
+  const parts=[];
+
+  // 1. intent
+  const src=it.source==='llm'?'<span class="src-badge">🧠 LLM 理解</span>':'<span class="src-badge rule">规则解析</span>';
+  parts.push(`
+  <div class="card">
+    <div class="card-h"><div class="ic" style="background:var(--brand-soft)">🎯</div><h3>意图理解</h3>${src}</div>
+    <div class="card-b"><div class="kv">
+      ${it.analysis_goal?`<div class="chip"><b>分析目标</b><s>${esc(it.analysis_goal)}</s></div>`:''}
+      ${it.disease?`<div class="chip"><b>癌种</b><s>${esc(it.disease)}</s></div>`:''}
+      ${it.omics_type?`<div class="chip"><b>组学</b><s>${esc(it.omics_type)}</s></div>`:''}
+      ${it.input_hint?`<div class="chip"><b>输入格式</b><s>${esc(it.input_hint)}</s></div>`:''}
+      ${(it.requested_outputs&&it.requested_outputs.length)?`<div class="chip"><b>期望产物</b><s>${esc(it.requested_outputs.join(' / '))}</s></div>`:''}
+    </div></div>
+  </div>`);
+
+  // 2. pipelines
+  const pipeRows=(c.pipelines||[]).map((p,i)=>{
+    const conf=Math.round((p.confidence||0)*100);
+    const steps=(p.steps||[]).filter(Boolean);
+    const stepHtml=steps.length?`<div class="pipe-steps">${steps.map((s,j)=>`${j?'<span class="arw">→</span>':''}<span class="st">${esc(s)}</span>`).join('')}</div>`:'';
+    return `<div class="pipe${i===0?' best':''}">
+      <div class="pipe-top">
+        <span class="pipe-rank">${i+1}</span>
+        <span class="pipe-name">${esc(p.name)}</span>
+        <span class="pipe-id">${esc(p.pipeline_id)}</span>
+        <span class="pipe-conf"><span class="bar"><i style="width:${conf}%"></i></span><span class="conf-num">${conf}%</span></span>
+      </div>
+      <div class="pipe-reason">${esc(p.reason)}</div>
+      ${i===0?stepHtml:''}
+    </div>`;
+  }).join('');
+  parts.push(`
+  <div class="card">
+    <div class="card-h"><div class="ic" style="background:var(--teal-soft)">🧭</div><h3>推荐流程</h3><span class="tag">闭集 · Top ${(c.pipelines||[]).length}</span></div>
+    <div class="card-b">${pipeRows}</div>
+  </div>`);
+
+  // 3. feasibility
+  const ok=feas.ok!==false;
+  const req=feas.required_roles||[];
+  const miss=feas.missing_roles||[];
+  const rolesHtml=req.map(r=>{
+    const isMiss=miss.includes(r);
+    return `<span class="r ${isMiss?'miss':'have'}">${isMiss?'✕':'✓'} ${roleLabel(r)}</span>`;
+  }).join('');
+  parts.push(`
+  <div class="feas ${ok?'ok':'no'}">
+    <div class="fic">${ok?'✓':'!'}</div>
+    <div class="ft">
+      <div class="h">${ok?'数据可行性检查通过':'数据不完整，暂不可执行'}</div>
+      <div class="m">${esc(feas.message)}</div>
+      ${rolesHtml?`<div class="roles">${rolesHtml}</div>`:''}
+    </div>
+  </div>`);
+
+  // 4. selection summary
+  if(c.selection_summary){
+    parts.push(`<div class="summary"><span class="qic">💬</span><p>${esc(c.selection_summary)}</p></div>`);
+  }
+
+  // 5. agent input (only if feasible & has files)
+  if(ok && c.files && c.files.length){
+    const roleByPath={};(c.file_details||[]).forEach(f=>{roleByPath[f.path]=f.input_role});
+    const flines=c.files.map((f,i)=>`<div class="fl"><span class="idx">${i+1}</span><span class="pth">${esc(f)}</span>${roleByPath[f]?`<span class="role">${roleLabel(roleByPath[f])}</span>`:''}</div>`).join('');
+    parts.push(`
+    <div class="card">
+      <div class="card-b">
+        <div class="agent-h">
+          <span class="lbl">📦 执行接口输入</span>
+          <span class="sub">绝对路径 + pipeline_id</span>
+          <button onclick="copyAgent(this)" data-files="${esc(c.files.join('\\n'))}" data-pid="${esc(c.pipeline_id)}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg>复制</button>
+        </div>
+        <div class="code">
+          ${flines}
+          <div class="pid"><b>pipeline_id</b>${esc(c.pipeline_id)}</div>
+        </div>
+      </div>
+    </div>`);
+  }
+
+  // 6. debug
+  const fd=c.file_details||[];
+  const tk=(c.llm&&c.llm.total_tokens)?c.llm.total_tokens:null;
+  if(fd.length){
+    const dbgFiles=fd.map(f=>`
+      <div class="dbg-file">
+        <div class="fn">${esc(f.files)} ${srcBadge(f.source)} <span class="badge">${esc(f.format)}</span></div>
+        <div class="rs">${highlightReason(f.match_reason)}</div>
+      </div>`).join('');
+    parts.push(`
+    <details class="debug">
+      <summary><span class="caret">▸</span> 调试信息 · 每个文件的匹配依据（match_reason）${tk?`<span class="tk">🪙 ${tk} tokens</span>`:''}</summary>
+      <div class="debug-body">${dbgFiles}</div>
+    </details>`);
+  }
+
+  // stagger the cards in
+  body.innerHTML='';
+  parts.forEach((html,i)=>{
+    setTimeout(()=>{
+      const d=document.createElement('div');d.innerHTML=html;const node=d.firstElementChild;
+      node.style.animation='fade .35s ease';
+      body.appendChild(node);scrollDown();
+    },i*140);
+  });
+}
+
+function copyAgent(btn){
+  const txt=btn.dataset.files+'\n\n'+btn.dataset.pid;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const old=btn.innerHTML;btn.innerHTML='✓ 已复制';
+    setTimeout(()=>btn.innerHTML=old,1600);
+  });
+}
+
+function autosize(){input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px'}
+input.addEventListener('input',autosize);
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask(input.value)}});
+sendBtn.addEventListener('click',()=>ask(input.value));
+
+// 探测后端：更新顶栏模式徽章
+(function checkMode(){
+  const pill=document.getElementById('modePill');
+  fetch('/api/health').then(r=>r.json()).then(h=>{
+    if(h.mode==='llm'&&h.has_key){
+      pill.innerHTML='<span class="live"></span>DeepSeek 实时路由';
+    }else if(h.mode==='rule'){
+      pill.innerHTML='<span class="live" style="background:var(--amber)"></span>规则模式（离线）';
+      pill.style.background='var(--amber-soft)';pill.style.color='var(--amber)';
+    }else{
+      pill.innerHTML='<span class="live"></span>已连接';
+    }
+  }).catch(()=>{
+    pill.innerHTML='离线演示 · 仅示例';
+    pill.style.background='#eef1f5';pill.style.color='var(--ink-soft)';
+    const lv=pill.querySelector('.live'); // 无后端时去掉呼吸点
+  });
+})();
+</script>
+</body>
+</html>

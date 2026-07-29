@@ -1,0 +1,35 @@
+# --- secrets ---
+.env.local
+.env
+*.local.env
+
+# --- python ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# --- node / frontend build ---
+frontend/node_modules/
+node_modules/
+web-dist/
+
+# --- os ---
+.DS_Store
+
+# --- large binary artifacts / data dumps (too big for GitHub) ---
+*.zip
+*.dump
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.bak
+
+# --- backups & staging (local only) ---
+docs/backups/
+.neo4j_datagraph_staging/
+incoming/

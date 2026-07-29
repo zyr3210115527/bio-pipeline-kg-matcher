@@ -1,0 +1,1326 @@
+{
+  "schema_version": "question-tool-data-evaluation/v1",
+  "case_count": 96,
+  "pipeline_correct": 96,
+  "data_name_correct": 96,
+  "registered_tool_cases": 90,
+  "missing_tool_cases": 6,
+  "fully_available_data_cases": 6,
+  "missing_data_cases": 90,
+  "results": [
+    {
+      "case_id": "q001",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "cellranger_workflow",
+      "tool_catalog_status": "missing_from_neo4j",
+      "data_status": "available",
+      "matched_count": 2,
+      "expected_count": 2,
+      "missing_asset_names": []
+    },
+    {
+      "case_id": "q002",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "cellranger_workflow",
+      "tool_catalog_status": "missing_from_neo4j",
+      "data_status": "available",
+      "matched_count": 2,
+      "expected_count": 2,
+      "missing_asset_names": []
+    },
+    {
+      "case_id": "q003",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "cellranger_workflow",
+      "tool_catalog_status": "missing_from_neo4j",
+      "data_status": "available",
+      "matched_count": 2,
+      "expected_count": 2,
+      "missing_asset_names": []
+    },
+    {
+      "case_id": "q004",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q005",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q006",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q007",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q008",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q009",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q010",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q011",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q012",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q013",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q014",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q015",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_go",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q016",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q017",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q018",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q019",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q020",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q021",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q022",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q023",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q024",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q025",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q026",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q027",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "diff_expr_kegg",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q028",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "driver_gene_gender_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q029",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "driver_gene_gender_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q030",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "driver_gene_gender_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q031",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q032",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q033",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q034",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q035",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q036",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q037",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q038",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q039",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "her2_pfs_survival",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q040",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q041",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q042",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q043",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q044",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q045",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q046",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q047",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q048",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q049",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q050",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q051",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "immune_infiltration_iobr",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q052",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "paired_fastq_to_unmapped_bam",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 2,
+      "missing_asset_names": [
+        "NVM0598_R1.clean.clean.fastq.gz",
+        "NVM0598_R2.clean.clean.fastq.gz"
+      ]
+    },
+    {
+      "case_id": "q053",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "paired_fastq_to_unmapped_bam",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 2,
+      "missing_asset_names": [
+        "NVM0598_R1.clean.clean.fastq.gz",
+        "NVM0598_R2.clean.clean.fastq.gz"
+      ]
+    },
+    {
+      "case_id": "q054",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "paired_fastq_to_unmapped_bam",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 2,
+      "missing_asset_names": [
+        "NVM0598_R1.clean.clean.fastq.gz",
+        "NVM0598_R2.clean.clean.fastq.gz"
+      ]
+    },
+    {
+      "case_id": "q055",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_singletask",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 2,
+      "missing_asset_names": [
+        "ENCSR142YZV_chr19only_10000_reads_R1.fastq.gz",
+        "ENCSR142YZV_chr19only_10000_reads_R2.fastq.gz"
+      ]
+    },
+    {
+      "case_id": "q056",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_singletask",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 2,
+      "missing_asset_names": [
+        "ENCSR142YZV_chr19only_10000_reads_R1.fastq.gz",
+        "ENCSR142YZV_chr19only_10000_reads_R2.fastq.gz"
+      ]
+    },
+    {
+      "case_id": "q057",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_singletask",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 2,
+      "missing_asset_names": [
+        "ENCSR142YZV_chr19only_10000_reads_R1.fastq.gz",
+        "ENCSR142YZV_chr19only_10000_reads_R2.fastq.gz"
+      ]
+    },
+    {
+      "case_id": "q058",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q059",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q060",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q061",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q062",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q063",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007167-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q064",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q065",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q066",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA003107-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q067",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q068",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q069",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000074-Genes-counts-1.0.tsv"
+      ]
+    },
+    {
+      "case_id": "q070",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q071",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q072",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q073",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q074",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q075",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q076",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "tmb_survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q077",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "tmb_survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q078",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "tmb_survival_analysis",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q079",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q080",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q081",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001272-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q082",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000071-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q083",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000071-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q084",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA000071-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q085",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q086",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q087",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA007169-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q088",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001749-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q089",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001749-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q090",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_maf_landscape",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 1,
+      "missing_asset_names": [
+        "HRA001749-SomaticSNV-1.0.maf"
+      ]
+    },
+    {
+      "case_id": "q091",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_pair",
+      "tool_catalog_status": "missing_from_neo4j",
+      "data_status": "available",
+      "matched_count": 4,
+      "expected_count": 4,
+      "missing_asset_names": []
+    },
+    {
+      "case_id": "q092",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_pair",
+      "tool_catalog_status": "missing_from_neo4j",
+      "data_status": "available",
+      "matched_count": 4,
+      "expected_count": 4,
+      "missing_asset_names": []
+    },
+    {
+      "case_id": "q093",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wes_somatic_pair",
+      "tool_catalog_status": "missing_from_neo4j",
+      "data_status": "available",
+      "matched_count": 4,
+      "expected_count": 4,
+      "missing_asset_names": []
+    },
+    {
+      "case_id": "q094",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wgcna",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-counts-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q095",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wgcna",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-counts-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    },
+    {
+      "case_id": "q096",
+      "pipeline_ok": true,
+      "data_names_ok": true,
+      "pipeline_id": "wgcna",
+      "tool_catalog_status": "registered",
+      "data_status": "missing_from_graph",
+      "matched_count": 0,
+      "expected_count": 3,
+      "missing_asset_names": [
+        "HRA000074-Genes-counts-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ]
+    }
+  ]
+}

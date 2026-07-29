@@ -1,0 +1,101 @@
+{
+  "('Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 1939,
+    "studies": {
+      "HRA000873": 1015,
+      "HRA000021": 508,
+      "HRA001272": 206,
+      "HRA003107": 155,
+      "HRA007169": 51,
+      "HRA001748": 4
+    },
+    "sample_strategies": {
+      "WGS": 1523,
+      "WES,RNA-Seq": 206,
+      "WGS,RNA-Seq": 155,
+      "RNA-Seq": 4,
+      "scRNA-Seq": 2
+    },
+    "file_formats": {
+      "fq.gz": 1431,
+      "bam": 508
+    },
+    "both_sides_fastq": 1431
+  },
+  "('Blood', 'Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 10,
+    "studies": {
+      "HRA001748": 10
+    },
+    "sample_strategies": {},
+    "file_formats": {
+      "fq.gz": 10
+    },
+    "both_sides_fastq": 10
+  },
+  "('Blood', 'Organoid', 'Patient Solid Tissue')": {
+    "individual_count": 7,
+    "studies": {
+      "HRA006499": 7
+    },
+    "sample_strategies": {
+      "WES": 7
+    },
+    "file_formats": {
+      "fq.gz": 7
+    },
+    "both_sides_fastq": 7
+  },
+  "('Organoid', 'Patient Solid Tissue')": {
+    "individual_count": 56,
+    "studies": {
+      "HRA006499": 56
+    },
+    "sample_strategies": {
+      "WES": 56
+    },
+    "file_formats": {
+      "fq.gz": 56
+    },
+    "both_sides_fastq": 56
+  },
+  "('Blood', 'Organoid', 'Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 5,
+    "studies": {
+      "HRA006499": 5
+    },
+    "sample_strategies": {
+      "WES": 5
+    },
+    "file_formats": {
+      "fq.gz": 5
+    },
+    "both_sides_fastq": 5
+  },
+  "('Organoid', 'Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 3,
+    "studies": {
+      "HRA006499": 3
+    },
+    "sample_strategies": {
+      "WES": 3
+    },
+    "file_formats": {
+      "fq.gz": 3
+    },
+    "both_sides_fastq": 3
+  },
+  "('Blood', 'Patient Solid Tissue')": {
+    "individual_count": 25,
+    "studies": {
+      "HRA007169": 25
+    },
+    "sample_strategies": {
+      "RNA-Seq": 11
+    },
+    "file_formats": {
+      "fq.gz": 25
+    },
+    "both_sides_fastq": 25
+  }
+}

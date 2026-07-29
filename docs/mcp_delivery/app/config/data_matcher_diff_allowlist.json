@@ -1,0 +1,20 @@
+{
+  "schema_version": "data-matcher-diff-allowlist/v1",
+  "rules": [
+    {
+      "enabled": true,
+      "id": "empty-string-vs-null",
+      "kind": "empty_string_null",
+      "owner": "data-catalog-owner",
+      "reason": "Neo4j omits absent properties while CSV represents an empty cell as an empty string."
+    },
+    {
+      "enabled": true,
+      "id": "legacy-t1-size-suffix",
+      "kind": "regex_sub",
+      "owner": "data-catalog-owner",
+      "pattern": "\\s*\\(\\d+\\s+bytes\\)\\s*$",
+      "reason": "Historical graph display names may include a byte-size suffix; canonical T1 identity does not."
+    }
+  ]
+}

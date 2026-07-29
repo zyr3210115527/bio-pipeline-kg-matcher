@@ -1,0 +1,35 @@
+{
+  "analysis": {
+    "data_in_hand": "用户很可能拥有配对的双端 FASTQ 原始测序数据（R1/R2），目标是进行 RNA-seq 上游分析。用户明确要求替换流程中的 trim_galore 为 fastp。",
+    "goal": "获得标准的 RNA-seq 上游产物（如比对后 BAM、表达矩阵、质控报告），但流程中的质量修剪步骤必须使用 fastp 而非 trim_galore。",
+    "steps_implied": "RNA-seq 上游分析通常包括：质量控制（FastQC）、接头/质量修剪（用户指定 fastp）、去除 rRNA、STAR 比对、BAM 处理、RSEM 定量、featureCounts 计数、MultiQC 汇总。",
+    "menu_scan": "菜单中 rnaseq_singletask 覆盖了 RNA-seq 上游的完整流程，但其锁定步骤 locked_steps 中包含 trim_galore，无法直接满足用户要求。其他流程均不相关。"
+  },
+  "mode": "custom",
+  "reason": "用户明确要求修改现有 RNA-seq 上游流程的内部步骤（将 trim_galore 替换为 fastp），根据判定规则优先级最高，必须走自定义组链模式。",
+  "requirements": [
+    "将 RNA-seq 上游流程中的 trim_galore 步骤替换为 fastp，其他步骤保持不变"
+  ],
+  "pipeline_ids": [],
+  "reference_pipeline_ids": [
+    "rnaseq_singletask"
+  ],
+  "pipeline_assessments": [],
+  "uncovered_requirements": [
+    "菜单中的 rnaseq_singletask 锁定步骤包含 trim_galore，无法直接替换为 fastp，需要自定义编排"
+  ],
+  "__llm_usage": {
+    "prompt_tokens": 3728,
+    "completion_tokens": 624,
+    "total_tokens": 4352,
+    "prompt_tokens_details": {
+      "cached_tokens": 3712
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 249
+    },
+    "prompt_cache_hit_tokens": 3712,
+    "prompt_cache_miss_tokens": 16
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

@@ -1,0 +1,865 @@
+{
+  "schema_version": "question-tool-data-benchmark/v1",
+  "source": "96例问题-数据-工具对应表(1).xlsx!Sheet1:B2:D97",
+  "case_count": 96,
+  "cases": [
+    {
+      "case_id": "q001",
+      "query": "我有 10x 单细胞测序的 FASTQ 文件，想生成细胞-基因表达矩阵，应该用什么流程？",
+      "expected_data": [
+        "HRR572934_f1.fq.gz",
+        "HRR572934_r2.fq.gz"
+      ],
+      "expected_pipeline_id": "cellranger_workflow"
+    },
+    {
+      "case_id": "q002",
+      "query": "单细胞 RNA-seq 原始数据能不能直接做 CellRanger 分析，输出质控报告和 filtered feature-barcode matrix？",
+      "expected_data": [
+        "HRR572934_f1.fq.gz",
+        "HRR572934_r2.fq.gz"
+      ],
+      "expected_pipeline_id": "cellranger_workflow"
+    },
+    {
+      "case_id": "q003",
+      "query": "如何从 10x Genomics 单细胞 FASTQ 数据开始，完成 reads 质控、参考转录组比对、表达定量，并生成后续 Seurat 或 Scanpy 分析可用的表达矩阵？",
+      "expected_data": [
+        "HRR572934_f1.fq.gz",
+        "HRR572934_r2.fq.gz"
+      ],
+      "expected_pipeline_id": "cellranger_workflow"
+    },
+    {
+      "case_id": "q004",
+      "query": "胶质瘤病例组和对照组的表达矩阵，怎么做差异表达和 GO 富集？",
+      "expected_data": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q005",
+      "query": "我想找胶质瘤中上调和下调的差异基因，并看看它们主要涉及哪些生物学功能。",
+      "expected_data": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q006",
+      "query": "基于胶质瘤队列的 bulk RNA-seq 表达数据，如何筛选差异表达基因，并从 GO Biological Process、Cellular Component 和 Molecular Function 层面解释这些基因的功能特征？",
+      "expected_data": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q007",
+      "query": "黑色素瘤转录组数据想做 GO 富集，应该先用什么差异分析流程？",
+      "expected_data": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q008",
+      "query": "我有黑色素瘤病例和对照的表达矩阵，想比较差异基因并看 GO 功能分类。",
+      "expected_data": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q009",
+      "query": "如何基于黑色素瘤队列的 FPKM 表达矩阵，识别病例组相对对照组的差异表达基因，并分别对上调和下调基因进行 GO 富集分析？",
+      "expected_data": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q010",
+      "query": "食管癌差异表达基因想做 GO 分析，用哪个工具比较合适？",
+      "expected_data": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q011",
+      "query": "我想用食管癌 RNA-seq 表达矩阵找差异基因，再解释这些基因的生物学功能。",
+      "expected_data": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q012",
+      "query": "基于食管癌病例组和对照组的转录组数据，如何进行差异表达分析，并判断差异基因是否富集于细胞周期、免疫反应或代谢调控等 GO 功能类别？",
+      "expected_data": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q013",
+      "query": "肝癌 bulk RNA-seq 数据能不能做差异表达和 GO 富集？",
+      "expected_data": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q014",
+      "query": "我想知道肝癌病例组和对照组之间哪些基因表达不同，以及这些基因对应什么功能。",
+      "expected_data": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q015",
+      "query": "如何利用肝癌队列的 FPKM 表达矩阵筛选差异表达基因，并进一步解析这些基因在 GO 生物过程、细胞组分和分子功能中的富集特征？",
+      "expected_data": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "case_id": "q016",
+      "query": "胶质瘤差异表达基因想做通路富集，应该用什么流程？",
+      "expected_data": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q017",
+      "query": "我有胶质瘤表达矩阵，想先做差异分析，再看相关基因落在哪些信号通路里。",
+      "expected_data": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q018",
+      "query": "基于胶质瘤病例组和对照组的转录组数据，如何对差异表达基因进行通路富集分析，以寻找可能参与肿瘤发生、增殖或侵袭的关键分子通路？",
+      "expected_data": [
+        "HRA000074-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q019",
+      "query": "黑色素瘤差异基因可以做 Reactome 通路分析吗？",
+      "expected_data": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q020",
+      "query": "我想从黑色素瘤的表达矩阵里筛差异基因，并进一步看这些基因参与哪些通路。",
+      "expected_data": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q021",
+      "query": "如何基于黑色素瘤队列的 RNA-seq 表达数据，对病例组相对对照组的上调和下调基因分别进行通路富集，探索可能的免疫、代谢或肿瘤进展相关机制？",
+      "expected_data": [
+        "HRA007167-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q022",
+      "query": "食管癌差异表达基因想做通路富集，应该用哪个工具？",
+      "expected_data": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q023",
+      "query": "我有食管癌病例组和对照组的 FPKM 表达矩阵，想先筛差异基因，再看这些基因富集到哪些通路。",
+      "expected_data": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q024",
+      "query": "基于食管癌转录组数据，如何分别对上调和下调差异基因进行通路富集分析，以探索可能参与肿瘤发生发展的分子机制？",
+      "expected_data": [
+        "HRA003107-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q025",
+      "query": "肝癌差异表达基因怎么做通路富集？",
+      "expected_data": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q026",
+      "query": "我想用肝癌表达矩阵找出差异基因，并分析它们涉及的疾病相关通路。",
+      "expected_data": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q027",
+      "query": "如何基于肝癌 bulk RNA-seq 数据，对病例组和对照组之间的差异表达基因进行 Reactome 通路富集分析，筛选与肝癌进展、免疫调控或代谢异常相关的通路？",
+      "expected_data": [
+        "HRA001272-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "case_id": "q028",
+      "query": "肝癌突变数据能不能比较男女患者的驱动基因差异？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "driver_gene_gender_analysis"
+    },
+    {
+      "case_id": "q029",
+      "query": "我想看肝癌男性和女性患者中，哪些癌症驱动基因的突变频率不一样。",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "driver_gene_gender_analysis"
+    },
+    {
+      "case_id": "q030",
+      "query": "结合肝癌患者的 WES 体细胞突变 MAF 文件、临床性别信息和样本映射表，如何进行驱动基因突变频率的性别分层比较，并输出统计结果和可视化图？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "driver_gene_gender_analysis"
+    },
+    {
+      "case_id": "q031",
+      "query": "肝癌 HER2 表达高低和 PFS 有关系吗？",
+      "expected_data": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q032",
+      "query": "我想把肝癌患者按 ERBB2 表达量分成高低组，然后画无进展生存曲线。",
+      "expected_data": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q033",
+      "query": "如何结合肝癌患者的 TPM 表达矩阵、临床随访资料和样本映射信息，评估 HER2/ERBB2 表达水平与无进展生存期之间的关系？",
+      "expected_data": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q034",
+      "query": "胶质瘤能做 HER2 表达和 PFS 的生存分析吗？",
+      "expected_data": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q035",
+      "query": "我想知道胶质瘤患者中 ERBB2 高表达组和低表达组的无进展生存有没有差别。",
+      "expected_data": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q036",
+      "query": "基于胶质瘤队列的 TPM 表达矩阵和临床随访信息，如何评估 HER2/ERBB2 表达分层是否具有预后提示价值，并生成 Kaplan-Meier 曲线和统计结果？",
+      "expected_data": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q037",
+      "query": "黑色素瘤 HER2 表达和 PFS 怎么分析？",
+      "expected_data": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q038",
+      "query": "我有黑色素瘤的 TPM 表达数据和随访信息，想看 ERBB2 表达高低是否影响无进展生存。",
+      "expected_data": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q039",
+      "query": "如何利用黑色素瘤队列的转录组表达矩阵和临床生存资料，比较 HER2/ERBB2 高低表达患者的 PFS 差异，并输出生存分析结果？",
+      "expected_data": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "case_id": "q040",
+      "query": "肝癌 TPM 表达矩阵能做免疫浸润分析吗？",
+      "expected_data": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q041",
+      "query": "我想看肝癌样本里的免疫细胞组成，比如 T 细胞、B 细胞和巨噬细胞比例。",
+      "expected_data": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q042",
+      "query": "基于肝癌 bulk RNA-seq TPM 表达数据和临床样本信息，如何使用 CIBERSORT 方法估计肿瘤微环境中的免疫细胞浸润状态？",
+      "expected_data": [
+        "HRA001272-Genes-TPM-1.0.tsv",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q043",
+      "query": "胶质瘤样本能不能做免疫浸润分析？",
+      "expected_data": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q044",
+      "query": "我有胶质瘤 TPM 表达矩阵，想估计不同免疫细胞在样本中的比例。",
+      "expected_data": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q045",
+      "query": "如何基于胶质瘤转录组表达数据推断肿瘤免疫微环境，并生成免疫细胞比例表、热图和相关性图？",
+      "expected_data": [
+        "HRA000074-Genes-TPM-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q046",
+      "query": "黑色素瘤 RNA-seq 数据能分析免疫细胞浸润吗？",
+      "expected_data": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q047",
+      "query": "我想比较黑色素瘤样本中不同免疫细胞的比例，有没有合适流程？",
+      "expected_data": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q048",
+      "query": "结合黑色素瘤队列的 TPM 表达矩阵和临床样本信息，如何进行 IOBR-CIBERSORT 免疫浸润分析并输出堆叠图、箱线图和热图？",
+      "expected_data": [
+        "HRA007167-Genes-TPM-1.0.tsv",
+        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q049",
+      "query": "食管癌 TPM 矩阵可以推断免疫浸润吗？",
+      "expected_data": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q050",
+      "query": "我想用食管癌 bulk RNA-seq 数据估计样本中的免疫细胞组成。",
+      "expected_data": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q051",
+      "query": "基于食管癌队列的转录组 TPM 表达数据，如何获得可靠样本的免疫细胞比例，并进一步展示免疫微环境特征？",
+      "expected_data": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "case_id": "q052",
+      "query": "双端 FASTQ 文件怎么转成 unmapped BAM？",
+      "expected_data": [
+        "NVM0598_R1.clean.clean.fastq.gz",
+        "NVM0598_R2.clean.clean.fastq.gz"
+      ],
+      "expected_pipeline_id": "paired_fastq_to_unmapped_bam"
+    },
+    {
+      "case_id": "q053",
+      "query": "我想把原始测序 FASTQ 整理成 GATK 后续分析可用的 uBAM 文件。",
+      "expected_data": [
+        "NVM0598_R1.clean.clean.fastq.gz",
+        "NVM0598_R2.clean.clean.fastq.gz"
+      ],
+      "expected_pipeline_id": "paired_fastq_to_unmapped_bam"
+    },
+    {
+      "case_id": "q054",
+      "query": "如何将 paired-end FASTQ 数据转换为带有 read group 信息的未比对 BAM，以便作为后续标准变异分析流程的输入？",
+      "expected_data": [
+        "NVM0598_R1.clean.clean.fastq.gz",
+        "NVM0598_R2.clean.clean.fastq.gz"
+      ],
+      "expected_pipeline_id": "paired_fastq_to_unmapped_bam"
+    },
+    {
+      "case_id": "q055",
+      "query": "RNA-seq FASTQ 原始数据怎么做完整上游分析？",
+      "expected_data": [
+        "ENCSR142YZV_chr19only_10000_reads_R1.fastq.gz",
+        "ENCSR142YZV_chr19only_10000_reads_R2.fastq.gz"
+      ],
+      "expected_pipeline_id": "rnaseq_singletask"
+    },
+    {
+      "case_id": "q056",
+      "query": "我有双端 RNA-seq 测序数据，想完成质控、接头剪切、比对和基因表达计数。",
+      "expected_data": [
+        "ENCSR142YZV_chr19only_10000_reads_R1.fastq.gz",
+        "ENCSR142YZV_chr19only_10000_reads_R2.fastq.gz"
+      ],
+      "expected_pipeline_id": "rnaseq_singletask"
+    },
+    {
+      "case_id": "q057",
+      "query": "如何从 RNA-seq paired-end FASTQ 出发，依次完成 FastQC、Trim Galore、rRNA 去除、STAR 比对、RSEM 定量、FeatureCounts 计数和 MultiQC 汇总？",
+      "expected_data": [
+        "ENCSR142YZV_chr19only_10000_reads_R1.fastq.gz",
+        "ENCSR142YZV_chr19only_10000_reads_R2.fastq.gz"
+      ],
+      "expected_pipeline_id": "rnaseq_singletask"
+    },
+    {
+      "case_id": "q058",
+      "query": "肝癌 counts 矩阵能不能做无监督聚类？",
+      "expected_data": [
+        "HRA001272-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q059",
+      "query": "我想看看肝癌样本能不能根据表达谱自动分成几个亚型。",
+      "expected_data": [
+        "HRA001272-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q060",
+      "query": "基于肝癌 RNA-seq counts 数据，如何进行 TMM 归一化、高变基因筛选、PCA 降维、GMM 聚类，并评估聚类稳定性？",
+      "expected_data": [
+        "HRA001272-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q061",
+      "query": "黑色素瘤表达矩阵可以做样本聚类吗？",
+      "expected_data": [
+        "HRA007167-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q062",
+      "query": "我想用黑色素瘤 RNA-seq counts 数据找潜在分子分型。",
+      "expected_data": [
+        "HRA007167-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q063",
+      "query": "如何基于黑色素瘤队列的 counts 矩阵进行无监督聚类，并通过 bootstrap 稳定性分析判断分型结果是否可靠？",
+      "expected_data": [
+        "HRA007167-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q064",
+      "query": "食管癌 counts 数据怎么做无监督聚类？",
+      "expected_data": [
+        "HRA003107-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q065",
+      "query": "我想根据食管癌 RNA-seq 表达谱自动识别潜在分子亚型。",
+      "expected_data": [
+        "HRA003107-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q066",
+      "query": "基于食管癌队列的 RNA-seq counts 矩阵，如何完成低表达基因过滤、高变基因选择、PCA 降维和 GMM 聚类分析？",
+      "expected_data": [
+        "HRA003107-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q067",
+      "query": "胶质瘤 RNA-seq counts 能用来做样本分型吗？",
+      "expected_data": [
+        "HRA000074-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q068",
+      "query": "我想判断胶质瘤队列里是否存在不同的表达亚型。",
+      "expected_data": [
+        "HRA000074-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q069",
+      "query": "如何利用胶质瘤 counts 矩阵进行无监督样本聚类，并通过 BIC 和 bootstrap 指标评估最佳聚类数和稳定性？",
+      "expected_data": [
+        "HRA000074-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "case_id": "q070",
+      "query": "肝癌 EGFR 突变和 PFS 有关系吗？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "case_id": "q071",
+      "query": "我有肝癌 WES 突变数据和随访资料，想按 EGFR 突变状态画生存曲线。",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "case_id": "q072",
+      "query": "结合肝癌患者的全外显子测序体细胞突变数据、临床随访资料和样本映射表，如何评估 EGFR 突变状态与无进展生存期之间的关系？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "case_id": "q073",
+      "query": "黑色素瘤 EGFR 突变会影响 PFS 吗？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "case_id": "q074",
+      "query": "我想用黑色素瘤体细胞突变数据和临床信息做 EGFR 生存分析。",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "case_id": "q075",
+      "query": "基于黑色素瘤患者的 MAF 文件、临床随访数据和样本映射信息，如何比较 EGFR 突变组与野生型组的无进展生存差异？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "case_id": "q076",
+      "query": "黑色素瘤患者的 TMB 高低和生存预后有没有关系？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "case_id": "q077",
+      "query": "我手里有黑色素瘤的 WES 突变数据和临床随访信息，想计算每个病人的 TMB，并按高低分组画 Kaplan-Meier 曲线。",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "case_id": "q078",
+      "query": "结合黑色素瘤患者的 WES 体细胞突变数据、临床随访资料和样本映射信息，如何计算病人级 TMB，并分析 TMB 高低分组与生存结局之间的关系？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "case_id": "q079",
+      "query": "肝癌 MAF 文件怎么画突变景观图？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q080",
+      "query": "我想展示肝癌队列里 Top30 高频突变基因和不同突变类型分布。",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q081",
+      "query": "基于肝癌全外显子测序得到的体细胞突变 MAF 数据，如何绘制 Oncoplot，并同时输出高频基因频率图和突变类型堆叠图？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q082",
+      "query": "胶质瘤突变数据能画 Oncoplot 吗？",
+      "expected_data": [
+        "HRA000071-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q083",
+      "query": "我想看胶质瘤队列中哪些基因突变频率最高，并展示突变类型。",
+      "expected_data": [
+        "HRA000071-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q084",
+      "query": "如何基于胶质瘤 WES 体细胞突变 MAF 文件，绘制队列突变景观图、Top30 高频突变基因图和样本突变汇总结果？",
+      "expected_data": [
+        "HRA000071-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q085",
+      "query": "黑色素瘤 MAF 数据怎么生成突变景观图？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q086",
+      "query": "我想把黑色素瘤样本的高频突变基因和突变类型分布可视化出来。",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q087",
+      "query": "基于黑色素瘤体细胞突变数据，如何绘制 Top30 高频突变基因 Oncoplot，并输出基因频率表和突变类型分布图？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q088",
+      "query": "肝癌相关突变 MAF 数据可以做突变景观展示吗？",
+      "expected_data": [
+        "HRA001749-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q089",
+      "query": "我想统计肝癌样本中的高频突变基因、样本突变情况和突变类型组成。",
+      "expected_data": [
+        "HRA001749-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q090",
+      "query": "如何利用肝癌体细胞突变 MAF 文件生成 Top30 突变景观图，并同步输出基因频率表、突变类型长表和宽表？",
+      "expected_data": [
+        "HRA001749-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "case_id": "q091",
+      "query": "肝癌 tumor-normal WES 数据怎么做体细胞突变检测？",
+      "expected_data": [
+        "HRR365660_f1.fastq.gz",
+        "HRR365660_r2.fastq.gz",
+        "HRR365661_f1.fastq.gz",
+        "HRR365661_r2.fastq.gz"
+      ],
+      "expected_pipeline_id": "wes_somatic_pair"
+    },
+    {
+      "case_id": "q092",
+      "query": "我有一对肿瘤和正常配对的 WES 双端 FASTQ，想得到过滤后的 somatic VCF。",
+      "expected_data": [
+        "HRR365660_f1.fastq.gz",
+        "HRR365660_r2.fastq.gz",
+        "HRR365661_f1.fastq.gz",
+        "HRR365661_r2.fastq.gz"
+      ],
+      "expected_pipeline_id": "wes_somatic_pair"
+    },
+    {
+      "case_id": "q093",
+      "query": "从肝癌患者配对 WES 原始数据出发，如何完成质控、比对、去重、BQSR、Mutect2 检测、过滤、标准化和 SnpEff 注释，最终获得可用于后续突变分析的 VCF 文件？",
+      "expected_data": [
+        "HRR365660_f1.fastq.gz",
+        "HRR365660_r2.fastq.gz",
+        "HRR365661_f1.fastq.gz",
+        "HRR365661_r2.fastq.gz"
+      ],
+      "expected_pipeline_id": "wes_somatic_pair"
+    },
+    {
+      "case_id": "q094",
+      "query": "胶质瘤 counts 矩阵怎么做 WGCNA？",
+      "expected_data": [
+        "HRA000074-Genes-counts-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "case_id": "q095",
+      "query": "我想找胶质瘤中和肿瘤分级或性别相关的共表达模块和 hub 基因。",
+      "expected_data": [
+        "HRA000074-Genes-counts-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "case_id": "q096",
+      "query": "结合胶质瘤 RNA-seq counts 矩阵、临床性状信息和样本映射表，如何构建加权基因共表达网络，并进一步筛选稳定模块、hub genes 以及相关功能通路？",
+      "expected_data": [
+        "HRA000074-Genes-counts-1.0.tsv",
+        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    }
+  ]
+}

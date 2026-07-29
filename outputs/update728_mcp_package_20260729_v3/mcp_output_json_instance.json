@@ -1,0 +1,69 @@
+{
+  "health_check": {
+    "schema_version": "mcp-health/v1",
+    "backend_schema": "legacy-update728",
+    "verification_level": "count_signature",
+    "legacy_label_counts": {
+      "Project": 17,
+      "Study": 19,
+      "Individual": 5335,
+      "Sample": 8640,
+      "T1": 24518,
+      "T2": 38011
+    },
+    "tool_count": 24,
+    "expected_tool_count": 24,
+    "ready": true,
+    "warnings": ["backend_snapshot_missing"]
+  },
+  "list_workflow_methods": {
+    "source": "neo4j",
+    "connected": true,
+    "atomic_tool_count": 12,
+    "pipeline_tool_count": 12,
+    "pipeline_decomposition_status": "neo4j_locked_recipe"
+  },
+  "query_data_availability": {
+    "schema_version": "data-availability/v1",
+    "status": "available",
+    "request_mode": "pipeline_ids",
+    "data_matcher_mode": "neo4j",
+    "feasibility": {"ok": true}
+  },
+  "route_pipeline_request": {
+    "schema_version": "tool-chain/v2",
+    "selection_status": "ready",
+    "candidate_count": 1,
+    "recommendation_count": 1,
+    "data_matcher_mode": "neo4j"
+  },
+  "public_chain_contract": {
+    "tool_id_namespace": "execution_contract",
+    "example_chain": [
+      {
+        "step_id": "trim",
+        "tool_id": "fastp_paired_end",
+        "inputs": {
+          "read1": {"asset_id": "asset-r1"},
+          "read2": {"asset_id": "asset-r2"}
+        }
+      },
+      {
+        "step_id": "star",
+        "tool_id": "star_rrna_and_genome_alignment",
+        "inputs": {
+          "read1": {"from": {"step_id": "trim", "output": "trimmed_r1"}},
+          "read2": {"from": {"step_id": "trim", "output": "trimmed_r2"}}
+        }
+      }
+    ],
+    "validate_tool_chain": {
+      "valid": true,
+      "mode": "execution_contract"
+    },
+    "query_data_availability": {
+      "request_mode": "custom_steps",
+      "required_asset_roles": ["fastq_r1", "fastq_r2"]
+    }
+  }
+}

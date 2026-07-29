@@ -1,0 +1,24 @@
+tool_id,tool_name,function,语义输入格式 (Semantic Input),输入格式,语义输出格式 (Semantic Output),输出格式,下游工具,适用组学
+T01,fastp,FASTQ 质控，修剪，UMI 提取等,Raw FASTQ,FASTQ,Clean FASTQ,"FASTQ, HTML, JSON","BWA, MultiQC",WES
+T02,FastQC,测序数据质量评估,"Raw FASTQ, Clean FASTQ",FASTQ,Quality Control Report,"HTML, ZIP",MultiQC,"WES, RNA-seq"
+T03,BWA,DNA reads 比对参考基因组,"Clean FASTQ, Genome Annotation","FASTQ, 索引, FASTA",Aligned SAM/BAM,"SAM, BAM",SAMtools,WES
+T04,SAMtools,"BAM 排序，索引，去重",Aligned SAM/BAM,"SAM, BAM",Sorted/Dedup BAM,"BAM, BAI, TXT","GATK, MultiQC","WES, RNA-seq"
+T05,GATK,"BQSR，变异检测，质控","Sorted/Dedup BAM, Genome Annotation","BAM, FASTA, VCF","Sorted/Dedup BAM, Unfiltered VCF","BAM, VCF","BCFtools, MultiQC",WES
+T06,BCFtools,"VCF 过滤，标准化",Unfiltered VCF,VCF,"Filtered (PASS) VCF","VCF, TBI",SnpEff,WES
+T07,SnpEff,变异功能注释,"Filtered (PASS) VCF, Genome Annotation","VCF, 数据库",Annotated VCF,"VCF, HTML/TXT",MultiQC,WES
+T08,Trim Galore,"接头修剪，低质量修剪",Raw FASTQ,FASTQ,Clean FASTQ,"FASTQ, TXT/HTML","STAR, MultiQC",RNA-seq
+T09,STAR,"RNA 比对，去 rRNA，融合检测","Clean FASTQ, Genome Annotation","FASTQ, 索引","Clean FASTQ, Aligned SAM/BAM, Transcriptome BAM","FASTQ, BAM","RSEM, featureCounts, MultiQC",RNA-seq
+T10,RSEM,基因及转录本定量,"Transcriptome BAM, Genome Annotation","BAM, 索引","TPM / FPKM","TXT/TSV",MultiQC,RNA-seq
+T11,featureCounts,基因水平计数,"Sorted/Dedup BAM, Genome Annotation","BAM, GTF",Raw Counts,TXT,MultiQC,RNA-seq
+T12,MultiQC,汇总全流程质控报告,Quality Control Report,各类日志,Quality Control Report,"HTML, TSV",—,"WES, RNA-seq"
+T13,diff_expr_go,差异分析及 GO 富集,"TPM / FPKM, Sample Metadata",tsv,DE Result,tsv,wgcna,RNA-seq
+T14,diff_expr_kegg,差异分析及通路富集,"TPM / FPKM, Sample Metadata",tsv,DE Result,tsv,可视化工具,RNA-seq
+T15,driver_gene_gender,驱动基因性别分层分析,"Public Somatic MAF, Sample Metadata","maf, xlsx",Processed Object,"pdf, png, tsv",—,WES
+T16,her2_pfs_survival,表达与生存关联分析,"TPM / FPKM, Sample Metadata","tsv, xlsx",Processed Object,"pdf, png, tsv",—,RNA-seq
+T17,immune_infiltration,免疫浸润估计,"TPM / FPKM, Sample Metadata","tsv, xlsx",Processed Object,"pdf, png, tsv","survival, diff_expr",RNA-seq
+T18,fq_to_ubam,FASTQ 转 uBAM,Raw FASTQ,fq.gz,"uBAM (Unmapped)",bam,"BWA, GATK",WES
+T19,rnaseq_cluster,无监督聚类分析,Raw Counts,tsv,Processed Object,"pdf, png, tsv",diff_expr,RNA-seq
+T20,survival_analysis,突变与生存关联,"Public Somatic MAF, Sample Metadata","maf, xlsx",Processed Object,"pdf, png, txt",—,WES
+T21,tmb_survival,TMB 与生存分析,"Public Somatic MAF, Sample Metadata","maf, xlsx",Processed Object,"pdf, png, tsv",—,WES
+T22,wes_maf_landscape,体细胞突变景观分析,Public Somatic MAF,maf,Public Somatic MAF,"maf, pdf, tsv","driver_gene, survival",WES
+T23,wgcna,加权共表达网络构建,"TPM / FPKM, Sample Metadata","tsv, xlsx",Processed Object,"pdf, png, tsv",diff_expr,RNA-seq

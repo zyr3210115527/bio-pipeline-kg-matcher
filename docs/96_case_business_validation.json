@@ -1,0 +1,27 @@
+{
+  "schema_version": "96-case-business-validation/v1",
+  "source_workbook": "/Users/zhouyiran/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_g28u5bj9tazm32_13f8/temp/drag/96例问题-数据-工具对应表(1).xlsx",
+  "source_workbook_sha256": "045fd0f2162a948aeadf8e08db84d58b12ed8de479beabb4134820fe3e9239da",
+  "source_sheet_range": "Sheet1!B2:D97",
+  "sheet_summary": {
+    "Sheet1": {"rows": 96, "columns": 3, "complete_rows": 96},
+    "Sheet2": {"rows": 0, "columns": 0}
+  },
+  "benchmark_config": "config/question_tool_data_benchmark.json",
+  "benchmark_comparison": {
+    "xlsx_case_count": 96,
+    "config_case_count": 96,
+    "identical_cases": 96,
+    "query_differences": 0,
+    "data_differences": 0,
+    "pipeline_differences": 0,
+    "status": "identical"
+  },
+  "live_backend_evaluation": "docs/96_case_business_validation_live.json",
+  "business_interpretation": {
+    "pipeline_mapping_is_valid": true,
+    "data_names_are_preserved": true,
+    "missing_from_graph_is_not_treated_as_available": true,
+    "catalog_gap_is_explicit": true
+  }
+}

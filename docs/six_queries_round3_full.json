@@ -1,0 +1,484 @@
+{
+  "paired_wes": {
+    "query": "我有肿瘤和正常配对的 WES FASTQ，想做体细胞变异检测并注释",
+    "workflow_mode": "custom",
+    "selection_status": "no_match",
+    "orchestration_status": "no_match",
+    "orchestration_message": "尚未形成通过闭集与结构校验的流程。",
+    "pipeline_ids": [
+      "paired_fastq_to_unmapped_bam"
+    ],
+    "execution_status": "blocked_by_incomplete_method_decomposition",
+    "decomposition_gaps": [],
+    "validation_ok": false,
+    "validation_errors": [
+      "所需内部方法尚未完成原子化拆解，当前方法目录无法忠实表达该修改",
+      "自定义模式没有有效方法步骤"
+    ],
+    "feasibility_status": "ready",
+    "feasibility_message": "流程所需的用户样本数据已匹配。",
+    "missing_assets": [],
+    "study_accession": "HRA000071",
+    "assets": [
+      {
+        "asset_id": "HRA000071-fastq_r1-1",
+        "role": "fastq_r1",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_f1.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      },
+      {
+        "asset_id": "HRA000071-fastq_r2-2",
+        "role": "fastq_r2",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_r2.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      }
+    ],
+    "tool_chain": [],
+    "pipeline_assessments": []
+  },
+  "trim_to_fastp": {
+    "query": "RNA-seq 上游流程里把 trim_galore 换成 fastp，其他不变",
+    "workflow_mode": "custom",
+    "selection_status": "no_match",
+    "orchestration_status": "no_match",
+    "orchestration_message": "尚未形成通过闭集与结构校验的流程。",
+    "pipeline_ids": [
+      "rnaseq_singletask"
+    ],
+    "execution_status": "draft_requires_pipeline_materialization",
+    "decomposition_gaps": [],
+    "validation_ok": false,
+    "validation_errors": [
+      "NEXT 不允许: rsem -> multiqc (rsem -> multiqc)",
+      "NEXT 不允许: featurecounts -> multiqc (featurecounts -> multiqc)",
+      "第 7 步（multiqc）未与前序输出衔接：非首步必须至少有一个 from 或 depends_on，不能仅靠 asset 绑定拼成方法链"
+    ],
+    "feasibility_status": "ready",
+    "feasibility_message": "流程所需的用户样本数据已匹配。",
+    "missing_assets": [],
+    "study_accession": "HRA000071",
+    "assets": [
+      {
+        "asset_id": "HRA000071-fastq_r1-1",
+        "role": "fastq_r1",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_f1.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      },
+      {
+        "asset_id": "HRA000071-fastq_r2-2",
+        "role": "fastq_r2",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_r2.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "fastp",
+        "tool_id": "fastp",
+        "inputs": {
+          "raw_fastq_read": {
+            "asset_id": "HRA000071-fastq_r1-1"
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "fastqc",
+        "tool_id": "fastqc",
+        "inputs": {
+          "clean_fastq_read": {
+            "from": {
+              "step_id": "fastp",
+              "output": "clean_fastq_read"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "star",
+        "tool_id": "star",
+        "inputs": {
+          "clean_fastq_read": {
+            "from": {
+              "step_id": "fastp",
+              "output": "clean_fastq_read"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "rsem",
+        "tool_id": "rsem",
+        "inputs": {
+          "transcriptome_bam": {
+            "from": {
+              "step_id": "star",
+              "output": "transcriptome_bam"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "samtools",
+        "tool_id": "samtools",
+        "inputs": {
+          "aligned_bam": {
+            "from": {
+              "step_id": "star",
+              "output": "aligned_bam"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "featurecounts",
+        "tool_id": "featurecounts",
+        "inputs": {
+          "sorted_dedup_bam": {
+            "from": {
+              "step_id": "samtools",
+              "output": "sorted_dedup_bam"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "multiqc",
+        "tool_id": "multiqc",
+        "inputs": {
+          "quality_control_report": {
+            "asset_id": "HRA000071-fastq_r1-1"
+          }
+        },
+        "depends_on": []
+      }
+    ],
+    "pipeline_assessments": []
+  },
+  "rnaseq_upstream": {
+    "query": "我有双端 FASTQ 想做 RNA-seq 上游分析",
+    "workflow_mode": "standard",
+    "selection_status": "ready",
+    "orchestration_status": "ready",
+    "orchestration_message": "标准流程与工具链结构已确定。",
+    "pipeline_ids": [
+      "rnaseq_singletask"
+    ],
+    "execution_status": null,
+    "decomposition_gaps": null,
+    "validation_ok": true,
+    "validation_errors": [],
+    "feasibility_status": "ready",
+    "feasibility_message": "流程所需的用户样本数据已匹配。",
+    "missing_assets": [],
+    "study_accession": "HRA000071",
+    "assets": [
+      {
+        "asset_id": "HRA000071-fastq_r1-1",
+        "role": "fastq_r1",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_f1.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      },
+      {
+        "asset_id": "HRA000071-fastq_r2-2",
+        "role": "fastq_r2",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_r2.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "rnaseq_singletask",
+        "tool_id": "rnaseq_singletask",
+        "inputs": {
+          "fastq_1": {
+            "asset_id": "HRA000071-fastq_r1-1"
+          },
+          "fastq_2": {
+            "asset_id": "HRA000071-fastq_r2-2"
+          }
+        }
+      }
+    ],
+    "pipeline_assessments": [
+      {
+        "pipeline_id": "rnaseq_singletask",
+        "input_match": "partial",
+        "functional_coverage": "full",
+        "output_match": "match",
+        "note": "流程需要 FASTQ 及参考基因组索引、GTF 文件等；用户仅提到提供了双端 FASTQ，未明确是否提供了参考文件。"
+      }
+    ]
+  },
+  "tpm_cluster": {
+    "query": "我有 TPM 矩阵想做无监督聚类",
+    "workflow_mode": "standard",
+    "selection_status": "missing_assets",
+    "orchestration_status": "missing_data",
+    "orchestration_message": "标准流程已确定，但仍缺少必需的用户样本数据。",
+    "pipeline_ids": [
+      "rnaseq_unsupervised_cluster"
+    ],
+    "execution_status": null,
+    "decomposition_gaps": null,
+    "validation_ok": true,
+    "validation_errors": [],
+    "feasibility_status": "missing_assets",
+    "feasibility_message": "流程选择已确定，但输入数据类型不匹配：该流程需要 count 矩阵作为输入，用户提供的是 TPM 矩阵，无法直接使用。",
+    "missing_assets": [
+      {
+        "step_id": "rnaseq_unsupervised_cluster",
+        "input": "data_type_match",
+        "role": "user_input",
+        "reason": "该流程需要 count 矩阵作为输入，用户提供的是 TPM 矩阵，无法直接使用。"
+      }
+    ],
+    "study_accession": "HRA000074",
+    "assets": [
+      {
+        "asset_id": "HRA000074-count_matrix-1",
+        "role": "count_matrix",
+        "path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "path_verified": false,
+        "source": "T2",
+        "individual_accession": null,
+        "sample_role": null
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "rnaseq_unsupervised_cluster",
+        "tool_id": "rnaseq_unsupervised_cluster",
+        "inputs": {
+          "count_matrix": {
+            "asset_id": "HRA000074-count_matrix-1"
+          }
+        }
+      }
+    ],
+    "pipeline_assessments": [
+      {
+        "pipeline_id": "rnaseq_unsupervised_cluster",
+        "input_match": "mismatch",
+        "functional_coverage": "full",
+        "output_match": "match",
+        "note": "该流程需要 count 矩阵作为输入，用户提供的是 TPM 矩阵，无法直接使用。"
+      }
+    ]
+  },
+  "go_kegg": {
+    "query": "想同时做 GO 和 KEGG 富集",
+    "workflow_mode": "standard",
+    "selection_status": "ready",
+    "orchestration_status": "ready",
+    "orchestration_message": "标准流程与工具链结构已确定。",
+    "pipeline_ids": [
+      "diff_expr_go",
+      "diff_expr_kegg"
+    ],
+    "execution_status": null,
+    "decomposition_gaps": null,
+    "validation_ok": true,
+    "validation_errors": [],
+    "feasibility_status": "ready",
+    "feasibility_message": "流程所需的用户样本数据已匹配。",
+    "missing_assets": [],
+    "study_accession": "HRA000074",
+    "assets": [
+      {
+        "asset_id": "HRA000074-expression_matrix-1",
+        "role": "expression_matrix",
+        "path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-FPKM-1.0.tsv",
+        "format": "tsv",
+        "path_verified": false,
+        "source": "T2",
+        "individual_accession": null,
+        "sample_role": null
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "diff_expr_go",
+        "tool_id": "diff_expr_go",
+        "inputs": {
+          "expression_matrix": {
+            "asset_id": "HRA000074-expression_matrix-1"
+          }
+        }
+      },
+      {
+        "step_id": "diff_expr_kegg",
+        "tool_id": "diff_expr_kegg",
+        "inputs": {
+          "expression_matrix": {
+            "asset_id": "HRA000074-expression_matrix-1"
+          }
+        }
+      }
+    ],
+    "pipeline_assessments": [
+      {
+        "pipeline_id": "diff_expr_go",
+        "input_match": "partial",
+        "functional_coverage": "full",
+        "output_match": "match",
+        "note": "用户未提供表达矩阵数据，流程需要表达丰度矩阵（FPKM/TPM）。"
+      },
+      {
+        "pipeline_id": "diff_expr_kegg",
+        "input_match": "partial",
+        "functional_coverage": "full",
+        "output_match": "match",
+        "note": "用户未提供表达矩阵数据，流程需要表达丰度矩阵（FPKM/TPM），进行 Reactome 通路富集。"
+      }
+    ]
+  },
+  "single_wes": {
+    "query": "我有一个样本的 WES FASTQ，想做变异检测和注释",
+    "workflow_mode": "custom",
+    "selection_status": "draft",
+    "orchestration_status": "draft",
+    "orchestration_message": "自定义方法链草案已形成，仍需执行端物化。",
+    "pipeline_ids": [
+      "paired_fastq_to_unmapped_bam"
+    ],
+    "execution_status": "draft_requires_pipeline_materialization",
+    "decomposition_gaps": [],
+    "validation_ok": true,
+    "validation_errors": [],
+    "feasibility_status": "ready",
+    "feasibility_message": "流程所需的用户样本数据已匹配。",
+    "missing_assets": [],
+    "study_accession": "HRA000071",
+    "assets": [
+      {
+        "asset_id": "HRA000071-fastq_r1-1",
+        "role": "fastq_r1",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_f1.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      },
+      {
+        "asset_id": "HRA000071-fastq_r2-2",
+        "role": "fastq_r2",
+        "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000071/HRR024685_r2.fq.gz",
+        "format": "Raw FASTQ",
+        "path_verified": false,
+        "source": "T1",
+        "individual_accession": "HRI023383",
+        "sample_role": null
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "fastp",
+        "tool_id": "fastp",
+        "inputs": {
+          "raw_fastq_read": {
+            "asset_id": "HRA000071-fastq_r1-1"
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "bwa",
+        "tool_id": "bwa",
+        "inputs": {
+          "clean_fastq_read": {
+            "from": {
+              "step_id": "fastp",
+              "output": "clean_fastq_read"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "samtools",
+        "tool_id": "samtools",
+        "inputs": {
+          "aligned_bam": {
+            "from": {
+              "step_id": "bwa",
+              "output": "aligned_bam"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "gatk",
+        "tool_id": "gatk",
+        "inputs": {
+          "sorted_dedup_bam": {
+            "from": {
+              "step_id": "samtools",
+              "output": "sorted_dedup_bam"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "bcftools",
+        "tool_id": "bcftools",
+        "inputs": {
+          "unfiltered_vcf": {
+            "from": {
+              "step_id": "gatk",
+              "output": "unfiltered_vcf"
+            }
+          }
+        },
+        "depends_on": []
+      },
+      {
+        "step_id": "snpeff",
+        "tool_id": "snpeff",
+        "inputs": {
+          "filtered_vcf": {
+            "from": {
+              "step_id": "bcftools",
+              "output": "filtered_vcf"
+            }
+          }
+        },
+        "depends_on": []
+      }
+    ],
+    "pipeline_assessments": []
+  }
+}

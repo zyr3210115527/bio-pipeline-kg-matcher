@@ -1,0 +1,136 @@
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:03:20] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:04:53] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:07:57] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] retry reason=transient_request_error
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:10:47] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:13:04] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:14:41] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:15:45] "POST /api/ask HTTP/1.1" 200 -
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:15:55] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:16:18] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:34:16] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:44:46] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:45:09] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:46:19] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 11:51:09] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 13:05:19] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 13:33:30] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+127.0.0.1 - - [24/Jul/2026 13:36:20] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [28/Jul/2026 15:44:57] "POST /api/ask HTTP/1.1" 200 -
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+127.0.0.1 - - [28/Jul/2026 15:46:26] "POST /api/ask HTTP/1.1" 200 -

@@ -1,0 +1,26 @@
+{
+  "analysis": {
+    "sample_layout": "配对样本（肿瘤与正常）",
+    "data_path": "FASTQ → clean FASTQ (fastp) → aligned BAM (bwa) → sorted dedup BAM (samtools) → unfiltered VCF (gatk) → filtered VCF (bcftools) → annotated VCF (snpeff)。理想路径需在 gatk 处汇合两路 BAM 完成体细胞变异检测，但当前菜单无法实现。",
+    "tool_mapping": "fastp: FASTQ→clean FASTQ; bwa: clean FASTQ→aligned BAM; samtools: aligned BAM→sorted dedup BAM; gatk: sorted dedup BAM→unfiltered VCF (单输入槽，无法接收两个样本); bcftools: unfiltered VCF→filtered VCF; snpeff: filtered VCF→annotated VCF",
+    "checks": "1. 是配对样本，单样本工具需成对出现，但因 gatk 无法汇合，链不完整；2. 理想情况单样本步骤 from 后缀一致，但无法实现；3. 汇合步骤应只出现一次，但无法实现；4. 已检查 gatk 输入槽，仅有一个 sorted_dedup_bam，不够同时接收 tumor 和 normal；5. 写入 decomposition_gaps；6. 未在早期步骤合并样本；7. 所有工具名、输入输出名均逐字匹配菜单；8. 单样本链 allowed_next 边存在，但 gatk 无法连接两路输入；9. 若链完整，除首步外均有 from 或 depends_on；10. 未编造任何工具或连接。"
+  },
+  "steps": [],
+  "decomposition_gaps": [
+    "配对样本汇合无法表达:gatk 在当前目录中只注册了 1 个 sorted_dedup_bam 输入槽,无法同时接收 tumor 和 normal。需要为该工具补充分样本输入槽。"
+  ],
+  "__llm_usage": {
+    "prompt_tokens": 3905,
+    "completion_tokens": 1796,
+    "total_tokens": 5701,
+    "prompt_tokens_details": {
+      "cached_tokens": 3584
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 1343
+    },
+    "prompt_cache_hit_tokens": 3584,
+    "prompt_cache_miss_tokens": 321
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

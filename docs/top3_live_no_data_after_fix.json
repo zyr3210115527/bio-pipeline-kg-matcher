@@ -1,0 +1,258 @@
+{
+  "schema_version": "top3-live-probe/v1",
+  "recorded_at": "2026-07-28T04:43:34.529156+00:00",
+  "name": "no_data_after_fix",
+  "query": "对 HRA999999 的双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并生成基因 count 矩阵。",
+  "run_count": 3,
+  "latency_s": {
+    "min": 66.099,
+    "max": 228.818,
+    "mean": 135.669,
+    "p50": 112.089,
+    "p95": 217.145
+  },
+  "runs": [
+    {
+      "run": 1,
+      "elapsed_s": 66.099,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "候选链未同时通过目录校验和完整用户样本数据匹配。",
+        "intent": {
+          "query_text": "对 HRA999999 的双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并生成基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "study_accessions": [
+            "HRA999999"
+          ],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2487,
+          "completion_tokens": 4859,
+          "total_tokens": 7346,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 RNA-seq (HRA999999)",
+          "data_path": "raw_fastq_reads -> clean_fastq_read (fastp) -> aligned_bam (STAR) -> sorted_dedup_bam (samtools) -> expression_count_matrix (featureCounts)",
+          "coverage": "fastp 质控修剪，STAR 比对，samtools 排序去重，featureCounts 基因计数",
+          "checks": "所有工具适用于 RNA-seq，槽位匹配，NEXT 边存在，只使用目录原子工具，最终产物为 expression_count_matrix"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "data_matching",
+              "errors": [
+                "没有完整的数据组合"
+              ],
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "paired_wes_matcher": false
+            },
+            {
+              "rank": 2,
+              "stage": "validation",
+              "errors": [
+                "NEXT 不允许: fastqc -> star (fastqc -> star)",
+                "NEXT data 边不匹配: fastqc.quality_control_report -> multiqc.quality_control_report (fastqc -> multiqc)"
+              ]
+            }
+          ],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "候选链未同时通过目录校验和完整用户样本数据匹配。"
+      }
+    },
+    {
+      "run": 2,
+      "elapsed_s": 112.089,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "候选链未同时通过目录校验和完整用户样本数据匹配。",
+        "intent": {
+          "query_text": "对 HRA999999 的双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并生成基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "study_accessions": [
+            "HRA999999"
+          ],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2487,
+          "completion_tokens": 8008,
+          "total_tokens": 10495,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 RNA-seq",
+          "data_path": "原始双端 FASTQ → fastp 质控修剪 → STAR 比对 → samtools 排序去重 → featureCounts 基因计数，可选 FastQC 与 MultiQC 报告",
+          "coverage": "完整覆盖了修剪、比对、计数，并提供质控报告生成与汇总",
+          "checks": "所有工具与连接均在目录内，双端输入槽位匹配，NEXT 边符合数据流，最终输出基因表达 count 矩阵"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "data_matching",
+              "errors": [
+                "没有完整的数据组合"
+              ],
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "paired_wes_matcher": false
+            },
+            {
+              "rank": 2,
+              "stage": "data_matching",
+              "errors": [
+                "没有完整的数据组合"
+              ],
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "paired_wes_matcher": false
+            },
+            {
+              "rank": 3,
+              "stage": "data_matching",
+              "errors": [
+                "没有完整的数据组合"
+              ],
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "paired_wes_matcher": false
+            }
+          ],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "候选链未同时通过目录校验和完整用户样本数据匹配。"
+      }
+    },
+    {
+      "run": 3,
+      "elapsed_s": 228.818,
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "no_candidate",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "候选链未同时通过目录校验和完整用户样本数据匹配。",
+        "intent": {
+          "query_text": "对 HRA999999 的双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并生成基因 count 矩阵。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "fq.gz",
+          "quant_hint": "counts",
+          "requested_outputs": [],
+          "study_accessions": [
+            "HRA999999"
+          ],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2487,
+          "completion_tokens": 2745,
+          "total_tokens": 5232,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "单样本双端 RNA-seq，样本 HRA999999",
+          "data_path": "从原始双端 FASTQ 经质控修剪、STAR 比对、排序去重到基因计数矩阵",
+          "coverage": "唯一候选完整覆盖质控、比对和基因计数所有目标步骤",
+          "checks": "所有输入输出槽位匹配目录，NEXT 边正确，单样本无配对约束，最终产物为 expression_count_matrix"
+        },
+        "extensions": {
+          "rejected_candidates": [
+            {
+              "rank": 1,
+              "stage": "data_matching",
+              "errors": [
+                "没有完整的数据组合"
+              ],
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "paired_wes_matcher": false
+            }
+          ],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "候选链未同时通过目录校验和完整用户样本数据匹配。"
+      }
+    }
+  ]
+}

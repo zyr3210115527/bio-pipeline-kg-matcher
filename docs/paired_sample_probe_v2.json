@@ -1,0 +1,727 @@
+{
+  "q1_combo_split": [
+    {
+      "combo": "Patient Solid Tissue + Peritumoral",
+      "individual_count": 1939
+    },
+    {
+      "combo": "Organoid + Patient Solid Tissue",
+      "individual_count": 56
+    },
+    {
+      "combo": "Blood + Patient Solid Tissue",
+      "individual_count": 25
+    },
+    {
+      "combo": "Blood + Patient Solid Tissue + Peritumoral",
+      "individual_count": 10
+    },
+    {
+      "combo": "Blood + Organoid + Patient Solid Tissue",
+      "individual_count": 7
+    },
+    {
+      "combo": "Blood + Organoid + Patient Solid Tissue + Peritumoral",
+      "individual_count": 5
+    },
+    {
+      "combo": "Organoid + Patient Solid Tissue + Peritumoral",
+      "individual_count": 3
+    }
+  ],
+  "q2_combo_detail": {
+    "Patient Solid Tissue + Peritumoral": {
+      "individual_count": 1939,
+      "studies": {
+        "HRA000873": 1015,
+        "HRA000021": 508,
+        "HRA001272": 206,
+        "HRA003107": 155,
+        "HRA007169": 51,
+        "HRA001748": 4
+      },
+      "strategies": {
+        "WGS": 3046,
+        "WES,RNA-Seq": 698,
+        "WGS,RNA-Seq": 310,
+        "RNA-Seq": 8,
+        "scRNA-Seq": 4
+      },
+      "both_sides_fastq_individuals": 1431,
+      "both_sides_anyfile_individuals": 1939
+    },
+    "Organoid + Patient Solid Tissue": {
+      "individual_count": 56,
+      "studies": {
+        "HRA006499": 56
+      },
+      "strategies": {
+        "WES": 281
+      },
+      "both_sides_fastq_individuals": 56,
+      "both_sides_anyfile_individuals": 56
+    },
+    "Blood + Patient Solid Tissue": {
+      "individual_count": 25,
+      "studies": {
+        "HRA007169": 25
+      },
+      "strategies": {
+        "RNA-Seq": 22
+      },
+      "both_sides_fastq_individuals": 25,
+      "both_sides_anyfile_individuals": 25
+    },
+    "Blood + Patient Solid Tissue + Peritumoral": {
+      "individual_count": 10,
+      "studies": {
+        "HRA001748": 10
+      },
+      "strategies": {},
+      "both_sides_fastq_individuals": 10,
+      "both_sides_anyfile_individuals": 10
+    },
+    "Blood + Organoid + Patient Solid Tissue": {
+      "individual_count": 7,
+      "studies": {
+        "HRA006499": 7
+      },
+      "strategies": {
+        "WES": 44
+      },
+      "both_sides_fastq_individuals": 7,
+      "both_sides_anyfile_individuals": 7
+    },
+    "Blood + Organoid + Patient Solid Tissue + Peritumoral": {
+      "individual_count": 5,
+      "studies": {
+        "HRA006499": 5
+      },
+      "strategies": {
+        "WES": 43
+      },
+      "both_sides_fastq_individuals": 5,
+      "both_sides_anyfile_individuals": 5
+    },
+    "Organoid + Patient Solid Tissue + Peritumoral": {
+      "individual_count": 3,
+      "studies": {
+        "HRA006499": 3
+      },
+      "strategies": {
+        "WES": 35
+      },
+      "both_sides_fastq_individuals": 3,
+      "both_sides_anyfile_individuals": 3
+    }
+  },
+  "q3_HRA000873_sample_dist": [
+    {
+      "sample_count": 2,
+      "individual_count": 1015
+    }
+  ],
+  "q3_HRA000873_strategy": [
+    {
+      "strategy": "WGS",
+      "n": 2030
+    }
+  ],
+  "q3_HRA000873_specimen": [
+    {
+      "specimen": "Patient Solid Tissue",
+      "n": 1015
+    },
+    {
+      "specimen": "Peritumoral",
+      "n": 1015
+    }
+  ],
+  "q3_HRA000873_per_ind_files": [
+    {
+      "samples": 2,
+      "runs": 2,
+      "files": 4,
+      "individual_count": 1015
+    }
+  ],
+  "q3_HRA000873_10ind_samples": [
+    {
+      "ind": "HRI104775",
+      "samples": [
+        {
+          "acc": "HRS169394",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC1_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169395",
+          "specimen": "Peritumoral",
+          "name": "CRC1_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104776",
+      "samples": [
+        {
+          "acc": "HRS169396",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC2_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169397",
+          "specimen": "Peritumoral",
+          "name": "CRC2_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104777",
+      "samples": [
+        {
+          "acc": "HRS169398",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC3_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169399",
+          "specimen": "Peritumoral",
+          "name": "CRC3_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104778",
+      "samples": [
+        {
+          "acc": "HRS169400",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC4_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169401",
+          "specimen": "Peritumoral",
+          "name": "CRC4_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104779",
+      "samples": [
+        {
+          "acc": "HRS169402",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC5_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169403",
+          "specimen": "Peritumoral",
+          "name": "CRC5_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104780",
+      "samples": [
+        {
+          "acc": "HRS169405",
+          "specimen": "Peritumoral",
+          "name": "CRC6_N3",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169404",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC6_T2",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104781",
+      "samples": [
+        {
+          "acc": "HRS169407",
+          "specimen": "Peritumoral",
+          "name": "CRC7_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169406",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC7_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104782",
+      "samples": [
+        {
+          "acc": "HRS169408",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC8_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169409",
+          "specimen": "Peritumoral",
+          "name": "CRC8_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104783",
+      "samples": [
+        {
+          "acc": "HRS169411",
+          "specimen": "Peritumoral",
+          "name": "CRC9_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169410",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC9_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI104784",
+      "samples": [
+        {
+          "acc": "HRS169413",
+          "specimen": "Peritumoral",
+          "name": "CRC10_N1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS169412",
+          "specimen": "Patient Solid Tissue",
+          "name": "CRC10_T1",
+          "tissue": "Tumor",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    }
+  ],
+  "q3_HRA000021_sample_dist": [
+    {
+      "sample_count": 2,
+      "individual_count": 508
+    }
+  ],
+  "q3_HRA000021_strategy": [
+    {
+      "strategy": "WGS",
+      "n": 1016
+    }
+  ],
+  "q3_HRA000021_specimen": [
+    {
+      "specimen": "Peritumoral",
+      "n": 508
+    },
+    {
+      "specimen": "Patient Solid Tissue",
+      "n": 508
+    }
+  ],
+  "q3_HRA000021_per_ind_files": [
+    {
+      "samples": 2,
+      "runs": 2,
+      "files": 2,
+      "individual_count": 508
+    }
+  ],
+  "q3_HRA000021_10ind_samples": [
+    {
+      "ind": "HRI035286",
+      "samples": [
+        {
+          "acc": "HRS039793",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0004T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039792",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0004N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035287",
+      "samples": [
+        {
+          "acc": "HRS039794",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0006N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039795",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0006T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035288",
+      "samples": [
+        {
+          "acc": "HRS039796",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0007N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039797",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0007T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035289",
+      "samples": [
+        {
+          "acc": "HRS039799",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0008T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039798",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0008N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035290",
+      "samples": [
+        {
+          "acc": "HRS039800",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0009N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039801",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0009T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035291",
+      "samples": [
+        {
+          "acc": "HRS039802",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0010N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039803",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0010T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035292",
+      "samples": [
+        {
+          "acc": "HRS039804",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0011N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039805",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0011T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035293",
+      "samples": [
+        {
+          "acc": "HRS039806",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0013N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039807",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0013T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035294",
+      "samples": [
+        {
+          "acc": "HRS039809",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0014T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039808",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0014N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    },
+    {
+      "ind": "HRI035295",
+      "samples": [
+        {
+          "acc": "HRS039810",
+          "specimen": "Peritumoral",
+          "name": "BDESCC0015N",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        },
+        {
+          "acc": "HRS039811",
+          "specimen": "Patient Solid Tissue",
+          "name": "BDESCC0015T",
+          "tissue": "Normal",
+          "strategy": "WGS",
+          "sample_type": "Primary"
+        }
+      ]
+    }
+  ],
+  "q4_HRA006499_tn_combo": [
+    {
+      "specimen": "Patient Solid Tissue",
+      "strategy": "WES",
+      "tissue": "Tumor",
+      "n": 110
+    },
+    {
+      "specimen": "Patient Solid Tissue",
+      "strategy": "WES",
+      "tissue": "Normal",
+      "n": 33
+    }
+  ],
+  "q4_HRA006499_tn_indcount": [
+    {
+      "tn_paired_individuals": 40
+    }
+  ],
+  "q5_Organoid_by_study": [
+    {
+      "study": "HRA006499",
+      "n": 255
+    }
+  ],
+  "q5_Organoid_cooccur": [
+    {
+      "co_type": "Organoid",
+      "n": 913
+    },
+    {
+      "co_type": "Patient Solid Tissue",
+      "n": 638
+    },
+    {
+      "co_type": "Blood",
+      "n": 38
+    },
+    {
+      "co_type": "Peritumoral",
+      "n": 35
+    }
+  ],
+  "q5_Bone Marrow_by_study": [
+    {
+      "study": "HRA000122",
+      "n": 245
+    }
+  ],
+  "q5_Bone Marrow_cooccur": [],
+  "q5_Blood_by_study": [
+    {
+      "study": "HRA000071",
+      "n": 286
+    },
+    {
+      "study": "HRA000122",
+      "n": 42
+    },
+    {
+      "study": "HRA007169",
+      "n": 25
+    },
+    {
+      "study": "HRA006499",
+      "n": 12
+    },
+    {
+      "study": "HRA001748",
+      "n": 10
+    },
+    {
+      "study": "HRA001749",
+      "n": 10
+    }
+  ],
+  "q5_Blood_cooccur": [
+    {
+      "co_type": "Blood",
+      "n": 333
+    },
+    {
+      "co_type": "Patient Solid Tissue",
+      "n": 70
+    },
+    {
+      "co_type": "Organoid",
+      "n": 38
+    },
+    {
+      "co_type": "Peritumoral",
+      "n": 15
+    }
+  ],
+  "q6_neo4j_counts": [
+    {
+      "samples": 6918,
+      "individuals": 3494,
+      "t1_nodes": 15692
+    }
+  ],
+  "q7_strategy_per_combo_indlevel": {
+    "Patient Solid Tissue + Peritumoral": {
+      "WGS": 1523,
+      "WES,RNA-Seq": 206,
+      "WGS,RNA-Seq": 155,
+      "RNA-Seq": 4,
+      "scRNA-Seq": 2
+    },
+    "Organoid + Patient Solid Tissue": {
+      "WES": 56
+    },
+    "Blood + Patient Solid Tissue": {
+      "RNA-Seq": 11
+    },
+    "Blood + Organoid + Patient Solid Tissue": {
+      "WES": 7
+    },
+    "Blood + Organoid + Patient Solid Tissue + Peritumoral": {
+      "WES": 5
+    },
+    "Organoid + Patient Solid Tissue + Peritumoral": {
+      "WES": 3
+    }
+  }
+}

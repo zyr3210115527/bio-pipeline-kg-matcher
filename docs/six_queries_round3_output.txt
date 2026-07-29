@@ -1,0 +1,221 @@
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['sample_layout', 'data_path', 'tool_mapping', 'checks', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'mode', 'reason', 'requirements', 'pipeline_ids', 'reference_pipeline_ids', 'pipeline_assessments', 'uncovered_requirements', '__llm_usage', '__llm_model']
+[LLM] settings mode='api' model='deepseek-v4-pro' endpoint_host='api.deepseek.com' credentials=configured timeout=60.0s
+[LLM] POST api endpoint_host=api.deepseek.com model=deepseek-v4-pro
+[LLM] api status=200
+[LLM] ok api parse keys=['analysis', 'steps', 'decomposition_gaps', '__llm_usage', '__llm_model']
+
+=== paired_wes ===
+{
+  "query": "我有肿瘤和正常配对的 WES FASTQ，想做体细胞变异检测并注释",
+  "workflow_mode": "custom",
+  "selection_status": "no_match",
+  "orchestration_status": "no_match",
+  "orchestration_message": "尚未形成通过闭集与结构校验的流程。",
+  "pipeline_ids": [
+    "paired_fastq_to_unmapped_bam",
+    "wes_somatic_maf_landscape"
+  ],
+  "execution_status": "blocked_by_incomplete_method_decomposition",
+  "decomposition_gaps": [],
+  "validation_ok": false,
+  "validation_errors": [
+    "所需内部方法尚未完成原子化拆解，当前方法目录无法忠实表达该修改",
+    "自定义模式没有有效方法步骤"
+  ],
+  "feasibility_status": "ready",
+  "feasibility_message": "流程所需的用户样本数据已匹配。",
+  "missing_assets": [],
+  "tool_chain_step_ids": [],
+  "pipeline_assessments": []
+}
+
+=== trim_to_fastp ===
+{
+  "query": "RNA-seq 上游流程里把 trim_galore 换成 fastp，其他不变",
+  "workflow_mode": "custom",
+  "selection_status": "no_match",
+  "orchestration_status": "no_match",
+  "orchestration_message": "尚未形成通过闭集与结构校验的流程。",
+  "pipeline_ids": [
+    "rnaseq_singletask"
+  ],
+  "execution_status": "draft_requires_pipeline_materialization",
+  "decomposition_gaps": [],
+  "validation_ok": false,
+  "validation_errors": [
+    "自定义模式没有有效方法步骤"
+  ],
+  "feasibility_status": "ready",
+  "feasibility_message": "流程所需的用户样本数据已匹配。",
+  "missing_assets": [],
+  "tool_chain_step_ids": [],
+  "pipeline_assessments": []
+}
+
+=== rnaseq_upstream ===
+{
+  "query": "我有双端 FASTQ 想做 RNA-seq 上游分析",
+  "workflow_mode": "standard",
+  "selection_status": "ready",
+  "orchestration_status": "ready",
+  "orchestration_message": "标准流程与工具链结构已确定。",
+  "pipeline_ids": [
+    "rnaseq_singletask"
+  ],
+  "execution_status": null,
+  "decomposition_gaps": null,
+  "validation_ok": true,
+  "validation_errors": [],
+  "feasibility_status": "ready",
+  "feasibility_message": "流程所需的用户样本数据已匹配。",
+  "missing_assets": [],
+  "tool_chain_step_ids": [
+    "rnaseq_singletask"
+  ],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "rnaseq_singletask",
+      "input_match": "partial",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "用户只提供了 FASTQ 数据，流程还需要 GTF 文件、rRNA STAR 索引、RSEM 索引、STAR 基因组索引等参考文件。"
+    }
+  ]
+}
+
+=== tpm_cluster ===
+{
+  "query": "我有 TPM 矩阵想做无监督聚类",
+  "workflow_mode": "standard",
+  "selection_status": "missing_assets",
+  "orchestration_status": "missing_data",
+  "orchestration_message": "标准流程已确定，但仍缺少必需的用户样本数据。",
+  "pipeline_ids": [
+    "rnaseq_unsupervised_cluster"
+  ],
+  "execution_status": null,
+  "decomposition_gaps": null,
+  "validation_ok": true,
+  "validation_errors": [],
+  "feasibility_status": "missing_assets",
+  "feasibility_message": "流程选择已确定，但输入数据类型不匹配：该流程需要 count 矩阵，用户提供的是 TPM 矩阵，输入类型不匹配。",
+  "missing_assets": [
+    {
+      "step_id": "rnaseq_unsupervised_cluster",
+      "input": "data_type_match",
+      "role": "user_input",
+      "reason": "该流程需要 count 矩阵，用户提供的是 TPM 矩阵，输入类型不匹配。"
+    }
+  ],
+  "tool_chain_step_ids": [
+    "rnaseq_unsupervised_cluster"
+  ],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "input_match": "mismatch",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "该流程需要 count 矩阵，用户提供的是 TPM 矩阵，输入类型不匹配。"
+    }
+  ]
+}
+
+=== go_kegg ===
+{
+  "query": "想同时做 GO 和 KEGG 富集",
+  "workflow_mode": "standard",
+  "selection_status": "ready",
+  "orchestration_status": "ready",
+  "orchestration_message": "标准流程与工具链结构已确定。",
+  "pipeline_ids": [
+    "diff_expr_go",
+    "diff_expr_kegg"
+  ],
+  "execution_status": null,
+  "decomposition_gaps": null,
+  "validation_ok": true,
+  "validation_errors": [],
+  "feasibility_status": "ready",
+  "feasibility_message": "流程所需的用户样本数据已匹配。",
+  "missing_assets": [],
+  "tool_chain_step_ids": [
+    "diff_expr_go",
+    "diff_expr_kegg"
+  ],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "diff_expr_go",
+      "input_match": "partial",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "用户未明确提供数据，流程需要表达矩阵（FPKM/TPM），若用户持有此类数据则匹配。"
+    },
+    {
+      "pipeline_id": "diff_expr_kegg",
+      "input_match": "partial",
+      "functional_coverage": "full",
+      "output_match": "full",
+      "note": "流程产生 Reactome 通路富集结果，与用户期望的 KEGG 类似；用户未明确数据，同样需要表达矩阵。"
+    }
+  ]
+}
+
+=== single_wes ===
+{
+  "query": "我有一个样本的 WES FASTQ，想做变异检测和注释",
+  "workflow_mode": "custom",
+  "selection_status": "draft",
+  "orchestration_status": "draft",
+  "orchestration_message": "自定义方法链草案已形成，仍需执行端物化。",
+  "pipeline_ids": [
+    "paired_fastq_to_unmapped_bam"
+  ],
+  "execution_status": "draft_requires_pipeline_materialization",
+  "decomposition_gaps": [],
+  "validation_ok": true,
+  "validation_errors": [],
+  "feasibility_status": "ready",
+  "feasibility_message": "流程所需的用户样本数据已匹配。",
+  "missing_assets": [],
+  "tool_chain_step_ids": [
+    "fastp",
+    "bwa",
+    "samtools",
+    "gatk",
+    "bcftools",
+    "snpeff"
+  ],
+  "pipeline_assessments": []
+}

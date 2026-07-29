@@ -1,0 +1,125 @@
+{
+  "analysis": {
+    "sample_layout": "single",
+    "data_path": "raw FASTQ → clean FASTQ (fastp) → aligned BAM (bwa) → sorted/dedup BAM (samtools) → unfiltered VCF (gatk) → filtered VCF (bcftools) → annotated VCF (snpeff)",
+    "tool_mapping": "fastp: raw FASTQ → clean FASTQ; bwa: clean FASTQ → aligned BAM; samtools: aligned BAM → sorted/dedup BAM; gatk: sorted/dedup BAM → unfiltered VCF; bcftools: unfiltered VCF → filtered VCF; snpeff: filtered VCF → annotated VCF",
+    "checks": "1. 否，本次是单样本，所有工具仅生成一次；2. 是，单样本步骤无后缀，自身一致；3. 是，无汇合步骤；4. 不适用；5. 不适用；6. 是，单样本无合并；7. 是，所有输入/输出名与菜单逐字一致；8. 是，所有连接均在对应工具的data_next中；9. 是，除第一步外均有from或depends_on；10. 没有编造"
+  },
+  "steps": [
+    {
+      "step_id": "fastp",
+      "tool_id": "fastp",
+      "inputs": {
+        "raw_fastq_read": {
+          "asset_role": "raw_fastq_read"
+        }
+      },
+      "depends_on": [],
+      "reason": "WES FASTQ 质控和修剪"
+    },
+    {
+      "step_id": "bwa",
+      "tool_id": "bwa",
+      "inputs": {
+        "clean_fastq_read": {
+          "from": {
+            "step_id": "fastp",
+            "output": "clean_fastq_read"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "fastp"
+      ],
+      "reason": "将 clean FASTQ 比对到参考基因组"
+    },
+    {
+      "step_id": "samtools",
+      "tool_id": "samtools",
+      "inputs": {
+        "aligned_bam": {
+          "from": {
+            "step_id": "bwa",
+            "output": "aligned_bam"
+          }
+        }
+      },
+      "depends_on": [
+        "bwa"
+      ],
+      "reason": "对 aligned BAM 排序、去重、索引"
+    },
+    {
+      "step_id": "gatk",
+      "tool_id": "gatk",
+      "inputs": {
+        "sorted_dedup_bam": {
+          "from": {
+            "step_id": "samtools",
+            "output": "sorted_dedup_bam"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "samtools"
+      ],
+      "reason": "基于 sorted/dedup BAM 进行变异检测"
+    },
+    {
+      "step_id": "bcftools",
+      "tool_id": "bcftools",
+      "inputs": {
+        "unfiltered_vcf": {
+          "from": {
+            "step_id": "gatk",
+            "output": "unfiltered_vcf"
+          }
+        }
+      },
+      "depends_on": [
+        "gatk"
+      ],
+      "reason": "对原始 VCF 进行过滤和标准化"
+    },
+    {
+      "step_id": "snpeff",
+      "tool_id": "snpeff",
+      "inputs": {
+        "filtered_vcf": {
+          "from": {
+            "step_id": "bcftools",
+            "output": "filtered_vcf"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "bcftools"
+      ],
+      "reason": "对过滤后的 VCF 进行功能注释"
+    }
+  ],
+  "decomposition_gaps": [],
+  "__llm_usage": {
+    "prompt_tokens": 3879,
+    "completion_tokens": 2907,
+    "total_tokens": 6786,
+    "prompt_tokens_details": {
+      "cached_tokens": 3456
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 1996
+    },
+    "prompt_cache_hit_tokens": 3456,
+    "prompt_cache_miss_tokens": 423
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

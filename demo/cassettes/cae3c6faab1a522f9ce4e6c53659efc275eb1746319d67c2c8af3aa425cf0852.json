@@ -1,0 +1,125 @@
+{
+  "analysis": {
+    "sample_layout": "单样本",
+    "data_path": "raw_fastq_read → (fastp) clean_fastq_read → (star) aligned_bam + transcriptome_bam → (samtools) sorted_dedup_bam → (featurecounts) expression_count_matrix; transcriptome_bam → (rsem) expression_abundance_matrix",
+    "tool_mapping": "fastp: raw FASTQ → clean FASTQ; star: clean FASTQ → aligned BAM & transcriptome BAM; samtools: aligned BAM → sorted dedup BAM; featurecounts: sorted dedup BAM + annotation → count matrix; rsem: transcriptome BAM + annotation → abundance matrix",
+    "checks": "1. 是单样本，单样本工具无需成对；2. 不适用；3. 不适用；4. 不适用；5. 不适用；6. 不适用；7. 所有 input/output 名与菜单一致；8. 所有连接均在 allowed_next 内；9. 除 fastqc 外，每个 step 都有 from 或 depends_on；10. 无编造。"
+  },
+  "steps": [
+    {
+      "step_id": "fastqc",
+      "tool_id": "fastqc",
+      "inputs": {
+        "raw_fastq_read": {
+          "asset_role": "raw_fastq_read"
+        },
+        "clean_fastq_read": {
+          "asset_role": "clean_fastq_read"
+        }
+      },
+      "depends_on": [],
+      "reason": "原始 FASTQ 质量评估（保留原步骤）"
+    },
+    {
+      "step_id": "fastp",
+      "tool_id": "fastp",
+      "inputs": {
+        "raw_fastq_read": {
+          "asset_role": "raw_fastq_read"
+        }
+      },
+      "depends_on": [
+        "fastqc"
+      ],
+      "reason": "替代 trim_galore 进行接头修剪与质量过滤"
+    },
+    {
+      "step_id": "star",
+      "tool_id": "star",
+      "inputs": {
+        "clean_fastq_read": {
+          "from": {
+            "step_id": "fastp",
+            "output": "clean_fastq_read"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "fastp"
+      ],
+      "reason": "RNA 比对至参考基因组"
+    },
+    {
+      "step_id": "samtools",
+      "tool_id": "samtools",
+      "inputs": {
+        "aligned_bam": {
+          "from": {
+            "step_id": "star",
+            "output": "aligned_bam"
+          }
+        }
+      },
+      "depends_on": [
+        "star"
+      ],
+      "reason": "BAM 排序、索引与去重"
+    },
+    {
+      "step_id": "featurecounts",
+      "tool_id": "featurecounts",
+      "inputs": {
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        },
+        "sorted_dedup_bam": {
+          "from": {
+            "step_id": "samtools",
+            "output": "sorted_dedup_bam"
+          }
+        }
+      },
+      "depends_on": [
+        "samtools"
+      ],
+      "reason": "基因水平计数"
+    },
+    {
+      "step_id": "rsem",
+      "tool_id": "rsem",
+      "inputs": {
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        },
+        "transcriptome_bam": {
+          "from": {
+            "step_id": "star",
+            "output": "transcriptome_bam"
+          }
+        }
+      },
+      "depends_on": [
+        "star"
+      ],
+      "reason": "转录本定量"
+    }
+  ],
+  "decomposition_gaps": [],
+  "__llm_usage": {
+    "prompt_tokens": 4394,
+    "completion_tokens": 2935,
+    "total_tokens": 7329,
+    "prompt_tokens_details": {
+      "cached_tokens": 3456
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 2075
+    },
+    "prompt_cache_hit_tokens": 3456,
+    "prompt_cache_miss_tokens": 938
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

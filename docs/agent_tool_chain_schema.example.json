@@ -1,0 +1,71 @@
+{
+  "schema_version": "tool-chain/v1",
+  "selection_status": "ready",
+  "orchestration_status": "ready",
+  "orchestration_ready": true,
+  "orchestration_message": "The standard workflow is ready.",
+  "workflow_mode": "standard",
+  "intent": {
+    "query_text": "Run GO enrichment from an expression matrix.",
+    "analysis_goal": "Differential expression and GO enrichment",
+    "requested_outputs": ["differential expression table", "GO enrichment table"]
+  },
+  "workflow_plan": {
+    "mode": "standard",
+    "pipeline_ids": ["diff_expr_go"],
+    "reference_pipeline_ids": [],
+    "execution_status": "ready"
+  },
+  "agent_input": {
+    "execution_kind": "tool_chain",
+    "workflow_mode": "standard",
+    "match_id": "match-example-standard",
+    "study_accession": "EXAMPLE001",
+    "assets": [
+      {
+        "asset_id": "EXAMPLE001-expression-1",
+        "role": "expression_matrix",
+        "path": "/data/EXAMPLE001/genes-TPM.tsv",
+        "format": "tsv",
+        "path_verified": false,
+        "source": "T2",
+        "sample_accession": null,
+        "run_accession": null,
+        "individual_accession": null,
+        "sample_role": null,
+        "mate": null
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "diff_expr_go",
+        "tool_id": "diff_expr_go",
+        "inputs": {
+          "expression_matrix": {"asset_id": "EXAMPLE001-expression-1"}
+        },
+        "decomposition_status": "pipeline_level_unexpanded",
+        "expandable": false
+      }
+    ],
+    "feasibility": {
+      "status": "ready",
+      "missing_assets": [],
+      "data_ready": true,
+      "message": "Required user data is available."
+    },
+    "selection_reason": "The registered standard pipeline matches the request.",
+    "orchestration_status": "ready",
+    "orchestration_ready": true,
+    "orchestration_message": "The standard workflow is ready.",
+    "extensions": {
+      "quality_gates": {},
+      "plan_validation": {"ok": true, "errors": []},
+      "contract_validation": {"ok": true, "errors": []}
+    },
+    "pipeline_id": "diff_expr_go",
+    "files": ["/data/EXAMPLE001/genes-TPM.tsv"],
+    "files_text": "/data/EXAMPLE001/genes-TPM.tsv"
+  },
+  "force_custom": false,
+  "data_matcher_mode": "neo4j"
+}

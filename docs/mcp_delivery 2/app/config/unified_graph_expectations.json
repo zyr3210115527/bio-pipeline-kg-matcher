@@ -1,0 +1,26 @@
+{
+  "schema_version": "unified-graph-expectations/v1",
+  "data_graph": {
+    "counts": {
+      "nodes": 32744,
+      "relationships": 73001
+    },
+    "graph_fingerprint": "f14a565c755f8235ddd13b91223ea7be946d5539a255864c553594456b488afe",
+    "schema_version": "datagraph/v1",
+    "snapshot_id": "dg-b23135d49c950d0846a563bc"
+  },
+  "tool_catalog": {
+    "atomic_tools": 12,
+    "counts": {
+      "nodes": 233,
+      "relationships": 601
+    },
+    "fingerprint": "2ec21a69ff703115ed20a4946b62bf4bf22b3c8bdb6f1562fce0719f2655c903",
+    "has_step": 7,
+    "input_slots": 58,
+    "next": 28,
+    "output_slots": 53,
+    "pipeline_tools": 12,
+    "tools": 24
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "datagraph-representation-allowlist/v1",
+  "rules": [
+    {
+      "id": "neo4j-null-vs-csv-empty-string",
+      "kind": "empty_string_null",
+      "enabled": true,
+      "labels": [],
+      "properties": [],
+      "reason": "Neo4j property absence and an empty CSV cell can be representationally equivalent, although the v1 importer deliberately stores empty strings to preserve exact round trips.",
+      "owner": "data-catalog-owner",
+      "expires_after_schema": "datagraph/v1"
+    },
+    {
+      "id": "legacy-t1-size-suffix",
+      "kind": "regex_sub",
+      "enabled": true,
+      "labels": [
+        "t1"
+      ],
+      "properties": [
+        "files"
+      ],
+      "pattern": "\\s*\\(\\d+\\s+bytes\\)\\s*$",
+      "replacement": "",
+      "reason": "The production graph historically retained a display-size suffix. The authoritative normalized T1 key does not contain it.",
+      "owner": "data-catalog-owner",
+      "expires_after_schema": "datagraph/v1"
+    }
+  ]
+}

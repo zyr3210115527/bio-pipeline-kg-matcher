@@ -1,0 +1,985 @@
+{
+  "schema_version": "top3-live-probe/v1",
+  "recorded_at": "2026-07-28T04:24:57.233950+00:00",
+  "name": "paired_wes",
+  "query": "对同一个个体的肿瘤和正常配对 WES 双端 FASTQ 分别做 fastp、BWA、SAMtools，然后汇合到 GATK 四槽进行体细胞变异检测，产出未过滤 VCF；不要求后续过滤和注释。",
+  "run_count": 3,
+  "latency_s": {
+    "min": 61.579,
+    "max": 67.035,
+    "mean": 64.8,
+    "p50": 65.786,
+    "p95": 66.91
+  },
+  "runs": [
+    {
+      "run": 1,
+      "elapsed_s": 67.035,
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "candidate_tool_ids": [
+        [
+          "fastp_paired_end",
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "bwa_mem_paired",
+          "samtools_alignment_processing",
+          "samtools_alignment_processing",
+          "gatk_wes_somatic"
+        ]
+      ],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "标准的配对WES体细胞变异检测流程，直接产出未过滤VCF，步骤精简且符合用户要求",
+            "workflow_mode": "custom",
+            "match_id": "match-2267d4156f18e621",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000873",
+            "assets": [
+              {
+                "asset_id": "HRA000873-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169394",
+                "run_accession": "HRR232644",
+                "individual_accession": "HRI104775",
+                "sample_role": "tumor",
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169394",
+                "run_accession": "HRR232644",
+                "individual_accession": "HRI104775",
+                "sample_role": "tumor",
+                "mate": "r2"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r1-3",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169395",
+                "run_accession": "HRR232645",
+                "individual_accession": "HRI104775",
+                "sample_role": "normal",
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r2-4",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169395",
+                "run_accession": "HRR232645",
+                "individual_accession": "HRI104775",
+                "sample_role": "normal",
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_tumor",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000873-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000873-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_tumor"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "fastp_normal",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000873-fastq_r1-3"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000873-fastq_r2-4"
+                  },
+                  "sample_id": {
+                    "value": "fastp_normal"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "bwa_tumor",
+                "tool_id": "bwa_mem_paired",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_tumor",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_tumor",
+                      "output": "trimmed_r2"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "bwa_tumor"
+                  }
+                },
+                "depends_on": [
+                  "fastp_tumor"
+                ]
+              },
+              {
+                "step_id": "bwa_normal",
+                "tool_id": "bwa_mem_paired",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_normal",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_normal",
+                      "output": "trimmed_r2"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "bwa_normal"
+                  }
+                },
+                "depends_on": [
+                  "fastp_normal"
+                ]
+              },
+              {
+                "step_id": "samtools_tumor",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "bwa_tumor",
+                      "output": "aligned_sam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_tumor"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "bwa_tumor"
+                ]
+              },
+              {
+                "step_id": "samtools_normal",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "bwa_normal",
+                      "output": "aligned_sam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_normal"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "bwa_normal"
+                ]
+              },
+              {
+                "step_id": "gatk",
+                "tool_id": "gatk_wes_somatic",
+                "inputs": {
+                  "tumor_bam": {
+                    "from": {
+                      "step_id": "samtools_tumor",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "tumor_bai": {
+                    "from": {
+                      "step_id": "samtools_tumor",
+                      "output": "sorted_bai"
+                    }
+                  },
+                  "normal_bam": {
+                    "from": {
+                      "step_id": "samtools_normal",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "normal_bai": {
+                    "from": {
+                      "step_id": "samtools_normal",
+                      "output": "sorted_bai"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "samtools_tumor",
+                  "samtools_normal"
+                ]
+              }
+            ],
+            "selection_reason": "标准的配对WES体细胞变异检测流程，直接产出未过滤VCF，步骤精简且符合用户要求",
+            "extensions": {
+              "paired_wes_matcher": true,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "fastp",
+                "bwa",
+                "bwa",
+                "samtools",
+                "samtools",
+                "gatk"
+              ],
+              "data_combination": {
+                "kind": "paired_fastq",
+                "study_accession": "HRA000873",
+                "individual_accession": "HRI104775",
+                "match_reason": "同个体 tumor/normal 配对: HRI104775"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对同一个个体的肿瘤和正常配对 WES 双端 FASTQ 分别做 fastp、BWA、SAMtools，然后汇合到 GATK 四槽进行体细胞变异检测，产出未过滤 VCF；不要求后续过滤和注释。",
+          "analysis_goal": "体细胞变异检测",
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2412,
+          "completion_tokens": 4264,
+          "total_tokens": 6676,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "配对的肿瘤和正常样本，各拥有双端FASTQ文件",
+          "data_path": "肿瘤与正常样本分别经fastp质控、BWA比对、SAMtools排序去重，生成各自的sorted BAM及索引，然后作为四槽输入汇合到GATK进行体细胞变异检测，产出未过滤VCF",
+          "coverage": "完整覆盖从原始FASTQ到未过滤VCF的全部分析步骤",
+          "checks": "所有步骤均使用目录中的atomic工具，输入输出槽位、NEXT边均符合目录定义；肿瘤与正常两侧独立处理无交叉引用；GATK正确绑定四个必需槽位；最终产物为unfiltered_vcf"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条通过校验且数据完整的原子工具候选链。"
+      }
+    },
+    {
+      "run": 2,
+      "elapsed_s": 65.786,
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "candidate_tool_ids": [
+        [
+          "fastp_paired_end",
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "bwa_mem_paired",
+          "samtools_alignment_processing",
+          "samtools_alignment_processing",
+          "gatk_wes_somatic"
+        ]
+      ],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "Standard paired tumor/normal WES preprocessing and somatic variant calling chain.",
+            "workflow_mode": "custom",
+            "match_id": "match-2267d4156f18e621",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000873",
+            "assets": [
+              {
+                "asset_id": "HRA000873-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169394",
+                "run_accession": "HRR232644",
+                "individual_accession": "HRI104775",
+                "sample_role": "tumor",
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169394",
+                "run_accession": "HRR232644",
+                "individual_accession": "HRI104775",
+                "sample_role": "tumor",
+                "mate": "r2"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r1-3",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169395",
+                "run_accession": "HRR232645",
+                "individual_accession": "HRI104775",
+                "sample_role": "normal",
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r2-4",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169395",
+                "run_accession": "HRR232645",
+                "individual_accession": "HRI104775",
+                "sample_role": "normal",
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_tumor",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000873-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000873-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_tumor"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "fastp_normal",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000873-fastq_r1-3"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000873-fastq_r2-4"
+                  },
+                  "sample_id": {
+                    "value": "fastp_normal"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "bwa_tumor",
+                "tool_id": "bwa_mem_paired",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_tumor",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_tumor",
+                      "output": "trimmed_r2"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "bwa_tumor"
+                  }
+                },
+                "depends_on": [
+                  "fastp_tumor"
+                ]
+              },
+              {
+                "step_id": "bwa_normal",
+                "tool_id": "bwa_mem_paired",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_normal",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_normal",
+                      "output": "trimmed_r2"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "bwa_normal"
+                  }
+                },
+                "depends_on": [
+                  "fastp_normal"
+                ]
+              },
+              {
+                "step_id": "samtools_tumor",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "bwa_tumor",
+                      "output": "aligned_sam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_tumor"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "bwa_tumor"
+                ]
+              },
+              {
+                "step_id": "samtools_normal",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "bwa_normal",
+                      "output": "aligned_sam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_normal"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "bwa_normal"
+                ]
+              },
+              {
+                "step_id": "gatk",
+                "tool_id": "gatk_wes_somatic",
+                "inputs": {
+                  "tumor_bam": {
+                    "from": {
+                      "step_id": "samtools_tumor",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "tumor_bai": {
+                    "from": {
+                      "step_id": "samtools_tumor",
+                      "output": "sorted_bai"
+                    }
+                  },
+                  "normal_bam": {
+                    "from": {
+                      "step_id": "samtools_normal",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "normal_bai": {
+                    "from": {
+                      "step_id": "samtools_normal",
+                      "output": "sorted_bai"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "samtools_tumor",
+                  "samtools_normal"
+                ]
+              }
+            ],
+            "selection_reason": "Standard paired tumor/normal WES preprocessing and somatic variant calling chain.",
+            "extensions": {
+              "paired_wes_matcher": true,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "fastp",
+                "bwa",
+                "bwa",
+                "samtools",
+                "samtools",
+                "gatk"
+              ],
+              "data_combination": {
+                "kind": "paired_fastq",
+                "study_accession": "HRA000873",
+                "individual_accession": "HRI104775",
+                "match_reason": "同个体 tumor/normal 配对: HRI104775"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对同一个个体的肿瘤和正常配对 WES 双端 FASTQ 分别做 fastp、BWA、SAMtools，然后汇合到 GATK 四槽进行体细胞变异检测，产出未过滤 VCF；不要求后续过滤和注释。",
+          "analysis_goal": "体细胞变异检测",
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2412,
+          "completion_tokens": 4454,
+          "total_tokens": 6866,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "Paired tumor/normal WES samples, each with R1 and R2 FASTQ files.",
+          "data_path": "Raw FASTQ pairs → fastp trimming → BWA alignment → SAMtools sort/dedup/index → GATK somatic variant calling → unfiltered VCF.",
+          "coverage": "The chain covers the full required pipeline from raw FASTQ to unfiltered VCF, with separate processing for each sample and then merging in GATK using its tumor/normal paired slots.",
+          "checks": "All tools are atomic; slots match correctly (fastp R1/R2, BWA R1/R2, SAMtools single BAM, GATK four slots); NEXT edges are satisfied; paired samples are independent before merging; final output is unfiltered_vcf."
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条通过校验且数据完整的原子工具候选链。"
+      }
+    },
+    {
+      "run": 3,
+      "elapsed_s": 61.579,
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "candidate_tool_ids": [
+        [
+          "fastp_paired_end",
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "bwa_mem_paired",
+          "samtools_alignment_processing",
+          "samtools_alignment_processing",
+          "gatk_wes_somatic"
+        ]
+      ],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "ready",
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "rank": 1,
+            "match_note": "严格使用指定工具，分别处理肿瘤和正常样本后汇合GATK四槽",
+            "workflow_mode": "custom",
+            "match_id": "match-2267d4156f18e621",
+            "validation_ok": true,
+            "feasibility_status": "ready",
+            "study_accession": "HRA000873",
+            "assets": [
+              {
+                "asset_id": "HRA000873-fastq_r1-1",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169394",
+                "run_accession": "HRR232644",
+                "individual_accession": "HRI104775",
+                "sample_role": "tumor",
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r2-2",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169394",
+                "run_accession": "HRR232644",
+                "individual_accession": "HRI104775",
+                "sample_role": "tumor",
+                "mate": "r2"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r1-3",
+                "role": "fastq_r1",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169395",
+                "run_accession": "HRR232645",
+                "individual_accession": "HRI104775",
+                "sample_role": "normal",
+                "mate": "r1"
+              },
+              {
+                "asset_id": "HRA000873-fastq_r2-4",
+                "role": "fastq_r2",
+                "path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                "format": "Raw FASTQ",
+                "path_verified": false,
+                "source": "T1",
+                "sample_accession": "HRS169395",
+                "run_accession": "HRR232645",
+                "individual_accession": "HRI104775",
+                "sample_role": "normal",
+                "mate": "r2"
+              }
+            ],
+            "tool_chain": [
+              {
+                "step_id": "fastp_tumor",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000873-fastq_r1-1"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000873-fastq_r2-2"
+                  },
+                  "sample_id": {
+                    "value": "fastp_tumor"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "fastp_normal",
+                "tool_id": "fastp_paired_end",
+                "inputs": {
+                  "read1": {
+                    "asset_id": "HRA000873-fastq_r1-3"
+                  },
+                  "read2": {
+                    "asset_id": "HRA000873-fastq_r2-4"
+                  },
+                  "sample_id": {
+                    "value": "fastp_normal"
+                  }
+                },
+                "depends_on": []
+              },
+              {
+                "step_id": "bwa_tumor",
+                "tool_id": "bwa_mem_paired",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_tumor",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_tumor",
+                      "output": "trimmed_r2"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "bwa_tumor"
+                  }
+                },
+                "depends_on": [
+                  "fastp_tumor"
+                ]
+              },
+              {
+                "step_id": "bwa_normal",
+                "tool_id": "bwa_mem_paired",
+                "inputs": {
+                  "read1": {
+                    "from": {
+                      "step_id": "fastp_normal",
+                      "output": "trimmed_r1"
+                    }
+                  },
+                  "read2": {
+                    "from": {
+                      "step_id": "fastp_normal",
+                      "output": "trimmed_r2"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "bwa_normal"
+                  }
+                },
+                "depends_on": [
+                  "fastp_normal"
+                ]
+              },
+              {
+                "step_id": "samtools_tumor",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "bwa_tumor",
+                      "output": "aligned_sam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_tumor"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "bwa_tumor"
+                ]
+              },
+              {
+                "step_id": "samtools_normal",
+                "tool_id": "samtools_alignment_processing",
+                "inputs": {
+                  "alignment": {
+                    "from": {
+                      "step_id": "bwa_normal",
+                      "output": "aligned_sam"
+                    }
+                  },
+                  "sample_id": {
+                    "value": "samtools_normal"
+                  },
+                  "remove_duplicates": {
+                    "value": true
+                  }
+                },
+                "depends_on": [
+                  "bwa_normal"
+                ]
+              },
+              {
+                "step_id": "gatk",
+                "tool_id": "gatk_wes_somatic",
+                "inputs": {
+                  "tumor_bam": {
+                    "from": {
+                      "step_id": "samtools_tumor",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "tumor_bai": {
+                    "from": {
+                      "step_id": "samtools_tumor",
+                      "output": "sorted_bai"
+                    }
+                  },
+                  "normal_bam": {
+                    "from": {
+                      "step_id": "samtools_normal",
+                      "output": "sorted_bam"
+                    }
+                  },
+                  "normal_bai": {
+                    "from": {
+                      "step_id": "samtools_normal",
+                      "output": "sorted_bai"
+                    }
+                  }
+                },
+                "depends_on": [
+                  "samtools_tumor",
+                  "samtools_normal"
+                ]
+              }
+            ],
+            "selection_reason": "严格使用指定工具，分别处理肿瘤和正常样本后汇合GATK四槽",
+            "extensions": {
+              "paired_wes_matcher": true,
+              "required_asset_roles": [
+                "fastq_r1",
+                "fastq_r2"
+              ],
+              "internal_tool_ids": [
+                "fastp",
+                "fastp",
+                "bwa",
+                "bwa",
+                "samtools",
+                "samtools",
+                "gatk"
+              ],
+              "data_combination": {
+                "kind": "paired_fastq",
+                "study_accession": "HRA000873",
+                "individual_accession": "HRI104775",
+                "match_reason": "同个体 tumor/normal 配对: HRI104775"
+              },
+              "contract_validation": {
+                "ok": true,
+                "errors": [],
+                "internal_catalog": {
+                  "ok": true,
+                  "errors": []
+                },
+                "knowledge_card": {
+                  "ok": true,
+                  "errors": []
+                }
+              }
+            }
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "对同一个个体的肿瘤和正常配对 WES 双端 FASTQ 分别做 fastp、BWA、SAMtools，然后汇合到 GATK 四槽进行体细胞变异检测，产出未过滤 VCF；不要求后续过滤和注释。",
+          "analysis_goal": "体细胞变异检测",
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2412,
+          "completion_tokens": 4553,
+          "total_tokens": 6965,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "配对肿瘤/正常双端FASTQ，每个样本有R1和R2",
+          "data_path": "原始FASTQ经fastp质控得到clean FASTQ，BWA比对得到aligned BAM，SAMtools排序去重得到sorted BAM和BAI，GATK四槽体细胞变异检测产出未过滤VCF",
+          "coverage": "链覆盖从原始FASTQ到未过滤VCF的完整需求",
+          "checks": "闭集：所有工具均来自目录；槽位：每个步骤输入输出匹配注册槽；NEXT边：fastp->BWA->SAMtools->GATK均存在对应数据边；样本维度：肿瘤与正常独立处理；最终产物为未过滤VCF"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条通过校验且数据完整的原子工具候选链。"
+      }
+    }
+  ]
+}

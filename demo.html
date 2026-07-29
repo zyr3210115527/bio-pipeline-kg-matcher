@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BioRouter · 生信流程路由工作台</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-plus@2.14.3/dist/index.css">
+  <style>
+    :root {
+      --el-color-primary: #2563eb;
+      --el-color-success: #15803d;
+      --el-color-warning: #b45309;
+      --el-color-danger: #be123c;
+      --el-border-radius-base: 6px;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --line: #dfe4ea;
+      --text: #18212f;
+      --muted: #647084;
+      --soft: #eef2f6;
+    }
+    * { box-sizing: border-box; }
+    html, body, #app { width: 100%; height: 100%; margin: 0; }
+    body { color: var(--text); background: var(--bg); font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; letter-spacing: 0; }
+    button, input, textarea { font: inherit; }
+    [v-cloak] { display: none; }
+    .shell { height: 100%; display: grid; grid-template-columns: 286px minmax(0, 1fr); overflow: hidden; }
+    .sidebar { min-height: 0; display: flex; flex-direction: column; background: #111827; color: #f8fafc; border-right: 1px solid #253044; }
+    .brand { height: 72px; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-bottom: 1px solid #293446; }
+    .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; background: #2563eb; border-radius: 6px; color: white; }
+    .brand-mark svg { width: 20px; height: 20px; }
+    .brand strong { display: block; font-size: 15px; font-weight: 650; }
+    .brand small { display: block; margin-top: 3px; color: #94a3b8; font-size: 11px; }
+    .example-scroll { min-height: 0; flex: 1; overflow-y: auto; padding: 16px 12px 24px; }
+    .group { margin-bottom: 20px; }
+    .group-title { padding: 0 8px 7px; color: #8391a6; font-size: 11px; font-weight: 650; text-transform: uppercase; }
+    .example { width: 100%; display: flex; align-items: flex-start; gap: 9px; min-height: 42px; padding: 9px 10px; border: 0; border-radius: 5px; color: #cbd5e1; background: transparent; text-align: left; line-height: 1.45; cursor: pointer; transition: background .15s, color .15s; }
+    .example:hover { color: white; background: #243044; }
+    .example svg { width: 15px; height: 15px; margin-top: 2px; flex: 0 0 auto; color: #60a5fa; }
+    .example span { font-size: 12px; }
+    .side-status { flex: 0 0 auto; padding: 14px 16px; border-top: 1px solid #293446; background: #0f172a; }
+    .status-line { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #cbd5e1; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; }
+    .status-dot.live { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.12); }
+    .status-meta { margin-top: 7px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #7f8da3; font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .main { min-width: 0; min-height: 0; display: grid; grid-template-rows: 64px minmax(0, 1fr) auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: white; border-bottom: 1px solid var(--line); }
+    .topbar h1 { margin: 0; font-size: 17px; font-weight: 650; }
+    .topbar p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .mode-tag { display: flex; align-items: center; gap: 7px; color: #166534; background: #edf7ef; border: 1px solid #cde8d3; border-radius: 5px; padding: 6px 9px; font-size: 11px; }
+    .mode-tag svg { width: 14px; height: 14px; }
+    .workspace { min-height: 0; overflow-y: auto; padding: 24px; }
+    .content { width: min(1120px, 100%); margin: 0 auto; }
+    .empty { min-height: 520px; display: grid; place-items: center; text-align: center; }
+    .empty-inner { max-width: 560px; }
+    .empty-icon { width: 54px; height: 54px; margin: 0 auto 17px; display: grid; place-items: center; border: 1px solid #cfd7e2; border-radius: 8px; color: #2563eb; background: white; }
+    .empty-icon svg { width: 26px; height: 26px; }
+    .empty h2 { margin: 0; font-size: 20px; font-weight: 650; }
+    .empty p { margin: 10px auto 20px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .quick { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .query-row { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+    .query-bubble { max-width: 76%; padding: 10px 13px; border-radius: 7px 7px 2px 7px; color: white; background: #2563eb; line-height: 1.55; font-size: 13px; }
+    .loading-panel { padding: 30px; border: 1px solid var(--line); background: white; border-radius: 7px; text-align: center; }
+    .loading-panel p { margin: 13px 0 0; color: var(--muted); font-size: 12px; }
+    .result-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr); gap: 16px; align-items: start; }
+    .stack { display: grid; gap: 14px; }
+    .panel { border: 1px solid var(--line); border-radius: 7px; background: white; overflow: hidden; }
+    .panel-head { min-height: 48px; display: flex; align-items: center; gap: 9px; padding: 0 15px; border-bottom: 1px solid var(--line); }
+    .panel-head svg { width: 17px; height: 17px; color: #2563eb; }
+    .panel-head h3 { margin: 0; flex: 1; font-size: 13px; font-weight: 650; }
+    .panel-body { padding: 15px; }
+    .intent-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .intent-item { min-width: 0; padding: 9px 10px; border-radius: 5px; background: #f5f7fa; }
+    .intent-item label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; }
+    .intent-item div { overflow-wrap: anywhere; font-size: 12px; line-height: 1.5; }
+    .pipeline { padding: 13px 0; border-bottom: 1px solid #e9edf2; }
+    .pipeline:first-child { padding-top: 0; }
+    .pipeline:last-child { padding-bottom: 0; border-bottom: 0; }
+    .pipeline-top { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+    .rank { width: 22px; height: 22px; flex: 0 0 auto; display: grid; place-items: center; color: #475569; background: #eef2f6; border-radius: 4px; font-size: 10px; font-weight: 700; }
+    .pipeline:first-child .rank { color: white; background: #2563eb; }
+    .pipeline-name { min-width: 0; font-size: 14px; font-weight: 650; line-height: 1.45; word-break: keep-all; overflow-wrap: break-word; }
+    .pipeline-id { grid-column: 2 / 4; min-width: 0; color: #64748b; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .reason { margin: 8px 0 0 30px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .wdl-flow { margin: 11px 0 0 30px; border-top: 1px solid #e7ebf0; }
+    .wdl-summary { display: flex; align-items: center; gap: 6px; padding-top: 9px; color: #475569; font-size: 10px; }
+    .wdl-summary svg { width: 13px; height: 13px; color: #2563eb; }
+    .wdl-step { position: relative; display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 8px; padding-top: 10px; }
+    .wdl-step:not(:last-child)::after { content: ""; position: absolute; top: 31px; bottom: -10px; left: 12px; width: 1px; background: #cfd7e2; }
+    .step-num { width: 25px; height: 25px; z-index: 1; display: grid; place-items: center; border: 1px solid #b9c5d4; border-radius: 50%; color: #1d4ed8; background: white; font-size: 9px; font-weight: 700; }
+    .step-main { min-width: 0; padding: 3px 0 7px; }
+    .step-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; }
+    .step-call { color: #172033; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 700; overflow-wrap: anywhere; }
+    .step-task { color: #7c8798; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+    .step-desc { margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .io-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 7px; }
+    .io { min-width: 0; padding: 7px 8px; border-radius: 4px; background: #f5f7fa; }
+    .io label { display: block; margin-bottom: 4px; color: #7c8798; font-size: 9px; font-weight: 650; }
+    .io code { display: block; color: #475569; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; line-height: 1.55; white-space: normal; overflow-wrap: anywhere; }
+    .feasibility { border-left: 4px solid #15803d; }
+    .feasibility.no { border-left-color: #b45309; }
+    .feas-title { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 650; }
+    .feas-title svg { width: 17px; height: 17px; color: #15803d; }
+    .feasibility.no .feas-title svg { color: #b45309; }
+    .feas-message { margin: 9px 0 12px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .roles { display: flex; flex-wrap: wrap; gap: 6px; }
+    .role { display: inline-flex; align-items: center; gap: 4px; padding: 4px 7px; border-radius: 4px; color: #166534; background: #edf7ef; font-size: 10px; }
+    .role.missing { color: #9a3412; background: #fff4e8; }
+    .role svg { width: 12px; height: 12px; }
+    .feas-list { display: flex; flex-direction: column; gap: 8px; }
+    .feas-item { display: flex; flex-direction: column; gap: 4px; }
+    .feas-item .role { align-self: flex-start; }
+    .feas-reason { color: var(--muted); font-size: 10px; line-height: 1.6; padding-left: 2px; }
+    .summary { color: #344054; font-size: 11px; line-height: 1.7; }
+    .file { padding: 9px 0; border-bottom: 1px solid #edf0f3; }
+    .file:last-child { border-bottom: 0; }
+    .file-name { display: flex; align-items: center; gap: 7px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; overflow-wrap: anywhere; }
+    .file-name svg { width: 14px; height: 14px; flex: 0 0 auto; color: #64748b; }
+    .file-meta { margin: 6px 0 0 21px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .file-path { margin: 5px 0 0 21px; color: #1d4ed8; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; overflow-wrap: anywhere; }
+    .asset-list { margin: 11px 0 0 30px; padding: 9px 10px; border: 1px solid #dfe7f0; border-radius: 5px; background: #f8fafc; }
+    .asset-list-title { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; color: #344054; font-size: 10px; font-weight: 650; }
+    .asset-list-title svg { width: 13px; height: 13px; color: #2563eb; }
+    .asset-row { padding: 7px 0; border-top: 1px solid #e6ebf1; }
+    .asset-row:first-of-type { border-top: 0; }
+    .asset-name { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; color: #334155; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; overflow-wrap: anywhere; }
+    .asset-meta { margin-top: 4px; color: #64748b; font-size: 9px; line-height: 1.5; overflow-wrap: anywhere; }
+    .asset-path { margin-top: 3px; color: #1d4ed8; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; line-height: 1.5; overflow-wrap: anywhere; }
+    .error-panel { padding: 20px; border: 1px solid #fecaca; border-left: 4px solid #be123c; border-radius: 7px; background: #fff; }
+    .error-panel strong { display: block; color: #9f1239; font-size: 13px; }
+    .error-panel p { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .composer { padding: 14px 24px 18px; border-top: 1px solid var(--line); background: white; }
+    .composer-inner { width: min(1120px, 100%); margin: 0 auto; }
+    .input-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 42px; gap: 9px; align-items: end; }
+    .send { width: 42px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 6px; color: white; background: #2563eb; cursor: pointer; }
+    .send:disabled { opacity: .45; cursor: not-allowed; }
+    .send svg { width: 18px; height: 18px; }
+    .composer-note { margin-top: 7px; color: #8a94a5; font-size: 10px; }
+    .model-row { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 10px; }
+    .model-row svg { width: 13px; height: 13px; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .mode-tag.offline { color: #9a3412; background: #fff4e8; border-color: #f1d1aa; }
+    .connection-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: #536176; font-size: 11px; }
+    .connection-row:first-child { margin-top: 0; }
+    .connection-row .status-dot { flex: 0 0 auto; }
+    .proof-panel { margin-top: 12px; padding-top: 11px; border-top: 1px solid #293446; }
+    .proof-title { display: flex; align-items: center; gap: 7px; color: #dbeafe; font-size: 11px; font-weight: 650; }
+    .proof-title svg { width: 13px; height: 13px; color: #60a5fa; }
+    .proof-line { display: flex; justify-content: space-between; gap: 8px; margin-top: 7px; color: #94a3b8; font-size: 10px; }
+    .proof-line strong { color: #bbf7d0; font-weight: 650; }
+    .kg-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .kg-stat { min-width: 0; padding: 8px 9px; background: rgba(240,244,249,.78); border: 1px solid rgba(120,139,165,.1); border-radius: 5px; }
+    .kg-stat label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 9px; }
+    .kg-stat strong { display: block; overflow: hidden; text-overflow: ellipsis; color: #263449; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; white-space: nowrap; }
+    .kg-block { margin-top: 13px; }
+    .kg-block-title { margin-bottom: 6px; color: #7c8798; font-size: 9px; font-weight: 650; text-transform: uppercase; }
+    .kg-tools { display: flex; flex-wrap: wrap; gap: 5px; }
+    .kg-tools code { max-width: 100%; padding: 4px 6px; border-radius: 4px; color: #2556a6; background: #edf3ff; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; overflow-wrap: anywhere; }
+    .kg-tools.missing code { color: #9a3412; background: #fff4e8; }
+    .kg-evidence { padding: 7px 0; border-bottom: 1px solid #edf0f3; }
+    .kg-evidence:last-child { padding-bottom: 0; border-bottom: 0; }
+    .kg-evidence strong { display: block; color: #344054; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; overflow-wrap: anywhere; }
+    .kg-evidence span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.45; overflow-wrap: anywhere; }
+    .kg-error { color: #7c5b31; font-size: 10px; line-height: 1.6; }
+    .assessment { padding: 11px 0; border-bottom: 1px solid #edf0f3; }
+    .assessment:first-child { padding-top: 0; }
+    .assessment:last-child { padding-bottom: 0; border-bottom: 0; }
+    .assessment-title { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .assessment-title code { margin-right: auto; color: #2556a6; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; overflow-wrap: anywhere; }
+    .assessment-lines { display: grid; gap: 5px; margin-top: 8px; }
+    .assessment-line { color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .assessment-line strong { color: #46556b; font-weight: 650; }
+    .gate-note { margin: 9px 0 0 30px; padding-left: 9px; border-left: 2px solid #d6a756; color: #72562d; font-size: 10px; line-height: 1.55; }
+    .gate-note.blocking { border-left-color: #be123c; color: #9f1239; }
+    .analysis-block { white-space: pre-wrap; line-height: 1.7; color: #344054; font-size: 12px; }
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .result-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 0 14px; }
+      .workspace { padding: 14px; }
+      .composer { padding: 12px 14px; }
+    }
+    @media (max-width: 560px) {
+      .topbar p { display: none; }
+      .mode-tag { max-width: 170px; overflow: hidden; white-space: nowrap; }
+      .top-actions .mode-tag:first-child { display: none; }
+      .intent-grid { grid-template-columns: 1fr; }
+      .query-bubble { max-width: 92%; }
+      .pipeline-id { display: none; }
+      .wdl-flow { margin-left: 0; }
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Light glass workspace */
+    :root {
+      --bg: #edf1f6;
+      --surface: rgba(255,255,255,.72);
+      --line: rgba(126,143,166,.22);
+      --text: #162033;
+      --muted: #68758a;
+      --soft: rgba(238,243,249,.78);
+    }
+    body { background: #edf1f6; }
+    .shell { position: relative; background: rgba(239,243,248,.82); }
+    .sidebar {
+      color: #172033;
+      background: rgba(248,250,253,.76);
+      border-right: 1px solid rgba(119,137,161,.2);
+      box-shadow: 14px 0 36px rgba(59,76,103,.07);
+      backdrop-filter: blur(28px) saturate(150%);
+      -webkit-backdrop-filter: blur(28px) saturate(150%);
+    }
+    .brand { height: 78px; border-color: rgba(126,143,166,.18); padding: 0 20px; }
+    .brand-mark { color: #2563eb; background: rgba(225,235,255,.92); border: 1px solid rgba(72,116,214,.18); box-shadow: 0 7px 18px rgba(37,99,235,.1); }
+    .brand strong { color: #152033; font-size: 16px; }
+    .brand small { color: #7b8799; }
+    .example-scroll { padding: 18px 12px 26px; }
+    .group { margin-bottom: 22px; }
+    .group-title { color: #8b96a7; font-size: 10px; letter-spacing: .7px; }
+    .example { min-height: 44px; color: #536176; border: 1px solid transparent; border-radius: 7px; }
+    .example:hover { color: #173f92; background: rgba(255,255,255,.88); border-color: rgba(93,124,175,.18); box-shadow: 0 7px 18px rgba(53,73,104,.07); transform: translateY(-1px); }
+    .example svg { color: #4c79d8; }
+    .side-status { background: rgba(247,250,253,.78); border-color: rgba(126,143,166,.18); }
+    .status-line { color: #536176; }
+    .status-meta { color: #8a95a5; }
+    .main { position: relative; }
+    .topbar {
+      height: 70px;
+      padding: 0 28px;
+      background: rgba(255,255,255,.62);
+      border-color: rgba(126,143,166,.18);
+      box-shadow: 0 8px 30px rgba(57,74,101,.05);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+    }
+    .topbar h1 { font-size: 17px; }
+    .mode-tag { color: #175b38; background: rgba(237,249,241,.8); border-color: rgba(76,151,104,.2); box-shadow: inset 0 1px rgba(255,255,255,.7); }
+    .workspace { padding: 30px 32px 44px; }
+    .content { width: min(1180px, 100%); }
+    .empty { min-height: 560px; }
+    .empty-icon { width: 60px; height: 60px; border-color: rgba(102,129,175,.22); background: rgba(255,255,255,.68); box-shadow: 0 16px 38px rgba(58,76,106,.1); backdrop-filter: blur(20px); }
+    .empty h2 { font-size: 23px; }
+    .empty p { max-width: 520px; font-size: 13px; }
+    .quick .el-button { color: #3d526f; background: rgba(255,255,255,.68); border-color: rgba(105,126,158,.2); box-shadow: 0 5px 14px rgba(54,73,104,.05); }
+    .query-bubble { color: #fff; background: #2f67d8; box-shadow: 0 12px 28px rgba(47,103,216,.17); }
+    .loading-panel, .panel, .error-panel {
+      background: rgba(255,255,255,.7);
+      border-color: rgba(113,132,160,.2);
+      box-shadow: 0 14px 38px rgba(54,72,101,.08), inset 0 1px rgba(255,255,255,.74);
+      backdrop-filter: blur(24px) saturate(145%);
+      -webkit-backdrop-filter: blur(24px) saturate(145%);
+    }
+    .result-grid { gap: 18px; }
+    .stack { gap: 16px; }
+    .panel { border-radius: 8px; }
+    .panel-head { min-height: 52px; border-color: rgba(117,135,160,.17); }
+    .panel-head h3 { font-size: 13px; }
+    .panel-body { padding: 17px; }
+    .intent-item, .io { background: rgba(240,244,249,.78); border: 1px solid rgba(120,139,165,.1); }
+    .pipeline { border-color: rgba(118,136,161,.15); }
+    .rank { background: rgba(231,237,246,.86); }
+    .pipeline:first-child .rank { background: #2f67d8; box-shadow: 0 5px 13px rgba(47,103,216,.2); }
+    .pipeline { padding: 16px 2px; }
+    .pipeline-top .rank { grid-row: 1 / 3; width: 28px; height: 28px; }
+    .wdl-flow { border-color: rgba(116,136,164,.17); }
+    .step-num { background: rgba(255,255,255,.9); border-color: rgba(83,112,161,.3); }
+    .feasibility { border-left-color: #3b8f5a; }
+    .feasibility.no { border-left-color: #d08b32; }
+    .role { background: rgba(232,247,237,.86); }
+    .role.missing { background: rgba(255,241,224,.88); }
+    .composer {
+      padding: 14px 28px 20px;
+      background: rgba(255,255,255,.65);
+      border-color: rgba(126,143,166,.18);
+      box-shadow: 0 -12px 36px rgba(57,74,101,.05);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+    }
+    .composer-inner { width: min(1180px, 100%); }
+    .composer .el-textarea__inner { min-height: 42px !important; padding: 11px 13px; background: rgba(255,255,255,.76); border: 1px solid rgba(98,120,154,.22); box-shadow: inset 0 1px 2px rgba(31,48,74,.03), 0 6px 18px rgba(57,74,101,.05); }
+    .composer .el-textarea__inner:focus { border-color: rgba(47,103,216,.55); box-shadow: 0 0 0 3px rgba(47,103,216,.09); }
+    .send { background: #2f67d8; box-shadow: 0 8px 18px rgba(47,103,216,.18); transition: transform .15s, box-shadow .15s; }
+    .send:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 11px 22px rgba(47,103,216,.23); }
+    @media (max-width: 900px) {
+      .workspace { padding: 18px 14px 30px; }
+      .topbar { padding: 0 16px; }
+      .composer { padding: 12px 14px 16px; }
+      .result-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div id="app" v-cloak>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><i data-lucide="workflow"></i></div>
+        <div><strong>BioRouter</strong><small>Pipeline & KG Matcher</small></div>
+      </div>
+      <div class="example-scroll">
+        <section class="group" v-for="group in exampleGroups" :key="group.name">
+          <div class="group-title">{{ group.name }}</div>
+          <button class="example" v-for="item in group.items" :key="item" @click="submit(item)">
+            <i :data-lucide="group.icon"></i><span>{{ item }}</span>
+          </button>
+        </section>
+      </div>
+      <div class="side-status">
+        <div class="status-line"><span class="status-dot" :class="{live: health.llm.configured}"></span>{{ statusText }}</div>
+        <div class="status-meta">{{ health.llm.model || 'model unavailable' }}</div>
+        <div class="connection-row"><span class="status-dot" :class="{live: health.neo4j.connected}"></span>{{ health.neo4j.connected ? 'Neo4j 已连接' : 'Neo4j 降级运行' }}</div>
+        <div class="proof-panel">
+          <div class="proof-title"><i data-lucide="badge-check"></i>本轮已验证</div>
+          <div class="proof-line"><span>Top-3 边界探针</span><strong>12 / 12 通过</strong></div>
+          <div class="proof-line"><span>回归测试</span><strong>86 / 89 通过</strong></div>
+          <div class="proof-line"><span>跳过</span><span>3 个真实集成测试</span></div>
+        </div>
+        <div class="status-meta">{{ health.neo4j.connected ? `${health.neo4j.version} · ${health.neo4j.node_count} nodes` : kgErrorText(health.neo4j.error) }}</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+          <div><h1>生信流程路由工作台</h1><p>自然语言意图解析、Neo4j 工具编排与已验证的 Top-3 候选链</p></div>
+        <div class="top-actions">
+          <div class="mode-tag" :class="{offline: !health.neo4j.connected}"><i data-lucide="database"></i>{{ health.neo4j.connected ? 'Neo4j 在线' : 'Neo4j 降级' }}</div>
+          <div class="mode-tag"><i data-lucide="sparkles"></i>{{ health.llm.model || '连接中' }}</div>
+        </div>
+      </header>
+
+      <section class="workspace" ref="workspace">
+        <div class="content">
+          <div class="empty" v-if="!query && !loading">
+            <div class="empty-inner">
+              <div class="empty-icon"><i data-lucide="git-branch"></i></div>
+              <h2>描述你的分析目标和现有数据</h2>
+              <p>系统只从 Neo4j 登记的工具与关系中生成候选链；未原子化的业务流程只做信息推荐，不编造内部步骤。</p>
+              <div class="quick">
+                <el-button size="small" v-for="item in quickExamples" :key="item" @click="submit(item)">{{ item }}</el-button>
+              </div>
+            </div>
+          </div>
+
+          <template v-else>
+            <div class="query-row"><div class="query-bubble">{{ query }}</div></div>
+            <div class="loading-panel" v-if="loading">
+              <el-progress :percentage="progress" :show-text="false" :stroke-width="4" status="success"></el-progress>
+              <p>{{ loadingText }}</p>
+            </div>
+            <div class="error-panel" v-else-if="error">
+              <strong>路由未完成</strong><p>{{ error }}</p>
+            </div>
+            <div class="result-grid" v-else-if="result">
+              <div class="stack">
+                <section class="panel">
+                  <div class="panel-head"><i data-lucide="layers-3"></i><h3>{{ result.workflow_plan.label || '流程结果' }}</h3><el-tag size="small" :type="result.workflow_mode === 'candidate' ? 'success' : (result.workflow_mode === 'recommendation' ? 'info' : 'danger')" effect="plain">{{ workflowModeLabel }}</el-tag></div>
+                  <div class="panel-body summary">{{ result.workflow_plan.reason }}</div>
+                  <div class="panel-body" v-if="result.llm.degraded" style="background:#fff5f5;color:#c53030;border-left:4px solid #fc8181;margin-top:8px;">
+                    <strong>⚠ LLM 未成功调用（{{ result.llm.status }}）</strong><br/>
+                    当前结果是规则兜底输出，可能与 LLM 规划结果不同。现场演示前请检查 LLM 配置或切到离线回放模式。
+                  </div>
+                </section>
+                <section class="panel" v-if="workflowAnalysis">
+                  <div class="panel-head"><i data-lucide="brain-circuit"></i><h3>LLM 推理过程</h3><el-tag size="small" type="primary" effect="plain">analysis</el-tag></div>
+                  <div class="panel-body">
+                    <el-collapse v-model="analysisActiveNames">
+                      <el-collapse-item v-for="(value, key) in workflowAnalysis" :key="key" :title="analysisTitles[key] || key" :name="key">
+                        <div class="analysis-block">{{ value }}</div>
+                      </el-collapse-item>
+                    </el-collapse>
+                  </div>
+                </section>
+                <section class="panel" v-if="false">
+                  <div class="panel-head"><i data-lucide="library-big"></i><h3>Neo4j 能力目录</h3><el-tag size="small" type="info" effect="plain">{{ capabilityPipelines.length + capabilityTools.length }}</el-tag></div>
+                  <div class="panel-body">
+                    <div class="assessment-lines">
+                      <div class="assessment-line"><strong>标准流程：</strong>{{ capabilityPipelines.length }} 个</div>
+                      <div class="assessment-line"><strong>原子工具：</strong>{{ capabilityTools.length }} 个</div>
+                      <div class="assessment-line" v-if="result.capability_answer?.catalog_note"><strong>目录边界：</strong>{{ result.capability_answer.catalog_note }}</div>
+                    </div>
+                    <article class="pipeline" v-for="item in capabilityPipelines" :key="item.tool_id">
+                      <div class="pipeline-top"><span class="pipeline-name">{{ item.name }}</span><span class="pipeline-id">{{ item.tool_id }}</span></div>
+                      <div class="reason">{{ item.description }}</div>
+                      <div class="wdl-summary"><i data-lucide="workflow"></i>{{ item.decomposition_status === 'neo4j_locked_recipe' ? `锁定 recipe · ${item.internal_steps.length} 步` : 'pipeline-level tool · 尚未登记内部拆分' }}</div>
+                    </article>
+                    <article class="pipeline" v-for="item in capabilityTools" :key="item.tool_id">
+                      <div class="pipeline-top"><span class="pipeline-name">{{ item.name }}</span><span class="pipeline-id">{{ item.tool_id }}</span></div>
+                      <div class="reason">{{ item.description }}</div>
+                    </article>
+                  </div>
+                </section>
+                <section class="panel" v-if="result.workflow_mode === 'recommendation'">
+                  <div class="panel-head"><i data-lucide="library-big"></i><h3>Neo4j 业务流程推荐</h3><el-tag size="small" type="info" effect="plain">{{ businessPipelines.length }}</el-tag></div>
+                  <div class="panel-body">
+                    <article class="pipeline" v-for="item in businessPipelines" :key="item.pipeline_id">
+                      <div class="pipeline-top"><span class="rank">{{ item.rank }}</span><span class="pipeline-name">{{ item.pipeline_id }}</span><span class="pipeline-id">{{ item.tool?.catalog_id || item.tool?.source || 'Neo4j' }}</span></div>
+                      <div class="reason">{{ item.match_note }}</div>
+                      <div class="assessment-lines" v-if="item.tool || item.data">
+                        <div class="assessment-line" v-if="item.tool"><strong>工具目录：</strong>{{ item.tool.catalog_status || item.tool.tool_kind || 'registered' }} · {{ item.tool.name || item.pipeline_id }}</div>
+                        <div class="assessment-line" v-if="item.data"><strong>数据资产：</strong>{{ item.data.status }} · {{ item.data.matched_count || 0 }} 个匹配文件</div>
+                      </div>
+                      <div class="asset-list" v-if="item.data?.assets?.length">
+                        <div class="asset-list-title"><i data-lucide="database-zap"></i>选中的数据资产</div>
+                        <div class="asset-row" v-for="asset in item.data.assets" :key="asset.t2_id || asset.file_path">
+                          <div class="asset-name">
+                            <span>{{ asset.files || asset.name }}</span>
+                            <el-tag size="small" effect="plain">{{ asset.input_role || asset.source }}</el-tag>
+                            <el-tag v-if="asset.sample_role" size="small" type="success" effect="plain">{{ asset.sample_role }}</el-tag>
+                          </div>
+                          <div class="asset-meta">{{ [asset.study_accession, asset.sample_accession, asset.run_accession, asset.read_pair].filter(Boolean).join(' · ') }}</div>
+                          <div class="asset-path">{{ asset.file_path }}</div>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </section>
+                <section class="panel" v-if="result.workflow_mode === 'unsupported'">
+                  <div class="panel-head"><i data-lucide="shield-alert"></i><h3>不支持原因</h3><el-tag size="small" type="danger" effect="plain">硬边界</el-tag></div>
+                  <div class="panel-body summary">{{ result.unsupported_reason || result.atomic_candidate_unavailable_reason }}</div>
+                </section>
+                <section class="panel" v-if="false && coverageAssessments.length">
+                  <div class="panel-head"><i data-lucide="list-checks"></i><h3>流程覆盖评估</h3><el-tag size="small" effect="plain">{{ coverageAssessments.length }}</el-tag></div>
+                  <div class="panel-body">
+                    <article class="assessment" v-for="item in coverageAssessments" :key="item.pipeline_id">
+                      <div class="assessment-title">
+                        <code>{{ item.pipeline_id }}</code>
+                        <el-tag size="small" effect="plain">输入 {{ item.input_match }}</el-tag>
+                        <el-tag size="small" effect="plain">流程 {{ item.functional_coverage }}</el-tag>
+                        <el-tag size="small" effect="plain">输出 {{ item.output_match }}</el-tag>
+                      </div>
+                      <div class="assessment-lines">
+                        <div class="assessment-line" v-if="item.note"><strong>评估：</strong>{{ item.note }}</div>
+                        <div class="assessment-line" v-if="item.covered_requirements?.length"><strong>已覆盖：</strong>{{ item.covered_requirements.join('、') }}</div>
+                        <div class="assessment-line" v-if="item.uncovered_requirements?.length"><strong>未覆盖：</strong>{{ item.uncovered_requirements.join('、') }}</div>
+                        <div class="assessment-line" v-if="item.assumptions?.length"><strong>执行前提：</strong>{{ item.assumptions.join('；') }}</div>
+                        <div class="assessment-line" v-if="item.applicable_risks?.length"><strong>适用风险：</strong>{{ item.applicable_risks.join('；') }}</div>
+                      </div>
+                    </article>
+                  </div>
+                </section>
+                <section class="panel" v-if="result.workflow_plan?.coverage_assessment?.uncovered_requirements?.length">
+                  <div class="panel-head"><i data-lucide="circle-x"></i><h3>未满足需求</h3><el-tag size="small" type="danger" effect="plain">{{ result.workflow_plan.coverage_assessment.uncovered_requirements.length }}</el-tag></div>
+                  <div class="panel-body stack">
+                    <div class="model-row" v-for="req in result.workflow_plan.coverage_assessment.uncovered_requirements" :key="req" style="color:#c53030;"><i data-lucide="x-circle"></i>{{ req }}</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><i data-lucide="target"></i><h3>意图理解</h3><el-tag size="small" type="primary" effect="plain">LLM</el-tag></div>
+                  <div class="panel-body intent-grid">
+                    <div class="intent-item" v-for="item in intentItems" :key="item.label"><label>{{ item.label }}</label><div>{{ item.value }}</div></div>
+                  </div>
+                </section>
+                <section class="panel" v-if="result.workflow_mode === 'candidate'">
+                  <div class="panel-head"><i data-lucide="route"></i><h3>Top-3 原子工具候选链</h3><el-tag size="small" effect="plain">{{ result.pipelines.length }}</el-tag></div>
+                  <div class="panel-body">
+                    <article class="pipeline" v-for="(pipe, index) in result.pipelines" :key="pipe.pipeline_id">
+                      <div class="pipeline-top"><span class="rank">{{ index + 1 }}</span><span class="pipeline-name">{{ pipe.name }}</span><span class="pipeline-id">{{ pipe.pipeline_id }}</span></div>
+                      <div class="reason">{{ pipe.reason }}</div>
+                      <div class="asset-list" v-if="pipe.assets?.length">
+                        <div class="asset-list-title"><i data-lucide="database-zap"></i>选中的数据资产</div>
+                        <div class="asset-row" v-for="asset in pipe.assets" :key="asset.asset_id || asset.path">
+                          <div class="asset-name">
+                            <span>{{ asset.path?.split('/').pop() }}</span>
+                            <el-tag size="small" effect="plain">{{ asset.role }}</el-tag>
+                            <el-tag v-if="asset.sample_role" size="small" type="success" effect="plain">{{ asset.sample_role }}</el-tag>
+                          </div>
+                          <div class="asset-meta">{{ [asset.study_accession, asset.sample_accession, asset.run_accession, asset.individual_accession, asset.mate].filter(Boolean).join(' · ') }}</div>
+                          <div class="asset-path">{{ asset.path }}</div>
+                        </div>
+                      </div>
+                      <div class="gate-note" v-if="pipe.quality_gate?.issues?.length">
+                        实现风险说明：{{ pipe.quality_gate.issues.join('；') }}
+                      </div>
+                      <div class="wdl-flow" v-if="pipe.steps && pipe.steps.length">
+                        <div class="wdl-summary"><i data-lucide="workflow"></i>Neo4j 锁定流程 · {{ pipe.steps.length }} 步</div>
+                        <div class="wdl-step" v-for="step in pipe.steps" :key="`${pipe.pipeline_id}-${step.order}-${step.call_name}`">
+                          <span class="step-num">{{ step.order || step.step_id }}</span>
+                          <div class="step-main">
+                            <div class="step-title"><span class="step-call">{{ step.tool_id || step.call_name || step.task_name }}</span><span class="step-task" v-if="step.step_id">step: {{ step.step_id }}</span></div>
+                            <div class="step-desc" v-if="step.description">{{ step.description }}</div>
+                            <div class="io-grid" v-if="step.inputs && Object.keys(step.inputs).length">
+                              <div class="io"><label>INPUT BINDINGS</label><code v-for="(binding, name) in step.inputs" :key="name">{{ name }}</code></div>
+                              <div class="io" v-if="step.depends_on && step.depends_on.length"><label>DEPENDS ON</label><code v-for="item in step.depends_on" :key="item">{{ item }}</code></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </section>
+                <section class="panel" v-if="false">
+                  <div class="panel-head"><i data-lucide="blocks"></i><h3>方法级流程</h3><el-tag size="small" type="warning" effect="plain">{{ customMethods.length }} steps</el-tag></div>
+                  <div class="panel-body">
+                    <article class="pipeline" v-for="method in customMethods" :key="`${method.order}-${method.tool_id}`">
+                      <div class="pipeline-top"><span class="rank">{{ method.order }}</span><span class="pipeline-name">{{ method.name }}</span><span class="pipeline-id">{{ method.tool_id }}</span></div>
+                      <div class="reason">{{ method.reason || method.function }}</div>
+                      <div class="io-grid">
+                        <div class="io"><label>INPUT BINDINGS</label><code v-for="(binding, name) in method.inputs" :key="name">{{ name }}</code></div>
+                        <div class="io"><label>FORMAL OUTPUTS</label><code v-for="item in method.outputs" :key="item.name">{{ item.name }}</code></div>
+                      </div>
+                    </article>
+                  </div>
+                </section>
+                <section class="panel" v-if="result.file_details && result.file_details.length">
+                  <div class="panel-head"><i data-lucide="files"></i><h3>输入文件与匹配依据</h3><el-tag size="small" type="success" effect="plain">{{ result.file_details.length }} files</el-tag></div>
+                  <div class="panel-body">
+                    <article class="file" v-for="file in result.file_details" :key="file.path">
+                      <div class="file-name"><i data-lucide="file-text"></i><span>{{ file.files }}</span><el-tag size="small" effect="plain">{{ roleLabel(file.input_role) }}</el-tag><el-tag v-if="file.sample_role" size="small" type="success" effect="plain" style="margin-left:6px;">{{ file.sample_role }}</el-tag></div>
+                      <div class="file-meta">{{ file.match_reason }}</div>
+                      <div class="file-path">{{ file.path }}</div>
+                      <div class="file-path" v-if="file.individual_accession">individual: {{ file.individual_accession }}</div>
+                    </article>
+                  </div>
+                </section>
+              </div>
+
+              <aside class="stack">
+                <section class="panel feasibility" :class="{no: !isOrchestrationReady}">
+                  <div class="panel-body">
+                    <div class="feas-title"><i :data-lucide="isOrchestrationReady ? 'circle-check' : 'triangle-alert'"></i>{{ orchestrationTitle }}</div>
+                    <div class="feas-message">{{ feasMessage }}</div>
+                    <div class="feas-list" v-if="missingDataInputs.length"><div class="feas-item" v-for="item in missingDataInputs" :key="`${item.step_id}-${item.input}`"><span class="role missing"><i data-lucide="database"></i>{{ inputLabel(item.input) }}</span><span class="feas-reason" v-if="item.reason">{{ item.reason }}</span></div></div>
+                  </div>
+                </section>
+                <section class="panel" v-if="result.selection_summary">
+                  <div class="panel-head"><i data-lucide="message-square-text"></i><h3>选择说明</h3></div><div class="panel-body summary">{{ result.selection_summary }}</div>
+                </section>
+                <section class="panel" v-if="result.workflow_plan?.decomposition_gaps?.length">
+                  <div class="panel-head"><i data-lucide="puzzle"></i><h3>无法组链的原因</h3><el-tag size="small" type="danger" effect="plain">{{ result.workflow_plan.decomposition_gaps.length }}</el-tag></div>
+                  <div class="panel-body stack">
+                    <div class="model-row" v-for="(gap, idx) in result.workflow_plan.decomposition_gaps" :key="idx" style="color:#c53030;align-items:flex-start;">
+                      <i data-lucide="x-circle" style="margin-top:2px;flex-shrink:0;"></i>
+                      <span>{{ gap.message || gap }}</span>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel" v-if="planWarnings.length">
+                  <div class="panel-head"><i data-lucide="triangle-alert"></i><h3>流程校验</h3></div>
+                  <div class="panel-body stack"><div class="model-row" v-for="item in planWarnings" :key="item"><i data-lucide="circle-alert"></i>{{ item }}</div></div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><i data-lucide="cpu"></i><h3>模型调用</h3></div>
+                  <div class="panel-body stack">
+                    <div class="model-row"><i data-lucide="badge-check"></i>{{ result.llm.model || health.llm.model }}</div>
+                    <div class="model-row"><i data-lucide="coins"></i>{{ result.llm.total_tokens || 0 }} tokens</div>
+                    <div class="model-row"><i data-lucide="shield-check"></i>{{ result.llm.used ? 'LLM Top-3 候选生成 + 确定性校验' : '规则模式回退' }}</div>
+                    <div class="model-row" v-if="result.llm.status" :style="{color: result.llm.degraded ? '#c53030' : 'var(--muted)'}"><i data-lucide="cpu"></i>LLM 状态: {{ result.llm.status }}</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><i data-lucide="database-zap"></i><h3>知识图谱连接</h3><el-tag size="small" :type="activeKg.connected ? 'success' : 'warning'" effect="plain">{{ activeKg.connected ? 'online' : 'degraded' }}</el-tag></div>
+                  <div class="panel-body">
+                    <template v-if="activeKg.connected">
+                      <div class="kg-grid">
+                        <div class="kg-stat"><label>VERSION</label><strong>{{ health.neo4j.version || 'unknown' }}</strong></div>
+                        <div class="kg-stat"><label>LATENCY</label><strong>{{ health.neo4j.latency_ms ?? '-' }} ms</strong></div>
+                        <div class="kg-stat"><label>NODES</label><strong>{{ health.neo4j.node_count ?? '-' }}</strong></div>
+                        <div class="kg-stat"><label>RELATIONSHIPS</label><strong>{{ health.neo4j.relationship_count ?? '-' }}</strong></div>
+                      </div>
+                      <div class="kg-block" v-if="activeKg.matched_tool_ids && activeKg.matched_tool_ids.length">
+                        <div class="kg-block-title">Matched Tool</div>
+                        <div class="kg-tools"><code v-for="tool in activeKg.matched_tool_ids" :key="tool">{{ tool }}</code></div>
+                      </div>
+                      <div class="kg-block" v-if="activeKg.missing_tool_ids && activeKg.missing_tool_ids.length">
+                        <div class="kg-block-title">Missing Tool</div>
+                        <div class="kg-tools missing"><code v-for="tool in activeKg.missing_tool_ids" :key="tool">{{ tool }}</code></div>
+                      </div>
+                      <div class="kg-block" v-if="activeKg.slot_evidence && activeKg.slot_evidence.length">
+                        <div class="kg-block-title">Slot / Relationship Evidence</div>
+                        <div class="kg-evidence" v-for="(item, index) in activeKg.slot_evidence.slice(0, 12)" :key="`${item.tool_id}-${item.relationship_type}-${index}`">
+                          <strong>{{ item.tool_id }} · {{ item.relationship_type }}</strong>
+                          <span>{{ item.direction }} → {{ evidenceLabel(item) }}</span>
+                        </div>
+                      </div>
+                      <div class="kg-block kg-error" v-if="!activeKg.matched_tool_ids?.length && !activeKg.missing_tool_ids?.length">当前结果没有可查询的 pipeline ID。</div>
+                    </template>
+                    <div class="kg-error" v-else>Neo4j 工具目录不可用：{{ kgErrorText(activeKg.error || health.neo4j.error) }}。不会回退到 WDL 工具。</div>
+                  </div>
+                </section>
+              </aside>
+            </div>
+          </template>
+        </div>
+      </section>
+
+      <footer class="composer">
+        <div class="composer-inner">
+          <div class="input-wrap">
+            <el-input v-model="input" type="textarea" :autosize="{minRows:1,maxRows:4}" resize="none" placeholder="例如：乳腺癌 HER2 阳性患者做 PFS 生存分析" @keydown.enter.exact.prevent="submit()"></el-input>
+            <button class="send" :disabled="loading || !input.trim()" @click="submit()" title="发送"><i data-lucide="send"></i></button>
+          </div>
+          <div class="composer-note">
+            <el-checkbox v-model="forceCustom" size="small">
+              请求 Top-3 原子工具候选链
+              <el-tag v-if="health.force_custom_default" size="small" type="danger" effect="plain" style="margin-left:6px;">FORCE_CUSTOM=1</el-tag>
+            </el-checkbox>
+            <span style="margin-left: 12px; color: #8a94a5;">
+              每条候选独立通过 Neo4j tool、slot 与 NEXT 关系校验；信息推荐不会编造未登记的内部步骤。
+            </span>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vue@3.5.40/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus@2.14.3/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/lucide@1.24.0/dist/umd/lucide.min.js"></script>
+<script>
+const { createApp, ref, reactive, computed, nextTick, onMounted } = Vue;
+createApp({
+  setup() {
+    const input = ref('');
+    const query = ref('');
+    const result = ref(null);
+    const loading = ref(false);
+    const error = ref('');
+    const progress = ref(20);
+    const loadingText = ref('正在解析分析意图');
+    const workspace = ref(null);
+    const forceCustom = ref(false);
+    const health = reactive({
+      ok:false,
+      mode:'',
+      llm:{configured:false, model:'', endpoint_host:'', last_status:'not_called'},
+      neo4j:{connected:false, version:null, database:'neo4j', latency_ms:null, node_count:null, relationship_count:null, error:'not_configured'}
+    });
+    const exampleGroups = [
+      {name:'已验证 · 可形成原子链', icon:'route', items:[
+        '对双端 RNA-seq FASTQ 做质控和修剪、STAR 比对，并同时生成表达丰度和基因 count 矩阵。',
+        '对双端 bulk RNA-seq FASTQ 做质控、修剪和 STAR 比对，最终只要基因 raw count 矩阵，不要 RSEM、TPM 或 FPKM。',
+        '对双端 bulk RNA-seq FASTQ 做质控、修剪和 STAR 比对，最终只要 RSEM 的 TPM/FPKM 表达丰度，不要 featureCounts 或 raw count。',
+        '完整分析双端 bulk RNA-seq FASTQ：先做 reads 质控和修剪，再用 STAR 比对、SAMtools 处理 BAM、featureCounts 生成基因 raw count，最后用 MultiQC 汇总报告。',
+        '从双端 bulk RNA-seq FASTQ 开始，完成 fastp 质控修剪、STAR 基因组比对、SAMtools BAM 处理和 featureCounts 定量，输出可用于下游分析的 count 矩阵。',
+        '双端 bulk RNA-seq 做完整上游流程，要求保留 raw FASTQ，不做 DNA 变异检测，完成修剪、RNA 比对、BAM 处理、基因计数和 MultiQC 质控汇总。',
+        '对双端 bulk RNA-seq FASTQ 做完整表达分析：fastp、STAR、SAMtools、featureCounts，最终输出 gene-level raw count，不要 RSEM 丰度表。',
+        '已有 bulk RNA-seq count 矩阵和临床性状表，做 WGCNA 并输出模块、模块性状关联和 hub genes。',
+        '同一样本的双端 FASTQ 转成带 read group 的 unmapped BAM，不做参考基因组比对。'
+      ]},
+      {name:'已验证 · 业务流程与数据推荐', icon:'database', items:[
+        '10x 单细胞 RNA-seq 双端 FASTQ 做 Cell Ranger，输出 filtered feature-barcode matrix。',
+        '肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。'
+      ]},
+      {name:'已验证 · 明确不支持边界', icon:'shield-check', items:[
+        '我有双端 bulk RNA-seq FASTQ，只做原始数据 FastQC 质控，不修剪、不比对，也不要表达定量。',
+        '双端 FASTQ 只需要质量评估和汇总报告，任何 reads 都不能被修剪或修改。',
+        '我只有一个体细胞突变 MAF 文件，请用 STAR 做转录组比对并生成基因 count 矩阵。',
+        '从双端 bulk RNA-seq FASTQ 开始完成上游处理，并继续做 WGCNA 模块和 hub gene 分析。',
+        '我有一对双端 FASTQ，帮我一直分析到 MAF 突变文件。',
+        '这是 bulk RNA-seq 双端 FASTQ，请用 BWA 做 DNA 体细胞变异检测并输出 somatic VCF。'
+      ]}
+    ];
+    const quickExamples = [
+      '完整分析双端 bulk RNA-seq FASTQ：先做 reads 质控和修剪，再用 STAR 比对、SAMtools 处理 BAM、featureCounts 生成基因 raw count，最后用 MultiQC 汇总报告。',
+      '肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。',
+      '我只有一个体细胞突变 MAF 文件，请用 STAR 做转录组比对并生成基因 count 矩阵。'
+    ];
+    const statusText = computed(() => health.llm.configured ? 'LLM 实时服务已配置' : 'LLM 规则回退可用');
+    const intentItems = computed(() => {
+      const i = result.value?.intent || {};
+      return [
+        ['分析目标', i.analysis_goal], ['癌种', i.disease], ['组学类型', i.omics_type],
+        ['输入格式', i.input_hint], ['期望产物', (i.requested_outputs || []).join(' / ')], ['解析来源', i.source === 'llm' ? 'LLM' : i.source]
+      ].filter(x => x[1]).map(x => ({label:x[0], value:x[1]}));
+    });
+    const isOrchestrationReady = computed(() => result.value?.orchestration_ready ?? false);
+    const missingDataInputs = computed(() => result.value?.feasibility?.missing_assets || []);
+    const hasTypeMismatch = computed(() => missingDataInputs.value.some(x => x.input === 'data_type_match'));
+    const orchestrationTitle = computed(() => {
+      if (hasTypeMismatch.value) return '流程已选对 · 数据类型不匹配';
+      return ({ready:'候选链编排完成', information:'业务流程信息推荐', unsupported:'当前需求不支持', missing_data:'缺少用户样本数据', draft:'编排草案待物化', requires_review:'流程需要复核', no_match:'没有可用候选'}[result.value?.orchestration_status] || '流程编排状态');
+    });
+    const feasMessage = computed(() => result.value?.feasibility?.message || result.value?.orchestration_message || '');
+    const inputLabel = s => ({data_type_match:'数据类型不匹配', count_matrix:'count 矩阵', expression_matrix:'表达矩阵', expression_file:'表达文件', fastq_file:'FASTQ', clinical:'Clinical', metainfo:'MetaInfo', maf:'MAF', bam:'BAM', vcf:'VCF'}[s] || s);
+    const workflowModeLabel = computed(() => ({candidate:'候选链', recommendation:'信息推荐', unsupported:'不支持'}[result.value?.workflow_mode] || '处理中'));
+    const businessPipelines = computed(() => result.value?.business_pipelines || []);
+    const customMethods = computed(() => result.value?.workflow_plan?.methods || []);
+    const capabilityPipelines = computed(() => result.value?.capability_answer?.pipelines || []);
+    const capabilityTools = computed(() => result.value?.capability_answer?.atomic_tools || []);
+    const coverageAssessments = computed(() => result.value?.workflow_plan?.coverage_assessment?.pipeline_assessments || []);
+    const pipelineAssessments = computed(() => result.value?.workflow_plan?.coverage_assessment?.pipeline_assessments || []);
+    const planWarnings = computed(() => {
+      const validation = result.value?.workflow_plan?.validation || {};
+      return [...(validation.errors || []), ...(validation.warnings || [])];
+    });
+    const workflowAnalysis = computed(() => result.value?.workflow_plan?.analysis || null);
+    const analysisTitles = {
+      data_in_hand: '用户数据',
+      goal: '分析目标',
+      steps_implied: '隐含步骤',
+      menu_scan: '菜单扫描'
+    };
+    const analysisActiveNames = ref(['data_in_hand', 'goal', 'steps_implied', 'menu_scan']);
+    const activeKg = computed(() => result.value?.kg_evidence || health.neo4j || {});
+    const kgErrorText = value => ({
+      not_configured:'未配置本地密码', authentication_failed:'认证失败', connection_timeout:'连接超时',
+      driver_unavailable:'Neo4j 驱动未安装', connection_failed:'连接失败', unavailable:'服务不可用'
+    }[value] || '连接不可用');
+    const evidenceLabel = item => {
+      const n = item?.neighbor || {};
+      const value = n.slot_id || n.slot_name || n.name || n.input_name || n.output_name || n.artifact_type_id || n.format_id || n.tool_id || n.id;
+      return value || (item?.neighbor_labels || []).join(' / ') || 'adjacent node';
+    };
+    const roleLabel = r => ({fastq:'FASTQ',expression:'表达矩阵',clinical:'Clinical',metainfo:'MetaInfo',maf:'MAF',bam:'BAM',vcf:'VCF'}[r] || r);
+    const percent = n => `${Math.round((Number(n) || 0) * 100)}%`;
+    const icons = () => nextTick(() => window.lucide && lucide.createIcons());
+    async function loadHealth() {
+      try {
+        const h = await fetch('/api/health').then(r => r.json());
+        Object.assign(health, h);
+        if (typeof h.force_custom_default === 'boolean') {
+          forceCustom.value = h.force_custom_default;
+        }
+      } catch (_) { health.ok = false; }
+      icons();
+    }
+    async function submit(value) {
+      const text = String(value || input.value).trim();
+      if (!text || loading.value) return;
+      query.value = text; input.value = ''; result.value = null; error.value = ''; loading.value = true; progress.value = 18;
+      const timers = [
+        setTimeout(() => { progress.value = 48; loadingText.value = 'LLM 正在进行闭集流程选择'; }, 500),
+        setTimeout(() => { progress.value = 76; loadingText.value = '正在匹配同疾病队列与输入文件'; }, 1300)
+      ];
+      try {
+        const response = await fetch('/api/ask', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query:text, top_k:5, force_custom: forceCustom.value})});
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || '请求失败');
+        const hasPipelines = payload.pipelines && payload.pipelines.length;
+        const hasMethods = payload.workflow_plan?.methods && payload.workflow_plan.methods.length;
+        const hasResult = payload.workflow_mode || hasPipelines || hasMethods || (payload.recommendations && payload.recommendations.length) || payload.unsupported_reason;
+        if (!hasResult) throw new Error(payload.message || '未返回有效流程');
+        progress.value = 100; result.value = payload;
+      } catch (e) { error.value = e.message || String(e); }
+      finally {
+        timers.forEach(clearTimeout); loading.value = false; loadingText.value = '正在解析分析意图';
+        icons(); nextTick(() => workspace.value?.scrollTo({top:0, behavior:'smooth'}));
+      }
+    }
+    onMounted(() => { loadHealth(); icons(); });
+    return {input,query,result,loading,error,progress,loadingText,workspace,forceCustom,health,exampleGroups,quickExamples,statusText,intentItems,workflowModeLabel,businessPipelines,isOrchestrationReady,orchestrationTitle,feasMessage,missingDataInputs,hasTypeMismatch,inputLabel,customMethods,capabilityPipelines,capabilityTools,coverageAssessments,planWarnings,workflowAnalysis,analysisTitles,analysisActiveNames,activeKg,kgErrorText,evidenceLabel,roleLabel,percent,submit};
+  }
+}).use(ElementPlus).mount('#app');
+</script>
+</body>
+</html>

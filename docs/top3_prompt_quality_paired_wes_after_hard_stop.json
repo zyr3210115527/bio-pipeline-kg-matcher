@@ -1,0 +1,558 @@
+{
+  "schema_version": "top3-prompt-quality/v1",
+  "recorded_at": "2026-07-28T06:41:59.267398+00:00",
+  "llm": {
+    "configured": true,
+    "model": "deepseek-v4-pro",
+    "endpoint_host": "api.deepseek.com",
+    "last_status": "ok"
+  },
+  "case_count": 3,
+  "passed": 3,
+  "failed": 0,
+  "cases": [
+    {
+      "id": "paired_wes_annotated_vcf",
+      "probe_run": 1,
+      "query": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+      "elapsed_s": 19.399,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "wes_somatic_pair"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-2179f735fcfb610a",
+            "pipeline_id": "wes_somatic_pair",
+            "match_note": "完全匹配配对 WES FASTQ 到过滤注释 somatic VCF 的需求",
+            "tool": {
+              "tool_id": "wes_somatic_pair",
+              "catalog_status": "missing_from_neo4j",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "available",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRR232644_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232644_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232645_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                },
+                {
+                  "name": "HRR232645_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                }
+              ],
+              "matched_count": 4,
+              "expected_count": 4,
+              "missing_asset_names": [],
+              "study_accessions": [
+                "HRA000873"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7550,
+          "completion_tokens": 1067,
+          "total_tokens": 8617,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "配对肿瘤/正常 WES，共四个 FASTQ（肿瘤 R1/R2，正常 R1/R2）",
+          "data_path": "从 raw FASTQ 经质控、比对、排序去重、变异检测到过滤和功能注释的 VCF，但当前合同缺少 GATK->BCFtools->SnpEff 数据传递能力",
+          "coverage": "wes_somatic_pair 业务流程完整覆盖目标，但尚未原子化",
+          "checks": "GATK 到 BCFtools 的 VCF 及 index 传递在当前执行合同中不支持，因此无法生成完整原子候选链；需为每个样本独立生成质控和比对步骤再汇合；最终过滤注释产物不可达。"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "当前执行合同不支持 GATK 输出的 VCF 及 index 按 BCFtools 和 SnpEff 所需槽位传递，导致过滤和功能注释步骤无法执行，因此无法生成完整的原子候选链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    },
+    {
+      "id": "paired_wes_annotated_vcf",
+      "probe_run": 2,
+      "query": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+      "elapsed_s": 21.978,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "wes_somatic_pair"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-2179f735fcfb610a",
+            "pipeline_id": "wes_somatic_pair",
+            "match_note": "完全匹配配对WES体细胞变异检测注释流程",
+            "tool": {
+              "tool_id": "wes_somatic_pair",
+              "catalog_status": "missing_from_neo4j",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "available",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRR232644_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232644_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232645_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                },
+                {
+                  "name": "HRR232645_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                }
+              ],
+              "matched_count": 4,
+              "expected_count": 4,
+              "missing_asset_names": [],
+              "study_accessions": [
+                "HRA000873"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7550,
+          "completion_tokens": 1131,
+          "total_tokens": 8681,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "配对肿瘤/正常双样本，每个样本均有成对FASTQ",
+          "data_path": "从四个FASTQ经质控、比对、去重、变异检测、过滤到功能注释somatic VCF",
+          "coverage": "推荐业务流程wes_somatic_pair完整覆盖目标，但原子链因GATK到BCFtools/SnpEff传递合同缺失无法生成",
+          "checks": "闭集槽位匹配，四FASTQ可双线比对抗，但GATK后续过滤注释合同缺口，最终产物不可达"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "GATK的输出VCF无法按当前知识合同传递给BCFtools及SnpEff，过滤和注释步骤不可执行",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    },
+    {
+      "id": "paired_wes_annotated_vcf",
+      "probe_run": 3,
+      "query": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+      "elapsed_s": 29.998,
+      "assessment": {
+        "passed": true,
+        "failures": [],
+        "selection_status": "information",
+        "candidate_chains": [],
+        "recommendations": [
+          "wes_somatic_pair"
+        ],
+        "unsupported_reason": null,
+        "rejected_candidates": []
+      },
+      "error": null,
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "information",
+        "candidate_count": 0,
+        "candidates": [],
+        "recommendation_count": 1,
+        "recommendations": [
+          {
+            "rank": 1,
+            "match_id": "recommendation-2179f735fcfb610a",
+            "pipeline_id": "wes_somatic_pair",
+            "match_note": "完全匹配肿瘤-正常配对 WES 生成过滤并注释 somatic VCF 的端到端需求。",
+            "tool": {
+              "tool_id": "wes_somatic_pair",
+              "catalog_status": "missing_from_neo4j",
+              "source": "neo4j"
+            },
+            "data": {
+              "status": "available",
+              "source": "neo4j",
+              "assets": [
+                {
+                  "name": "HRR232644_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232644_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232644_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169394",
+                  "run_accession": "HRR232644",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232644_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 样本角色可识别",
+                  "sample_role": "tumor"
+                },
+                {
+                  "name": "HRR232645_f1.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_f1.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R1",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_f1.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                },
+                {
+                  "name": "HRR232645_r2.fastq.gz",
+                  "graph_status": "available",
+                  "source": "T1",
+                  "t2_id": null,
+                  "files": "HRR232645_r2.fastq.gz",
+                  "format": "Raw FASTQ",
+                  "strategy": "WES",
+                  "data_level": "1",
+                  "study_accession": "HRA000873",
+                  "sample_accession": "HRS169395",
+                  "run_accession": "HRR232645",
+                  "individual_accession": "HRI104775",
+                  "individual_name": "CRC1_NT",
+                  "sample_name": "CRC1_N1",
+                  "specimen_types": "Peritumoral",
+                  "read_pair": "R2",
+                  "file_path": "/mnt/CNCBOBdata/cbbgroup/tcoa/HRA000873/HRR232645_r2.fastq.gz",
+                  "match_reason": "格式匹配 Raw FASTQ; strategy 匹配 WES; 文件语义匹配: tumor; 样本角色可识别",
+                  "sample_role": "normal"
+                }
+              ],
+              "matched_count": 4,
+              "expected_count": 4,
+              "missing_asset_names": [],
+              "study_accessions": [
+                "HRA000873"
+              ]
+            },
+            "source": "llm+neo4j",
+            "reference_case_id": null
+          }
+        ],
+        "unsupported_reason": null,
+        "intent": {
+          "query_text": "肿瘤和正常配对 WES 四个 FASTQ，从质控比对开始，最终得到过滤并功能注释的 somatic VCF。",
+          "analysis_goal": null,
+          "disease": null,
+          "omics_type": "WES/MAF",
+          "input_hint": "fq.gz",
+          "quant_hint": null,
+          "requested_outputs": [
+            "vcf"
+          ],
+          "study_accessions": [],
+          "source": "rule",
+          "ambiguous": true
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 7550,
+          "completion_tokens": 1538,
+          "total_tokens": 9088,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "肿瘤与正常配对样本，共四个FASTQ（肿瘤 R1/R2，正常 R1/R2）。",
+          "data_path": "从配对 FASTQ 出发，经质控、比对、排序/去重、变异检测、过滤到功能注释 VCF，但当前合同不支持 GATK → BCFtools → SnpEff 完整链路。",
+          "coverage": "若合同支持，流程可完整覆盖质控、比对、体细胞变异检测、过滤及注释所有目标。",
+          "checks": "闭集和槽位均匹配，但标记为已知的 GATK-BCFtools-SnpEff 执行合同缺口阻止了候选链生成。"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "atomic_candidate_unavailable_reason": "当前执行合同尚不能把 GATK 的 VCF 传递至 BCFtools 及 SnpEff，故无法生成过滤并功能注释的 somatic VCF 原子链。",
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "返回 1 条业务流程及其 Neo4j 数据信息。"
+      }
+    }
+  ]
+}

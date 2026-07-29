@@ -1,0 +1,70 @@
+{
+  "双端 FASTQ RNA-seq 上游": {
+    "status": "ready/ready",
+    "mode": "standard",
+    "step_count": 0,
+    "steps": [],
+    "validation_ok": true,
+    "validation_errors": [],
+    "decomposition_gaps": []
+  },
+  "GO+KEGG 富集": {
+    "status": "ready/ready",
+    "mode": "standard",
+    "step_count": 0,
+    "steps": [],
+    "validation_ok": true,
+    "validation_errors": [],
+    "decomposition_gaps": []
+  },
+  "单样本 WES FASTQ": {
+    "status": "draft/draft",
+    "mode": "custom",
+    "step_count": 6,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "bwa",
+        "bwa"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "gatk",
+        "gatk"
+      ],
+      [
+        "bcftools",
+        "bcftools"
+      ],
+      [
+        "snpeff",
+        "snpeff"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": [],
+    "decomposition_gaps": []
+  },
+  "配对肿瘤正常 WES": {
+    "status": "no_match/no_match",
+    "mode": "custom",
+    "step_count": 0,
+    "steps": [],
+    "validation_ok": false,
+    "validation_errors": [
+      "所需内部方法尚未完成原子化拆解，当前方法目录无法忠实表达该修改",
+      "自定义模式没有有效方法步骤"
+    ],
+    "decomposition_gaps": [
+      {
+        "message": "配对样本汇合无法表达: gatk 在当前目录中只注册了 1 个 sorted_dedup_bam 输入槽，无法同时接收 tumor 和 normal 两个样本的 BAM。需要为 gatk 补充分样本输入槽（例如 sorted_dedup_bam_tumor 和 sorted_dedup_bam_normal），或改造为支持多输入的单槽。"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+modal,description
+clinical,Clinical data related scope
+genomic,Genomics related scope
+image,Imaging related scope
+metabolomic,Metabolomics related scope
+proteomic,Proteomics related scope
+transcriptomic,Transcriptomics related scope
+single-cell transcriptomic,single-cell transcriptomics related scope
+multiomic,General multiomics scope
+Clinical,临床数据模态。包含患者诊断、年龄、性别、病理信息、TNM分期、治疗方案、药物使用、随访、生存时间、结局事件及其他临床表型信息，主要用于临床统计、生存分析、临床关联分析及多组学整合分析。
+Meta,元数据模态。包含样本及实验相关的描述信息，如Sample ID、Patient ID、分组信息、批次、组织来源、测序平台、建库方式、物种、采集时间及其他实验设计信息，用于不同数据之间的关联、整合及追踪。
+RNA,Bulk RNA测序数据模态。包含RNA-seq产生的原始FASTQ、比对结果、基因表达矩阵、转录本表达矩阵、差异表达分析结果、富集分析结果及其他转录组分析数据，主要用于基因表达、功能分析、网络分析及免疫分析等。
+sc-RNA,单细胞RNA测序数据模态。包含单细胞RNA-seq原始测序数据、Barcode、UMI、表达矩阵、细胞注释、聚类结果、降维结果及细胞通讯分析等数据，用于研究细胞异质性、细胞类型识别、发育轨迹及细胞间相互作用。
+WES,全外显子组测序（Whole Exome Sequencing）数据模态。包含原始FASTQ、比对BAM、变异VCF、MAF注释文件、CNV、TMB、驱动基因分析及突变景观分析等数据，主要用于体细胞或胚系变异检测、功能注释、肿瘤基因组分析及精准医学研究。

@@ -1,0 +1,2035 @@
+{
+  "checks": [
+    {
+      "elapsed_ms": 358.7,
+      "exit_code": 0,
+      "id": "health_check",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {},
+          "name": "health_check"
+        }
+      },
+      "response": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"connected\": true,\n  \"version\": \"2026.06.0\",\n  \"database\": \"neo4j\",\n  \"latency_ms\": 197.3,\n  \"node_count\": 76883,\n  \"relationship_count\": 327641,\n  \"label_counts\": {\n    \"T2\": 38011,\n    \"T1\": 24518,\n    \"Sample\": 8640,\n    \"Individual\": 5335,\n    \"io_slot\": 111,\n    \"Function\": 63,\n    \"Tool\": 63,\n    \"IOSlot\": 56,\n    \"Format\": 42,\n    \"artifact_type\": 35,\n    \"function\": 35,\n    \"format\": 28,\n    \"tool_id\": 24,\n    \"Study\": 19,\n    \"Project\": 17,\n    \"ArtifactType\": 16,\n    \"Modal\": 5,\n    \"DataLevel\": 4\n  },\n  \"error\": null,\n  \"schema_version\": \"mcp-health/v1\",\n  \"data_matcher_mode\": \"neo4j\",\n  \"expected_snapshot_id\": \"dg-b23135d49c950d0846a563bc\",\n  \"snapshot_id\": null,\n  \"datagraph_node_count\": 76540,\n  \"expected_datagraph_node_count\": 32744,\n  \"tool_count\": 24,\n  \"expected_tool_count\": 24,\n  \"backend_schema\": \"legacy-update728\",\n  \"verification_level\": \"count_signature\",\n  \"legacy_label_counts\": {\n    \"Individual\": 5335,\n    \"Project\": 17,\n    \"Sample\": 8640,\n    \"Study\": 19,\n    \"T1\": 24518,\n    \"T2\": 38011\n  },\n  \"expected_legacy_label_counts\": {\n    \"Project\": 17,\n    \"Study\": 19,\n    \"Individual\": 5335,\n    \"Sample\": 8640,\n    \"T1\": 24518,\n    \"T2\": 38011\n  },\n  \"backend_snapshot\": null,\n  \"warnings\": [\n    \"backend_snapshot_missing\"\n  ],\n  \"ready\": true,\n  \"mcp_timing_ms\": 304.4\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "backend_schema": "legacy-update728",
+            "backend_snapshot": null,
+            "connected": true,
+            "data_matcher_mode": "neo4j",
+            "database": "neo4j",
+            "datagraph_node_count": 76540,
+            "error": null,
+            "expected_datagraph_node_count": 32744,
+            "expected_legacy_label_counts": {
+              "Individual": 5335,
+              "Project": 17,
+              "Sample": 8640,
+              "Study": 19,
+              "T1": 24518,
+              "T2": 38011
+            },
+            "expected_snapshot_id": "dg-b23135d49c950d0846a563bc",
+            "expected_tool_count": 24,
+            "label_counts": {
+              "ArtifactType": 16,
+              "DataLevel": 4,
+              "Format": 42,
+              "Function": 63,
+              "IOSlot": 56,
+              "Individual": 5335,
+              "Modal": 5,
+              "Project": 17,
+              "Sample": 8640,
+              "Study": 19,
+              "T1": 24518,
+              "T2": 38011,
+              "Tool": 63,
+              "artifact_type": 35,
+              "format": 28,
+              "function": 35,
+              "io_slot": 111,
+              "tool_id": 24
+            },
+            "latency_ms": 197.3,
+            "legacy_label_counts": {
+              "Individual": 5335,
+              "Project": 17,
+              "Sample": 8640,
+              "Study": 19,
+              "T1": 24518,
+              "T2": 38011
+            },
+            "mcp_timing_ms": 304.4,
+            "node_count": 76883,
+            "ready": true,
+            "relationship_count": 327641,
+            "schema_version": "mcp-health/v1",
+            "snapshot_id": null,
+            "tool_count": 24,
+            "verification_level": "count_signature",
+            "version": "2026.06.0",
+            "warnings": [
+              "backend_snapshot_missing"
+            ]
+          }
+        }
+      },
+      "response_chars": 2618,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true WITH collect(DISTINCT n.snapshot_id) AS snapshots,count(n) AS data_count OPTIONAL MATCH (t:tool_id) RETURN snapshots,data_count,count(t) AS tool_count'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 68, offset: 67} for query: 'MATCH (n) WHERE n.datagraph_managed = true WITH collect(DISTINCT n.snapshot_id) AS snapshots,count(n) AS data_count OPTIONAL MATCH (t:tool_id) RETURN snapshots,data_count,count(t) AS tool_count'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownLabelWarning} {category: UNRECOGNIZED} {title: The provided label is not in the database.} {description: One of the labels in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing label name is: BackendSnapshot)} {position: line: 1, column: 10, offset: 9} for query: 'MATCH (s:BackendSnapshot) RETURN properties(s) AS snapshot ORDER BY s.imported_at DESC LIMIT 1'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: imported_at)} {position: line: 1, column: 71, offset: 70} for query: 'MATCH (s:BackendSnapshot) RETURN properties(s) AS snapshot ORDER BY s.imported_at DESC LIMIT 1'\n"
+    },
+    {
+      "elapsed_ms": 6963.3,
+      "exit_code": 0,
+      "id": "list_pipeline_capabilities",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 2,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {},
+          "name": "list_pipeline_capabilities"
+        }
+      },
+      "response": {
+        "id": 2,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"source\": \"neo4j\",\n  \"pipeline_count\": 12,\n  \"pipelines\": [\n    {\n      \"tool_id\": \"diff_expr_go\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"diff_expr_go\",\n      \"inputs\": [\n        \"expression_matrix\"\n      ],\n      \"outputs\": [\n        \"differential_expression\",\n        \"go_enrichment\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"diff_expr_go\"\n      ]\n    },\n    {\n      \"tool_id\": \"diff_expr_kegg\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"diff_expr_kegg\",\n      \"inputs\": [\n        \"expression_matrix\"\n      ],\n      \"outputs\": [\n        \"differential_expression\",\n        \"reactome_enrichment\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"diff_expr_kegg\"\n      ]\n    },\n    {\n      \"tool_id\": \"driver_gene_gender_analysis\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"driver_gene_gender\",\n      \"inputs\": [\n        \"clinical_table\",\n        \"somatic_maf\",\n        \"sample_metainfo\"\n      ],\n      \"outputs\": [\n        \"figures\",\n        \"binary_mutation_matrix\",\n        \"gender_mutation_statistics\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"driver_gene_gender_analysis\"\n      ]\n    },\n    {\n      \"tool_id\": \"her2_pfs_survival\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"her2_pfs_survival\",\n      \"inputs\": [\n        \"clinical_survival\",\n        \"tpm_matrix\",\n        \"sample_metainfo\"\n      ],\n      \"outputs\": [\n        \"km_figures\",\n        \"pfs_statistics\",\n        \"summary\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"her2_pfs_survival\"\n      ]\n    },\n    {\n      \"tool_id\": \"immune_infiltration_iobr\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"immune_infiltration\",\n      \"inputs\": [\n        \"clinical_table\",\n        \"tpm_matrix\",\n        \"sample_metainfo\"\n      ],\n      \"outputs\": [\n        \"figures\",\n        \"immune_fractions\",\n        \"quality_control\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"immune_infiltration_iobr\"\n      ]\n    },\n    {\n      \"tool_id\": \"paired_fastq_to_unmapped_bam\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"fq_to_ubam\",\n      \"inputs\": [\n        \"fastq_1\",\n        \"fastq_2\"\n      ],\n      \"outputs\": [\n        \"unmapped_bam\",\n        \"file_list\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"paired_fastq_to_unmapped_bam\"\n      ]\n    },\n    {\n      \"tool_id\": \"rnaseq_singletask\",\n      \"tool_kind\": \"task_pipeline\",\n      \"name\": \"RNA-seq 单任务完整上游流程\",\n      \"inputs\": [\n        \"fastq_1\",\n        \"fastq_2\",\n        \"gtf_file\",\n        \"rrna_star_index\",\n        \"rsem_index\",\n        \"star_genome_index\"\n      ],\n      \"outputs\": [\n        \"aligned_bam\",\n        \"count_matrix\",\n        \"expression_matrix\",\n        \"quality_control\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_locked_recipe\",\n      \"internal_tool_ids\": [\n        \"fastqc\",\n        \"trim_galore\",\n        \"star\",\n        \"rsem\",\n        \"samtools\",\n        \"featurecounts\",\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"rnaseq_unsupervised_cluster\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"rnaseq_cluster\",\n      \"inputs\": [\n        \"count_matrix\"\n      ],\n      \"outputs\": [\n        \"cluster_assignments\",\n        \"figures\",\n        \"cluster_stability\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"rnaseq_unsupervised_cluster\"\n      ]\n    },\n    {\n      \"tool_id\": \"survival_analysis\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"survival_analysis\",\n      \"inputs\": [\n        \"clinical_survival\",\n        \"somatic_maf\",\n        \"sample_metainfo\"\n      ],\n      \"outputs\": [\n        \"km_figures\",\n        \"survival_statistics\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"survival_analysis\"\n      ]\n    },\n    {\n      \"tool_id\": \"tmb_survival_analysis\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"tmb_survival\",\n      \"inputs\": [\n        \"clinical_survival\",\n        \"somatic_maf\",\n        \"sample_metainfo\"\n      ],\n      \"outputs\": [\n        \"figures\",\n        \"survival_statistics\",\n        \"patient_tmb\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"tmb_survival_analysis\"\n      ]\n    },\n    {\n      \"tool_id\": \"wes_somatic_maf_landscape\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"wes_maf_landscape\",\n      \"inputs\": [\n        \"somatic_maf\"\n      ],\n      \"outputs\": [\n        \"landscape_figures\",\n        \"filtered_maf\",\n        \"mutation_statistics\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"wes_somatic_maf_landscape\"\n      ]\n    },\n    {\n      \"tool_id\": \"wgcna\",\n      \"tool_kind\": \"pipeline\",\n      \"name\": \"wgcna\",\n      \"inputs\": [\n        \"clinical_table\",\n        \"count_matrix\",\n        \"sample_metainfo\"\n      ],\n      \"outputs\": [\n        \"archives\",\n        \"figures\",\n        \"hub_genes\",\n        \"module_results\",\n        \"quality_control\"\n      ],\n      \"allowed_next_tool_ids\": [],\n      \"decomposition_status\": \"neo4j_pipeline_level_tool\",\n      \"internal_tool_ids\": [\n        \"wgcna\"\n      ]\n    }\n  ],\n  \"mcp_timing_ms\": 6877.4\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "mcp_timing_ms": 6877.4,
+            "pipeline_count": 12,
+            "pipelines": [
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "expression_matrix"
+                ],
+                "internal_tool_ids": [
+                  "diff_expr_go"
+                ],
+                "name": "diff_expr_go",
+                "outputs": [
+                  "differential_expression",
+                  "go_enrichment"
+                ],
+                "tool_id": "diff_expr_go",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "expression_matrix"
+                ],
+                "internal_tool_ids": [
+                  "diff_expr_kegg"
+                ],
+                "name": "diff_expr_kegg",
+                "outputs": [
+                  "differential_expression",
+                  "reactome_enrichment"
+                ],
+                "tool_id": "diff_expr_kegg",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "clinical_table",
+                  "somatic_maf",
+                  "sample_metainfo"
+                ],
+                "internal_tool_ids": [
+                  "driver_gene_gender_analysis"
+                ],
+                "name": "driver_gene_gender",
+                "outputs": [
+                  "figures",
+                  "binary_mutation_matrix",
+                  "gender_mutation_statistics"
+                ],
+                "tool_id": "driver_gene_gender_analysis",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "clinical_survival",
+                  "tpm_matrix",
+                  "sample_metainfo"
+                ],
+                "internal_tool_ids": [
+                  "her2_pfs_survival"
+                ],
+                "name": "her2_pfs_survival",
+                "outputs": [
+                  "km_figures",
+                  "pfs_statistics",
+                  "summary"
+                ],
+                "tool_id": "her2_pfs_survival",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "clinical_table",
+                  "tpm_matrix",
+                  "sample_metainfo"
+                ],
+                "internal_tool_ids": [
+                  "immune_infiltration_iobr"
+                ],
+                "name": "immune_infiltration",
+                "outputs": [
+                  "figures",
+                  "immune_fractions",
+                  "quality_control"
+                ],
+                "tool_id": "immune_infiltration_iobr",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "fastq_1",
+                  "fastq_2"
+                ],
+                "internal_tool_ids": [
+                  "paired_fastq_to_unmapped_bam"
+                ],
+                "name": "fq_to_ubam",
+                "outputs": [
+                  "unmapped_bam",
+                  "file_list"
+                ],
+                "tool_id": "paired_fastq_to_unmapped_bam",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_locked_recipe",
+                "inputs": [
+                  "fastq_1",
+                  "fastq_2",
+                  "gtf_file",
+                  "rrna_star_index",
+                  "rsem_index",
+                  "star_genome_index"
+                ],
+                "internal_tool_ids": [
+                  "fastqc",
+                  "trim_galore",
+                  "star",
+                  "rsem",
+                  "samtools",
+                  "featurecounts",
+                  "multiqc"
+                ],
+                "name": "RNA-seq 单任务完整上游流程",
+                "outputs": [
+                  "aligned_bam",
+                  "count_matrix",
+                  "expression_matrix",
+                  "quality_control"
+                ],
+                "tool_id": "rnaseq_singletask",
+                "tool_kind": "task_pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "count_matrix"
+                ],
+                "internal_tool_ids": [
+                  "rnaseq_unsupervised_cluster"
+                ],
+                "name": "rnaseq_cluster",
+                "outputs": [
+                  "cluster_assignments",
+                  "figures",
+                  "cluster_stability"
+                ],
+                "tool_id": "rnaseq_unsupervised_cluster",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "clinical_survival",
+                  "somatic_maf",
+                  "sample_metainfo"
+                ],
+                "internal_tool_ids": [
+                  "survival_analysis"
+                ],
+                "name": "survival_analysis",
+                "outputs": [
+                  "km_figures",
+                  "survival_statistics"
+                ],
+                "tool_id": "survival_analysis",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "clinical_survival",
+                  "somatic_maf",
+                  "sample_metainfo"
+                ],
+                "internal_tool_ids": [
+                  "tmb_survival_analysis"
+                ],
+                "name": "tmb_survival",
+                "outputs": [
+                  "figures",
+                  "survival_statistics",
+                  "patient_tmb"
+                ],
+                "tool_id": "tmb_survival_analysis",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "somatic_maf"
+                ],
+                "internal_tool_ids": [
+                  "wes_somatic_maf_landscape"
+                ],
+                "name": "wes_maf_landscape",
+                "outputs": [
+                  "landscape_figures",
+                  "filtered_maf",
+                  "mutation_statistics"
+                ],
+                "tool_id": "wes_somatic_maf_landscape",
+                "tool_kind": "pipeline"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "decomposition_status": "neo4j_pipeline_level_tool",
+                "inputs": [
+                  "clinical_table",
+                  "count_matrix",
+                  "sample_metainfo"
+                ],
+                "internal_tool_ids": [
+                  "wgcna"
+                ],
+                "name": "wgcna",
+                "outputs": [
+                  "archives",
+                  "figures",
+                  "hub_genes",
+                  "module_results",
+                  "quality_control"
+                ],
+                "tool_id": "wgcna",
+                "tool_kind": "pipeline"
+              }
+            ],
+            "source": "neo4j"
+          }
+        }
+      },
+      "response_chars": 10554,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    },
+    {
+      "elapsed_ms": 6929.7,
+      "exit_code": 0,
+      "id": "list_workflow_methods",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 3,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {},
+          "name": "list_workflow_methods"
+        }
+      },
+      "response": {
+        "id": 3,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"source\": \"neo4j\",\n  \"connected\": true,\n  \"error\": null,\n  \"atomic_tool_count\": 12,\n  \"pipeline_tool_count\": 12,\n  \"atomic_tools\": [\n    {\n      \"tool_id\": \"bcftools\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"BCFtools\",\n      \"inputs\": [\n        \"unfiltered_vcf\"\n      ],\n      \"outputs\": [\n        \"filtered_vcf\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"snpeff\"\n      ]\n    },\n    {\n      \"tool_id\": \"bwa\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"BWA\",\n      \"inputs\": [\n        \"clean_fastq_read\",\n        \"clean_fastq_read_r1\",\n        \"clean_fastq_read_r2\",\n        \"genome_annotation\"\n      ],\n      \"outputs\": [\n        \"aligned_bam\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"samtools\"\n      ]\n    },\n    {\n      \"tool_id\": \"fastp\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"fastp\",\n      \"inputs\": [\n        \"raw_fastq_read\",\n        \"raw_fastq_read_r1\",\n        \"raw_fastq_read_r2\"\n      ],\n      \"outputs\": [\n        \"clean_fastq_read\",\n        \"clean_fastq_read_r1\",\n        \"clean_fastq_read_r2\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"fastqc\",\n        \"bwa\",\n        \"star\",\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"fastqc\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"FastQC\",\n      \"inputs\": [\n        \"clean_fastq_read\",\n        \"raw_fastq_read\"\n      ],\n      \"outputs\": [\n        \"quality_control_report\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"fastp\",\n        \"bwa\",\n        \"trim_galore\",\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"featurecounts\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"featureCounts\",\n      \"inputs\": [\n        \"genome_annotation\",\n        \"sorted_dedup_bam\"\n      ],\n      \"outputs\": [\n        \"expression_count_matrix\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"gatk\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"GATK\",\n      \"inputs\": [\n        \"genome_annotation\",\n        \"interval_list\",\n        \"normal_bai\",\n        \"normal_bam\",\n        \"sorted_dedup_bam\",\n        \"tumor_bai\",\n        \"tumor_bam\"\n      ],\n      \"outputs\": [\n        \"sorted_dedup_bam\",\n        \"unfiltered_vcf\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"bcftools\",\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"multiqc\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"MultiQC\",\n      \"inputs\": [\n        \"quality_control_report\"\n      ],\n      \"outputs\": [\n        \"quality_control_report\"\n      ],\n      \"allowed_next_tool_ids\": []\n    },\n    {\n      \"tool_id\": \"rsem\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"RSEM\",\n      \"inputs\": [\n        \"genome_annotation\",\n        \"transcriptome_bam\"\n      ],\n      \"outputs\": [\n        \"expression_abundance_matrix\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"samtools\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"SAMtools\",\n      \"inputs\": [\n        \"aligned_bam\"\n      ],\n      \"outputs\": [\n        \"bai\",\n        \"sorted_dedup_bam\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"gatk\",\n        \"featurecounts\",\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"snpeff\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"SnpEff\",\n      \"inputs\": [\n        \"filtered_vcf\",\n        \"genome_annotation\"\n      ],\n      \"outputs\": [\n        \"annotated_vcf\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"star\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"STAR\",\n      \"inputs\": [\n        \"clean_fastq_read\",\n        \"genome_annotation\"\n      ],\n      \"outputs\": [\n        \"aligned_bam\",\n        \"clean_fastq_read\",\n        \"transcriptome_bam\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"samtools\",\n        \"rsem\",\n        \"multiqc\"\n      ]\n    },\n    {\n      \"tool_id\": \"trim_galore\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"Trim Galore\",\n      \"inputs\": [\n        \"raw_fastq_read\"\n      ],\n      \"outputs\": [\n        \"clean_fastq_read\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"star\"\n      ]\n    }\n  ],\n  \"pipeline_decomposition_status\": {\n    \"diff_expr_go\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"diff_expr_go\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"diff_expr_kegg\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"diff_expr_kegg\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"driver_gene_gender_analysis\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"driver_gene_gender_analysis\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"her2_pfs_survival\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"her2_pfs_survival\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"immune_infiltration_iobr\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"immune_infiltration_iobr\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"paired_fastq_to_unmapped_bam\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"paired_fastq_to_unmapped_bam\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"rnaseq_unsupervised_cluster\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"rnaseq_unsupervised_cluster\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"survival_analysis\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"survival_analysis\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"tmb_survival_analysis\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"tmb_survival_analysis\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"wes_somatic_maf_landscape\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"wes_somatic_maf_landscape\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"wgcna\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"wgcna\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"rnaseq_singletask\": {\n      \"status\": \"neo4j_locked_recipe\",\n      \"registered_units\": [\n        \"fastqc\",\n        \"trim_galore\",\n        \"star\",\n        \"rsem\",\n        \"samtools\",\n        \"featurecounts\",\n        \"multiqc\"\n      ],\n      \"source\": \"neo4j\"\n    }\n  },\n  \"mcp_timing_ms\": 6841.3\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "atomic_tool_count": 12,
+            "atomic_tools": [
+              {
+                "allowed_next_tool_ids": [
+                  "snpeff"
+                ],
+                "inputs": [
+                  "unfiltered_vcf"
+                ],
+                "name": "BCFtools",
+                "outputs": [
+                  "filtered_vcf"
+                ],
+                "tool_id": "bcftools",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "samtools"
+                ],
+                "inputs": [
+                  "clean_fastq_read",
+                  "clean_fastq_read_r1",
+                  "clean_fastq_read_r2",
+                  "genome_annotation"
+                ],
+                "name": "BWA",
+                "outputs": [
+                  "aligned_bam"
+                ],
+                "tool_id": "bwa",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "fastqc",
+                  "bwa",
+                  "star",
+                  "multiqc"
+                ],
+                "inputs": [
+                  "raw_fastq_read",
+                  "raw_fastq_read_r1",
+                  "raw_fastq_read_r2"
+                ],
+                "name": "fastp",
+                "outputs": [
+                  "clean_fastq_read",
+                  "clean_fastq_read_r1",
+                  "clean_fastq_read_r2"
+                ],
+                "tool_id": "fastp",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "fastp",
+                  "bwa",
+                  "trim_galore",
+                  "multiqc"
+                ],
+                "inputs": [
+                  "clean_fastq_read",
+                  "raw_fastq_read"
+                ],
+                "name": "FastQC",
+                "outputs": [
+                  "quality_control_report"
+                ],
+                "tool_id": "fastqc",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "multiqc"
+                ],
+                "inputs": [
+                  "genome_annotation",
+                  "sorted_dedup_bam"
+                ],
+                "name": "featureCounts",
+                "outputs": [
+                  "expression_count_matrix"
+                ],
+                "tool_id": "featurecounts",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "bcftools",
+                  "multiqc"
+                ],
+                "inputs": [
+                  "genome_annotation",
+                  "interval_list",
+                  "normal_bai",
+                  "normal_bam",
+                  "sorted_dedup_bam",
+                  "tumor_bai",
+                  "tumor_bam"
+                ],
+                "name": "GATK",
+                "outputs": [
+                  "sorted_dedup_bam",
+                  "unfiltered_vcf"
+                ],
+                "tool_id": "gatk",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [],
+                "inputs": [
+                  "quality_control_report"
+                ],
+                "name": "MultiQC",
+                "outputs": [
+                  "quality_control_report"
+                ],
+                "tool_id": "multiqc",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "multiqc"
+                ],
+                "inputs": [
+                  "genome_annotation",
+                  "transcriptome_bam"
+                ],
+                "name": "RSEM",
+                "outputs": [
+                  "expression_abundance_matrix"
+                ],
+                "tool_id": "rsem",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "gatk",
+                  "featurecounts",
+                  "multiqc"
+                ],
+                "inputs": [
+                  "aligned_bam"
+                ],
+                "name": "SAMtools",
+                "outputs": [
+                  "bai",
+                  "sorted_dedup_bam"
+                ],
+                "tool_id": "samtools",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "multiqc"
+                ],
+                "inputs": [
+                  "filtered_vcf",
+                  "genome_annotation"
+                ],
+                "name": "SnpEff",
+                "outputs": [
+                  "annotated_vcf"
+                ],
+                "tool_id": "snpeff",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "samtools",
+                  "rsem",
+                  "multiqc"
+                ],
+                "inputs": [
+                  "clean_fastq_read",
+                  "genome_annotation"
+                ],
+                "name": "STAR",
+                "outputs": [
+                  "aligned_bam",
+                  "clean_fastq_read",
+                  "transcriptome_bam"
+                ],
+                "tool_id": "star",
+                "tool_kind": "atomic"
+              },
+              {
+                "allowed_next_tool_ids": [
+                  "star"
+                ],
+                "inputs": [
+                  "raw_fastq_read"
+                ],
+                "name": "Trim Galore",
+                "outputs": [
+                  "clean_fastq_read"
+                ],
+                "tool_id": "trim_galore",
+                "tool_kind": "atomic"
+              }
+            ],
+            "connected": true,
+            "error": null,
+            "mcp_timing_ms": 6841.3,
+            "pipeline_decomposition_status": {
+              "diff_expr_go": {
+                "registered_units": [
+                  "diff_expr_go"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "diff_expr_kegg": {
+                "registered_units": [
+                  "diff_expr_kegg"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "driver_gene_gender_analysis": {
+                "registered_units": [
+                  "driver_gene_gender_analysis"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "her2_pfs_survival": {
+                "registered_units": [
+                  "her2_pfs_survival"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "immune_infiltration_iobr": {
+                "registered_units": [
+                  "immune_infiltration_iobr"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "paired_fastq_to_unmapped_bam": {
+                "registered_units": [
+                  "paired_fastq_to_unmapped_bam"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "rnaseq_singletask": {
+                "registered_units": [
+                  "fastqc",
+                  "trim_galore",
+                  "star",
+                  "rsem",
+                  "samtools",
+                  "featurecounts",
+                  "multiqc"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_locked_recipe"
+              },
+              "rnaseq_unsupervised_cluster": {
+                "registered_units": [
+                  "rnaseq_unsupervised_cluster"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "survival_analysis": {
+                "registered_units": [
+                  "survival_analysis"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "tmb_survival_analysis": {
+                "registered_units": [
+                  "tmb_survival_analysis"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "wes_somatic_maf_landscape": {
+                "registered_units": [
+                  "wes_somatic_maf_landscape"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              },
+              "wgcna": {
+                "registered_units": [
+                  "wgcna"
+                ],
+                "source": "neo4j",
+                "status": "neo4j_pipeline_level_tool"
+              }
+            },
+            "pipeline_tool_count": 12,
+            "source": "neo4j"
+          }
+        }
+      },
+      "response_chars": 11290,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    },
+    {
+      "elapsed_ms": 7003.0,
+      "exit_code": 0,
+      "id": "validate_tool_chain",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 4,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "steps": [
+              {
+                "inputs": {
+                  "raw_fastq_read": {
+                    "asset_role": "fastq_file"
+                  }
+                },
+                "step_id": "trim",
+                "tool_id": "fastp"
+              },
+              {
+                "inputs": {
+                  "clean_fastq_read": {
+                    "from": {
+                      "output": "clean_fastq_read",
+                      "step_id": "trim"
+                    }
+                  },
+                  "genome_annotation": {
+                    "asset_role": "reference_file"
+                  }
+                },
+                "step_id": "align",
+                "tool_id": "bwa"
+              }
+            ]
+          },
+          "name": "validate_tool_chain"
+        }
+      },
+      "response": {
+        "id": 4,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"schema_version\": \"tool-chain-validation/v1\",\n  \"mode\": \"neo4j_internal\",\n  \"valid\": true,\n  \"validation\": {\n    \"ok\": true,\n    \"errors\": [],\n    \"warnings\": [],\n    \"required_external_inputs\": []\n  },\n  \"normalized_steps\": [\n    {\n      \"order\": 1,\n      \"step_id\": \"trim\",\n      \"tool_id\": \"fastp\",\n      \"inputs\": {\n        \"raw_fastq_read\": {\n          \"asset_role\": \"fastq_file\"\n        }\n      },\n      \"depends_on\": [],\n      \"outputs\": [\n        {\n          \"name\": \"clean_fastq_read\",\n          \"type\": \"File\",\n          \"is_file\": true,\n          \"optional\": true,\n          \"artifact\": \"clean_fastq_read\",\n          \"formats\": [\n            \"html\",\n            \"fq.gz\",\n            \"json\"\n          ],\n          \"description\": \"Clean FASTQ\",\n          \"dimension\": \"mate\",\n          \"dimension_value\": \"r1\",\n          \"variant\": \"\",\n          \"variant_alias_for\": \"clean_fastq_read_r1\"\n        },\n        {\n          \"name\": \"clean_fastq_read_r1\",\n          \"type\": \"File\",\n          \"is_file\": true,\n          \"optional\": true,\n          \"artifact\": \"clean_fastq_read\",\n          \"formats\": [\n            \"fq.gz\"\n          ],\n          \"description\": \"clean_fastq_read_r1\",\n          \"dimension\": \"mate\",\n          \"dimension_value\": \"r1\",\n          \"variant\": \"\",\n          \"variant_alias_for\": \"\"\n        },\n        {\n          \"name\": \"clean_fastq_read_r2\",\n          \"type\": \"File\",\n          \"is_file\": true,\n          \"optional\": true,\n          \"artifact\": \"clean_fastq_read\",\n          \"formats\": [\n            \"fq.gz\"\n          ],\n          \"description\": \"clean_fastq_read_r2\",\n          \"dimension\": \"mate\",\n          \"dimension_value\": \"r2\",\n          \"variant\": \"\",\n          \"variant_alias_for\": \"\"\n        }\n      ]\n    },\n    {\n      \"order\": 2,\n      \"step_id\": \"align\",\n      \"tool_id\": \"bwa\",\n      \"inputs\": {\n        \"clean_fastq_read\": {\n          \"from\": {\n            \"step_id\": \"trim\",\n            \"output\": \"clean_fastq_read\"\n          }\n        },\n        \"genome_annotation\": {\n          \"asset_role\": \"reference_file\"\n        }\n      },\n      \"depends_on\": [],\n      \"outputs\": [\n        {\n          \"name\": \"aligned_bam\",\n          \"type\": \"File\",\n          \"is_file\": true,\n          \"optional\": true,\n          \"artifact\": \"aligned_bam\",\n          \"formats\": [\n            \"bam\",\n            \"sam\"\n          ],\n          \"description\": \"Aligned SAM/BAM\",\n          \"dimension\": \"\",\n          \"dimension_value\": \"\",\n          \"variant\": \"\",\n          \"variant_alias_for\": \"\"\n        }\n      ]\n    }\n  ],\n  \"mcp_timing_ms\": 6911.5\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "mcp_timing_ms": 6911.5,
+            "mode": "neo4j_internal",
+            "normalized_steps": [
+              {
+                "depends_on": [],
+                "inputs": {
+                  "raw_fastq_read": {
+                    "asset_role": "fastq_file"
+                  }
+                },
+                "order": 1,
+                "outputs": [
+                  {
+                    "artifact": "clean_fastq_read",
+                    "description": "Clean FASTQ",
+                    "dimension": "mate",
+                    "dimension_value": "r1",
+                    "formats": [
+                      "html",
+                      "fq.gz",
+                      "json"
+                    ],
+                    "is_file": true,
+                    "name": "clean_fastq_read",
+                    "optional": true,
+                    "type": "File",
+                    "variant": "",
+                    "variant_alias_for": "clean_fastq_read_r1"
+                  },
+                  {
+                    "artifact": "clean_fastq_read",
+                    "description": "clean_fastq_read_r1",
+                    "dimension": "mate",
+                    "dimension_value": "r1",
+                    "formats": [
+                      "fq.gz"
+                    ],
+                    "is_file": true,
+                    "name": "clean_fastq_read_r1",
+                    "optional": true,
+                    "type": "File",
+                    "variant": "",
+                    "variant_alias_for": ""
+                  },
+                  {
+                    "artifact": "clean_fastq_read",
+                    "description": "clean_fastq_read_r2",
+                    "dimension": "mate",
+                    "dimension_value": "r2",
+                    "formats": [
+                      "fq.gz"
+                    ],
+                    "is_file": true,
+                    "name": "clean_fastq_read_r2",
+                    "optional": true,
+                    "type": "File",
+                    "variant": "",
+                    "variant_alias_for": ""
+                  }
+                ],
+                "step_id": "trim",
+                "tool_id": "fastp"
+              },
+              {
+                "depends_on": [],
+                "inputs": {
+                  "clean_fastq_read": {
+                    "from": {
+                      "output": "clean_fastq_read",
+                      "step_id": "trim"
+                    }
+                  },
+                  "genome_annotation": {
+                    "asset_role": "reference_file"
+                  }
+                },
+                "order": 2,
+                "outputs": [
+                  {
+                    "artifact": "aligned_bam",
+                    "description": "Aligned SAM/BAM",
+                    "dimension": "",
+                    "dimension_value": "",
+                    "formats": [
+                      "bam",
+                      "sam"
+                    ],
+                    "is_file": true,
+                    "name": "aligned_bam",
+                    "optional": true,
+                    "type": "File",
+                    "variant": "",
+                    "variant_alias_for": ""
+                  }
+                ],
+                "step_id": "align",
+                "tool_id": "bwa"
+              }
+            ],
+            "schema_version": "tool-chain-validation/v1",
+            "valid": true,
+            "validation": {
+              "errors": [],
+              "ok": true,
+              "required_external_inputs": [],
+              "warnings": []
+            }
+          }
+        }
+      },
+      "response_chars": 4540,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    },
+    {
+      "elapsed_ms": 8705.0,
+      "exit_code": 0,
+      "id": "query_data_availability",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 5,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "intent": {
+              "input_hint": "FASTQ",
+              "omics_type": "bulk RNA-seq",
+              "query_text": "paired RNA-seq FASTQ"
+            },
+            "pipeline_ids": [
+              "rnaseq_singletask"
+            ]
+          },
+          "name": "query_data_availability"
+        }
+      },
+      "response": {
+        "id": 5,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"schema_version\": \"data-availability/v1\",\n  \"status\": \"available\",\n  \"request_mode\": \"pipeline_ids\",\n  \"data_matcher_mode\": \"neo4j\",\n  \"matched_data\": {\n    \"data_schema\": \"legacy-update728\",\n    \"cohort_candidates\": [\n      {\n        \"study_accession\": \"HRA000073\",\n        \"title\": \"Chinese Glioma Genome Altas (CGGA)\",\n        \"tumor_type\": \"malignant glioma\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": null,\n        \"project_accession\": \"PRJCA001746\",\n        \"project_name\": \"Chinese Glioma Genome Altas (CGGA) - RNA-seq dataset (325)\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA000074\",\n        \"title\": \"Chinese Glioma Genome Altas (CGGA)\",\n        \"tumor_type\": \"malignant glioma\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": 572,\n        \"project_accession\": \"PRJCA001747\",\n        \"project_name\": \"Chinese Glioma Genome Altas (CGGA) - RNA-seq dataset (693)\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA000087\",\n        \"title\": \"This project includes scRNA-seq, WGS and bulk RNA-seq data for NPC and Exon-seq, WGBS, EBV tageted-seq for EBV+GC\",\n        \"tumor_type\": \"nasopharynx carcinoma\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": null,\n        \"project_accession\": \"PRJCA001868\",\n        \"project_name\": \"Single-cell RNA analysis reveals an epithelial-immune dual feature of tumor cells in nasopharyngeal carcinoma\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA001748\",\n        \"title\": \"DAC for scPLC_A160\",\n        \"tumor_type\": \"liver cancer\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": 160,\n        \"project_accession\": \"PRJCA007744\",\n        \"project_name\": \"scRNA-seq of liver cancer\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA001749\",\n        \"title\": \"DAC for scPLC_A160\",\n        \"tumor_type\": \"liver cancer\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": 178,\n        \"project_accession\": \"PRJCA007744\",\n        \"project_name\": \"scRNA-seq of liver cancer\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA002693\",\n        \"title\": \"Shanghai Institute of Hematology, State Key Laboratory of Medical Genomics, National Research Center for Translational Medicine at Shanghai, Ruijin Hospital Affiliated to Shanghai Jiao Tong University School of Medicine, Shanghai, 200025, China\",\n        \"tumor_type\": \"acute myeloid leukemia\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": null,\n        \"project_accession\": \"PRJCA010519\",\n        \"project_name\": \"Multi-center RNA sequencing analysis for acute myeloid leukemia\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA007167\",\n        \"title\": \"DAC for AM data\",\n        \"tumor_type\": \"melanoma\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": 168,\n        \"project_accession\": \"PRJCA025155\",\n        \"project_name\": \"Multi-omics of acral melanoma\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA016026\",\n        \"title\": \"CBB\",\n        \"tumor_type\": \"lung cancer\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": null,\n        \"project_accession\": \"PRJCA052682\",\n        \"project_name\": \"Multi-omics Landscape of Central Nervous System Tumors\",\n        \"match_reason\": \"组学描述匹配; strategy 匹配 RNA-Seq\"\n      },\n      {\n        \"study_accession\": \"HRA000021\",\n        \"title\": \"ESCC WGS study\",\n        \"tumor_type\": \"esophageal cancer\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": 1016,\n        \"project_accession\": \"PRJCA002760\",\n        \"project_name\": \"Whole Genome Sequencing  in Esophageal Squamous Cell Carcinoma\",\n        \"match_reason\": \"与请求的数据类型相符\"\n      },\n      {\n        \"study_accession\": \"HRA000071\",\n        \"title\": \"Chinese Glioma Genome Altas (CGGA) - WES dataset\",\n        \"tumor_type\": \"malignant glioma\",\n        \"study_type\": \"Disease Study\",\n        \"sample_count\": 572,\n        \"project_accession\": \"PRJCA001636\",\n        \"project_name\": \"Chinese Glioma Genome Altas (CGGA) - WES dataset\",\n        \"match_reason\": \"与请求的数据类型相符\"\n      }\n    ],\n    \"file_candidates\": [\n      {\n        \"source\": \"T1\",\n        \"t2_id\": null,\n        \"file_id\": \"HRR1725000_f1.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n        \"file_name\": \"HRR1725000_f1.fastq.gz\",\n        \"files\": \"HRR1725000_f1.fastq.gz\",\n        \"format\": \"RAW_PAIRED_END_R1_FASTQ\",\n        \"strategy\": \"RNA-Seq\",\n        \"data_level\": \"1\",\n        \"study_accession\": \"\",\n        \"sample_accession\": \"HRS1217810\",\n        \"run_accession\": \"HRR1725000\",\n        \"individual_accession\": \"HRI956487\",\n        \"individual_name\": \"AM100.T\",\n        \"sample_name\": \"AM100.T\",\n        \"specimen_types\": \"Patient Solid Tissue\",\n        \"read_pair\": \"R1\",\n        \"file_path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n        \"match_reason\": \"格式匹配 RAW_PAIRED_END_R1_FASTQ; strategy 匹配 RNA-Seq\",\n        \"input_role\": \"fastq\"\n      },\n      {\n        \"source\": \"T1\",\n        \"t2_id\": null,\n        \"file_id\": \"HRR1725000_r2.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n        \"file_name\": \"HRR1725000_r2.fastq.gz\",\n        \"files\": \"HRR1725000_r2.fastq.gz\",\n        \"format\": \"RAW_PAIRED_END_R2_FASTQ\",\n        \"strategy\": \"RNA-Seq\",\n        \"data_level\": \"1\",\n        \"study_accession\": \"\",\n        \"sample_accession\": \"HRS1217810\",\n        \"run_accession\": \"HRR1725000\",\n        \"individual_accession\": \"HRI956487\",\n        \"individual_name\": \"AM100.T\",\n        \"sample_name\": \"AM100.T\",\n        \"specimen_types\": \"Patient Solid Tissue\",\n        \"read_pair\": \"R2\",\n        \"file_path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n        \"match_reason\": \"格式匹配 RAW_PAIRED_END_R2_FASTQ; strategy 匹配 RNA-Seq\",\n        \"input_role\": \"fastq\"\n      }\n    ],\n    \"data_combinations\": [\n      {\n        \"pipeline_id\": \"rnaseq_singletask\",\n        \"study_accession\": \"unknown\",\n        \"kind\": \"paired_fastq\",\n        \"files\": [\n          {\n            \"source\": \"T1\",\n            \"t2_id\": null,\n            \"file_id\": \"HRR1725000_f1.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n            \"file_name\": \"HRR1725000_f1.fastq.gz\",\n            \"files\": \"HRR1725000_f1.fastq.gz\",\n            \"format\": \"RAW_PAIRED_END_R1_FASTQ\",\n            \"strategy\": \"RNA-Seq\",\n            \"data_level\": \"1\",\n            \"study_accession\": \"\",\n            \"sample_accession\": \"HRS1217810\",\n            \"run_accession\": \"HRR1725000\",\n            \"individual_accession\": \"HRI956487\",\n            \"individual_name\": \"AM100.T\",\n            \"sample_name\": \"AM100.T\",\n            \"specimen_types\": \"Patient Solid Tissue\",\n            \"read_pair\": \"R1\",\n            \"file_path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n            \"match_reason\": \"格式匹配 RAW_PAIRED_END_R1_FASTQ; strategy 匹配 RNA-Seq\"\n          },\n          {\n            \"source\": \"T1\",\n            \"t2_id\": null,\n            \"file_id\": \"HRR1725000_r2.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n            \"file_name\": \"HRR1725000_r2.fastq.gz\",\n            \"files\": \"HRR1725000_r2.fastq.gz\",\n            \"format\": \"RAW_PAIRED_END_R2_FASTQ\",\n            \"strategy\": \"RNA-Seq\",\n            \"data_level\": \"1\",\n            \"study_accession\": \"\",\n            \"sample_accession\": \"HRS1217810\",\n            \"run_accession\": \"HRR1725000\",\n            \"individual_accession\": \"HRI956487\",\n            \"individual_name\": \"AM100.T\",\n            \"sample_name\": \"AM100.T\",\n            \"specimen_types\": \"Patient Solid Tissue\",\n            \"read_pair\": \"R2\",\n            \"file_path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n            \"match_reason\": \"格式匹配 RAW_PAIRED_END_R2_FASTQ; strategy 匹配 RNA-Seq\"\n          }\n        ],\n        \"match_reason\": \"找到同源 R1/R2 FASTQ 输入组合\"\n      }\n    ],\n    \"query_constraints\": {\n      \"disease\": null,\n      \"omics_type\": \"bulk RNA-seq\",\n      \"formats\": [\n        \"FASTQ\",\n        \"fastq.gz\",\n        \"fq.gz\"\n      ],\n      \"strategies\": [\n        \"RNA-Seq\"\n      ],\n      \"file_terms\": [\n        \"FastQC\",\n        \"FeatureCounts\",\n        \"RSEM\",\n        \"STAR\"\n      ],\n      \"study_accessions\": []\n    },\n    \"counts\": {\n      \"cohort_candidates\": 10,\n      \"file_candidates\": 2,\n      \"backup_file_candidates\": 10,\n      \"data_combinations\": 1\n    }\n  },\n  \"feasibility\": {\n    \"ok\": true,\n    \"required_roles\": [\n      \"fastq\"\n    ],\n    \"present_roles\": [\n      \"fastq\"\n    ],\n    \"missing_roles\": [],\n    \"required_file_count\": 2,\n    \"actual_file_count\": 2,\n    \"message\": \"所需数据角色齐全，可以执行。\"\n  },\n  \"mcp_timing_ms\": 8613.0\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "data_matcher_mode": "neo4j",
+            "feasibility": {
+              "actual_file_count": 2,
+              "message": "所需数据角色齐全，可以执行。",
+              "missing_roles": [],
+              "ok": true,
+              "present_roles": [
+                "fastq"
+              ],
+              "required_file_count": 2,
+              "required_roles": [
+                "fastq"
+              ]
+            },
+            "matched_data": {
+              "cohort_candidates": [
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA001746",
+                  "project_name": "Chinese Glioma Genome Altas (CGGA) - RNA-seq dataset (325)",
+                  "sample_count": null,
+                  "study_accession": "HRA000073",
+                  "study_type": "Disease Study",
+                  "title": "Chinese Glioma Genome Altas (CGGA)",
+                  "tumor_type": "malignant glioma"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA001747",
+                  "project_name": "Chinese Glioma Genome Altas (CGGA) - RNA-seq dataset (693)",
+                  "sample_count": 572,
+                  "study_accession": "HRA000074",
+                  "study_type": "Disease Study",
+                  "title": "Chinese Glioma Genome Altas (CGGA)",
+                  "tumor_type": "malignant glioma"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA001868",
+                  "project_name": "Single-cell RNA analysis reveals an epithelial-immune dual feature of tumor cells in nasopharyngeal carcinoma",
+                  "sample_count": null,
+                  "study_accession": "HRA000087",
+                  "study_type": "Disease Study",
+                  "title": "This project includes scRNA-seq, WGS and bulk RNA-seq data for NPC and Exon-seq, WGBS, EBV tageted-seq for EBV+GC",
+                  "tumor_type": "nasopharynx carcinoma"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA007744",
+                  "project_name": "scRNA-seq of liver cancer",
+                  "sample_count": 160,
+                  "study_accession": "HRA001748",
+                  "study_type": "Disease Study",
+                  "title": "DAC for scPLC_A160",
+                  "tumor_type": "liver cancer"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA007744",
+                  "project_name": "scRNA-seq of liver cancer",
+                  "sample_count": 178,
+                  "study_accession": "HRA001749",
+                  "study_type": "Disease Study",
+                  "title": "DAC for scPLC_A160",
+                  "tumor_type": "liver cancer"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA010519",
+                  "project_name": "Multi-center RNA sequencing analysis for acute myeloid leukemia",
+                  "sample_count": null,
+                  "study_accession": "HRA002693",
+                  "study_type": "Disease Study",
+                  "title": "Shanghai Institute of Hematology, State Key Laboratory of Medical Genomics, National Research Center for Translational Medicine at Shanghai, Ruijin Hospital Affiliated to Shanghai Jiao Tong University School of Medicine, Shanghai, 200025, China",
+                  "tumor_type": "acute myeloid leukemia"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA025155",
+                  "project_name": "Multi-omics of acral melanoma",
+                  "sample_count": 168,
+                  "study_accession": "HRA007167",
+                  "study_type": "Disease Study",
+                  "title": "DAC for AM data",
+                  "tumor_type": "melanoma"
+                },
+                {
+                  "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq",
+                  "project_accession": "PRJCA052682",
+                  "project_name": "Multi-omics Landscape of Central Nervous System Tumors",
+                  "sample_count": null,
+                  "study_accession": "HRA016026",
+                  "study_type": "Disease Study",
+                  "title": "CBB",
+                  "tumor_type": "lung cancer"
+                },
+                {
+                  "match_reason": "与请求的数据类型相符",
+                  "project_accession": "PRJCA002760",
+                  "project_name": "Whole Genome Sequencing  in Esophageal Squamous Cell Carcinoma",
+                  "sample_count": 1016,
+                  "study_accession": "HRA000021",
+                  "study_type": "Disease Study",
+                  "title": "ESCC WGS study",
+                  "tumor_type": "esophageal cancer"
+                },
+                {
+                  "match_reason": "与请求的数据类型相符",
+                  "project_accession": "PRJCA001636",
+                  "project_name": "Chinese Glioma Genome Altas (CGGA) - WES dataset",
+                  "sample_count": 572,
+                  "study_accession": "HRA000071",
+                  "study_type": "Disease Study",
+                  "title": "Chinese Glioma Genome Altas (CGGA) - WES dataset",
+                  "tumor_type": "malignant glioma"
+                }
+              ],
+              "counts": {
+                "backup_file_candidates": 10,
+                "cohort_candidates": 10,
+                "data_combinations": 1,
+                "file_candidates": 2
+              },
+              "data_combinations": [
+                {
+                  "files": [
+                    {
+                      "data_level": "1",
+                      "file_id": "HRR1725000_f1.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                      "file_name": "HRR1725000_f1.fastq.gz",
+                      "file_path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                      "files": "HRR1725000_f1.fastq.gz",
+                      "format": "RAW_PAIRED_END_R1_FASTQ",
+                      "individual_accession": "HRI956487",
+                      "individual_name": "AM100.T",
+                      "match_reason": "格式匹配 RAW_PAIRED_END_R1_FASTQ; strategy 匹配 RNA-Seq",
+                      "read_pair": "R1",
+                      "run_accession": "HRR1725000",
+                      "sample_accession": "HRS1217810",
+                      "sample_name": "AM100.T",
+                      "source": "T1",
+                      "specimen_types": "Patient Solid Tissue",
+                      "strategy": "RNA-Seq",
+                      "study_accession": "",
+                      "t2_id": null
+                    },
+                    {
+                      "data_level": "1",
+                      "file_id": "HRR1725000_r2.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                      "file_name": "HRR1725000_r2.fastq.gz",
+                      "file_path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                      "files": "HRR1725000_r2.fastq.gz",
+                      "format": "RAW_PAIRED_END_R2_FASTQ",
+                      "individual_accession": "HRI956487",
+                      "individual_name": "AM100.T",
+                      "match_reason": "格式匹配 RAW_PAIRED_END_R2_FASTQ; strategy 匹配 RNA-Seq",
+                      "read_pair": "R2",
+                      "run_accession": "HRR1725000",
+                      "sample_accession": "HRS1217810",
+                      "sample_name": "AM100.T",
+                      "source": "T1",
+                      "specimen_types": "Patient Solid Tissue",
+                      "strategy": "RNA-Seq",
+                      "study_accession": "",
+                      "t2_id": null
+                    }
+                  ],
+                  "kind": "paired_fastq",
+                  "match_reason": "找到同源 R1/R2 FASTQ 输入组合",
+                  "pipeline_id": "rnaseq_singletask",
+                  "study_accession": "unknown"
+                }
+              ],
+              "data_schema": "legacy-update728",
+              "file_candidates": [
+                {
+                  "data_level": "1",
+                  "file_id": "HRR1725000_f1.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                  "file_name": "HRR1725000_f1.fastq.gz",
+                  "file_path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                  "files": "HRR1725000_f1.fastq.gz",
+                  "format": "RAW_PAIRED_END_R1_FASTQ",
+                  "individual_accession": "HRI956487",
+                  "individual_name": "AM100.T",
+                  "input_role": "fastq",
+                  "match_reason": "格式匹配 RAW_PAIRED_END_R1_FASTQ; strategy 匹配 RNA-Seq",
+                  "read_pair": "R1",
+                  "run_accession": "HRR1725000",
+                  "sample_accession": "HRS1217810",
+                  "sample_name": "AM100.T",
+                  "source": "T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "strategy": "RNA-Seq",
+                  "study_accession": "",
+                  "t2_id": null
+                },
+                {
+                  "data_level": "1",
+                  "file_id": "HRR1725000_r2.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                  "file_name": "HRR1725000_r2.fastq.gz",
+                  "file_path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                  "files": "HRR1725000_r2.fastq.gz",
+                  "format": "RAW_PAIRED_END_R2_FASTQ",
+                  "individual_accession": "HRI956487",
+                  "individual_name": "AM100.T",
+                  "input_role": "fastq",
+                  "match_reason": "格式匹配 RAW_PAIRED_END_R2_FASTQ; strategy 匹配 RNA-Seq",
+                  "read_pair": "R2",
+                  "run_accession": "HRR1725000",
+                  "sample_accession": "HRS1217810",
+                  "sample_name": "AM100.T",
+                  "source": "T1",
+                  "specimen_types": "Patient Solid Tissue",
+                  "strategy": "RNA-Seq",
+                  "study_accession": "",
+                  "t2_id": null
+                }
+              ],
+              "query_constraints": {
+                "disease": null,
+                "file_terms": [
+                  "FastQC",
+                  "FeatureCounts",
+                  "RSEM",
+                  "STAR"
+                ],
+                "formats": [
+                  "FASTQ",
+                  "fastq.gz",
+                  "fq.gz"
+                ],
+                "omics_type": "bulk RNA-seq",
+                "strategies": [
+                  "RNA-Seq"
+                ],
+                "study_accessions": []
+              }
+            },
+            "mcp_timing_ms": 8613.0,
+            "request_mode": "pipeline_ids",
+            "schema_version": "data-availability/v1",
+            "status": "available"
+          }
+        }
+      },
+      "response_chars": 16861,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    },
+    {
+      "elapsed_ms": 9420.5,
+      "exit_code": 0,
+      "id": "route_pipeline_request",
+      "notifications": [
+        {
+          "jsonrpc": "2.0",
+          "method": "notifications/progress",
+          "params": {
+            "message": "started",
+            "progress": 0,
+            "progressToken": "smoke-route",
+            "total": 1
+          }
+        },
+        {
+          "jsonrpc": "2.0",
+          "method": "notifications/progress",
+          "params": {
+            "message": "completed",
+            "progress": 1,
+            "progressToken": "smoke-route",
+            "total": 1
+          }
+        }
+      ],
+      "ok": true,
+      "request": {
+        "id": 6,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "_meta": {
+            "progressToken": "smoke-route"
+          },
+          "arguments": {
+            "query": "我有双端 FASTQ 想做 RNA-seq 上游分析"
+          },
+          "name": "route_pipeline_request"
+        }
+      },
+      "response": {
+        "id": 6,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"schema_version\": \"tool-chain/v2\",\n  \"selection_status\": \"ready\",\n  \"candidate_count\": 1,\n  \"candidates\": [\n    {\n      \"rank\": 1,\n      \"match_note\": \"确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。\",\n      \"workflow_mode\": \"custom\",\n      \"match_id\": \"match-fcf2c9701416bb58\",\n      \"validation_ok\": true,\n      \"feasibility_status\": \"ready\",\n      \"study_accession\": \"unknown\",\n      \"assets\": [\n        {\n          \"asset_id\": \"asset-fastq_r1-1\",\n          \"role\": \"fastq_r1\",\n          \"path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n          \"format\": \"RAW_PAIRED_END_R1_FASTQ\",\n          \"path_verified\": false,\n          \"source\": \"T1\",\n          \"sample_accession\": \"HRS1217810\",\n          \"run_accession\": \"HRR1725000\",\n          \"individual_accession\": \"HRI956487\",\n          \"sample_role\": null,\n          \"mate\": \"r1\"\n        },\n        {\n          \"asset_id\": \"asset-fastq_r2-2\",\n          \"role\": \"fastq_r2\",\n          \"path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n          \"format\": \"RAW_PAIRED_END_R2_FASTQ\",\n          \"path_verified\": false,\n          \"source\": \"T1\",\n          \"sample_accession\": \"HRS1217810\",\n          \"run_accession\": \"HRR1725000\",\n          \"individual_accession\": \"HRI956487\",\n          \"sample_role\": null,\n          \"mate\": \"r2\"\n        }\n      ],\n      \"tool_chain\": [\n        {\n          \"step_id\": \"fastp\",\n          \"tool_id\": \"fastp_paired_end\",\n          \"inputs\": {\n            \"read1\": {\n              \"asset_id\": \"asset-fastq_r1-1\"\n            },\n            \"read2\": {\n              \"asset_id\": \"asset-fastq_r2-2\"\n            },\n            \"sample_id\": {\n              \"value\": \"fastp\"\n            }\n          },\n          \"depends_on\": []\n        },\n        {\n          \"step_id\": \"star\",\n          \"tool_id\": \"star_rrna_and_genome_alignment\",\n          \"inputs\": {\n            \"read1\": {\n              \"from\": {\n                \"step_id\": \"fastp\",\n                \"output\": \"trimmed_r1\"\n              }\n            },\n            \"read2\": {\n              \"from\": {\n                \"step_id\": \"fastp\",\n                \"output\": \"trimmed_r2\"\n              }\n            }\n          },\n          \"depends_on\": []\n        },\n        {\n          \"step_id\": \"rsem\",\n          \"tool_id\": \"rsem_quantification\",\n          \"inputs\": {\n            \"transcriptome_bam\": {\n              \"from\": {\n                \"step_id\": \"star\",\n                \"output\": \"transcriptome_bam\"\n              }\n            },\n            \"paired_end\": {\n              \"value\": true\n            }\n          },\n          \"depends_on\": []\n        },\n        {\n          \"step_id\": \"samtools\",\n          \"tool_id\": \"samtools_alignment_processing\",\n          \"inputs\": {\n            \"alignment\": {\n              \"from\": {\n                \"step_id\": \"star\",\n                \"output\": \"genome_bam\"\n              }\n            },\n            \"sample_id\": {\n              \"value\": \"samtools\"\n            },\n            \"remove_duplicates\": {\n              \"value\": true\n            }\n          },\n          \"depends_on\": [\n            \"star\"\n          ]\n        },\n        {\n          \"step_id\": \"featurecounts\",\n          \"tool_id\": \"featurecounts_gene_counting\",\n          \"inputs\": {\n            \"bam\": {\n              \"from\": {\n                \"step_id\": \"samtools\",\n                \"output\": \"sorted_bam\"\n              }\n            },\n            \"paired_end\": {\n              \"value\": true\n            }\n          },\n          \"depends_on\": [\n            \"samtools\"\n          ]\n        },\n        {\n          \"step_id\": \"multiqc\",\n          \"tool_id\": \"multiqc\",\n          \"inputs\": {\n            \"qc_files\": {\n              \"sources\": [\n                {\n                  \"from\": {\n                    \"step_id\": \"fastp\",\n                    \"output\": \"html_report\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"fastp\",\n                    \"output\": \"json_report\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"rsem\",\n                    \"output\": \"stat_files\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"rsem\",\n                    \"output\": \"rsem_log\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"samtools\",\n                    \"output\": \"flagstat\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"samtools\",\n                    \"output\": \"stats\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"samtools\",\n                    \"output\": \"idxstats\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"samtools\",\n                    \"output\": \"markdup_metrics\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"featurecounts\",\n                    \"output\": \"summary\"\n                  }\n                },\n                {\n                  \"from\": {\n                    \"step_id\": \"featurecounts\",\n                    \"output\": \"featurecounts_log\"\n                  }\n                }\n              ],\n              \"flatten\": true\n            }\n          },\n          \"depends_on\": [\n            \"fastp\",\n            \"rsem\",\n            \"featurecounts\"\n          ]\n        }\n      ],\n      \"selection_reason\": \"确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。\",\n      \"extensions\": {\n        \"paired_wes_matcher\": false,\n        \"required_asset_roles\": [\n          \"fastq_r1\",\n          \"fastq_r2\"\n        ],\n        \"internal_tool_ids\": [\n          \"fastp\",\n          \"star\",\n          \"rsem\",\n          \"samtools\",\n          \"featurecounts\",\n          \"multiqc\"\n        ],\n        \"data_combination\": {\n          \"kind\": \"custom_role_bundle\",\n          \"study_accession\": \"unknown\",\n          \"match_reason\": \"满足已校验自定义工具链的数据角色\"\n        },\n        \"contract_validation\": {\n          \"ok\": true,\n          \"errors\": [],\n          \"internal_catalog\": {\n            \"ok\": true,\n            \"errors\": []\n          },\n          \"knowledge_card\": {\n            \"ok\": true,\n            \"errors\": []\n          }\n        }\n      }\n    }\n  ],\n  \"recommendation_count\": 1,\n  \"recommendations\": [\n    {\n      \"rank\": 1,\n      \"match_id\": \"recommendation-127bb0bae366f297\",\n      \"pipeline_id\": \"rnaseq_singletask\",\n      \"match_note\": \"确定性规则识别为双端 bulk RNA-seq 上游质控和表达定量。\",\n      \"tool\": {\n        \"tool_id\": \"rnaseq_singletask\",\n        \"catalog_id\": \"TASK_RNASEQ_SINGLETASK\",\n        \"tool_kind\": \"task_pipeline\",\n        \"name\": \"RNA-seq 单任务完整上游流程\",\n        \"description\": \"从双端 RNA-seq FASTQ 完成质控、剪切、rRNA 去除、STAR 比对、RSEM、featureCounts 和 MultiQC。\",\n        \"inputs\": [\n          {\n            \"name\": \"fastq_1\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": false,\n            \"artifact\": \"raw_fastq_read\",\n            \"formats\": [\n              \"fq.gz\"\n            ],\n            \"description\": \"fastq_1\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"fastq_2\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": false,\n            \"artifact\": \"raw_fastq_read\",\n            \"formats\": [\n              \"fq.gz\"\n            ],\n            \"description\": \"fastq_2\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"gtf_file\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": false,\n            \"artifact\": \"genome_annotation\",\n            \"formats\": [\n              \"gtf\"\n            ],\n            \"description\": \"gtf_file\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"rrna_star_index\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": false,\n            \"artifact\": \"genome_annotation\",\n            \"formats\": [\n              \"index\"\n            ],\n            \"description\": \"rrna_star_index\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"rsem_index\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": false,\n            \"artifact\": \"genome_annotation\",\n            \"formats\": [\n              \"index\"\n            ],\n            \"description\": \"rsem_index\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"star_genome_index\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": false,\n            \"artifact\": \"genome_annotation\",\n            \"formats\": [\n              \"index\"\n            ],\n            \"description\": \"star_genome_index\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          }\n        ],\n        \"outputs\": [\n          {\n            \"name\": \"aligned_bam\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": true,\n            \"artifact\": \"sorted_dedup_bam\",\n            \"formats\": [\n              \"bam\",\n              \"bai\"\n            ],\n            \"description\": \"aligned_bam\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"count_matrix\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": true,\n            \"artifact\": \"expression_count_matrix\",\n            \"formats\": [\n              \"tsv\",\n              \"txt\"\n            ],\n            \"description\": \"count_matrix\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"expression_matrix\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": true,\n            \"artifact\": \"expression_abundance_matrix\",\n            \"formats\": [\n              \"tsv\"\n            ],\n            \"description\": \"expression_matrix\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          },\n          {\n            \"name\": \"quality_control\",\n            \"type\": \"File\",\n            \"is_file\": true,\n            \"optional\": true,\n            \"artifact\": \"quality_control_report\",\n            \"formats\": [\n              \"zip\",\n              \"html\"\n            ],\n            \"description\": \"quality_control\",\n            \"dimension\": \"\",\n            \"dimension_value\": \"\",\n            \"variant\": \"\",\n            \"variant_alias_for\": \"\"\n          }\n        ],\n        \"catalog_status\": \"registered\",\n        \"source\": \"neo4j\"\n      },\n      \"data\": {\n        \"status\": \"available\",\n        \"source\": \"neo4j\",\n        \"assets\": [\n          {\n            \"name\": \"HRR1725000_f1.fastq.gz\",\n            \"graph_status\": \"available\",\n            \"source\": \"T1\",\n            \"t2_id\": null,\n            \"file_id\": \"HRR1725000_f1.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n            \"file_name\": \"HRR1725000_f1.fastq.gz\",\n            \"files\": \"HRR1725000_f1.fastq.gz\",\n            \"format\": \"RAW_PAIRED_END_R1_FASTQ\",\n            \"strategy\": \"RNA-Seq\",\n            \"data_level\": \"1\",\n            \"study_accession\": \"\",\n            \"sample_accession\": \"HRS1217810\",\n            \"run_accession\": \"HRR1725000\",\n            \"individual_accession\": \"HRI956487\",\n            \"individual_name\": \"AM100.T\",\n            \"sample_name\": \"AM100.T\",\n            \"specimen_types\": \"Patient Solid Tissue\",\n            \"read_pair\": \"R1\",\n            \"file_path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz\",\n            \"match_reason\": \"格式匹配 RAW_PAIRED_END_R1_FASTQ; strategy 匹配 RNA-Seq\"\n          },\n          {\n            \"name\": \"HRR1725000_r2.fastq.gz\",\n            \"graph_status\": \"available\",\n            \"source\": \"T1\",\n            \"t2_id\": null,\n            \"file_id\": \"HRR1725000_r2.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n            \"file_name\": \"HRR1725000_r2.fastq.gz\",\n            \"files\": \"HRR1725000_r2.fastq.gz\",\n            \"format\": \"RAW_PAIRED_END_R2_FASTQ\",\n            \"strategy\": \"RNA-Seq\",\n            \"data_level\": \"1\",\n            \"study_accession\": \"\",\n            \"sample_accession\": \"HRS1217810\",\n            \"run_accession\": \"HRR1725000\",\n            \"individual_accession\": \"HRI956487\",\n            \"individual_name\": \"AM100.T\",\n            \"sample_name\": \"AM100.T\",\n            \"specimen_types\": \"Patient Solid Tissue\",\n            \"read_pair\": \"R2\",\n            \"file_path\": \"/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz\",\n            \"match_reason\": \"格式匹配 RAW_PAIRED_END_R2_FASTQ; strategy 匹配 RNA-Seq\"\n          }\n        ],\n        \"matched_count\": 2,\n        \"expected_count\": 2,\n        \"missing_asset_names\": [],\n        \"study_accessions\": []\n      },\n      \"source\": \"deterministic_rule+neo4j\",\n      \"reference_case_id\": null\n    }\n  ],\n  \"intent\": {\n    \"query_text\": \"我有双端 FASTQ 想做 RNA-seq 上游分析\",\n    \"analysis_goal\": null,\n    \"disease\": null,\n    \"omics_type\": \"bulk RNA-seq\",\n    \"input_hint\": \"fq.gz\",\n    \"quant_hint\": null,\n    \"requested_outputs\": [],\n    \"study_accessions\": [],\n    \"source\": \"rule\",\n    \"ambiguous\": true\n  },\n  \"planner_metadata\": {\n    \"used\": false,\n    \"status\": \"force_rule\",\n    \"calls\": 0,\n    \"stages\": [],\n    \"deterministic_fallback\": \"rnaseq_upstream_from_neo4j_contract\"\n  },\n  \"data_matcher_mode\": \"neo4j\",\n  \"mcp_timing_ms\": 9329.5\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "candidate_count": 1,
+            "candidates": [
+              {
+                "assets": [
+                  {
+                    "asset_id": "asset-fastq_r1-1",
+                    "format": "RAW_PAIRED_END_R1_FASTQ",
+                    "individual_accession": "HRI956487",
+                    "mate": "r1",
+                    "path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                    "path_verified": false,
+                    "role": "fastq_r1",
+                    "run_accession": "HRR1725000",
+                    "sample_accession": "HRS1217810",
+                    "sample_role": null,
+                    "source": "T1"
+                  },
+                  {
+                    "asset_id": "asset-fastq_r2-2",
+                    "format": "RAW_PAIRED_END_R2_FASTQ",
+                    "individual_accession": "HRI956487",
+                    "mate": "r2",
+                    "path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                    "path_verified": false,
+                    "role": "fastq_r2",
+                    "run_accession": "HRR1725000",
+                    "sample_accession": "HRS1217810",
+                    "sample_role": null,
+                    "source": "T1"
+                  }
+                ],
+                "extensions": {
+                  "contract_validation": {
+                    "errors": [],
+                    "internal_catalog": {
+                      "errors": [],
+                      "ok": true
+                    },
+                    "knowledge_card": {
+                      "errors": [],
+                      "ok": true
+                    },
+                    "ok": true
+                  },
+                  "data_combination": {
+                    "kind": "custom_role_bundle",
+                    "match_reason": "满足已校验自定义工具链的数据角色",
+                    "study_accession": "unknown"
+                  },
+                  "internal_tool_ids": [
+                    "fastp",
+                    "star",
+                    "rsem",
+                    "samtools",
+                    "featurecounts",
+                    "multiqc"
+                  ],
+                  "paired_wes_matcher": false,
+                  "required_asset_roles": [
+                    "fastq_r1",
+                    "fastq_r2"
+                  ]
+                },
+                "feasibility_status": "ready",
+                "match_id": "match-fcf2c9701416bb58",
+                "match_note": "确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。",
+                "rank": 1,
+                "selection_reason": "确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。",
+                "study_accession": "unknown",
+                "tool_chain": [
+                  {
+                    "depends_on": [],
+                    "inputs": {
+                      "read1": {
+                        "asset_id": "asset-fastq_r1-1"
+                      },
+                      "read2": {
+                        "asset_id": "asset-fastq_r2-2"
+                      },
+                      "sample_id": {
+                        "value": "fastp"
+                      }
+                    },
+                    "step_id": "fastp",
+                    "tool_id": "fastp_paired_end"
+                  },
+                  {
+                    "depends_on": [],
+                    "inputs": {
+                      "read1": {
+                        "from": {
+                          "output": "trimmed_r1",
+                          "step_id": "fastp"
+                        }
+                      },
+                      "read2": {
+                        "from": {
+                          "output": "trimmed_r2",
+                          "step_id": "fastp"
+                        }
+                      }
+                    },
+                    "step_id": "star",
+                    "tool_id": "star_rrna_and_genome_alignment"
+                  },
+                  {
+                    "depends_on": [],
+                    "inputs": {
+                      "paired_end": {
+                        "value": true
+                      },
+                      "transcriptome_bam": {
+                        "from": {
+                          "output": "transcriptome_bam",
+                          "step_id": "star"
+                        }
+                      }
+                    },
+                    "step_id": "rsem",
+                    "tool_id": "rsem_quantification"
+                  },
+                  {
+                    "depends_on": [
+                      "star"
+                    ],
+                    "inputs": {
+                      "alignment": {
+                        "from": {
+                          "output": "genome_bam",
+                          "step_id": "star"
+                        }
+                      },
+                      "remove_duplicates": {
+                        "value": true
+                      },
+                      "sample_id": {
+                        "value": "samtools"
+                      }
+                    },
+                    "step_id": "samtools",
+                    "tool_id": "samtools_alignment_processing"
+                  },
+                  {
+                    "depends_on": [
+                      "samtools"
+                    ],
+                    "inputs": {
+                      "bam": {
+                        "from": {
+                          "output": "sorted_bam",
+                          "step_id": "samtools"
+                        }
+                      },
+                      "paired_end": {
+                        "value": true
+                      }
+                    },
+                    "step_id": "featurecounts",
+                    "tool_id": "featurecounts_gene_counting"
+                  },
+                  {
+                    "depends_on": [
+                      "fastp",
+                      "rsem",
+                      "featurecounts"
+                    ],
+                    "inputs": {
+                      "qc_files": {
+                        "flatten": true,
+                        "sources": [
+                          {
+                            "from": {
+                              "output": "html_report",
+                              "step_id": "fastp"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "json_report",
+                              "step_id": "fastp"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "stat_files",
+                              "step_id": "rsem"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "rsem_log",
+                              "step_id": "rsem"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "flagstat",
+                              "step_id": "samtools"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "stats",
+                              "step_id": "samtools"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "idxstats",
+                              "step_id": "samtools"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "markdup_metrics",
+                              "step_id": "samtools"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "summary",
+                              "step_id": "featurecounts"
+                            }
+                          },
+                          {
+                            "from": {
+                              "output": "featurecounts_log",
+                              "step_id": "featurecounts"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "step_id": "multiqc",
+                    "tool_id": "multiqc"
+                  }
+                ],
+                "validation_ok": true,
+                "workflow_mode": "custom"
+              }
+            ],
+            "data_matcher_mode": "neo4j",
+            "intent": {
+              "ambiguous": true,
+              "analysis_goal": null,
+              "disease": null,
+              "input_hint": "fq.gz",
+              "omics_type": "bulk RNA-seq",
+              "quant_hint": null,
+              "query_text": "我有双端 FASTQ 想做 RNA-seq 上游分析",
+              "requested_outputs": [],
+              "source": "rule",
+              "study_accessions": []
+            },
+            "mcp_timing_ms": 9329.5,
+            "planner_metadata": {
+              "calls": 0,
+              "deterministic_fallback": "rnaseq_upstream_from_neo4j_contract",
+              "stages": [],
+              "status": "force_rule",
+              "used": false
+            },
+            "recommendation_count": 1,
+            "recommendations": [
+              {
+                "data": {
+                  "assets": [
+                    {
+                      "data_level": "1",
+                      "file_id": "HRR1725000_f1.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                      "file_name": "HRR1725000_f1.fastq.gz",
+                      "file_path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_f1.fastq.gz",
+                      "files": "HRR1725000_f1.fastq.gz",
+                      "format": "RAW_PAIRED_END_R1_FASTQ",
+                      "graph_status": "available",
+                      "individual_accession": "HRI956487",
+                      "individual_name": "AM100.T",
+                      "match_reason": "格式匹配 RAW_PAIRED_END_R1_FASTQ; strategy 匹配 RNA-Seq",
+                      "name": "HRR1725000_f1.fastq.gz",
+                      "read_pair": "R1",
+                      "run_accession": "HRR1725000",
+                      "sample_accession": "HRS1217810",
+                      "sample_name": "AM100.T",
+                      "source": "T1",
+                      "specimen_types": "Patient Solid Tissue",
+                      "strategy": "RNA-Seq",
+                      "study_accession": "",
+                      "t2_id": null
+                    },
+                    {
+                      "data_level": "1",
+                      "file_id": "HRR1725000_r2.fastq.gz::/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                      "file_name": "HRR1725000_r2.fastq.gz",
+                      "file_path": "/hpcdisk1/cbb_group/data/HRA007167/HRR1725000/HRR1725000_r2.fastq.gz",
+                      "files": "HRR1725000_r2.fastq.gz",
+                      "format": "RAW_PAIRED_END_R2_FASTQ",
+                      "graph_status": "available",
+                      "individual_accession": "HRI956487",
+                      "individual_name": "AM100.T",
+                      "match_reason": "格式匹配 RAW_PAIRED_END_R2_FASTQ; strategy 匹配 RNA-Seq",
+                      "name": "HRR1725000_r2.fastq.gz",
+                      "read_pair": "R2",
+                      "run_accession": "HRR1725000",
+                      "sample_accession": "HRS1217810",
+                      "sample_name": "AM100.T",
+                      "source": "T1",
+                      "specimen_types": "Patient Solid Tissue",
+                      "strategy": "RNA-Seq",
+                      "study_accession": "",
+                      "t2_id": null
+                    }
+                  ],
+                  "expected_count": 2,
+                  "matched_count": 2,
+                  "missing_asset_names": [],
+                  "source": "neo4j",
+                  "status": "available",
+                  "study_accessions": []
+                },
+                "match_id": "recommendation-127bb0bae366f297",
+                "match_note": "确定性规则识别为双端 bulk RNA-seq 上游质控和表达定量。",
+                "pipeline_id": "rnaseq_singletask",
+                "rank": 1,
+                "reference_case_id": null,
+                "source": "deterministic_rule+neo4j",
+                "tool": {
+                  "catalog_id": "TASK_RNASEQ_SINGLETASK",
+                  "catalog_status": "registered",
+                  "description": "从双端 RNA-seq FASTQ 完成质控、剪切、rRNA 去除、STAR 比对、RSEM、featureCounts 和 MultiQC。",
+                  "inputs": [
+                    {
+                      "artifact": "raw_fastq_read",
+                      "description": "fastq_1",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "fq.gz"
+                      ],
+                      "is_file": true,
+                      "name": "fastq_1",
+                      "optional": false,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "raw_fastq_read",
+                      "description": "fastq_2",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "fq.gz"
+                      ],
+                      "is_file": true,
+                      "name": "fastq_2",
+                      "optional": false,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "genome_annotation",
+                      "description": "gtf_file",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "gtf"
+                      ],
+                      "is_file": true,
+                      "name": "gtf_file",
+                      "optional": false,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "genome_annotation",
+                      "description": "rrna_star_index",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "index"
+                      ],
+                      "is_file": true,
+                      "name": "rrna_star_index",
+                      "optional": false,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "genome_annotation",
+                      "description": "rsem_index",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "index"
+                      ],
+                      "is_file": true,
+                      "name": "rsem_index",
+                      "optional": false,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "genome_annotation",
+                      "description": "star_genome_index",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "index"
+                      ],
+                      "is_file": true,
+                      "name": "star_genome_index",
+                      "optional": false,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    }
+                  ],
+                  "name": "RNA-seq 单任务完整上游流程",
+                  "outputs": [
+                    {
+                      "artifact": "sorted_dedup_bam",
+                      "description": "aligned_bam",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "bam",
+                        "bai"
+                      ],
+                      "is_file": true,
+                      "name": "aligned_bam",
+                      "optional": true,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "expression_count_matrix",
+                      "description": "count_matrix",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "tsv",
+                        "txt"
+                      ],
+                      "is_file": true,
+                      "name": "count_matrix",
+                      "optional": true,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "expression_abundance_matrix",
+                      "description": "expression_matrix",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "tsv"
+                      ],
+                      "is_file": true,
+                      "name": "expression_matrix",
+                      "optional": true,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    },
+                    {
+                      "artifact": "quality_control_report",
+                      "description": "quality_control",
+                      "dimension": "",
+                      "dimension_value": "",
+                      "formats": [
+                        "zip",
+                        "html"
+                      ],
+                      "is_file": true,
+                      "name": "quality_control",
+                      "optional": true,
+                      "type": "File",
+                      "variant": "",
+                      "variant_alias_for": ""
+                    }
+                  ],
+                  "source": "neo4j",
+                  "tool_id": "rnaseq_singletask",
+                  "tool_kind": "task_pipeline"
+                }
+              }
+            ],
+            "schema_version": "tool-chain/v2",
+            "selection_status": "ready"
+          }
+        }
+      },
+      "response_chars": 23963,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    },
+    {
+      "elapsed_ms": 38.2,
+      "exit_code": 0,
+      "id": "render_pipeline_answer",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 7,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "result": {}
+          },
+          "name": "render_pipeline_answer"
+        }
+      },
+      "response": {
+        "id": 7,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "\"无法渲染：结果不是 tool-chain/v2。\"",
+              "type": "text"
+            }
+          ],
+          "structuredContent": "无法渲染：结果不是 tool-chain/v2。"
+        }
+      },
+      "response_chars": 148
+    },
+    {
+      "elapsed_ms": 117.4,
+      "exit_code": 0,
+      "id": "failure_neo4j_disconnected",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 8,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {},
+          "name": "health_check"
+        }
+      },
+      "response": {
+        "id": 8,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"connected\": false,\n  \"version\": null,\n  \"database\": \"neo4j\",\n  \"latency_ms\": null,\n  \"node_count\": null,\n  \"relationship_count\": null,\n  \"label_counts\": {},\n  \"error\": \"connection_timeout\",\n  \"schema_version\": \"mcp-health/v1\",\n  \"data_matcher_mode\": \"neo4j\",\n  \"expected_snapshot_id\": \"dg-b23135d49c950d0846a563bc\",\n  \"snapshot_id\": null,\n  \"datagraph_node_count\": null,\n  \"expected_datagraph_node_count\": 32744,\n  \"tool_count\": null,\n  \"expected_tool_count\": 24,\n  \"backend_schema\": null,\n  \"verification_level\": null,\n  \"legacy_label_counts\": {},\n  \"expected_legacy_label_counts\": {\n    \"Project\": 17,\n    \"Study\": 19,\n    \"Individual\": 5335,\n    \"Sample\": 8640,\n    \"T1\": 24518,\n    \"T2\": 38011\n  },\n  \"backend_snapshot\": null,\n  \"warnings\": [],\n  \"ready\": false,\n  \"mcp_timing_ms\": 75.4\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "backend_schema": null,
+            "backend_snapshot": null,
+            "connected": false,
+            "data_matcher_mode": "neo4j",
+            "database": "neo4j",
+            "datagraph_node_count": null,
+            "error": "connection_timeout",
+            "expected_datagraph_node_count": 32744,
+            "expected_legacy_label_counts": {
+              "Individual": 5335,
+              "Project": 17,
+              "Sample": 8640,
+              "Study": 19,
+              "T1": 24518,
+              "T2": 38011
+            },
+            "expected_snapshot_id": "dg-b23135d49c950d0846a563bc",
+            "expected_tool_count": 24,
+            "label_counts": {},
+            "latency_ms": null,
+            "legacy_label_counts": {},
+            "mcp_timing_ms": 75.4,
+            "node_count": null,
+            "ready": false,
+            "relationship_count": null,
+            "schema_version": "mcp-health/v1",
+            "snapshot_id": null,
+            "tool_count": null,
+            "verification_level": null,
+            "version": null,
+            "warnings": []
+          }
+        }
+      },
+      "response_chars": 1654
+    },
+    {
+      "elapsed_ms": 7017.0,
+      "exit_code": 0,
+      "id": "failure_llm_unavailable",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 9,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "query": "请规划一个没有规则兜底的全新蛋白质组流程"
+          },
+          "name": "route_pipeline_request"
+        }
+      },
+      "response": {
+        "id": 9,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"schema_version\": \"tool-chain/v2\",\n  \"selection_status\": \"no_candidate\",\n  \"candidate_count\": 0,\n  \"candidates\": [],\n  \"recommendation_count\": 0,\n  \"recommendations\": [],\n  \"unsupported_reason\": \"LLM 未返回可评估的原子工具候选链。\",\n  \"intent\": {\n    \"query_text\": \"请规划一个没有规则兜底的全新蛋白质组流程\",\n    \"analysis_goal\": null,\n    \"disease\": null,\n    \"omics_type\": null,\n    \"input_hint\": null,\n    \"quant_hint\": null,\n    \"requested_outputs\": [],\n    \"study_accessions\": [],\n    \"source\": \"rule\",\n    \"ambiguous\": true\n  },\n  \"planner_metadata\": {\n    \"used\": false,\n    \"status\": \"failed_or_unavailable\",\n    \"calls\": 1,\n    \"stages\": [\n      \"atomic_candidate_generation\"\n    ]\n  },\n  \"data_matcher_mode\": \"neo4j\",\n  \"mcp_timing_ms\": 6929.5\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "candidate_count": 0,
+            "candidates": [],
+            "data_matcher_mode": "neo4j",
+            "intent": {
+              "ambiguous": true,
+              "analysis_goal": null,
+              "disease": null,
+              "input_hint": null,
+              "omics_type": null,
+              "quant_hint": null,
+              "query_text": "请规划一个没有规则兜底的全新蛋白质组流程",
+              "requested_outputs": [],
+              "source": "rule",
+              "study_accessions": []
+            },
+            "mcp_timing_ms": 6929.5,
+            "planner_metadata": {
+              "calls": 1,
+              "stages": [
+                "atomic_candidate_generation"
+              ],
+              "status": "failed_or_unavailable",
+              "used": false
+            },
+            "recommendation_count": 0,
+            "recommendations": [],
+            "schema_version": "tool-chain/v2",
+            "selection_status": "no_candidate",
+            "unsupported_reason": "LLM 未返回可评估的原子工具候选链。"
+          }
+        }
+      },
+      "response_chars": 1491,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n/Users/zhouyiran/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(\n[LLM] settings mode='api' model='deepseek-v4-flash' endpoint_host='api.deepseek.com' credentials=missing timeout=180.0s\n[LLM] fail reason=missing_credentials has_key=False has_base=True\n"
+    },
+    {
+      "elapsed_ms": 44.0,
+      "exit_code": 0,
+      "id": "failure_invalid_parameters",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 10,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "query": ""
+          },
+          "name": "route_pipeline_request"
+        }
+      },
+      "response": {
+        "error": {
+          "code": -32602,
+          "data": {
+            "category": "invalid_parameters",
+            "retryable": false
+          },
+          "message": "query must be a non-empty string"
+        },
+        "id": 10,
+        "jsonrpc": "2.0"
+      },
+      "response_chars": 153
+    },
+    {
+      "elapsed_ms": 6945.7,
+      "exit_code": 0,
+      "id": "failure_capability_gap",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 11,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "intent": {
+              "query_text": "unknown"
+            },
+            "pipeline_ids": [
+              "not_registered"
+            ]
+          },
+          "name": "query_data_availability"
+        }
+      },
+      "response": {
+        "id": 11,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"schema_version\": \"data-availability/v1\",\n  \"status\": \"capability_gap\",\n  \"unknown_pipeline_ids\": [\n    \"not_registered\"\n  ],\n  \"data_matcher_mode\": \"neo4j\",\n  \"mcp_timing_ms\": 6858.6\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "data_matcher_mode": "neo4j",
+            "mcp_timing_ms": 6858.6,
+            "schema_version": "data-availability/v1",
+            "status": "capability_gap",
+            "unknown_pipeline_ids": [
+              "not_registered"
+            ]
+          }
+        }
+      },
+      "response_chars": 470,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    },
+    {
+      "elapsed_ms": 7442.7,
+      "exit_code": 0,
+      "id": "failure_data_not_satisfied",
+      "notifications": [],
+      "ok": true,
+      "request": {
+        "id": 12,
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "arguments": {
+            "intent": {
+              "disease": "definitely-not-a-real-disease",
+              "query_text": "unavailable cohort"
+            },
+            "pipeline_ids": [
+              "wgcna"
+            ]
+          },
+          "name": "query_data_availability"
+        }
+      },
+      "response": {
+        "id": 12,
+        "jsonrpc": "2.0",
+        "result": {
+          "content": [
+            {
+              "text": "{\n  \"schema_version\": \"data-availability/v1\",\n  \"status\": \"not_available\",\n  \"request_mode\": \"pipeline_ids\",\n  \"data_matcher_mode\": \"neo4j\",\n  \"matched_data\": {\n    \"data_schema\": \"legacy-update728\",\n    \"cohort_candidates\": [],\n    \"file_candidates\": [],\n    \"data_combinations\": [],\n    \"query_constraints\": {\n      \"disease\": \"definitely-not-a-real-disease\",\n      \"omics_type\": null,\n      \"formats\": [\n        \"tsv\",\n        \"xls\",\n        \"xlsx\"\n      ],\n      \"strategies\": [\n        \"RNA-Seq\"\n      ],\n      \"file_terms\": [\n        \"Clinical\",\n        \"MetaInfo\",\n        \"counts\"\n      ],\n      \"study_accessions\": []\n    },\n    \"counts\": {\n      \"cohort_candidates\": 0,\n      \"file_candidates\": 0,\n      \"backup_file_candidates\": 0,\n      \"data_combinations\": 0\n    }\n  },\n  \"feasibility\": {\n    \"ok\": false,\n    \"required_roles\": [\n      \"expression\",\n      \"clinical\",\n      \"metainfo\"\n    ],\n    \"present_roles\": [],\n    \"missing_roles\": [\n      \"expression\",\n      \"clinical\",\n      \"metainfo\"\n    ],\n    \"required_file_count\": 3,\n    \"actual_file_count\": 0,\n    \"message\": \"缺少表达矩阵、临床数据（Clinical）、样本信息（MetaInfo），无法执行「wgcna」，请补充对应数据后再运行。\"\n  },\n  \"mcp_timing_ms\": 7352.8\n}",
+              "type": "text"
+            }
+          ],
+          "structuredContent": {
+            "data_matcher_mode": "neo4j",
+            "feasibility": {
+              "actual_file_count": 0,
+              "message": "缺少表达矩阵、临床数据（Clinical）、样本信息（MetaInfo），无法执行「wgcna」，请补充对应数据后再运行。",
+              "missing_roles": [
+                "expression",
+                "clinical",
+                "metainfo"
+              ],
+              "ok": false,
+              "present_roles": [],
+              "required_file_count": 3,
+              "required_roles": [
+                "expression",
+                "clinical",
+                "metainfo"
+              ]
+            },
+            "matched_data": {
+              "cohort_candidates": [],
+              "counts": {
+                "backup_file_candidates": 0,
+                "cohort_candidates": 0,
+                "data_combinations": 0,
+                "file_candidates": 0
+              },
+              "data_combinations": [],
+              "data_schema": "legacy-update728",
+              "file_candidates": [],
+              "query_constraints": {
+                "disease": "definitely-not-a-real-disease",
+                "file_terms": [
+                  "Clinical",
+                  "MetaInfo",
+                  "counts"
+                ],
+                "formats": [
+                  "tsv",
+                  "xls",
+                  "xlsx"
+                ],
+                "omics_type": null,
+                "strategies": [
+                  "RNA-Seq"
+                ],
+                "study_accessions": []
+              }
+            },
+            "mcp_timing_ms": 7352.8,
+            "request_mode": "pipeline_ids",
+            "schema_version": "data-availability/v1",
+            "status": "not_available"
+          }
+        }
+      },
+      "response_chars": 2277,
+      "stderr": "Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: datagraph_managed)} {position: line: 1, column: 19, offset: 18} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\nReceived notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: snapshot_id)} {position: line: 1, column: 53, offset: 52} for query: 'MATCH (n) WHERE n.datagraph_managed = true RETURN n.snapshot_id AS snapshot_id,count(n) AS count ORDER BY snapshot_id'\n"
+    }
+  ],
+  "failed": 0,
+  "mode": "live",
+  "ok": true,
+  "passed": 12,
+  "schema_version": "mcp-smoke/v1"
+}

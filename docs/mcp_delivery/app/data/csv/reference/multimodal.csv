@@ -1,0 +1,9 @@
+modal,description
+clinical,Clinical data related scope
+genomic,Genomics related scope
+image,Imaging related scope
+metabolomic,Metabolomics related scope
+proteomic,Proteomics related scope
+transcriptomic,Transcriptomics related scope
+single-cell transcriptomic,single-cell transcriptomics related scope
+multiomic,General multiomics scope

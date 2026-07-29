@@ -1,0 +1,18 @@
+{
+  "name": "bio-pipeline-kg-matcher",
+  "version": "0.3.0",
+  "description": "Neo4j-backed capability, standard pipeline, and validated custom workflow planner.",
+  "author": {
+    "name": "Local developer"
+  },
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Bio Pipeline KG Matcher",
+    "shortDescription": "Query capabilities and plan standard or custom bioinformatics workflows.",
+    "longDescription": "Answers capability questions from Neo4j, chooses locked standard pipeline combinations, or validates custom atomic-tool plans before matching cohort and file candidates.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Explain available bioinformatics capabilities or match my data request to a validated workflow."
+  }
+}

@@ -1,0 +1,39 @@
+tool_id,语义输入格式
+T01,Raw FASTQ
+T02,Raw FASTQ
+T02,Clean FASTQ
+T03,Clean FASTQ
+T03,Genome Annotation
+T04,Aligned SAM/BAM
+T05,Sorted/Dedup BAM
+T05,Genome Annotation
+T06,Unfiltered VCF
+T07,Filtered (PASS) VCF
+T07,Genome Annotation
+T08,Raw FASTQ
+T09,Clean FASTQ
+T09,Genome Annotation
+T10,Transcriptome BAM
+T10,Genome Annotation
+T11,Sorted/Dedup BAM
+T11,Genome Annotation
+T12,Quality Control Report
+T13,TPM / FPKM
+T13,Sample Metadata
+T14,TPM / FPKM
+T14,Sample Metadata
+T15,Public Somatic MAF
+T15,Sample Metadata
+T16,TPM / FPKM
+T16,Sample Metadata
+T17,TPM / FPKM
+T17,Sample Metadata
+T18,Raw FASTQ
+T19,Raw Counts
+T20,Public Somatic MAF
+T20,Sample Metadata
+T21,Public Somatic MAF
+T21,Sample Metadata
+T22,Public Somatic MAF
+T23,TPM / FPKM
+T23,Sample Metadata

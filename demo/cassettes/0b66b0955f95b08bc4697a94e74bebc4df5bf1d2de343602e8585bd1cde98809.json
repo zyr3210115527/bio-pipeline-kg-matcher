@@ -1,0 +1,48 @@
+{
+  "analysis": {
+    "data_in_hand": "用户有肿瘤和正常配对的 WES FASTQ 原始测序数据（配对样本）",
+    "goal": "体细胞变异检测并注释",
+    "steps_implied": "从 FASTQ 到体细胞变异并注释，需要经过质量控制、比对到参考基因组、配对样本变异检测（如 Mutect2）、变异过滤、变异注释等环节",
+    "menu_scan": "paired_fastq_to_unmapped_bam 可将 FASTQ 转换为 uBAM，覆盖初始步骤；wes_somatic_maf_landscape 需要已有的 MAF 文件，不覆盖变异检测和注释；其他流程与 WES 无关。未找到任何流程可覆盖比对、变异检测和注释步骤。"
+  },
+  "mode": "custom",
+  "reason": "菜单中没有流程能覆盖从 WES FASTQ 到体细胞变异注释的完整分析，最接近的 paired_fastq_to_unmapped_bam 仅处理到 uBAM，后续比对、变异检测和注释均无现成 pipeline，任意组合也无法满足需求。",
+  "requirements": [
+    "将配对肿瘤/正常 WES FASTQ 转换为 uBAM 或直接比对",
+    "将 reads 比对到参考基因组",
+    "使用配对样本进行体细胞变异检测",
+    "对检测到的变异进行注释"
+  ],
+  "pipeline_ids": [],
+  "reference_pipeline_ids": [
+    "paired_fastq_to_unmapped_bam"
+  ],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "paired_fastq_to_unmapped_bam",
+      "input_match": "partial",
+      "functional_coverage": "partial",
+      "output_match": "mismatch",
+      "note": "该流程将 FASTQ 转换为 uBAM，但需要额外提供 Read Group 等元数据；仅覆盖上游第一步，后续仍需比对、变异检测和注释，输出为 uBAM，与用户所需注释结果不匹配。"
+    }
+  ],
+  "uncovered_requirements": [
+    "WES FASTQ 比对到参考基因组",
+    "配对样本体细胞变异检测",
+    "变异注释"
+  ],
+  "__llm_usage": {
+    "prompt_tokens": 3728,
+    "completion_tokens": 1589,
+    "total_tokens": 5317,
+    "prompt_tokens_details": {
+      "cached_tokens": 3712
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 1101
+    },
+    "prompt_cache_hit_tokens": 3712,
+    "prompt_cache_miss_tokens": 16
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

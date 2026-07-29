@@ -1,0 +1,1030 @@
+{
+  "nl": "我有TPM矩阵想做无监督聚类",
+  "intent": {
+    "query_text": "我有TPM矩阵想做无监督聚类",
+    "analysis_goal": "无监督聚类",
+    "disease": null,
+    "omics_type": "bulk RNA-seq",
+    "input_hint": "tsv",
+    "quant_hint": "TPM",
+    "requested_outputs": [],
+    "source": "rule",
+    "ambiguous": false
+  },
+  "capabilities_count": 12,
+  "result": {
+    "status": "ok",
+    "message": null,
+    "intent": {
+      "query_text": "我有TPM矩阵想做无监督聚类",
+      "analysis_goal": "无监督聚类",
+      "disease": null,
+      "omics_type": "bulk RNA-seq",
+      "input_hint": "tsv",
+      "quant_hint": "TPM",
+      "requested_outputs": [],
+      "source": "rule",
+      "ambiguous": false
+    },
+    "matched_pipelines": [
+      {
+        "pipeline_id": "rnaseq_unsupervised_cluster",
+        "name": "rnaseq_cluster",
+        "reason": "命中 无监督聚类, bulk RNA-seq, tsv，适合RNA-seq 无监督聚类。",
+        "confidence": 0.75,
+        "matched_terms": [
+          "无监督聚类",
+          "bulk RNA-seq",
+          "tsv"
+        ],
+        "internal_steps": [
+          {
+            "step_order": 1,
+            "step_id": "rnaseq_unsupervised_cluster",
+            "call_name": "rnaseq_unsupervised_cluster",
+            "task_name": "rnaseq_unsupervised_cluster",
+            "tool_id": "rnaseq_unsupervised_cluster",
+            "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+            "inputs": [
+              "count_matrix"
+            ],
+            "outputs": [
+              "cluster_assignments",
+              "figures",
+              "cluster_stability"
+            ],
+            "depends_on": [],
+            "source": "neo4j"
+          }
+        ],
+        "inputs": [
+          {
+            "key": "count_matrix",
+            "type": "file_path",
+            "required": true,
+            "description": "Raw RNA-seq count matrix without NA rows",
+            "artifact": "expression_count_matrix",
+            "formats": [
+              "tsv"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "cluster_assignments",
+            "description": "GMM soft and hard cluster assignments",
+            "artifact": "cluster_assignment_table",
+            "formats": [
+              "tsv"
+            ]
+          },
+          {
+            "name": "figures",
+            "description": "Cluster selection and stability figures",
+            "artifact": "analysis_figure",
+            "formats": [
+              "png",
+              "pdf"
+            ]
+          },
+          {
+            "name": "cluster_stability",
+            "description": "Bootstrap ARI NMI and p-value tables",
+            "artifact": "cluster_stability_table",
+            "formats": [
+              "tsv"
+            ]
+          }
+        ]
+      }
+    ],
+    "matched_data": {
+      "data_schema": "normalized-v2",
+      "cohort_candidates": [
+        {
+          "study_accession": "HRA000071",
+          "title": "Chinese Glioma Genome Atlas (CGGA) - RNA-seq dataset (693)",
+          "tumor_type": "Glioma",
+          "study_type": "Disease Study",
+          "sample_count": "572",
+          "project_accession": "PRJCA001747",
+          "project_name": "Chinese glioma genome atlas",
+          "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+        },
+        {
+          "study_accession": "HRA000074",
+          "title": "Chinese Glioma Genome Atlas (CGGA) - RNA-seq dataset (693)",
+          "tumor_type": "Glioma",
+          "study_type": "Disease Study",
+          "sample_count": "572",
+          "project_accession": "PRJCA001747",
+          "project_name": "Chinese glioma genome atlas",
+          "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+        },
+        {
+          "study_accession": "HRA001748",
+          "title": "scRNA-seq of liver cancer",
+          "tumor_type": "Liver Cancer",
+          "study_type": "Disease Study",
+          "sample_count": "160",
+          "project_accession": "PRJCA007744",
+          "project_name": "scRNA-seq of liver cancer | WES of liver cancer",
+          "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+        },
+        {
+          "study_accession": "HRA001749",
+          "title": "scRNA-seq of liver cancer",
+          "tumor_type": "Liver Cancer",
+          "study_type": "Disease Study",
+          "sample_count": "178",
+          "project_accession": "PRJCA007744",
+          "project_name": "scRNA-seq of liver cancer | WES of liver cancer",
+          "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+        },
+        {
+          "study_accession": "HRA000021",
+          "title": "Whole Genome Sequencing  in Esophageal Squamous Cell Carcinoma",
+          "tumor_type": "Esophageal Cancer",
+          "study_type": "Disease Study",
+          "sample_count": "1016",
+          "project_accession": "PRJCA002760",
+          "project_name": "Whole genome sequencing in esophageal squamous cell carcinoma",
+          "match_reason": "与请求的数据类型相符"
+        },
+        {
+          "study_accession": "HRA000122",
+          "title": "Integrated Genomic Analyses Identify High-Risk Factors Associated with Poor Outcomes of T-ALL",
+          "tumor_type": "Leukemia",
+          "study_type": "Disease Study",
+          "sample_count": "287",
+          "project_accession": "PRJCA002270",
+          "project_name": "Integrated genomic analyses identify high-risk factors and actionable targets in T-cell acute lymphoblastic leukemia",
+          "match_reason": "与请求的数据类型相符"
+        },
+        {
+          "study_accession": "HRA000321",
+          "title": "Comprehensive Characterization of Tumor Infiltrating Lymphocyte of Multiple Cancer Types",
+          "tumor_type": "multiple cancers",
+          "study_type": "Disease Study",
+          "sample_count": "178",
+          "project_accession": "PRJCA001702",
+          "project_name": "Comprehensive Characterization of Tumor Infiltrating Lymphocyte of Multiple Cancer Types",
+          "match_reason": "与请求的数据类型相符"
+        },
+        {
+          "study_accession": "HRA000873",
+          "title": "Whole  exome sequencing  of patients with CRC from the Changkang project",
+          "tumor_type": "Colorectal Cancer",
+          "study_type": "Disease Study",
+          "sample_count": "2030",
+          "project_accession": "PRJCA004622",
+          "project_name": "Whole exome sequencing of patients with crc from the changkang project",
+          "match_reason": "与请求的数据类型相符"
+        },
+        {
+          "study_accession": "HRA001272",
+          "title": "Integrated genomic and transcriptomic profiling dissects spatiotemporal evolution of metastatic hepatocellular carcinoma",
+          "tumor_type": "Liver Cancer",
+          "study_type": "Disease Study",
+          "sample_count": "698",
+          "project_accession": "PRJCA006273",
+          "project_name": "Integrated genomic and transcriptomic profiling dissects spatiotemporal evolution of metastatic hepatocellular carcinoma",
+          "match_reason": "与请求的数据类型相符"
+        },
+        {
+          "study_accession": "HRA003107",
+          "title": "Multi-omics integrative analysis of esophageal squamous carcinoma",
+          "tumor_type": "Esophageal Cancer",
+          "study_type": "Disease Study",
+          "sample_count": "310",
+          "project_accession": "PRJCA004501",
+          "project_name": "Multi-omics integrative analysis of esophageal squamous carcinoma",
+          "match_reason": "与请求的数据类型相符"
+        }
+      ],
+      "file_candidates": [
+        {
+          "source": "T2",
+          "files": "HRA000074-Genes-counts-1.0.tsv",
+          "format": "tsv",
+          "strategy": "transcriptomic",
+          "data_level": "2",
+          "study_accession": "HRA000074",
+          "sample_accession": null,
+          "run_accession": null,
+          "read_pair": null,
+          "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+          "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; strategy 匹配 transcriptomic; 文件语义匹配: counts, count",
+          "input_role": "expression_count"
+        }
+      ],
+      "backup_file_candidates": [
+        {
+          "source": "T2",
+          "files": "HRA000074-Genes-counts-1.0.tsv",
+          "format": "tsv",
+          "strategy": "transcriptomic",
+          "data_level": "2",
+          "study_accession": "HRA000074",
+          "sample_accession": null,
+          "run_accession": null,
+          "read_pair": null,
+          "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+          "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; strategy 匹配 transcriptomic; 文件语义匹配: counts, count",
+          "input_role": "expression_count"
+        },
+        {
+          "source": "T2",
+          "files": "HRA001272-Genes-counts-1.0.tsv",
+          "format": "tsv",
+          "strategy": "transcriptomic",
+          "data_level": "2",
+          "study_accession": "HRA001272",
+          "sample_accession": null,
+          "run_accession": null,
+          "read_pair": null,
+          "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA001272/RNAseq/HRA001272-Genes-counts-1.0.tsv",
+          "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; 文件语义匹配: counts, count",
+          "input_role": "expression_count"
+        },
+        {
+          "source": "T2",
+          "files": "HRA003107-Genes-counts-1.0.tsv",
+          "format": "tsv",
+          "strategy": "transcriptomic",
+          "data_level": "2",
+          "study_accession": "HRA003107",
+          "sample_accession": null,
+          "run_accession": null,
+          "read_pair": null,
+          "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA003107/HRA003107-Genes-counts-1.0.tsv",
+          "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; 文件语义匹配: counts, count",
+          "input_role": "expression_count"
+        },
+        {
+          "source": "T2",
+          "files": "HRA007167-Genes-counts-1.0.tsv",
+          "format": "tsv",
+          "strategy": "transcriptomic",
+          "data_level": "2",
+          "study_accession": "HRA007167",
+          "sample_accession": null,
+          "run_accession": null,
+          "read_pair": null,
+          "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA007167/HRA007167-Genes-counts-1.0.tsv",
+          "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; 文件语义匹配: counts, count",
+          "input_role": "expression_count"
+        }
+      ],
+      "data_combinations": [
+        {
+          "pipeline_id": "rnaseq_unsupervised_cluster",
+          "study_accession": "HRA000074",
+          "kind": "expression_bundle",
+          "files": [
+            {
+              "source": "T2",
+              "files": "HRA000074-Genes-counts-1.0.tsv",
+              "format": "tsv",
+              "strategy": "transcriptomic",
+              "data_level": "2",
+              "study_accession": "HRA000074",
+              "sample_accession": null,
+              "run_accession": null,
+              "read_pair": null,
+              "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+              "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; strategy 匹配 transcriptomic; 文件语义匹配: counts, count"
+            }
+          ],
+          "match_reason": "找到表达矩阵候选"
+        }
+      ],
+      "query_constraints": {
+        "disease": null,
+        "omics_type": "bulk RNA-seq",
+        "formats": [
+          "tsv"
+        ],
+        "strategies": [
+          "RNA-Seq"
+        ],
+        "file_terms": [
+          "count",
+          "counts"
+        ]
+      }
+    },
+    "agent_input": {
+      "execution_kind": "tool_chain",
+      "workflow_mode": "standard",
+      "match_id": "match-a93e3f924ec203a5",
+      "study_accession": "HRA000074",
+      "assets": [
+        {
+          "asset_id": "HRA000074-count_matrix-1",
+          "role": "count_matrix",
+          "path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+          "format": "tsv",
+          "path_verified": false,
+          "source": "T2"
+        }
+      ],
+      "tool_chain": [
+        {
+          "step_id": "rnaseq_unsupervised_cluster",
+          "tool_id": "rnaseq_unsupervised_cluster",
+          "inputs": {
+            "count_matrix": {
+              "asset_id": "HRA000074-count_matrix-1"
+            }
+          }
+        }
+      ],
+      "feasibility": {
+        "status": "missing_assets",
+        "missing_assets": [
+          {
+            "step_id": "rnaseq_unsupervised_cluster",
+            "input": "data_type_match",
+            "role": "user_input",
+            "reason": "该流程需要RNA-seq count矩阵，用户提供的是TPM矩阵。但功能上该流程执行无监督聚类，输出聚类结果，完全覆盖需求。"
+          }
+        ],
+        "data_ready": false,
+        "message": "流程选择已确定，但输入数据类型不匹配：该流程需要RNA-seq count矩阵，用户提供的是TPM矩阵。但功能上该流程执行无监督聚类，输出聚类结果，完全覆盖需求。"
+      },
+      "selection_reason": "rnaseq_unsupervised_cluster 在功能上完全覆盖了无监督聚类需求，尽管输入要求count矩阵而用户提供的是TPM，但这是数据类型问题，不影响流程选择。自定义组链也无法解决数据类型转换问题。",
+      "orchestration_status": "missing_data",
+      "orchestration_ready": false,
+      "orchestration_message": "标准流程已确定，但仍缺少必需的用户样本数据。",
+      "extensions": {
+        "quality_gates": {
+          "rnaseq_unsupervised_cluster": {
+            "status": "reviewed_core_ok",
+            "severity": "low",
+            "issues": [],
+            "blocks_execution": false,
+            "non_applicable_issues": []
+          }
+        },
+        "plan_validation": {
+          "ok": true,
+          "errors": []
+        },
+        "contract_validation": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "files": [
+        "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv"
+      ],
+      "files_text": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv"
+    },
+    "llm_metadata": {
+      "used": false,
+      "status": "not_called",
+      "intent_llm": {
+        "used": false,
+        "status": "not_called"
+      }
+    },
+    "workflow_mode": "standard",
+    "workflow_plan": {
+      "mode": "standard",
+      "label": "预制菜",
+      "reason": "rnaseq_unsupervised_cluster 在功能上完全覆盖了无监督聚类需求，尽管输入要求count矩阵而用户提供的是TPM，但这是数据类型问题，不影响流程选择。自定义组链也无法解决数据类型转换问题。",
+      "pipeline_ids": [
+        "rnaseq_unsupervised_cluster"
+      ],
+      "pipelines": [
+        {
+          "order": 1,
+          "pipeline_id": "rnaseq_unsupervised_cluster",
+          "name": "rnaseq_cluster",
+          "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+          "confidence": 0.75,
+          "inputs": [
+            {
+              "name": "count_matrix",
+              "type": "File",
+              "is_file": true,
+              "optional": false,
+              "artifact": "expression_count_matrix",
+              "formats": [
+                "tsv"
+              ],
+              "description": "Raw RNA-seq count matrix without NA rows"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "cluster_assignments",
+              "type": "File",
+              "is_file": true,
+              "optional": true,
+              "artifact": "cluster_assignment_table",
+              "formats": [
+                "tsv"
+              ],
+              "description": "GMM soft and hard cluster assignments"
+            },
+            {
+              "name": "figures",
+              "type": "File",
+              "is_file": true,
+              "optional": true,
+              "artifact": "analysis_figure",
+              "formats": [
+                "png",
+                "pdf"
+              ],
+              "description": "Cluster selection and stability figures"
+            },
+            {
+              "name": "cluster_stability",
+              "type": "File",
+              "is_file": true,
+              "optional": true,
+              "artifact": "cluster_stability_table",
+              "formats": [
+                "tsv"
+              ],
+              "description": "Bootstrap ARI NMI and p-value tables"
+            }
+          ],
+          "internal_steps": [
+            {
+              "step_order": 1,
+              "step_id": "rnaseq_unsupervised_cluster",
+              "call_name": "rnaseq_unsupervised_cluster",
+              "task_name": "rnaseq_unsupervised_cluster",
+              "tool_id": "rnaseq_unsupervised_cluster",
+              "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+              "inputs": [
+                "count_matrix"
+              ],
+              "outputs": [
+                "cluster_assignments",
+                "figures",
+                "cluster_stability"
+              ],
+              "depends_on": [],
+              "source": "neo4j"
+            }
+          ],
+          "internal_steps_locked": true,
+          "source": "neo4j",
+          "quality_gate": {
+            "status": "reviewed_core_ok",
+            "severity": "low",
+            "issues": [],
+            "blocks_execution": false,
+            "non_applicable_issues": []
+          }
+        }
+      ],
+      "coverage_assessment": {
+        "requirements": [
+          "对TPM矩阵进行无监督聚类分析"
+        ],
+        "pipeline_assessments": [
+          {
+            "pipeline_id": "rnaseq_unsupervised_cluster",
+            "input_match": "mismatch",
+            "functional_coverage": "full",
+            "output_match": "match",
+            "note": "该流程需要RNA-seq count矩阵，用户提供的是TPM矩阵。但功能上该流程执行无监督聚类，输出聚类结果，完全覆盖需求。"
+          }
+        ],
+        "uncovered_requirements": []
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "planner_metadata": {
+        "used": true,
+        "status": "ok",
+        "model": "deepseek-v4-pro",
+        "prompt_tokens": 3718,
+        "completion_tokens": 1200,
+        "total_tokens": 4918,
+        "calls": 1,
+        "stages": [
+          "standard_selection"
+        ]
+      }
+    },
+    "schema_version": "tool-chain/v1",
+    "selection_status": "missing_assets",
+    "orchestration_status": "missing_data",
+    "orchestration_ready": false,
+    "orchestration_message": "标准流程已确定，但仍缺少必需的用户样本数据。"
+  },
+  "matched_pipelines": [
+    {
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "name": "rnaseq_cluster",
+      "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+      "confidence": 0.75,
+      "reason": "rnaseq_unsupervised_cluster 在功能上完全覆盖了无监督聚类需求，尽管输入要求count矩阵而用户提供的是TPM，但这是数据类型问题，不影响流程选择。自定义组链也无法解决数据类型转换问题。",
+      "inputs": [
+        {
+          "name": "count_matrix",
+          "type": "File",
+          "is_file": true,
+          "optional": false,
+          "artifact": "expression_count_matrix",
+          "formats": [
+            "tsv"
+          ],
+          "description": "Raw RNA-seq count matrix without NA rows"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cluster_assignments",
+          "type": "File",
+          "is_file": true,
+          "optional": true,
+          "artifact": "cluster_assignment_table",
+          "formats": [
+            "tsv"
+          ],
+          "description": "GMM soft and hard cluster assignments"
+        },
+        {
+          "name": "figures",
+          "type": "File",
+          "is_file": true,
+          "optional": true,
+          "artifact": "analysis_figure",
+          "formats": [
+            "png",
+            "pdf"
+          ],
+          "description": "Cluster selection and stability figures"
+        },
+        {
+          "name": "cluster_stability",
+          "type": "File",
+          "is_file": true,
+          "optional": true,
+          "artifact": "cluster_stability_table",
+          "formats": [
+            "tsv"
+          ],
+          "description": "Bootstrap ARI NMI and p-value tables"
+        }
+      ],
+      "internal_steps": [
+        {
+          "step_order": 1,
+          "step_id": "rnaseq_unsupervised_cluster",
+          "call_name": "rnaseq_unsupervised_cluster",
+          "task_name": "rnaseq_unsupervised_cluster",
+          "tool_id": "rnaseq_unsupervised_cluster",
+          "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+          "inputs": [
+            "count_matrix"
+          ],
+          "outputs": [
+            "cluster_assignments",
+            "figures",
+            "cluster_stability"
+          ],
+          "depends_on": [],
+          "source": "neo4j"
+        }
+      ],
+      "source": "neo4j"
+    }
+  ],
+  "matched_data": {
+    "data_schema": "normalized-v2",
+    "cohort_candidates": [
+      {
+        "study_accession": "HRA000071",
+        "title": "Chinese Glioma Genome Atlas (CGGA) - RNA-seq dataset (693)",
+        "tumor_type": "Glioma",
+        "study_type": "Disease Study",
+        "sample_count": "572",
+        "project_accession": "PRJCA001747",
+        "project_name": "Chinese glioma genome atlas",
+        "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+      },
+      {
+        "study_accession": "HRA000074",
+        "title": "Chinese Glioma Genome Atlas (CGGA) - RNA-seq dataset (693)",
+        "tumor_type": "Glioma",
+        "study_type": "Disease Study",
+        "sample_count": "572",
+        "project_accession": "PRJCA001747",
+        "project_name": "Chinese glioma genome atlas",
+        "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+      },
+      {
+        "study_accession": "HRA001748",
+        "title": "scRNA-seq of liver cancer",
+        "tumor_type": "Liver Cancer",
+        "study_type": "Disease Study",
+        "sample_count": "160",
+        "project_accession": "PRJCA007744",
+        "project_name": "scRNA-seq of liver cancer | WES of liver cancer",
+        "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+      },
+      {
+        "study_accession": "HRA001749",
+        "title": "scRNA-seq of liver cancer",
+        "tumor_type": "Liver Cancer",
+        "study_type": "Disease Study",
+        "sample_count": "178",
+        "project_accession": "PRJCA007744",
+        "project_name": "scRNA-seq of liver cancer | WES of liver cancer",
+        "match_reason": "组学描述匹配; strategy 匹配 RNA-Seq"
+      },
+      {
+        "study_accession": "HRA000021",
+        "title": "Whole Genome Sequencing  in Esophageal Squamous Cell Carcinoma",
+        "tumor_type": "Esophageal Cancer",
+        "study_type": "Disease Study",
+        "sample_count": "1016",
+        "project_accession": "PRJCA002760",
+        "project_name": "Whole genome sequencing in esophageal squamous cell carcinoma",
+        "match_reason": "与请求的数据类型相符"
+      },
+      {
+        "study_accession": "HRA000122",
+        "title": "Integrated Genomic Analyses Identify High-Risk Factors Associated with Poor Outcomes of T-ALL",
+        "tumor_type": "Leukemia",
+        "study_type": "Disease Study",
+        "sample_count": "287",
+        "project_accession": "PRJCA002270",
+        "project_name": "Integrated genomic analyses identify high-risk factors and actionable targets in T-cell acute lymphoblastic leukemia",
+        "match_reason": "与请求的数据类型相符"
+      },
+      {
+        "study_accession": "HRA000321",
+        "title": "Comprehensive Characterization of Tumor Infiltrating Lymphocyte of Multiple Cancer Types",
+        "tumor_type": "multiple cancers",
+        "study_type": "Disease Study",
+        "sample_count": "178",
+        "project_accession": "PRJCA001702",
+        "project_name": "Comprehensive Characterization of Tumor Infiltrating Lymphocyte of Multiple Cancer Types",
+        "match_reason": "与请求的数据类型相符"
+      },
+      {
+        "study_accession": "HRA000873",
+        "title": "Whole  exome sequencing  of patients with CRC from the Changkang project",
+        "tumor_type": "Colorectal Cancer",
+        "study_type": "Disease Study",
+        "sample_count": "2030",
+        "project_accession": "PRJCA004622",
+        "project_name": "Whole exome sequencing of patients with crc from the changkang project",
+        "match_reason": "与请求的数据类型相符"
+      },
+      {
+        "study_accession": "HRA001272",
+        "title": "Integrated genomic and transcriptomic profiling dissects spatiotemporal evolution of metastatic hepatocellular carcinoma",
+        "tumor_type": "Liver Cancer",
+        "study_type": "Disease Study",
+        "sample_count": "698",
+        "project_accession": "PRJCA006273",
+        "project_name": "Integrated genomic and transcriptomic profiling dissects spatiotemporal evolution of metastatic hepatocellular carcinoma",
+        "match_reason": "与请求的数据类型相符"
+      },
+      {
+        "study_accession": "HRA003107",
+        "title": "Multi-omics integrative analysis of esophageal squamous carcinoma",
+        "tumor_type": "Esophageal Cancer",
+        "study_type": "Disease Study",
+        "sample_count": "310",
+        "project_accession": "PRJCA004501",
+        "project_name": "Multi-omics integrative analysis of esophageal squamous carcinoma",
+        "match_reason": "与请求的数据类型相符"
+      }
+    ],
+    "file_candidates": [
+      {
+        "source": "T2",
+        "files": "HRA000074-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "strategy": "transcriptomic",
+        "data_level": "2",
+        "study_accession": "HRA000074",
+        "sample_accession": null,
+        "run_accession": null,
+        "read_pair": null,
+        "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+        "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; strategy 匹配 transcriptomic; 文件语义匹配: counts, count",
+        "input_role": "expression_count"
+      }
+    ],
+    "backup_file_candidates": [
+      {
+        "source": "T2",
+        "files": "HRA000074-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "strategy": "transcriptomic",
+        "data_level": "2",
+        "study_accession": "HRA000074",
+        "sample_accession": null,
+        "run_accession": null,
+        "read_pair": null,
+        "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+        "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; strategy 匹配 transcriptomic; 文件语义匹配: counts, count",
+        "input_role": "expression_count"
+      },
+      {
+        "source": "T2",
+        "files": "HRA001272-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "strategy": "transcriptomic",
+        "data_level": "2",
+        "study_accession": "HRA001272",
+        "sample_accession": null,
+        "run_accession": null,
+        "read_pair": null,
+        "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA001272/RNAseq/HRA001272-Genes-counts-1.0.tsv",
+        "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; 文件语义匹配: counts, count",
+        "input_role": "expression_count"
+      },
+      {
+        "source": "T2",
+        "files": "HRA003107-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "strategy": "transcriptomic",
+        "data_level": "2",
+        "study_accession": "HRA003107",
+        "sample_accession": null,
+        "run_accession": null,
+        "read_pair": null,
+        "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA003107/HRA003107-Genes-counts-1.0.tsv",
+        "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; 文件语义匹配: counts, count",
+        "input_role": "expression_count"
+      },
+      {
+        "source": "T2",
+        "files": "HRA007167-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "strategy": "transcriptomic",
+        "data_level": "2",
+        "study_accession": "HRA007167",
+        "sample_accession": null,
+        "run_accession": null,
+        "read_pair": null,
+        "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA007167/HRA007167-Genes-counts-1.0.tsv",
+        "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; 文件语义匹配: counts, count",
+        "input_role": "expression_count"
+      }
+    ],
+    "data_combinations": [
+      {
+        "pipeline_id": "rnaseq_unsupervised_cluster",
+        "study_accession": "HRA000074",
+        "kind": "expression_bundle",
+        "files": [
+          {
+            "source": "T2",
+            "files": "HRA000074-Genes-counts-1.0.tsv",
+            "format": "tsv",
+            "strategy": "transcriptomic",
+            "data_level": "2",
+            "study_accession": "HRA000074",
+            "sample_accession": null,
+            "run_accession": null,
+            "read_pair": null,
+            "file_path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+            "match_reason": "格式匹配 tsv; 优先使用处理后的 T2 数据; strategy 匹配 transcriptomic; 文件语义匹配: counts, count"
+          }
+        ],
+        "match_reason": "找到表达矩阵候选"
+      }
+    ],
+    "query_constraints": {
+      "disease": null,
+      "omics_type": "bulk RNA-seq",
+      "formats": [
+        "tsv"
+      ],
+      "strategies": [
+        "RNA-Seq"
+      ],
+      "file_terms": [
+        "count",
+        "counts"
+      ]
+    }
+  },
+  "agent_input": {
+    "execution_kind": "tool_chain",
+    "workflow_mode": "standard",
+    "match_id": "match-a93e3f924ec203a5",
+    "study_accession": "HRA000074",
+    "assets": [
+      {
+        "asset_id": "HRA000074-count_matrix-1",
+        "role": "count_matrix",
+        "path": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv",
+        "format": "tsv",
+        "path_verified": false,
+        "source": "T2"
+      }
+    ],
+    "tool_chain": [
+      {
+        "step_id": "rnaseq_unsupervised_cluster",
+        "tool_id": "rnaseq_unsupervised_cluster",
+        "inputs": {
+          "count_matrix": {
+            "asset_id": "HRA000074-count_matrix-1"
+          }
+        }
+      }
+    ],
+    "feasibility": {
+      "status": "missing_assets",
+      "missing_assets": [
+        {
+          "step_id": "rnaseq_unsupervised_cluster",
+          "input": "data_type_match",
+          "role": "user_input",
+          "reason": "该流程需要RNA-seq count矩阵，用户提供的是TPM矩阵。但功能上该流程执行无监督聚类，输出聚类结果，完全覆盖需求。"
+        }
+      ],
+      "data_ready": false,
+      "message": "流程选择已确定，但输入数据类型不匹配：该流程需要RNA-seq count矩阵，用户提供的是TPM矩阵。但功能上该流程执行无监督聚类，输出聚类结果，完全覆盖需求。"
+    },
+    "selection_reason": "rnaseq_unsupervised_cluster 在功能上完全覆盖了无监督聚类需求，尽管输入要求count矩阵而用户提供的是TPM，但这是数据类型问题，不影响流程选择。自定义组链也无法解决数据类型转换问题。",
+    "orchestration_status": "missing_data",
+    "orchestration_ready": false,
+    "orchestration_message": "标准流程已确定，但仍缺少必需的用户样本数据。",
+    "extensions": {
+      "quality_gates": {
+        "rnaseq_unsupervised_cluster": {
+          "status": "reviewed_core_ok",
+          "severity": "low",
+          "issues": [],
+          "blocks_execution": false,
+          "non_applicable_issues": []
+        }
+      },
+      "plan_validation": {
+        "ok": true,
+        "errors": []
+      },
+      "contract_validation": {
+        "ok": true,
+        "errors": []
+      }
+    },
+    "pipeline_id": "rnaseq_unsupervised_cluster",
+    "files": [
+      "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv"
+    ],
+    "files_text": "/hpcdisk1/cbb_group/data/analysis/HRA000074/HRA000074-Genes-counts-1.0.tsv"
+  },
+  "llm_metadata": {
+    "used": false,
+    "status": "not_called",
+    "intent_llm": {
+      "used": false,
+      "status": "not_called"
+    }
+  },
+  "answer": "预制菜模式：rnaseq_cluster。标准 pipeline 内部步骤保持不变。",
+  "workflow_mode": "standard",
+  "workflow_plan": {
+    "mode": "standard",
+    "label": "预制菜",
+    "reason": "rnaseq_unsupervised_cluster 在功能上完全覆盖了无监督聚类需求，尽管输入要求count矩阵而用户提供的是TPM，但这是数据类型问题，不影响流程选择。自定义组链也无法解决数据类型转换问题。",
+    "pipeline_ids": [
+      "rnaseq_unsupervised_cluster"
+    ],
+    "pipelines": [
+      {
+        "order": 1,
+        "pipeline_id": "rnaseq_unsupervised_cluster",
+        "name": "rnaseq_cluster",
+        "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+        "confidence": 0.75,
+        "inputs": [
+          {
+            "name": "count_matrix",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "expression_count_matrix",
+            "formats": [
+              "tsv"
+            ],
+            "description": "Raw RNA-seq count matrix without NA rows"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "cluster_assignments",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "cluster_assignment_table",
+            "formats": [
+              "tsv"
+            ],
+            "description": "GMM soft and hard cluster assignments"
+          },
+          {
+            "name": "figures",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "analysis_figure",
+            "formats": [
+              "png",
+              "pdf"
+            ],
+            "description": "Cluster selection and stability figures"
+          },
+          {
+            "name": "cluster_stability",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "cluster_stability_table",
+            "formats": [
+              "tsv"
+            ],
+            "description": "Bootstrap ARI NMI and p-value tables"
+          }
+        ],
+        "internal_steps": [
+          {
+            "step_order": 1,
+            "step_id": "rnaseq_unsupervised_cluster",
+            "call_name": "rnaseq_unsupervised_cluster",
+            "task_name": "rnaseq_unsupervised_cluster",
+            "tool_id": "rnaseq_unsupervised_cluster",
+            "description": "本流程针对 RNA-seq count 矩阵进行无监督聚类分析，涵盖数据预处理、高变基因筛选、PCA 降维及高斯混合模型聚类。\r\n同时通过 Bootstrap 重采样评估聚类稳定性并计算显著性 P 值，适用于无样本元数据场景的探索性分析。",
+            "inputs": [
+              "count_matrix"
+            ],
+            "outputs": [
+              "cluster_assignments",
+              "figures",
+              "cluster_stability"
+            ],
+            "depends_on": [],
+            "source": "neo4j"
+          }
+        ],
+        "internal_steps_locked": true,
+        "source": "neo4j",
+        "quality_gate": {
+          "status": "reviewed_core_ok",
+          "severity": "low",
+          "issues": [],
+          "blocks_execution": false,
+          "non_applicable_issues": []
+        }
+      }
+    ],
+    "coverage_assessment": {
+      "requirements": [
+        "对TPM矩阵进行无监督聚类分析"
+      ],
+      "pipeline_assessments": [
+        {
+          "pipeline_id": "rnaseq_unsupervised_cluster",
+          "input_match": "mismatch",
+          "functional_coverage": "full",
+          "output_match": "match",
+          "note": "该流程需要RNA-seq count矩阵，用户提供的是TPM矩阵。但功能上该流程执行无监督聚类，输出聚类结果，完全覆盖需求。"
+        }
+      ],
+      "uncovered_requirements": []
+    },
+    "validation": {
+      "ok": true,
+      "errors": []
+    },
+    "planner_metadata": {
+      "used": true,
+      "status": "ok",
+      "model": "deepseek-v4-pro",
+      "prompt_tokens": 3718,
+      "completion_tokens": 1200,
+      "total_tokens": 4918,
+      "calls": 1,
+      "stages": [
+        "standard_selection"
+      ]
+    }
+  },
+  "schema_version": "tool-chain/v1",
+  "selection_status": "missing_assets",
+  "orchestration_status": "missing_data",
+  "orchestration_ready": false,
+  "orchestration_message": "标准流程已确定，但仍缺少必需的用户样本数据。"
+}

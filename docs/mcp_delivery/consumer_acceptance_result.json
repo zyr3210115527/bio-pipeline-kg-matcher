@@ -1,0 +1,37 @@
+{
+  "cases": [
+    {
+      "elapsed_ms": 1807.0,
+      "ok": true,
+      "status": "no_candidate",
+      "task": "route_v2_shape"
+    },
+    {
+      "data_status": "available",
+      "elapsed_ms": 18.6,
+      "ok": true,
+      "pipeline_id": "diff_expr_go",
+      "task": "reviewed_pipeline_and_data_recommendation"
+    },
+    {
+      "elapsed_ms": 0.4,
+      "errors": [],
+      "ok": true,
+      "task": "validate_atomic_chain"
+    },
+    {
+      "elapsed_ms": 191.0,
+      "ok": true,
+      "status": "available",
+      "task": "custom_data_availability"
+    },
+    {
+      "elapsed_ms": 0.4,
+      "ok": true,
+      "status": "information",
+      "task": "capability_information"
+    }
+  ],
+  "ok": true,
+  "schema_version": "consumer-acceptance/v2"
+}

@@ -1,0 +1,380 @@
+{
+  "配对肿瘤正常 WES": {
+    "query": "我有肿瘤和正常配对的 WES FASTQ,想做体细胞变异检测并注释",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 40442.4,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11092
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 25806.6,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 9408
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 43404.7,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11214
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 32764.4,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 10279
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 28609.7,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 10171
+      }
+    ],
+    "min_ms": 25806.6,
+    "median_ms": 32764.4,
+    "max_ms": 43404.7,
+    "mean_ms": 34205.6
+  },
+  "trim_to_fastp": {
+    "query": "RNA-seq 上游流程里把 trim_galore 换成 fastp,其他不变",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 57929.1,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 13444
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 34712.2,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11302
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 42215.6,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11883
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 61429.7,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 13991
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 36293.0,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11391
+      }
+    ],
+    "min_ms": 34712.2,
+    "median_ms": 42215.6,
+    "max_ms": 61429.7,
+    "mean_ms": 46515.9
+  },
+  "双端 FASTQ RNA-seq 上游": {
+    "query": "我有双端 FASTQ 想做 RNA-seq 上游分析,需要表达矩阵和基因计数",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 5904.0,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4227
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 12622.7,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4943
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 15937.8,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4665
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 11416.2,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4691
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 14276.3,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 5039
+      }
+    ],
+    "min_ms": 5904.0,
+    "median_ms": 12622.7,
+    "max_ms": 15937.8,
+    "mean_ms": 12031.4
+  },
+  "TPM 聚类": {
+    "query": "我有 TPM 矩阵想做无监督聚类",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 10499.9,
+        "selection_status": "missing_assets",
+        "orchestration_status": "missing_data",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4620
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 29920.3,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 9913
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 18351.4,
+        "selection_status": "missing_assets",
+        "orchestration_status": "missing_data",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 5207
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 10807.9,
+        "selection_status": "missing_assets",
+        "orchestration_status": "missing_data",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4639
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 14998.0,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 8714
+      }
+    ],
+    "min_ms": 10499.9,
+    "median_ms": 14998.0,
+    "max_ms": 29920.3,
+    "mean_ms": 16915.5
+  },
+  "GO+KEGG 富集": {
+    "query": "想同时做 GO 和 KEGG 富集",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 7328.9,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4337
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 18036.1,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 5465
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 18045.0,
+        "selection_status": "no_match",
+        "orchestration_status": "no_match",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 9117
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 7515.9,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4349
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 11299.4,
+        "selection_status": "ready",
+        "orchestration_status": "ready",
+        "mode": "standard",
+        "llm_calls": 1,
+        "llm_tokens": 4802
+      }
+    ],
+    "min_ms": 7328.9,
+    "median_ms": 11299.4,
+    "max_ms": 18045.0,
+    "mean_ms": 12445.1
+  },
+  "单样本 WES FASTQ": {
+    "query": "我有一个样本的 WES FASTQ,想做变异检测和注释",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 57085.5,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 12128
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 41676.6,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11423
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 34873.2,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11015
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 37843.1,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11221
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 45206.8,
+        "selection_status": "draft",
+        "orchestration_status": "draft",
+        "mode": "custom",
+        "llm_calls": 2,
+        "llm_tokens": 11813
+      }
+    ],
+    "min_ms": 34873.2,
+    "median_ms": 41676.6,
+    "max_ms": 57085.5,
+    "mean_ms": 43337.0
+  },
+  "MAF 能力": {
+    "query": "有哪些流程可以处理 MAF 文件",
+    "runs": [
+      {
+        "run": 1,
+        "elapsed_ms": 0.3,
+        "selection_status": "information",
+        "orchestration_status": "information",
+        "mode": "capability",
+        "llm_calls": 0,
+        "llm_tokens": null
+      },
+      {
+        "run": 2,
+        "elapsed_ms": 0.1,
+        "selection_status": "information",
+        "orchestration_status": "information",
+        "mode": "capability",
+        "llm_calls": 0,
+        "llm_tokens": null
+      },
+      {
+        "run": 3,
+        "elapsed_ms": 0.1,
+        "selection_status": "information",
+        "orchestration_status": "information",
+        "mode": "capability",
+        "llm_calls": 0,
+        "llm_tokens": null
+      },
+      {
+        "run": 4,
+        "elapsed_ms": 0.1,
+        "selection_status": "information",
+        "orchestration_status": "information",
+        "mode": "capability",
+        "llm_calls": 0,
+        "llm_tokens": null
+      },
+      {
+        "run": 5,
+        "elapsed_ms": 0.1,
+        "selection_status": "information",
+        "orchestration_status": "information",
+        "mode": "capability",
+        "llm_calls": 0,
+        "llm_tokens": null
+      }
+    ],
+    "min_ms": 0.1,
+    "median_ms": 0.1,
+    "max_ms": 0.3,
+    "mean_ms": 0.1
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "('Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 1939,
+    "studies": {
+      "HRA000873": 1015,
+      "HRA000021": 508,
+      "HRA001272": 206,
+      "HRA003107": 155,
+      "HRA007169": 51,
+      "HRA001748": 4
+    },
+    "file_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 1480,
+      "WGS": 532
+    },
+    "file_formats": {
+      "fq.gz": 7794,
+      "bam": 1016
+    },
+    "both_sides_fastq": 1431
+  },
+  "('Blood', 'Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 10,
+    "studies": {
+      "HRA001748": 10
+    },
+    "file_strategies": {},
+    "file_formats": {
+      "fq.gz": 64
+    },
+    "both_sides_fastq": 10
+  },
+  "('Blood', 'Organoid', 'Patient Solid Tissue')": {
+    "individual_count": 7,
+    "studies": {
+      "HRA006499": 7
+    },
+    "file_strategies": {},
+    "file_formats": {
+      "fq.gz": 140
+    },
+    "both_sides_fastq": 7
+  },
+  "('Organoid', 'Patient Solid Tissue')": {
+    "individual_count": 56,
+    "studies": {
+      "HRA006499": 56
+    },
+    "file_strategies": {},
+    "file_formats": {
+      "fq.gz": 866
+    },
+    "both_sides_fastq": 56
+  },
+  "('Blood', 'Organoid', 'Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 5,
+    "studies": {
+      "HRA006499": 5
+    },
+    "file_strategies": {},
+    "file_formats": {
+      "fq.gz": 142
+    },
+    "both_sides_fastq": 5
+  },
+  "('Organoid', 'Patient Solid Tissue', 'Peritumoral')": {
+    "individual_count": 3,
+    "studies": {
+      "HRA006499": 3
+    },
+    "file_strategies": {},
+    "file_formats": {
+      "fq.gz": 122
+    },
+    "both_sides_fastq": 3
+  },
+  "('Blood', 'Patient Solid Tissue')": {
+    "individual_count": 25,
+    "studies": {
+      "HRA007169": 25
+    },
+    "file_strategies": {},
+    "file_formats": {
+      "fq.gz": 102
+    },
+    "both_sides_fastq": 25
+  }
+}

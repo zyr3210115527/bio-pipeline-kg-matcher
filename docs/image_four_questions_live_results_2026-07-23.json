@@ -1,0 +1,202 @@
+{
+  "generated_at": "2026-07-23T09:59:59+08:00",
+  "source": "live-api",
+  "api": "http://127.0.0.1:8012/api/ask",
+  "runtime": {
+    "llm_model": "deepseek-v4-pro",
+    "llm_endpoint_host": "api.deepseek.com",
+    "neo4j_connected": true,
+    "neo4j_version": "2026.06.0",
+    "neo4j_database": "neo4j"
+  },
+  "results": [
+    {
+      "index": 1,
+      "query": "如何从 RNA-seq paired-end FASTQ 出发，依次完成 FastQC、Trim Galore、rRNA 去除、STAR 比对、RSEM 定量、FeatureCounts 计数和 MultiQC 汇总？",
+      "workflow_mode": "standard",
+      "selection_status": "ready",
+      "orchestration_status": "ready",
+      "orchestration_ready": true,
+      "reason": "用户需求完全匹配 rnaseq_singletask 流程的描述和 locked_steps，包括质控、剪切、rRNA 去除、STAR 比对、RSEM、featureCounts 和 MultiQC，且为 paired-end 输入，无个性化修改。已由保守组合规则确认：请求直接对应已登记标准 pipeline，未要求修改其内部步骤。",
+      "pipeline_ids": [
+        "rnaseq_singletask"
+      ],
+      "pipelines": [
+        {
+          "pipeline_id": "rnaseq_singletask",
+          "name": "RNA-seq 单任务完整上游流程",
+          "source": "neo4j",
+          "internal_steps_locked": true,
+          "steps": [
+            {"order": 1, "step_id": "fastqc", "tool_id": "fastqc", "depends_on": []},
+            {"order": 2, "step_id": "trim_galore", "tool_id": "trim_galore", "depends_on": ["fastqc"]},
+            {"order": 3, "step_id": "star", "tool_id": "star", "depends_on": ["trim_galore"]},
+            {"order": 4, "step_id": "rsem", "tool_id": "rsem", "depends_on": ["star"]},
+            {"order": 5, "step_id": "samtools", "tool_id": "samtools", "depends_on": ["star"]},
+            {"order": 6, "step_id": "featurecounts", "tool_id": "featurecounts", "depends_on": ["samtools"]},
+            {"order": 7, "step_id": "multiqc", "tool_id": "multiqc", "depends_on": ["rsem", "featurecounts"]}
+          ],
+          "quality_gate": {
+            "status": "paired_end_supported_with_warning",
+            "severity": "medium",
+            "issues": ["continueOnReturnCode 会掩盖失败"],
+            "blocks_execution": false,
+            "non_applicable_issues": ["单端 Trim Galore 输出与 R2 守卫存在已知问题"],
+            "scope_reason": "本次为双端 RNA-seq，已知单端分支缺陷不适用。"
+          }
+        }
+      ],
+      "feasibility": {
+        "status": "ready",
+        "missing_assets": []
+      },
+      "llm": {
+        "used": true,
+        "model": "deepseek-v4-pro",
+        "status": "ok",
+        "total_tokens": 4441
+      }
+    },
+    {
+      "index": 2,
+      "query": "查找双端 RNA-seq 测序数据，想完成质控、接头剪切、比对和基因表达计数。",
+      "workflow_mode": "standard",
+      "selection_status": "ready",
+      "orchestration_status": "ready",
+      "orchestration_ready": true,
+      "reason": "rnaseq_singletask 流程完全覆盖了从双端 RNA-seq FASTQ 数据进行质控、接头剪切、比对和基因表达计数的所有需求，提供 count_matrix 和 expression_matrix。",
+      "pipeline_ids": [
+        "rnaseq_singletask"
+      ],
+      "pipelines": [
+        {
+          "pipeline_id": "rnaseq_singletask",
+          "name": "RNA-seq 单任务完整上游流程",
+          "source": "neo4j",
+          "internal_steps_locked": true,
+          "steps": [
+            {"order": 1, "step_id": "fastqc", "tool_id": "fastqc", "depends_on": []},
+            {"order": 2, "step_id": "trim_galore", "tool_id": "trim_galore", "depends_on": ["fastqc"]},
+            {"order": 3, "step_id": "star", "tool_id": "star", "depends_on": ["trim_galore"]},
+            {"order": 4, "step_id": "rsem", "tool_id": "rsem", "depends_on": ["star"]},
+            {"order": 5, "step_id": "samtools", "tool_id": "samtools", "depends_on": ["star"]},
+            {"order": 6, "step_id": "featurecounts", "tool_id": "featurecounts", "depends_on": ["samtools"]},
+            {"order": 7, "step_id": "multiqc", "tool_id": "multiqc", "depends_on": ["rsem", "featurecounts"]}
+          ],
+          "quality_gate": {
+            "status": "paired_end_supported_with_warning",
+            "severity": "medium",
+            "issues": ["continueOnReturnCode 会掩盖失败"],
+            "blocks_execution": false,
+            "non_applicable_issues": ["单端 Trim Galore 输出与 R2 守卫存在已知问题"],
+            "scope_reason": "本次为双端 RNA-seq，已知单端分支缺陷不适用。"
+          }
+        }
+      ],
+      "feasibility": {
+        "status": "ready",
+        "missing_assets": []
+      },
+      "llm": {
+        "used": true,
+        "model": "deepseek-v4-pro",
+        "status": "ok",
+        "total_tokens": 4784
+      }
+    },
+    {
+      "index": 3,
+      "query": "RNA-seq FASTQ 原始数据怎么做完整上游分析？",
+      "workflow_mode": "standard",
+      "selection_status": "ready",
+      "orchestration_status": "ready",
+      "orchestration_ready": true,
+      "reason": "用户询问 RNA-seq FASTQ 原始数据如何进行完整上游分析。保守组合规则确认该请求直接对应已登记标准 pipeline，未要求修改其内部步骤。",
+      "pipeline_ids": [
+        "rnaseq_singletask"
+      ],
+      "pipelines": [
+        {
+          "pipeline_id": "rnaseq_singletask",
+          "name": "RNA-seq 单任务完整上游流程",
+          "source": "neo4j",
+          "internal_steps_locked": true,
+          "steps": [
+            {"order": 1, "step_id": "fastqc", "tool_id": "fastqc", "depends_on": []},
+            {"order": 2, "step_id": "trim_galore", "tool_id": "trim_galore", "depends_on": ["fastqc"]},
+            {"order": 3, "step_id": "star", "tool_id": "star", "depends_on": ["trim_galore"]},
+            {"order": 4, "step_id": "rsem", "tool_id": "rsem", "depends_on": ["star"]},
+            {"order": 5, "step_id": "samtools", "tool_id": "samtools", "depends_on": ["star"]},
+            {"order": 6, "step_id": "featurecounts", "tool_id": "featurecounts", "depends_on": ["samtools"]},
+            {"order": 7, "step_id": "multiqc", "tool_id": "multiqc", "depends_on": ["rsem", "featurecounts"]}
+          ],
+          "quality_gate": {
+            "status": "paired_end_supported_with_warning",
+            "severity": "medium",
+            "issues": ["continueOnReturnCode 会掩盖失败"],
+            "blocks_execution": false,
+            "non_applicable_issues": ["单端 Trim Galore 输出与 R2 守卫存在已知问题"],
+            "scope_reason": "已匹配双端 R1/R2 数据，已知单端分支缺陷不适用。"
+          }
+        }
+      ],
+      "feasibility": {
+        "status": "ready",
+        "missing_assets": []
+      },
+      "llm": {
+        "used": true,
+        "model": "deepseek-v4-pro",
+        "status": "ok",
+        "total_tokens": 4501
+      }
+    },
+    {
+      "index": 4,
+      "query": "把原始测序 FASTQ 整理成 GATK 后续分析可用的 uBAM 文件。",
+      "workflow_mode": "standard",
+      "selection_status": "ready",
+      "orchestration_status": "ready",
+      "orchestration_ready": true,
+      "reason": "将双端 FASTQ 转换为 GATK 可用的未比对 BAM（uBAM）完全匹配 paired_fastq_to_unmapped_bam 流程，无需修改内部步骤。",
+      "pipeline_ids": [
+        "paired_fastq_to_unmapped_bam"
+      ],
+      "pipelines": [
+        {
+          "pipeline_id": "paired_fastq_to_unmapped_bam",
+          "name": "fq_to_ubam",
+          "source": "neo4j",
+          "internal_steps_locked": true,
+          "decomposition_status": "neo4j_pipeline_level_tool",
+          "steps": [
+            {
+              "order": 1,
+              "step_id": "paired_fastq_to_unmapped_bam",
+              "tool_id": "paired_fastq_to_unmapped_bam",
+              "depends_on": []
+            }
+          ],
+          "quality_gate": {
+            "status": "input_pair_validation_required",
+            "severity": "medium",
+            "issues": ["执行前核对 R1/R2 来自同一样本，并补齐 Read Group 元数据"],
+            "blocks_execution": false,
+            "non_applicable_issues": ["原示例 fastq_2 曾错误指向 R1；不代表 pipeline 转换逻辑错误"],
+            "scope_reason": "风险位于示例输入和配对校验，不阻断正确输入上的标准 uBAM 流程。"
+          }
+        }
+      ],
+      "feasibility": {
+        "status": "ready",
+        "missing_assets": []
+      },
+      "llm": {
+        "used": true,
+        "model": "deepseek-v4-pro",
+        "status": "ok",
+        "total_tokens": 3847
+      }
+    }
+  ]
+}

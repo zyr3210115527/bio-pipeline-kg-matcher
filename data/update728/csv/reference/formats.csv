@@ -1,0 +1,53 @@
+语义格式,description
+Raw FASTQ,原始测序下机数据（双端或单端）
+Clean FASTQ,经过质控、去接头、过滤后的高可靠测序数据
+Cell-Barcode FASTQ,包含单细胞条形码信息的 FASTQ 数据
+uBAM (Unmapped),未比对到参考基因组的索引化序列文件
+Aligned SAM/BAM,已比对到参考基因组但尚未必排序或标记重复的 SAM/BAM
+Sorted/Dedup BAM,已排序并标记重复序列的比对文件（基因组坐标）
+Transcriptome BAM,比对到转录组坐标的序列文件（用于定量）
+Unfiltered VCF,变异检测工具直接生成的原始变异数据
+Filtered (PASS) VCF,经过质量过滤（如 GATK VQSR 或硬过滤）的变异数据
+Annotated VCF,带有功能注释信息（如基因名、突变类型）的变异数据
+gVCF,包含全基因组位点信息的中间变异文件（用于群体联呼）
+Somatic SV,体细胞结构变异数据
+Candidate Fusion,初步预测的候选融合基因列表
+High-Conf Fusion,经过多重过滤的高置信度融合基因结果
+Annotated Junction,已知的剪接位点信息
+Novel Junction,新预测的剪接位点信息
+Raw Counts,基因或转录本的原始表达计数矩阵
+TPM / FPKM,归一化后的表达量矩阵
+Sparse Matrix,单细胞常用的稀疏矩阵格式
+Protected MAF,包含受保护隐私信息的突变注释文件
+Public Somatic MAF,脱敏后的体细胞突变注释文件
+Raw Object,分析工具生成的原始对象（如 Seurat 原始对象）
+Processed Object,经过计算、可视化处理后的结果对象或报告
+DE Result,差异表达分析的结果列表（Foldchange/P-value）
+Sample Metadata,样本表型信息、临床数据、质控报告日志
+Quality Control Report,质控工具产生的报告、统计和日志集合（如 HTML、ZIP、TSV 或 log）
+Signal Track,基因组信号轨道文件（如 BigWig）
+Genome Annotation,参考基因组、索引、GTF 注释、SNP 数据库等
+Sample Metadata,样本元数据
+BIO_DATA_CONTAINER_OBJECT,生物信息学容器对象。用于保存复杂分析结果或多个相关数据对象的统一封装，可包含表达矩阵、元数据、降维结果、聚类结果、注释信息等，常见于 RDS、H5AD、Seurat Object、SingleCellExperiment 等对象格式，便于不同分析模块之间共享完整数据状态。
+CLINICAL_DATA_EXCEL,临床信息表。包含患者或样本的临床特征，如年龄、性别、诊断、分期、治疗方案、随访、生存时间、结局事件、病理信息等，通常以 Excel 或 CSV 文件保存，是生存分析、临床关联分析的重要输入。
+DIRECTORY_UNCLASSIFIED,未分类目录类型。表示包含多个文件或子目录的数据集合，不限定具体文件内容，常用于质控报告目录、中间结果目录、流程输出目录等需要整体传递的文件夹。
+DNA_ALIGNMENT_BQSR_BAM,经过 Base Quality Score Recalibration（BQSR）处理后的 DNA 比对 BAM 文件。已完成参考基因组比对、排序、重复标记及碱基质量校正，可直接用于体细胞或胚系变异检测。
+DNA_ALIGNMENT_INDEX_BAI,DNA BAM 文件对应的 BAI 索引文件，用于支持 BAM 文件的随机访问，提高变异检测、浏览器可视化和下游分析的读取效率。
+DNA_GENOMIC_ALIGNMENT_BAM,DNA 测序数据比对到参考基因组后的标准 BAM 文件。通常已完成排序，可包含重复标记前或后的结果，是 DNA 变异检测、覆盖度统计及质量评估的重要输入。
+DNA_SOMATIC_SV_VCF,DNA 体细胞变异 VCF 文件。记录 SNV、InDel 或结构变异（SV）等体细胞突变信息，包括染色体位置、参考/替代等位基因、基因型及注释字段，可用于后续注释、统计及突变景观分析。
+DNA_VARIANT_INDEX_TBI,VCF 文件对应的 Tabix（TBI）索引文件，用于快速定位压缩 VCF（VCF.GZ）中特定基因组区域的变异记录，提高变异查询效率。
+DNA_VARIANT_STATS_REPORT,DNA 变异或测序统计报告。包括测序质量、比对统计、覆盖度、变异数量、Ti/Tv 比值、过滤统计、QC 指标等文本或结构化统计结果，可用于质量评估和流程汇总。
+DNA_VARIANT_VCF_GENERAL,通用 DNA 变异 VCF 文件。符合 Variant Call Format 标准，可表示胚系或体细胞变异，是注释、过滤、标准化、统计及可视化分析的标准交换格式。
+METADATA_SAMPLE_INFO,样本元数据。描述样本的来源及实验设计信息，包括 Sample ID、Patient ID、分组、批次、组织来源、测序平台、实验条件等，用于关联表达数据、临床数据及分析结果。
+MUTATION_ANNOTATION_FORMAT_MAF,Mutation Annotation Format（MAF）标准突变注释文件。整合了基因注释、突变类型、功能影响、样本信息等内容，是 maftools、TMB 分析、驱动基因分析及突变景观分析的标准输入格式。
+OTHER_UNCLASSIFIED_DATA,其他未分类数据类型。用于暂时无法归类到已有语义格式的数据对象，可包括特殊脚本输出、自定义格式文件或第三方工具专有数据。
+RNA_SPLICE_JUNCTION_TAB,RNA 剪接位点（Splice Junction）表格。记录 RNA-seq 比对过程中识别到的剪接连接位置、支持 reads 数量及相关统计信息，通常由 STAR 等工具生成，可用于可变剪接分析。
+RNA_TRANSCRIPTOME_ALIGNMENT_BAM,RNA 转录组比对 BAM 文件。RNA-seq Reads 比对到参考基因组或转录组后的标准 BAM 文件，可用于表达定量、可变剪接分析、基因计数及质量评估。
+SCRNA_MATRIX_H5,单细胞 RNA-seq 表达矩阵 HDF5 文件。通常保存基因表达矩阵、Barcode、Feature 等信息，适用于 Cell Ranger、Scanpy、Seurat 等单细胞分析软件。
+SCRNA_MATRIX_H5_ZIP,压缩后的单细胞 HDF5 表达矩阵文件或其数据包，通常用于数据分发、存储或网络传输，解压后可得到标准 H5 表达矩阵。
+SOMATIC_CNV_TSV,体细胞拷贝数变异（CNV）结果表。以 TSV 格式记录基因组区域的扩增、缺失、拷贝数状态、log2 ratio 等信息，可用于 CNV 可视化及临床关联分析。
+TABULAR_BIO_DATA,通用生物信息学表格数据。表示具有行列结构的数据矩阵或统计结果，如表达矩阵、Count Matrix、TPM/FPKM、差异分析结果、富集分析结果、聚类结果、免疫浸润结果、网络分析结果等，可采用 TSV、CSV、TXT 等格式保存。
+RAW_PAIRED_END_R1_FASTQ,双端测序 Read1 原始 FASTQ 文件。包含未经处理的原始测序序列及质量值，是 DNA、RNA 或单细胞分析流程的原始输入数据。
+RAW_PAIRED_END_R2_FASTQ,双端测序 Read2 原始 FASTQ 文件。与 Read1 配对，共同组成双端测序原始数据，用于提高比对准确性及变异检测能力。
+RAW_SINGLE_END_FASTQ,单端测序原始 FASTQ 文件。包含未经处理的单端测序 Reads 及质量信息，可用于 RNA-seq、DNA-seq 或其他高通量测序分析。
+UNMAPPEDBAM,未比对 BAM（uBAM）文件。保存未经参考基因组比对的原始测序 Reads 及其元信息，通常用于 GATK Best Practices 中 FASTQ 到 BAM 的标准转换流程，作为后续比对和数据预处理的输入。

@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bio Pipeline MCP route_pipeline_request Output v1",
+  "description": "The structuredContent returned by route_pipeline_request. Other MCP tools use their own schemas.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "selection_status",
+    "orchestration_status",
+    "orchestration_ready",
+    "orchestration_message",
+    "workflow_mode",
+    "intent",
+    "workflow_plan",
+    "agent_input",
+    "force_custom",
+    "data_matcher_mode"
+  ],
+  "properties": {
+    "schema_version": {"const": "tool-chain/v1"},
+    "selection_status": {
+      "enum": ["ready", "missing_assets", "no_match", "draft", "requires_review", "information"]
+    },
+    "orchestration_status": {
+      "enum": ["ready", "missing_data", "draft", "requires_review", "no_match", "information"]
+    },
+    "orchestration_ready": {"type": "boolean"},
+    "orchestration_message": {"type": "string"},
+    "workflow_mode": {"enum": ["standard", "custom", "capability"]},
+    "intent": {
+      "type": "object",
+      "required": ["query_text", "analysis_goal", "requested_outputs"],
+      "properties": {
+        "query_text": {"type": "string"},
+        "analysis_goal": {"type": ["string", "null"]},
+        "requested_outputs": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
+    },
+    "workflow_plan": {
+      "type": "object",
+      "properties": {
+        "mode": {"enum": ["standard", "custom", "capability"]},
+        "pipeline_ids": {"type": "array", "items": {"type": "string"}},
+        "reference_pipeline_ids": {"type": "array", "items": {"type": "string"}},
+        "execution_status": {"type": "string"},
+        "validation": {"type": "object"},
+        "decomposition_gaps": {"type": "array"}
+      },
+      "additionalProperties": true
+    },
+    "agent_input": {
+      "type": "object",
+      "required": [
+        "execution_kind",
+        "workflow_mode",
+        "match_id",
+        "study_accession",
+        "assets",
+        "tool_chain",
+        "feasibility",
+        "selection_reason",
+        "orchestration_status",
+        "orchestration_ready",
+        "orchestration_message",
+        "extensions",
+        "pipeline_id",
+        "files",
+        "files_text"
+      ],
+      "properties": {
+        "execution_kind": {"enum": ["tool_chain", "information"]},
+        "workflow_mode": {"enum": ["standard", "custom", "capability"]},
+        "match_id": {"type": "string", "minLength": 1},
+        "study_accession": {"type": ["string", "null"]},
+        "assets": {"type": "array"},
+        "tool_chain": {"type": "array"},
+        "feasibility": {"type": "object"},
+        "selection_reason": {"type": "string"},
+        "orchestration_status": {
+          "enum": ["ready", "missing_data", "draft", "requires_review", "no_match", "information"]
+        },
+        "orchestration_ready": {"type": "boolean"},
+        "orchestration_message": {"type": "string"},
+        "extensions": {"type": "object"},
+        "pipeline_id": {"type": ["string", "null"]},
+        "files": {"type": "array", "items": {"type": "string"}},
+        "files_text": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "force_custom": {"type": "boolean"},
+    "data_matcher_mode": {"enum": ["csv", "compare", "neo4j"]}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "selection_status": {
+          "enum": ["ready", "missing_assets", "no_match", "draft", "requires_review"]
+        },
+        "workflow_mode": {"enum": ["standard", "custom"]},
+        "agent_input": {
+          "properties": {
+            "execution_kind": {"const": "tool_chain"}
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "selection_status": {"const": "information"},
+        "orchestration_status": {"const": "information"},
+        "orchestration_ready": {"const": false},
+        "workflow_mode": {"const": "capability"},
+        "agent_input": {
+          "properties": {
+            "execution_kind": {"const": "information"}
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

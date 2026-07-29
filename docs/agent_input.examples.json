@@ -1,0 +1,170 @@
+{
+  "schema_version": "agent-input-examples/v1",
+  "examples": {
+    "standard_ready": {
+      "execution_kind": "tool_chain",
+      "workflow_mode": "standard",
+      "match_id": "match-example-standard",
+      "study_accession": "EXAMPLE001",
+      "assets": [
+        {
+          "asset_id": "EXAMPLE001-expression-1",
+          "role": "expression_matrix",
+          "path": "/data/EXAMPLE001/genes-TPM.tsv",
+          "format": "tsv",
+          "path_verified": false,
+          "source": "T2",
+          "sample_accession": null,
+          "run_accession": null,
+          "individual_accession": null,
+          "sample_role": null,
+          "mate": null
+        }
+      ],
+      "tool_chain": [
+        {
+          "step_id": "diff_expr_go",
+          "tool_id": "diff_expr_go",
+          "inputs": {
+            "expression_matrix": {
+              "asset_id": "EXAMPLE001-expression-1"
+            }
+          },
+          "decomposition_status": "pipeline_level_unexpanded",
+          "expandable": false
+        }
+      ],
+      "feasibility": {
+        "status": "ready",
+        "missing_assets": [],
+        "data_ready": true,
+        "message": "Required user data is available."
+      },
+      "selection_reason": "The registered standard pipeline matches the request.",
+      "orchestration_status": "ready",
+      "orchestration_ready": true,
+      "orchestration_message": "The standard workflow is ready.",
+      "extensions": {
+        "quality_gates": {},
+        "plan_validation": {"ok": true, "errors": []},
+        "contract_validation": {"ok": true, "errors": []}
+      },
+      "pipeline_id": "diff_expr_go",
+      "files": ["/data/EXAMPLE001/genes-TPM.tsv"],
+      "files_text": "/data/EXAMPLE001/genes-TPM.tsv"
+    },
+    "custom_draft": {
+      "execution_kind": "tool_chain",
+      "workflow_mode": "custom",
+      "match_id": "match-example-custom",
+      "study_accession": "EXAMPLE002",
+      "assets": [
+        {
+          "asset_id": "EXAMPLE002-r1",
+          "role": "fastq_r1",
+          "path": "/data/EXAMPLE002/sample_R1.fq.gz",
+          "format": "fq.gz",
+          "path_verified": false,
+          "source": "T1",
+          "sample_accession": "SAMPLE002",
+          "run_accession": "RUN002",
+          "individual_accession": "IND002",
+          "sample_role": null,
+          "mate": "r1"
+        },
+        {
+          "asset_id": "EXAMPLE002-r2",
+          "role": "fastq_r2",
+          "path": "/data/EXAMPLE002/sample_R2.fq.gz",
+          "format": "fq.gz",
+          "path_verified": false,
+          "source": "T1",
+          "sample_accession": "SAMPLE002",
+          "run_accession": "RUN002",
+          "individual_accession": "IND002",
+          "sample_role": null,
+          "mate": "r2"
+        }
+      ],
+      "tool_chain": [
+        {
+          "step_id": "fastp",
+          "tool_id": "fastp_paired_end",
+          "inputs": {
+            "sample_id": {"value": "SAMPLE002"},
+            "read1": {"asset_id": "EXAMPLE002-r1"},
+            "read2": {"asset_id": "EXAMPLE002-r2"}
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "bwa",
+          "tool_id": "bwa_mem_paired",
+          "inputs": {
+            "sample_id": {"value": "SAMPLE002"},
+            "read1": {
+              "from": {"step_id": "fastp", "output": "trimmed_r1"}
+            },
+            "read2": {
+              "from": {"step_id": "fastp", "output": "trimmed_r2"}
+            }
+          },
+          "depends_on": ["fastp"]
+        }
+      ],
+      "feasibility": {
+        "status": "ready",
+        "missing_assets": [],
+        "data_ready": true,
+        "message": "Required user data is available."
+      },
+      "selection_reason": "A validated custom chain was requested.",
+      "orchestration_status": "draft",
+      "orchestration_ready": false,
+      "orchestration_message": "The custom chain requires execution-side materialization.",
+      "extensions": {
+        "quality_gates": {},
+        "execution_contract": {
+          "schema_version": "knowledge-card-execution-contract/v1"
+        },
+        "plan_validation": {"ok": true, "errors": []},
+        "contract_validation": {"ok": true, "errors": []}
+      },
+      "pipeline_id": null,
+      "files": [
+        "/data/EXAMPLE002/sample_R1.fq.gz",
+        "/data/EXAMPLE002/sample_R2.fq.gz"
+      ],
+      "files_text": "/data/EXAMPLE002/sample_R1.fq.gz\n/data/EXAMPLE002/sample_R2.fq.gz"
+    },
+    "capability_information": {
+      "execution_kind": "information",
+      "workflow_mode": "capability",
+      "match_id": "capability-example",
+      "study_accession": null,
+      "assets": [],
+      "tool_chain": [],
+      "feasibility": {
+        "status": "not_applicable",
+        "missing_assets": [],
+        "data_ready": null,
+        "message": "This is a capability query and does not produce an executable workflow."
+      },
+      "selection_reason": "The request asks what the catalog can do.",
+      "orchestration_status": "information",
+      "orchestration_ready": false,
+      "orchestration_message": "This is a capability query.",
+      "extensions": {
+        "capability_answer": {
+          "pipelines": [],
+          "atomic_tools": []
+        },
+        "plan_validation": {"ok": true, "errors": []},
+        "contract_validation": {"ok": true, "errors": []}
+      },
+      "pipeline_id": null,
+      "files": [],
+      "files_text": ""
+    }
+  }
+}

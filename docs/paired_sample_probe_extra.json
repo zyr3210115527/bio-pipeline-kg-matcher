@@ -1,0 +1,1335 @@
+{
+  "paired_TN_with_fastq": [
+    {
+      "individual_count": 40
+    }
+  ],
+  "paired_TN_detail": [
+    {
+      "individual_accession": "HRI783931",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P3C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029933"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P3C4_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029935"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P3_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029936"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P3C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029934"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P3C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029932"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783932",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P4C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029942"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P4C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029940"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P4C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029941"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P4_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029943"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783934",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P6C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029959"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P6C5_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029951"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P6C4_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029960"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P6C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029957"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P6_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029961"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P6C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029958"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783935",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P7_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029964"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P7C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029963"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783936",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P8C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029967"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P8_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029968"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P8C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029971"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P8C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029970"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783937",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P9C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029974"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P9_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029976"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P9C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029975"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783940",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P12_N",
+          "tissue": "Tumor",
+          "accession": "HRS1029997"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P12C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029994"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P12C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029996"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P12C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1029995"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783946",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P18_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030042"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P18C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030036"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P18C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030041"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P18C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030038"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783947",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P19_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030049"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P19C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030045"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P19C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030046"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P19C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030048"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783948",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P20C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030054"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P20_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030058"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P20C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030055"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P20C4_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030057"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P20C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030056"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783949",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P21_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030067"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P21C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030064"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P21C4_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030066"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P21C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030063"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P21C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030065"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783950",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P22C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030072"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P22_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030074"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P22C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030071"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P22C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030070"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783951",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P23C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030080"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P23C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030079"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P23_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030081"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P23C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030078"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783952",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P24C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030085"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P24C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030083"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P24_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030086"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783953",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P25_N",
+          "tissue": "Normal",
+          "accession": "HRS1030099"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P25C1_T",
+          "tissue": "Normal",
+          "accession": "HRS1030094"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P25C4_T",
+          "tissue": "Normal",
+          "accession": "HRS1030097"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P25C5_T",
+          "tissue": "Normal",
+          "accession": "HRS1030098"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P25C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030095"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P25C3_T",
+          "tissue": "Normal",
+          "accession": "HRS1030096"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783954",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P26C1_T",
+          "tissue": "Normal",
+          "accession": "HRS1030107"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P26C5_T",
+          "tissue": "Normal",
+          "accession": "HRS1030111"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P26_N",
+          "tissue": "Normal",
+          "accession": "HRS1030112"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P26C3_T",
+          "tissue": "Normal",
+          "accession": "HRS1030109"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P26C4_T",
+          "tissue": "Normal",
+          "accession": "HRS1030110"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P26C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030108"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783955",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P27C1_T",
+          "tissue": "Normal",
+          "accession": "HRS1030118"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P27C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030119"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P27_N",
+          "tissue": "Normal",
+          "accession": "HRS1030121"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P27C3_T",
+          "tissue": "Normal",
+          "accession": "HRS1030120"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783956",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P28C4_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030125"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P28C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030124"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P28C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030129"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P28_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030128"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P28C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030130"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783957",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P29C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030135"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P29C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030137"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P29C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030136"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P29_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030138"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783958",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P30_N",
+          "tissue": "Normal",
+          "accession": "HRS1030139"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P30C1_T",
+          "tissue": "Normal",
+          "accession": "HRS1030144"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P30C3_T",
+          "tissue": "Normal",
+          "accession": "HRS1030146"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P30C4_T",
+          "tissue": "Normal",
+          "accession": "HRS1030147"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P30C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030145"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783959",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P31C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030151"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P31_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030152"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P31C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030149"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783960",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P32C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030156"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P32C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030157"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P32_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030158"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783964",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P36C4_T",
+          "tissue": "Normal",
+          "accession": "HRS1030182"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P36_N",
+          "tissue": "Normal",
+          "accession": "HRS1030178"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P36C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030181"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783970",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P42C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030196"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P42C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030194"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P42_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030197"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783979",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P60C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030226"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P60C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030223"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P60_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030227"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783980",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P61_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030234"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P61C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030233"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783984",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P65_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030250"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P65C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030249"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783985",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P66C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030256"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P66C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030259"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P66_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030263"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P66C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030262"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783993",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P74_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030291"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P74C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030290"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783994",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P75C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030297"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P75_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030298"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783995",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P76_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030305"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P76C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030304"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI783997",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P85C3_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030312"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P85_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030309"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P85C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030310"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P85C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030311"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784000",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P89C4_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030317"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P89C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030316"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P89C1_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030315"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P89_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030318"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784001",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P90C1_T",
+          "tissue": "Normal",
+          "accession": "HRS1030320"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P90C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030321"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P90C3_T",
+          "tissue": "Normal",
+          "accession": "HRS1030322"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P90_N",
+          "tissue": "Normal",
+          "accession": "HRS1030319"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P90C4_T",
+          "tissue": "Normal",
+          "accession": "HRS1030323"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784003",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P92C2_T",
+          "tissue": "Normal",
+          "accession": "HRS1030327"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P92C1_T",
+          "tissue": "Normal",
+          "accession": "HRS1030326"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P92C3_T",
+          "tissue": "Normal",
+          "accession": "HRS1030328"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P92_N",
+          "tissue": "Normal",
+          "accession": "HRS1030325"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784005",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P103C2_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030330"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P103C2_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030333"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784020",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P130_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030361"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P130_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030364"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784021",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P131_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030368"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P131_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030365"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784023",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P133_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030375"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P133_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030372"
+        }
+      ]
+    },
+    {
+      "individual_accession": "HRI784024",
+      "individual_name": null,
+      "samples": [
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P134_N",
+          "tissue": "Tumor",
+          "accession": "HRS1030379"
+        },
+        {
+          "study": "HRA006499",
+          "specimen": "Patient Solid Tissue",
+          "name": "P134_T",
+          "tissue": "Tumor",
+          "accession": "HRS1030376"
+        }
+      ]
+    }
+  ],
+  "paired_TN_studies": [
+    {
+      "study_accession": "HRA006499",
+      "individual_count": 40
+    }
+  ],
+  "paired_TN_both_fastq": [
+    {
+      "individual_count": 40
+    }
+  ],
+  "paired_by_specimen": [
+    {
+      "individual_count": 1957
+    }
+  ],
+  "fastq_read_pairs": [
+    {
+      "read_pair": "R1",
+      "cnt": 7338
+    },
+    {
+      "read_pair": "R2",
+      "cnt": 7338
+    },
+    {
+      "read_pair": "bam",
+      "cnt": 1016
+    }
+  ],
+  "strategy_dist": [
+    {
+      "strategy": "WGS",
+      "cnt": 3046
+    },
+    {
+      "strategy": "WES",
+      "cnt": 1059
+    },
+    {
+      "strategy": "RNA-Seq",
+      "cnt": 723
+    },
+    {
+      "strategy": "WES,RNA-Seq",
+      "cnt": 698
+    },
+    {
+      "strategy": "WGS,RNA-Seq",
+      "cnt": 310
+    },
+    {
+      "strategy": "scRNA-Seq",
+      "cnt": 292
+    }
+  ],
+  "wes_samples": [
+    {
+      "cnt": 1059
+    }
+  ],
+  "wes_multi_sample": [
+    {
+      "cnt": 93
+    }
+  ],
+  "wes_TN_paired": [
+    {
+      "cnt": 40
+    }
+  ],
+  "t1_strategy": [
+    {
+      "strategy": "WES",
+      "cnt": 2644
+    },
+    {
+      "strategy": "RNA-Seq",
+      "cnt": 1480
+    },
+    {
+      "strategy": "WGS",
+      "cnt": 532
+    }
+  ]
+}

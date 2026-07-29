@@ -1,0 +1,124 @@
+{
+  "source": "neo4j-runtime",
+  "connected": true,
+  "next_count": 13,
+  "next_edges": [
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "fastqc",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T02",
+      "kind": "data",
+      "output": "clean_fastq_read",
+      "input": "clean_fastq_read"
+    },
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "bwa",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T03",
+      "kind": "data",
+      "output": "clean_fastq_read",
+      "input": "clean_fastq_read"
+    },
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "star",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T09",
+      "kind": "data",
+      "output": "clean_fastq_read",
+      "input": "clean_fastq_read"
+    },
+    {
+      "source_tool_id": "fastqc",
+      "target_tool_id": "bwa",
+      "source_catalog_id": "T02",
+      "target_catalog_id": "T03",
+      "kind": "order",
+      "output": "",
+      "input": ""
+    },
+    {
+      "source_tool_id": "fastqc",
+      "target_tool_id": "trim_galore",
+      "source_catalog_id": "T02",
+      "target_catalog_id": "T08",
+      "kind": "order",
+      "output": "",
+      "input": ""
+    },
+    {
+      "source_tool_id": "bwa",
+      "target_tool_id": "samtools",
+      "source_catalog_id": "T03",
+      "target_catalog_id": "T04",
+      "kind": "data",
+      "output": "aligned_bam",
+      "input": "aligned_bam"
+    },
+    {
+      "source_tool_id": "samtools",
+      "target_tool_id": "gatk",
+      "source_catalog_id": "T04",
+      "target_catalog_id": "T05",
+      "kind": "data",
+      "output": "sorted_dedup_bam",
+      "input": "sorted_dedup_bam"
+    },
+    {
+      "source_tool_id": "samtools",
+      "target_tool_id": "featurecounts",
+      "source_catalog_id": "T04",
+      "target_catalog_id": "T11",
+      "kind": "data",
+      "output": "sorted_dedup_bam",
+      "input": "sorted_dedup_bam"
+    },
+    {
+      "source_tool_id": "gatk",
+      "target_tool_id": "bcftools",
+      "source_catalog_id": "T05",
+      "target_catalog_id": "T06",
+      "kind": "data",
+      "output": "unfiltered_vcf",
+      "input": "unfiltered_vcf"
+    },
+    {
+      "source_tool_id": "bcftools",
+      "target_tool_id": "snpeff",
+      "source_catalog_id": "T06",
+      "target_catalog_id": "T07",
+      "kind": "data",
+      "output": "filtered_vcf",
+      "input": "filtered_vcf"
+    },
+    {
+      "source_tool_id": "trim_galore",
+      "target_tool_id": "star",
+      "source_catalog_id": "T08",
+      "target_catalog_id": "T09",
+      "kind": "data",
+      "output": "clean_fastq_read",
+      "input": "clean_fastq_read"
+    },
+    {
+      "source_tool_id": "star",
+      "target_tool_id": "samtools",
+      "source_catalog_id": "T09",
+      "target_catalog_id": "T04",
+      "kind": "data",
+      "output": "aligned_bam",
+      "input": "aligned_bam"
+    },
+    {
+      "source_tool_id": "star",
+      "target_tool_id": "rsem",
+      "source_catalog_id": "T09",
+      "target_catalog_id": "T10",
+      "kind": "data",
+      "output": "transcriptome_bam",
+      "input": "transcriptome_bam"
+    }
+  ]
+}

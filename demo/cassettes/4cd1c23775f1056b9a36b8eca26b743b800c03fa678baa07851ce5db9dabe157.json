@@ -1,0 +1,44 @@
+{
+  "analysis": {
+    "data_in_hand": "用户具有一个样本的 WES FASTQ 数据，未提及配对样本",
+    "goal": "进行变异检测和注释",
+    "steps_implied": "从 FASTQ 到变异检测和注释需要质控、比 对、变异检测、注释等步骤",
+    "menu_scan": "菜单中 paired_fastq_to_unmapped_bam 覆盖了从 FASTQ 到 uBAM 的转换，但其余步骤无现成流程覆盖"
+  },
+  "mode": "custom",
+  "reason": "现有流程仅能覆盖 FASTQ 到 uBAM 的转换，无法组合完成完整的变异检测和注释，故需自定义组链。",
+  "requirements": [
+    "WES FASTQ 数据变异检测",
+    "变异结果注释"
+  ],
+  "pipeline_ids": [],
+  "reference_pipeline_ids": [
+    "paired_fastq_to_unmapped_bam"
+  ],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "paired_fastq_to_unmapped_bam",
+      "input_match": "match",
+      "functional_coverage": "partial",
+      "output_match": "mismatch",
+      "note": "只完成从 FASTQ 到 uBAM 的转换，不能进行变异检测和注释，无法满足用户全部需求"
+    }
+  ],
+  "uncovered_requirements": [
+    "从 uBAM 到变异检测和注释的完整分析流程"
+  ],
+  "__llm_usage": {
+    "prompt_tokens": 3723,
+    "completion_tokens": 894,
+    "total_tokens": 4617,
+    "prompt_tokens_details": {
+      "cached_tokens": 3712
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 556
+    },
+    "prompt_cache_hit_tokens": 3712,
+    "prompt_cache_miss_tokens": 11
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

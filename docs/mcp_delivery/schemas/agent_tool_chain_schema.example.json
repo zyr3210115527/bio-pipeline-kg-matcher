@@ -1,0 +1,90 @@
+{
+  "schema_version": "tool-chain/v2",
+  "selection_status": "ready",
+  "recommendation_count": 1,
+  "recommendations": [
+    {
+      "rank": 1,
+      "match_id": "recommendation-example-top1",
+      "pipeline_id": "rnaseq_singletask",
+      "match_note": "匹配 RNA-seq 上游处理目标。",
+      "tool": {
+        "tool_id": "rnaseq_singletask",
+        "catalog_status": "registered",
+        "source": "neo4j"
+      },
+      "data": {
+        "status": "missing_from_graph",
+        "source": "neo4j",
+        "assets": [],
+        "matched_count": 0,
+        "expected_count": 2,
+        "missing_asset_names": [],
+        "study_accessions": []
+      },
+      "source": "llm+neo4j",
+      "reference_case_id": null
+    }
+  ],
+  "candidate_count": 1,
+  "candidates": [
+    {
+      "rank": 1,
+      "match_note": "完整覆盖双端 RNA-seq 的定量与计数目标。",
+      "workflow_mode": "custom",
+      "match_id": "match-example-top1",
+      "validation_ok": true,
+      "feasibility_status": "ready",
+      "study_accession": "HRA000074",
+      "assets": [
+        {
+          "asset_id": "HRA000074-fastq-r1",
+          "role": "fastq_r1",
+          "path": "/data/HRA000074/example_R1.fastq.gz",
+          "path_verified": false,
+          "sample_role": null,
+          "mate": "r1"
+        },
+        {
+          "asset_id": "HRA000074-fastq-r2",
+          "role": "fastq_r2",
+          "path": "/data/HRA000074/example_R2.fastq.gz",
+          "path_verified": false,
+          "sample_role": null,
+          "mate": "r2"
+        }
+      ],
+      "tool_chain": [
+        {
+          "step_id": "fastp",
+          "tool_id": "fastp_paired_end",
+          "inputs": {
+            "reads": {"asset_id": "HRA000074-fastq-r1"},
+            "reads2": {"asset_id": "HRA000074-fastq-r2"}
+          }
+        },
+        {
+          "step_id": "star",
+          "tool_id": "star_rrna_and_genome_alignment",
+          "inputs": {
+            "read1": {"from": {"step_id": "fastp", "output": "trimmed_r1"}},
+            "read2": {"from": {"step_id": "fastp", "output": "trimmed_r2"}}
+          }
+        }
+      ]
+    }
+  ],
+  "unsupported_reason": null,
+  "intent": {
+    "query_text": "双端 RNA-seq FASTQ 生成表达丰度和 count 矩阵",
+    "analysis_goal": "RNA-seq 上游处理",
+    "requested_outputs": ["表达丰度", "count 矩阵"]
+  },
+  "planner_metadata": {
+    "used": true,
+    "status": "ok",
+    "model": "deepseek-v4-pro",
+    "calls": 1
+  },
+  "data_matcher_mode": "neo4j"
+}

@@ -1,0 +1,196 @@
+{
+  "source": "neo4j",
+  "connected": true,
+  "next_count": 21,
+  "next_edges": [
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "fastqc",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T02",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "bwa",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T03",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "star",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T09",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "fastp",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T01",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "fastqc",
+      "target_tool_id": "bwa",
+      "source_catalog_id": "T02",
+      "target_catalog_id": "T03",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "fastqc",
+      "target_tool_id": "trim_galore",
+      "source_catalog_id": "T02",
+      "target_catalog_id": "T08",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "fastqc",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T02",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "bwa",
+      "target_tool_id": "samtools",
+      "source_catalog_id": "T03",
+      "target_catalog_id": "T04",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "samtools",
+      "target_tool_id": "gatk",
+      "source_catalog_id": "T04",
+      "target_catalog_id": "T05",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "samtools",
+      "target_tool_id": "featurecounts",
+      "source_catalog_id": "T04",
+      "target_catalog_id": "T11",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "samtools",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T04",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "gatk",
+      "target_tool_id": "bcftools",
+      "source_catalog_id": "T05",
+      "target_catalog_id": "T06",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "gatk",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T05",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "bcftools",
+      "target_tool_id": "snpeff",
+      "source_catalog_id": "T06",
+      "target_catalog_id": "T07",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "snpeff",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T07",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "trim_galore",
+      "target_tool_id": "star",
+      "source_catalog_id": "T08",
+      "target_catalog_id": "T09",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "star",
+      "target_tool_id": "samtools",
+      "source_catalog_id": "T09",
+      "target_catalog_id": "T04",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "star",
+      "target_tool_id": "rsem",
+      "source_catalog_id": "T09",
+      "target_catalog_id": "T10",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "star",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T09",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "rsem",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T10",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    },
+    {
+      "source_tool_id": "featurecounts",
+      "target_tool_id": "multiqc",
+      "source_catalog_id": "T11",
+      "target_catalog_id": "T12",
+      "kind": null,
+      "output": null,
+      "input": null
+    }
+  ]
+}

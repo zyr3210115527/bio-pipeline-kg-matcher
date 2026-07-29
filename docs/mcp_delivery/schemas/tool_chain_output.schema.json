@@ -1,0 +1,291 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "selection_status",
+    "candidate_count",
+    "candidates",
+    "recommendation_count",
+    "recommendations",
+    "unsupported_reason",
+    "intent",
+    "planner_metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tool-chain/v2"
+    },
+    "selection_status": {
+      "enum": [
+        "ready",
+        "no_candidate",
+        "unsupported",
+        "information"
+      ]
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "recommendation_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "unsupported_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "intent": {
+      "type": "object",
+      "required": [
+        "query_text",
+        "analysis_goal",
+        "requested_outputs"
+      ],
+      "properties": {
+        "query_text": {
+          "type": "string"
+        },
+        "analysis_goal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requested_outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "planner_metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "candidates": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "rank",
+          "match_note",
+          "workflow_mode",
+          "match_id",
+          "validation_ok",
+          "feasibility_status",
+          "study_accession",
+          "assets",
+          "tool_chain"
+        ],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "match_note": {
+            "type": "string"
+          },
+          "workflow_mode": {
+            "const": "custom"
+          },
+          "match_id": {
+            "type": "string"
+          },
+          "study_accession": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "validation_ok": {
+            "const": true
+          },
+          "feasibility_status": {
+            "const": "ready"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "asset_id",
+                "role",
+                "path"
+              ],
+              "properties": {
+                "asset_id": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "format": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "tool_chain": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "step_id",
+                "tool_id",
+                "inputs"
+              ],
+              "properties": {
+                "step_id": {
+                  "type": "string"
+                },
+                "tool_id": {
+                  "type": "string"
+                },
+                "inputs": {
+                  "type": "object"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "selection_reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "rank",
+          "match_id",
+          "pipeline_id",
+          "tool",
+          "data",
+          "source"
+        ],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "match_id": {
+            "type": "string"
+          },
+          "pipeline_id": {
+            "type": "string"
+          },
+          "match_note": {
+            "type": "string"
+          },
+          "source": {
+            "enum": [
+              "reviewed_reference+neo4j",
+              "llm+neo4j"
+            ]
+          },
+          "reference_case_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tool": {
+            "type": "object",
+            "required": [
+              "tool_id",
+              "catalog_status",
+              "source"
+            ],
+            "properties": {
+              "tool_id": {
+                "type": "string"
+              },
+              "catalog_status": {
+                "enum": [
+                  "registered",
+                  "missing_from_neo4j"
+                ]
+              },
+              "source": {
+                "const": "neo4j"
+              }
+            },
+            "additionalProperties": true
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "status",
+              "source",
+              "assets",
+              "matched_count",
+              "expected_count",
+              "missing_asset_names",
+              "study_accessions"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "available",
+                  "missing_from_graph"
+                ]
+              },
+              "source": {
+                "const": "neo4j"
+              },
+              "assets": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "matched_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "expected_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "missing_asset_names": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "study_accessions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

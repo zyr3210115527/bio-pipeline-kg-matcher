@@ -1,0 +1,17 @@
+{
+  "schema_version": "mcp-stdio-smoke/v1",
+  "ok": true,
+  "responses": 3,
+  "initialize": "ok",
+  "tools_list": {
+    "ok": true,
+    "tool_count": 7
+  },
+  "health_check": {
+    "ok": true,
+    "ready": true,
+    "backend_schema": "legacy-update728",
+    "tool_count": 24
+  },
+  "target": "bolt://127.0.0.1:7688"
+}

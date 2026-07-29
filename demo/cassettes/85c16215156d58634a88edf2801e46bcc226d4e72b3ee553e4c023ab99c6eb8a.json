@@ -1,0 +1,41 @@
+{
+  "analysis": {
+    "data_in_hand": "双端 FASTQ",
+    "goal": "表达矩阵和基因计数",
+    "steps_implied": "质控、比对、定量（RSEM 表达矩阵、featureCounts 计数矩阵）",
+    "menu_scan": "rnaseq_singletask 覆盖完整上游流程，输出表达矩阵和计数矩阵"
+  },
+  "mode": "standard",
+  "reason": "需求为标准的 RNA-seq 上游分析，菜单中的 rnaseq_singletask 流程直接匹配。",
+  "requirements": [
+    "从双端 FASTQ 进行 RNA-seq 上游分析，获得表达矩阵和基因计数"
+  ],
+  "pipeline_ids": [
+    "rnaseq_singletask"
+  ],
+  "reference_pipeline_ids": [],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "rnaseq_singletask",
+      "input_match": "partial",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "用户提供 FASTQ，但流程还需要 gtf、索引文件等参考数据，用户未明确说明是否具备。"
+    }
+  ],
+  "uncovered_requirements": [],
+  "__llm_usage": {
+    "prompt_tokens": 3729,
+    "completion_tokens": 950,
+    "total_tokens": 4679,
+    "prompt_tokens_details": {
+      "cached_tokens": 3712
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 682
+    },
+    "prompt_cache_hit_tokens": 3712,
+    "prompt_cache_miss_tokens": 17
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

@@ -1,0 +1,98 @@
+{
+  "双端 FASTQ RNA-seq 上游": {
+    "status": "draft/draft",
+    "mode": "custom",
+    "step_count": 5,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": [],
+    "decomposition_gaps": []
+  },
+  "GO+KEGG 富集": {
+    "status": "no_match/no_match",
+    "mode": "custom",
+    "step_count": 0,
+    "steps": [],
+    "validation_ok": false,
+    "validation_errors": [
+      "所需内部方法尚未完成原子化拆解，当前方法目录无法忠实表达该修改",
+      "自定义模式没有有效方法步骤"
+    ],
+    "decomposition_gaps": [
+      {
+        "message": "缺少功能富集分析工具：当前菜单中没有任何 GO 或 KEGG 富集分析工具（例如 clusterProfiler、GOSeq、DAVID、g:Profiler 等），无法完成 GO 和 KEGG 富集分析。需要补充对应的原子工具。"
+      }
+    ]
+  },
+  "单样本 WES FASTQ": {
+    "status": "missing_assets/missing_data",
+    "mode": "custom",
+    "step_count": 6,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "bwa",
+        "bwa"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "gatk",
+        "gatk"
+      ],
+      [
+        "bcftools",
+        "bcftools"
+      ],
+      [
+        "snpeff",
+        "snpeff"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": [],
+    "decomposition_gaps": []
+  },
+  "配对肿瘤正常 WES": {
+    "status": "no_match/no_match",
+    "mode": "custom",
+    "step_count": 0,
+    "steps": [],
+    "validation_ok": false,
+    "validation_errors": [
+      "所需内部方法尚未完成原子化拆解，当前方法目录无法忠实表达该修改",
+      "自定义模式没有有效方法步骤"
+    ],
+    "decomposition_gaps": [
+      {
+        "message": "配对样本汇合无法表达:gatk 在当前目录中只注册了 1 个 sorted_dedup_bam 输入槽,无法同时接收 tumor 和 normal。需要为该工具补充分样本输入槽。"
+      }
+    ]
+  }
+}

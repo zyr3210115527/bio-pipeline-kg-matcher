@@ -1,0 +1,184 @@
+{
+  "schema_version": "top3-live-probe/v1",
+  "recorded_at": "2026-07-28T04:21:58.874294+00:00",
+  "name": "unsupported",
+  "query": "使用 RNA-seq 表达矩阵做差异表达分析，并对上调基因做 GO 和 KEGG 富集。",
+  "run_count": 3,
+  "latency_s": {
+    "min": 5.201,
+    "max": 5.648,
+    "mean": 5.393,
+    "p50": 5.331,
+    "p95": 5.616
+  },
+  "runs": [
+    {
+      "run": 1,
+      "elapsed_s": 5.648,
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "差异表达分析、GO 和 KEGG 富集分析尚未原子化，暂不支持。",
+        "intent": {
+          "query_text": "使用 RNA-seq 表达矩阵做差异表达分析，并对上调基因做 GO 和 KEGG 富集。",
+          "analysis_goal": "通路富集",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "tsv",
+          "quant_hint": null,
+          "requested_outputs": [
+            "表达矩阵"
+          ],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2381,
+          "completion_tokens": 368,
+          "total_tokens": 2749,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "RNA-seq 单样本或配对未明确，需求为差异表达和富集分析，但当前目录无差异表达或富集工具",
+          "data_path": "从表达矩阵到差异表达结果再到富集结果，但相关步骤无原子工具",
+          "coverage": "无",
+          "checks": "缺少差异表达和富集工具，无法形成完整链"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "差异表达分析、GO 和 KEGG 富集分析尚未原子化，暂不支持。"
+      }
+    },
+    {
+      "run": 2,
+      "elapsed_s": 5.331,
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "差异表达分析和 GO/KEGG 富集分析尚未原子化，暂不支持。",
+        "intent": {
+          "query_text": "使用 RNA-seq 表达矩阵做差异表达分析，并对上调基因做 GO 和 KEGG 富集。",
+          "analysis_goal": "通路富集",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "tsv",
+          "quant_hint": null,
+          "requested_outputs": [
+            "表达矩阵"
+          ],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2381,
+          "completion_tokens": 293,
+          "total_tokens": 2674,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "RNA-seq 表达矩阵，无配对信息",
+          "data_path": "从已有表达矩阵到差异表达结果和富集结果，但所需工具未原子化",
+          "coverage": "无法覆盖，缺少差异表达和富集分析工具",
+          "checks": "目录中无差异表达工具（如 DESeq2/edgeR）和富集工具（GO/KEGG），无法形成完整链"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "差异表达分析和 GO/KEGG 富集分析尚未原子化，暂不支持。"
+      }
+    },
+    {
+      "run": 3,
+      "elapsed_s": 5.201,
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "candidate_tool_ids": [],
+      "result": {
+        "schema_version": "tool-chain/v2",
+        "selection_status": "unsupported",
+        "candidate_count": 0,
+        "candidates": [],
+        "unsupported_reason": "差异表达分析和 GO/KEGG 富集分析尚未原子化，暂不支持。",
+        "intent": {
+          "query_text": "使用 RNA-seq 表达矩阵做差异表达分析，并对上调基因做 GO 和 KEGG 富集。",
+          "analysis_goal": "通路富集",
+          "disease": null,
+          "omics_type": "bulk RNA-seq",
+          "input_hint": "tsv",
+          "quant_hint": null,
+          "requested_outputs": [
+            "表达矩阵"
+          ],
+          "source": "rule",
+          "ambiguous": false
+        },
+        "planner_metadata": {
+          "used": true,
+          "status": "ok",
+          "model": "deepseek-v4-pro",
+          "prompt_tokens": 2381,
+          "completion_tokens": 281,
+          "total_tokens": 2662,
+          "calls": 1,
+          "stages": [
+            "atomic_candidate_generation"
+          ]
+        },
+        "analysis": {
+          "sample_layout": "未指定样本数量或配对信息",
+          "data_path": "从 RNA-seq 原始数据到表达矩阵、差异表达、功能富集",
+          "coverage": "现有工具链仅覆盖至表达矩阵生成，无法执行差异表达和富集分析",
+          "checks": "目录中缺乏差异分析和富集分析工具，无法形成完整链"
+        },
+        "extensions": {
+          "rejected_candidates": [],
+          "method_catalog_status": {
+            "status": "work_in_progress",
+            "scope": "Neo4j curated tool catalog and reviewed NEXT relationships",
+            "source": "neo4j",
+            "is_complete_internal_tool_decomposition": false,
+            "registered_method_count": 12
+          }
+        },
+        "answer": "差异表达分析和 GO/KEGG 富集分析尚未原子化，暂不支持。"
+      }
+    }
+  ]
+}

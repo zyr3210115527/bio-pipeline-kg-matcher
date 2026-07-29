@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bio Pipeline Agent Input v1",
+  "description": "Stable agent_input contract returned by route_pipeline_request. The discriminator is execution_kind.",
+  "type": "object",
+  "required": [
+    "execution_kind",
+    "workflow_mode",
+    "match_id",
+    "study_accession",
+    "assets",
+    "tool_chain",
+    "feasibility",
+    "selection_reason",
+    "orchestration_status",
+    "orchestration_ready",
+    "orchestration_message",
+    "extensions",
+    "pipeline_id",
+    "files",
+    "files_text"
+  ],
+  "properties": {
+    "execution_kind": {
+      "enum": ["tool_chain", "information"]
+    },
+    "workflow_mode": {
+      "enum": ["standard", "custom", "capability"]
+    },
+    "match_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "study_accession": {
+      "type": ["string", "null"]
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "tool_chain": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/toolStep"
+      }
+    },
+    "feasibility": {
+      "$ref": "#/$defs/feasibility"
+    },
+    "selection_reason": {
+      "type": "string"
+    },
+    "orchestration_status": {
+      "enum": ["ready", "missing_data", "draft", "requires_review", "no_match", "information"]
+    },
+    "orchestration_ready": {
+      "type": "boolean"
+    },
+    "orchestration_message": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "required": ["plan_validation", "contract_validation"],
+      "properties": {
+        "quality_gates": {
+          "type": "object"
+        },
+        "capability_answer": {
+          "type": "object"
+        },
+        "plan_validation": {
+          "$ref": "#/$defs/validation"
+        },
+        "contract_validation": {
+          "$ref": "#/$defs/validation"
+        }
+      },
+      "additionalProperties": true
+    },
+    "pipeline_id": {
+      "type": ["string", "null"],
+      "description": "Compatibility field. New consumers should use tool_chain."
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Compatibility field. New consumers should use assets."
+    },
+    "files_text": {
+      "type": "string",
+      "description": "Compatibility field. New consumers should use assets."
+    }
+  },
+  "oneOf": [
+    {
+      "title": "Executable or draft tool chain",
+      "properties": {
+        "execution_kind": {"const": "tool_chain"},
+        "workflow_mode": {"enum": ["standard", "custom"]},
+        "orchestration_status": {
+          "enum": ["ready", "missing_data", "draft", "requires_review", "no_match"]
+        },
+        "feasibility": {
+          "properties": {
+            "status": {"enum": ["ready", "missing_assets"]}
+          }
+        },
+        "extensions": {
+          "required": ["quality_gates", "plan_validation", "contract_validation"]
+        }
+      }
+    },
+    {
+      "title": "Capability information",
+      "properties": {
+        "execution_kind": {"const": "information"},
+        "workflow_mode": {"const": "capability"},
+        "study_accession": {"type": "null"},
+        "assets": {"maxItems": 0},
+        "tool_chain": {"maxItems": 0},
+        "feasibility": {
+          "properties": {
+            "status": {"const": "not_applicable"},
+            "data_ready": {"type": "null"}
+          }
+        },
+        "orchestration_status": {"const": "information"},
+        "orchestration_ready": {"const": false},
+        "extensions": {
+          "required": ["capability_answer", "plan_validation", "contract_validation"]
+        },
+        "pipeline_id": {"type": "null"},
+        "files": {"maxItems": 0}
+      }
+    }
+  ],
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "required": ["asset_id", "role", "path"],
+      "properties": {
+        "asset_id": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "format": {"type": ["string", "null"]},
+        "path_verified": {"type": "boolean"},
+        "source": {"type": ["string", "null"]},
+        "sample_accession": {"type": ["string", "null"]},
+        "run_accession": {"type": ["string", "null"]},
+        "individual_accession": {"type": ["string", "null"]},
+        "sample_role": {"enum": ["tumor", "normal", null]},
+        "mate": {"enum": ["r1", "r2", null]}
+      },
+      "additionalProperties": true
+    },
+    "toolStep": {
+      "type": "object",
+      "required": ["step_id", "tool_id", "inputs"],
+      "properties": {
+        "step_id": {"type": "string", "minLength": 1},
+        "tool_id": {"type": "string", "minLength": 1},
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/inputBinding"
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "parent_pipeline_id": {"type": "string"},
+        "decomposition_status": {
+          "enum": ["expanded_locked_recipe", "pipeline_level_unexpanded"]
+        },
+        "expandable": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "inputBinding": {
+      "oneOf": [
+        {"$ref": "#/$defs/scalarInputBinding"},
+        {
+          "type": "object",
+          "required": ["sources", "flatten"],
+          "properties": {
+            "sources": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/scalarInputBinding"}
+            },
+            "flatten": {"const": true}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "scalarInputBinding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["asset_id"],
+          "properties": {
+            "asset_id": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["from"],
+          "properties": {
+            "from": {
+              "type": "object",
+              "required": ["step_id", "output"],
+              "properties": {
+                "step_id": {"type": "string", "minLength": 1},
+                "output": {"type": "string", "minLength": 1}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["value"],
+          "properties": {
+            "value": {}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "feasibility": {
+      "type": "object",
+      "required": ["status", "missing_assets", "data_ready", "message"],
+      "properties": {
+        "status": {
+          "enum": ["ready", "missing_assets", "not_applicable"]
+        },
+        "missing_assets": {
+          "type": "array",
+          "items": {"type": "object"}
+        },
+        "data_ready": {
+          "type": ["boolean", "null"]
+        },
+        "message": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "validation": {
+      "type": "object",
+      "required": ["ok", "errors"],
+      "properties": {
+        "ok": {"type": "boolean"},
+        "errors": {
+          "type": "array",
+          "items": {"type": ["string", "object"]}
+        },
+        "warnings": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

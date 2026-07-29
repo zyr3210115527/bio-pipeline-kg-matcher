@@ -1,0 +1,26 @@
+{
+  "analysis": {
+    "sample_layout": "配对样本，有 tumor 和 normal 两个样本",
+    "data_path": "FASTQ → clean FASTQ (fastp) → aligned BAM (bwa) → sorted dedup BAM (samtools) → unfiltered VCF (gatk, 需汇合 tumor 和 normal BAM) → filtered VCF (bcftools) → annotated VCF (snpeff)",
+    "tool_mapping": "fastp 用于质控，bwa 用于比对，samtools 用于排序去重，gatk 用于变异检测（需配对输入），bcftools 用于过滤，snpeff 用于注释",
+    "checks": "1.是配对样本，单样本工具应成对出现，但汇合工具缺失故未组链；2.无；3.无；4.gatk 只有1个 sorted_dedup_bam 输入槽，无法同时接收 tumor 和 normal；5.如实写入 decomposition_gaps；6-10 不适用"
+  },
+  "steps": [],
+  "decomposition_gaps": [
+    "配对样本汇合无法表达: gatk 在当前目录中只注册了 1 个 sorted_dedup_bam 输入槽, 无法同时接收 tumor 和 normal 样本。需要为该工具补充分样本输入槽。"
+  ],
+  "__llm_usage": {
+    "prompt_tokens": 3895,
+    "completion_tokens": 1805,
+    "total_tokens": 5700,
+    "prompt_tokens_details": {
+      "cached_tokens": 2816
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 1502
+    },
+    "prompt_cache_hit_tokens": 2816,
+    "prompt_cache_miss_tokens": 1079
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

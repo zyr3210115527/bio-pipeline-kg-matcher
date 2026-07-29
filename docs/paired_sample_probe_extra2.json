@@ -1,0 +1,411 @@
+{
+  "_guess_read_pair_source": "    def _guess_read_pair(self, name: str) -> str:\n        n = name.lower()\n        if re.search(r\"(_r?1|_f1|read1)\", n):\n            return \"R1\"\n        if re.search(r\"(_r?2|_r2|read2)\", n):\n            return \"R2\"\n        return \"\"\n",
+  "asset_roles": {},
+  "pipeline_steps_query": [],
+  "tool_T01_props": [],
+  "tool_id_fastp_props": [
+    {
+      "props": {
+        "tool_name": "fastp",
+        "catalog_id": "T01",
+        "catalog_source": "sister-tool-csv",
+        "omics": "WES",
+        "tool_id": "fastp",
+        "description": "FASTQ 质控，修剪，UMI 提取等",
+        "tool_kind": "atomic"
+      }
+    }
+  ],
+  "tool_id_T01_props": [],
+  "tool_fastp_props": [
+    {
+      "props": {
+        "tool_name": "fastp",
+        "catalog_id": "T01",
+        "catalog_source": "sister-tool-csv",
+        "omics": "WES",
+        "tool_id": "fastp",
+        "description": "FASTQ 质控，修剪，UMI 提取等",
+        "tool_kind": "atomic"
+      }
+    }
+  ],
+  "all_Tool_nodes": [
+    {
+      "tool_id": "diff_expr_go",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "diff_expr_kegg",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "driver_gene_gender_analysis",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "her2_pfs_survival",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "immune_infiltration_iobr",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "paired_fastq_to_unmapped_bam",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "rnaseq_unsupervised_cluster",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "survival_analysis",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "tmb_survival_analysis",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "wes_somatic_maf_landscape",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "wgcna",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "fastp",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "fastqc",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "bwa",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "samtools",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "gatk",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "bcftools",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "snpeff",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "trim_galore",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "star",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "rsem",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "featurecounts",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "multiqc",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "rnaseq_singletask",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    }
+  ],
+  "all_tool_id_nodes": [
+    {
+      "tool_id": "diff_expr_go",
+      "catalog_id": "T13",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "diff_expr_kegg",
+      "catalog_id": "T14",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "driver_gene_gender_analysis",
+      "catalog_id": "T15",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "her2_pfs_survival",
+      "catalog_id": "T16",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "immune_infiltration_iobr",
+      "catalog_id": "T17",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "paired_fastq_to_unmapped_bam",
+      "catalog_id": "T18",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "rnaseq_unsupervised_cluster",
+      "catalog_id": "T19",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "survival_analysis",
+      "catalog_id": "T20",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "tmb_survival_analysis",
+      "catalog_id": "T21",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "wes_somatic_maf_landscape",
+      "catalog_id": "T22",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "wgcna",
+      "catalog_id": "T23",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "fastp",
+      "catalog_id": "T01",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "fastqc",
+      "catalog_id": "T02",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "bwa",
+      "catalog_id": "T03",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "samtools",
+      "catalog_id": "T04",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "gatk",
+      "catalog_id": "T05",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "bcftools",
+      "catalog_id": "T06",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "snpeff",
+      "catalog_id": "T07",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "trim_galore",
+      "catalog_id": "T08",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "star",
+      "catalog_id": "T09",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "rsem",
+      "catalog_id": "T10",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "featurecounts",
+      "catalog_id": "T11",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "multiqc",
+      "catalog_id": "T12",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    },
+    {
+      "tool_id": "rnaseq_singletask",
+      "catalog_id": "TASK_RNASEQ_SINGLETASK",
+      "labels": [
+        "tool_id",
+        "Tool"
+      ]
+    }
+  ],
+  "HRA006499": [
+    {
+      "props": {
+        "individual_count": "105",
+        "study_accession": "HRA006499",
+        "tumor_type": "Liver Cancer",
+        "study_type": "Disease Study",
+        "study_description": "Inter- and intra-tumor heterogeneity is a major hurdle in primary liver cancer (PLC) precision therapy. Here， we established a PLC biobank， consisting of 399 organoids derived from 144 patients， which recapitulated histopathology and genomic landscape of parental tumors， and were reliable for drug sensitivity screening， evidenced by both in vivo models and patient response. Integrative analysis dissected PLC heterogeneity， regarding genomic， transcriptomic characteristics and sensitivity to seven clinically-relevant drugs， as well as clinical associations. Pharmacogenomic analysis identified and validated multi-gene expression signatures predicting drug response for better patient stratification. Furthermore， c-Jun was revealed as a major mediator to Lenvatinib resistance， through JNK and β-catenin signaling. A new compound (PKUF-01) comprising moieties of Lenvatinib and Veratramine (c-Jun inhibitor) was synthesized and screened， exhibiting a marked synergistic effect. Together， our study characterized the landscape of PLC heterogeneity， developed predictive biomarker panels， and revealed a novel Lenvatinib resistant mechanism for combinatory therapy.",
+        "sample_count": "482",
+        "title": "Pharmacogenomic profiling of intra-tumor heterogeneity by a large organoid biobank of liver cancer",
+        "information_source": "https://ngdc.cncb.ac.cn/gsa-human/browse/HRA006499"
+      }
+    }
+  ]
+}

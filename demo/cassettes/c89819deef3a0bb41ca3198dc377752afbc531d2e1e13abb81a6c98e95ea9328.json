@@ -1,0 +1,41 @@
+{
+  "analysis": {
+    "data_in_hand": "用户有 TPM 表达矩阵，未提到配对样本",
+    "goal": "进行无监督聚类分析",
+    "steps_implied": "输入表达矩阵，进行标准化、高变基因筛选、PCA降维、聚类及稳定性评估",
+    "menu_scan": "rnaseq_unsupervised_cluster 直接对应，完成无监督聚类并输出聚类分配、图表和稳定性评估；但该流程要求 count 矩阵，用户提供的是 TPM 矩阵"
+  },
+  "mode": "standard",
+  "reason": "菜单中存在唯一的无监督聚类流程 rnaseq_unsupervised_cluster，功能覆盖用户需求，虽输入数据类型不匹配但规则规定 input mismatch 不单独触发降级，因此仍选 standard 并如实标注输入问题。",
+  "requirements": [
+    "对 TPM 矩阵进行无监督聚类"
+  ],
+  "pipeline_ids": [
+    "rnaseq_unsupervised_cluster"
+  ],
+  "reference_pipeline_ids": [],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "rnaseq_unsupervised_cluster",
+      "input_match": "mismatch",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "该流程需要 expression_count_matrix（如 featureCounts 结果），用户提供的是 TPM 矩阵"
+    }
+  ],
+  "uncovered_requirements": [],
+  "__llm_usage": {
+    "prompt_tokens": 3719,
+    "completion_tokens": 1011,
+    "total_tokens": 4730,
+    "prompt_tokens_details": {
+      "cached_tokens": 3712
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 688
+    },
+    "prompt_cache_hit_tokens": 3712,
+    "prompt_cache_miss_tokens": 7
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

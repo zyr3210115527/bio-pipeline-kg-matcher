@@ -1,0 +1,2108 @@
+{
+  "allowlist": "/Users/zhouyiran/Documents/可选/bio-pipeline-kg-matcher/config/datagraph_representation_allowlist.json",
+  "counts": {
+    "actual": {
+      "labels": {
+        "cohort": 26,
+        "data_format": 28,
+        "data_format_row": 29,
+        "data_level": 4,
+        "data_modal": 8,
+        "individual": 3494,
+        "project": 11,
+        "run": 8354,
+        "sample": 6918,
+        "study": 14,
+        "t1": 13772,
+        "t2": 86
+      },
+      "relationships": {
+        "DESCRIBES_FORMAT": 29,
+        "IN_FORMAT": 13857,
+        "IN_INDIVIDUAL": 6090,
+        "IN_LEVEL": 13847,
+        "IN_PROJECT": 14,
+        "IN_RUN": 13772,
+        "IN_SAMPLE": 7857,
+        "IN_STUDY": 17511,
+        "SUBCLASS_OF": 24
+      }
+    },
+    "expected": {
+      "labels": {
+        "cohort": 26,
+        "data_format": 28,
+        "data_format_row": 29,
+        "data_level": 4,
+        "data_modal": 8,
+        "individual": 3494,
+        "project": 11,
+        "run": 8354,
+        "sample": 6918,
+        "study": 14,
+        "t1": 13772,
+        "t2": 86
+      },
+      "relationships": {
+        "DESCRIBES_FORMAT": 29,
+        "IN_FORMAT": 13857,
+        "IN_INDIVIDUAL": 6090,
+        "IN_LEVEL": 13847,
+        "IN_PROJECT": 14,
+        "IN_RUN": 13772,
+        "IN_SAMPLE": 7857,
+        "IN_STUDY": 17511,
+        "SUBCLASS_OF": 24
+      }
+    }
+  },
+  "dangling_fk": {
+    "count": 1269,
+    "summary": [
+      {
+        "count": 1,
+        "missing": [
+          "end"
+        ],
+        "relationship_type": "IN_FORMAT",
+        "source_table": "relations/T2_in_format.csv"
+      },
+      {
+        "count": 11,
+        "missing": [
+          "end"
+        ],
+        "relationship_type": "IN_LEVEL",
+        "source_table": "relations/T2_in_level.csv"
+      },
+      {
+        "count": 497,
+        "missing": [
+          "end"
+        ],
+        "relationship_type": "IN_SAMPLE",
+        "source_table": "relations/run_in_sample.csv"
+      },
+      {
+        "count": 541,
+        "missing": [
+          "end"
+        ],
+        "relationship_type": "IN_INDIVIDUAL",
+        "source_table": "relations/sample_in_individual.csv"
+      },
+      {
+        "count": 178,
+        "missing": [
+          "start"
+        ],
+        "relationship_type": "IN_INDIVIDUAL",
+        "source_table": "relations/sample_in_individual.csv"
+      },
+      {
+        "count": 41,
+        "missing": [
+          "start",
+          "end"
+        ],
+        "relationship_type": "IN_INDIVIDUAL",
+        "source_table": "relations/sample_in_individual.csv"
+      }
+    ]
+  },
+  "duration_seconds": 12.280143,
+  "field_coverage": {
+    "actual": {
+      "cohort": {
+        "datagraph_managed": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "description": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "snapshot_id": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_row_hash": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_row_json": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_row_number": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_table": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "status": {
+          "nonempty": 26,
+          "total": 26
+        }
+      },
+      "data_format": {
+        "datagraph_managed": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "descriptions": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "format": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "snapshot_id": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "source_row_hash": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "source_table": {
+          "nonempty": 28,
+          "total": 28
+        }
+      },
+      "data_format_row": {
+        "datagraph_managed": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "description": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "format": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "format_row_id": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "snapshot_id": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_row_hash": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_row_json": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_row_number": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_table": {
+          "nonempty": 29,
+          "total": 29
+        }
+      },
+      "data_level": {
+        "datagraph_managed": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "description": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "level": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "name": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "snapshot_id": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_row_hash": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_row_json": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_row_number": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_table": {
+          "nonempty": 4,
+          "total": 4
+        }
+      },
+      "data_modal": {
+        "datagraph_managed": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "description": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "modal": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "snapshot_id": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_row_hash": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_row_json": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_row_number": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_table": {
+          "nonempty": 8,
+          "total": 8
+        }
+      },
+      "individual": {
+        "adjuvant_treatment_agents": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "adjuvant_treatment_outcome_response": {
+          "nonempty": 3419,
+          "total": 3494
+        },
+        "age": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "clinical_m": {
+          "nonempty": 379,
+          "total": 3494
+        },
+        "clinical_n": {
+          "nonempty": 481,
+          "total": 3494
+        },
+        "clinical_t": {
+          "nonempty": 480,
+          "total": 3494
+        },
+        "country": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "datagraph_managed": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "dfs_status": {
+          "nonempty": 2404,
+          "total": 3494
+        },
+        "disease_free_survival_time": {
+          "nonempty": 866,
+          "total": 3494
+        },
+        "family_history": {
+          "nonempty": 1170,
+          "total": 3494
+        },
+        "fraction_genome_altered": {
+          "nonempty": 1015,
+          "total": 3494
+        },
+        "gender": {
+          "nonempty": 3398,
+          "total": 3494
+        },
+        "gleason_score": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "individual_accession": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "individual_id": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "lymphatic_invasion": {
+          "nonempty": 182,
+          "total": 3494
+        },
+        "msi_score": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "msi_status": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "neoadjuvant_treatment_agents": {
+          "nonempty": 1144,
+          "total": 3494
+        },
+        "neoadjuvant_treatment_outcome_pathological_response": {
+          "nonempty": 753,
+          "total": 3494
+        },
+        "neoadjuvant_treatment_type": {
+          "nonempty": 1158,
+          "total": 3494
+        },
+        "nerve_invasion": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "overall_survival_days": {
+          "nonempty": 2912,
+          "total": 3494
+        },
+        "overall_survival_status": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "overall_survival_time": {
+          "nonempty": 2954,
+          "total": 3494
+        },
+        "overall_vital_status": {
+          "nonempty": 3165,
+          "total": 3494
+        },
+        "pathologic_m": {
+          "nonempty": 922,
+          "total": 3494
+        },
+        "pathologic_n": {
+          "nonempty": 908,
+          "total": 3494
+        },
+        "pathologic_t": {
+          "nonempty": 909,
+          "total": 3494
+        },
+        "primary_tumor_location": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "primary_tumor_site": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "progression_free_survival_status": {
+          "nonempty": 327,
+          "total": 3494
+        },
+        "project_accession": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "project_name": {
+          "nonempty": 3143,
+          "total": 3494
+        },
+        "race": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "residual_tumor": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "sample_type": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "smoking": {
+          "nonempty": 1910,
+          "total": 3494
+        },
+        "snapshot_id": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_row_hash": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_row_json": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_row_number": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_table": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "specimen_types": {
+          "nonempty": 3419,
+          "total": 3494
+        },
+        "study_accession": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "tmb": {
+          "nonempty": 1,
+          "total": 3494
+        },
+        "tmb_status": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "treatment_intent_type": {
+          "nonempty": 2016,
+          "total": 3494
+        },
+        "tumor_grade": {
+          "nonempty": 2645,
+          "total": 3494
+        },
+        "tumor_stage": {
+          "nonempty": 2220,
+          "total": 3494
+        },
+        "tumor_subtype": {
+          "nonempty": 3421,
+          "total": 3494
+        },
+        "tumor_type": {
+          "nonempty": 3428,
+          "total": 3494
+        },
+        "vessel_invasion": {
+          "nonempty": 1130,
+          "total": 3494
+        }
+      },
+      "project": {
+        "country": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "data_types": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "datagraph_managed": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "health_conditions": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "individual_count": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "information_source": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "organisms": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "organization": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "project_accession": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "project_code": {
+          "nonempty": 10,
+          "total": 11
+        },
+        "project_description": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "project_name": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "release_date": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "relevance": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "sample_scope": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "snapshot_id": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_row_hash": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_row_json": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_row_number": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_table": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "study_accession": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "submission_date": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "tumor_type": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "type": {
+          "nonempty": 11,
+          "total": 11
+        }
+      },
+      "run": {
+        "datagraph_managed": {
+          "nonempty": 8354,
+          "total": 8354
+        },
+        "run_accession": {
+          "nonempty": 8354,
+          "total": 8354
+        },
+        "snapshot_id": {
+          "nonempty": 8354,
+          "total": 8354
+        },
+        "source_row_hash": {
+          "nonempty": 0,
+          "total": 8354
+        },
+        "source_table": {
+          "nonempty": 8354,
+          "total": 8354
+        }
+      },
+      "sample": {
+        "biospecimen_anatomic_site": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "datagraph_managed": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "individual_accession": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "individual_name": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_accession": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_description": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_name": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_type": {
+          "nonempty": 6276,
+          "total": 6918
+        },
+        "snapshot_id": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_row_hash": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_row_json": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_row_number": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_table": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "specimen_types": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "strategy": {
+          "nonempty": 6128,
+          "total": 6918
+        },
+        "study_accession": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "tissue_type": {
+          "nonempty": 6918,
+          "total": 6918
+        }
+      },
+      "study": {
+        "datagraph_managed": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "individual_count": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "information_source": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "sample_count": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "snapshot_id": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_row_hash": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_row_json": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_row_number": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_table": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "study_accession": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "study_description": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "study_type": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "title": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "tumor_type": {
+          "nonempty": 14,
+          "total": 14
+        }
+      },
+      "t1": {
+        "data_level": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "data_type": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "datagraph_managed": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "experiment_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "file_description": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "file_path": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "files": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "gender": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "individual_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "individual_name": {
+          "nonempty": 13682,
+          "total": 13772
+        },
+        "legacy_source_present": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "legacy_source_row_hash": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "legacy_source_row_json": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "normalized_source_present": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "normalized_source_row_hash": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "normalized_source_row_json": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "parameter": {
+          "nonempty": 0,
+          "total": 13772
+        },
+        "physical_format": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "pipeline_id": {
+          "nonempty": 0,
+          "total": 13772
+        },
+        "platform": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "read_pair": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "run_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "sample_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "sample_description": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "sample_name": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "semantic_format": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "snapshot_id": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "source_row_hash": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "source_tables": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "strategy": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "study_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        }
+      },
+      "t2": {
+        "data_level": {
+          "nonempty": 75,
+          "total": 86
+        },
+        "datagraph_managed": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "file_path": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "file_type": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "files": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "format": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "size": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "size_bytes": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "snapshot_id": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_row_hash": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_row_json": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_row_number": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_table": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "strategy": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "study_accession": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "t2_id": {
+          "nonempty": 86,
+          "total": 86
+        }
+      }
+    },
+    "expected": {
+      "cohort": {
+        "datagraph_managed": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "description": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "snapshot_id": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_row_hash": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_row_json": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_row_number": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "source_table": {
+          "nonempty": 26,
+          "total": 26
+        },
+        "status": {
+          "nonempty": 26,
+          "total": 26
+        }
+      },
+      "data_format": {
+        "datagraph_managed": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "descriptions": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "format": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "snapshot_id": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "source_row_hash": {
+          "nonempty": 28,
+          "total": 28
+        },
+        "source_table": {
+          "nonempty": 28,
+          "total": 28
+        }
+      },
+      "data_format_row": {
+        "datagraph_managed": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "description": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "format": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "format_row_id": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "snapshot_id": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_row_hash": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_row_json": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_row_number": {
+          "nonempty": 29,
+          "total": 29
+        },
+        "source_table": {
+          "nonempty": 29,
+          "total": 29
+        }
+      },
+      "data_level": {
+        "datagraph_managed": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "description": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "level": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "name": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "snapshot_id": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_row_hash": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_row_json": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_row_number": {
+          "nonempty": 4,
+          "total": 4
+        },
+        "source_table": {
+          "nonempty": 4,
+          "total": 4
+        }
+      },
+      "data_modal": {
+        "datagraph_managed": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "description": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "modal": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "snapshot_id": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_row_hash": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_row_json": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_row_number": {
+          "nonempty": 8,
+          "total": 8
+        },
+        "source_table": {
+          "nonempty": 8,
+          "total": 8
+        }
+      },
+      "individual": {
+        "adjuvant_treatment_agents": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "adjuvant_treatment_outcome_response": {
+          "nonempty": 3419,
+          "total": 3494
+        },
+        "age": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "clinical_m": {
+          "nonempty": 379,
+          "total": 3494
+        },
+        "clinical_n": {
+          "nonempty": 481,
+          "total": 3494
+        },
+        "clinical_t": {
+          "nonempty": 480,
+          "total": 3494
+        },
+        "country": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "datagraph_managed": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "dfs_status": {
+          "nonempty": 2404,
+          "total": 3494
+        },
+        "disease_free_survival_time": {
+          "nonempty": 866,
+          "total": 3494
+        },
+        "family_history": {
+          "nonempty": 1170,
+          "total": 3494
+        },
+        "fraction_genome_altered": {
+          "nonempty": 1015,
+          "total": 3494
+        },
+        "gender": {
+          "nonempty": 3398,
+          "total": 3494
+        },
+        "gleason_score": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "individual_accession": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "individual_id": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "lymphatic_invasion": {
+          "nonempty": 182,
+          "total": 3494
+        },
+        "msi_score": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "msi_status": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "neoadjuvant_treatment_agents": {
+          "nonempty": 1144,
+          "total": 3494
+        },
+        "neoadjuvant_treatment_outcome_pathological_response": {
+          "nonempty": 753,
+          "total": 3494
+        },
+        "neoadjuvant_treatment_type": {
+          "nonempty": 1158,
+          "total": 3494
+        },
+        "nerve_invasion": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "overall_survival_days": {
+          "nonempty": 2912,
+          "total": 3494
+        },
+        "overall_survival_status": {
+          "nonempty": 10,
+          "total": 3494
+        },
+        "overall_survival_time": {
+          "nonempty": 2954,
+          "total": 3494
+        },
+        "overall_vital_status": {
+          "nonempty": 3165,
+          "total": 3494
+        },
+        "pathologic_m": {
+          "nonempty": 922,
+          "total": 3494
+        },
+        "pathologic_n": {
+          "nonempty": 908,
+          "total": 3494
+        },
+        "pathologic_t": {
+          "nonempty": 909,
+          "total": 3494
+        },
+        "primary_tumor_location": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "primary_tumor_site": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "progression_free_survival_status": {
+          "nonempty": 327,
+          "total": 3494
+        },
+        "project_accession": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "project_name": {
+          "nonempty": 3143,
+          "total": 3494
+        },
+        "race": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "residual_tumor": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "sample_type": {
+          "nonempty": 3429,
+          "total": 3494
+        },
+        "smoking": {
+          "nonempty": 1910,
+          "total": 3494
+        },
+        "snapshot_id": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_row_hash": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_row_json": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_row_number": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "source_table": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "specimen_types": {
+          "nonempty": 3419,
+          "total": 3494
+        },
+        "study_accession": {
+          "nonempty": 3494,
+          "total": 3494
+        },
+        "tmb": {
+          "nonempty": 1,
+          "total": 3494
+        },
+        "tmb_status": {
+          "nonempty": 0,
+          "total": 3494
+        },
+        "treatment_intent_type": {
+          "nonempty": 2016,
+          "total": 3494
+        },
+        "tumor_grade": {
+          "nonempty": 2645,
+          "total": 3494
+        },
+        "tumor_stage": {
+          "nonempty": 2220,
+          "total": 3494
+        },
+        "tumor_subtype": {
+          "nonempty": 3421,
+          "total": 3494
+        },
+        "tumor_type": {
+          "nonempty": 3428,
+          "total": 3494
+        },
+        "vessel_invasion": {
+          "nonempty": 1130,
+          "total": 3494
+        }
+      },
+      "project": {
+        "country": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "data_types": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "datagraph_managed": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "health_conditions": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "individual_count": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "information_source": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "organisms": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "organization": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "project_accession": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "project_code": {
+          "nonempty": 10,
+          "total": 11
+        },
+        "project_description": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "project_name": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "release_date": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "relevance": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "sample_scope": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "snapshot_id": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_row_hash": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_row_json": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_row_number": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "source_table": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "study_accession": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "submission_date": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "tumor_type": {
+          "nonempty": 11,
+          "total": 11
+        },
+        "type": {
+          "nonempty": 11,
+          "total": 11
+        }
+      },
+      "run": {
+        "datagraph_managed": {
+          "nonempty": 8354,
+          "total": 8354
+        },
+        "run_accession": {
+          "nonempty": 8354,
+          "total": 8354
+        },
+        "snapshot_id": {
+          "nonempty": 8354,
+          "total": 8354
+        },
+        "source_row_hash": {
+          "nonempty": 0,
+          "total": 8354
+        },
+        "source_table": {
+          "nonempty": 8354,
+          "total": 8354
+        }
+      },
+      "sample": {
+        "biospecimen_anatomic_site": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "datagraph_managed": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "individual_accession": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "individual_name": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_accession": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_description": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_name": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "sample_type": {
+          "nonempty": 6276,
+          "total": 6918
+        },
+        "snapshot_id": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_row_hash": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_row_json": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_row_number": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "source_table": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "specimen_types": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "strategy": {
+          "nonempty": 6128,
+          "total": 6918
+        },
+        "study_accession": {
+          "nonempty": 6918,
+          "total": 6918
+        },
+        "tissue_type": {
+          "nonempty": 6918,
+          "total": 6918
+        }
+      },
+      "study": {
+        "datagraph_managed": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "individual_count": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "information_source": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "sample_count": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "snapshot_id": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_row_hash": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_row_json": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_row_number": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "source_table": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "study_accession": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "study_description": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "study_type": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "title": {
+          "nonempty": 14,
+          "total": 14
+        },
+        "tumor_type": {
+          "nonempty": 14,
+          "total": 14
+        }
+      },
+      "t1": {
+        "data_level": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "data_type": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "datagraph_managed": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "experiment_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "file_description": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "file_path": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "files": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "gender": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "individual_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "individual_name": {
+          "nonempty": 13682,
+          "total": 13772
+        },
+        "legacy_source_present": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "legacy_source_row_hash": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "legacy_source_row_json": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "normalized_source_present": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "normalized_source_row_hash": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "normalized_source_row_json": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "parameter": {
+          "nonempty": 0,
+          "total": 13772
+        },
+        "physical_format": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "pipeline_id": {
+          "nonempty": 0,
+          "total": 13772
+        },
+        "platform": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "read_pair": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "run_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "sample_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "sample_description": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "sample_name": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "semantic_format": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "snapshot_id": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "source_row_hash": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "source_tables": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "strategy": {
+          "nonempty": 13772,
+          "total": 13772
+        },
+        "study_accession": {
+          "nonempty": 13772,
+          "total": 13772
+        }
+      },
+      "t2": {
+        "data_level": {
+          "nonempty": 75,
+          "total": 86
+        },
+        "datagraph_managed": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "file_path": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "file_type": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "files": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "format": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "size": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "size_bytes": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "snapshot_id": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_row_hash": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_row_json": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_row_number": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "source_table": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "strategy": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "study_accession": {
+          "nonempty": 86,
+          "total": 86
+        },
+        "t2_id": {
+          "nonempty": 86,
+          "total": 86
+        }
+      }
+    }
+  },
+  "generated_at": "2026-07-24T09:12:02.773948+00:00",
+  "graph_fingerprint": {
+    "actual": "f14a565c755f8235ddd13b91223ea7be946d5539a255864c553594456b488afe",
+    "expected": "f14a565c755f8235ddd13b91223ea7be946d5539a255864c553594456b488afe"
+  },
+  "known_representation_differences": [],
+  "layers": [
+    {
+      "name": "计数",
+      "ok": true,
+      "summary": "expected={'labels': {'cohort': 26, 'data_format': 28, 'data_format_row': 29, 'data_level': 4, 'data_modal': 8, 'individual': 3494, 'project': 11, 'run': 8354, 'sample': 6918, 'study': 14, 't1': 13772, 't2': 86}, 'relationships': {'DESCRIBES_FORMAT': 29, 'IN_FORMAT': 13857, 'IN_INDIVIDUAL': 6090, 'IN_LEVEL': 13847, 'IN_PROJECT': 14, 'IN_RUN': 13772, 'IN_SAMPLE': 7857, 'IN_STUDY': 17511, 'SUBCLASS_OF': 24}}; actual={'labels': {'cohort': 26, 'data_format': 28, 'data_format_row': 29, 'data_level': 4, 'data_modal': 8, 'individual': 3494, 'project': 11, 'run': 8354, 'sample': 6918, 'study': 14, 't1': 13772, 't2': 86}, 'relationships': {'DESCRIBES_FORMAT': 29, 'IN_FORMAT': 13857, 'IN_INDIVIDUAL': 6090, 'IN_LEVEL': 13847, 'IN_PROJECT': 14, 'IN_RUN': 13772, 'IN_SAMPLE': 7857, 'IN_STUDY': 17511, 'SUBCLASS_OF': 24}}"
+    },
+    {
+      "name": "字段覆盖与逐值比较",
+      "ok": true,
+      "summary": "labels=12; known_representation_diffs=0"
+    },
+    {
+      "name": "主键唯一性",
+      "ok": true,
+      "summary": "checked_labels=12; violations=0"
+    },
+    {
+      "name": "关系完整性与悬空外键",
+      "ok": true,
+      "summary": "materialized=73001; explicitly_skipped=1269"
+    },
+    {
+      "name": "确定性值级抽样",
+      "ok": true,
+      "summary": "tables=23; sampled_missing=0"
+    },
+    {
+      "name": "CSV 往返全量 diff",
+      "ok": true,
+      "summary": "tables=23; differing_tables=0"
+    }
+  ],
+  "manifest": "/Users/zhouyiran/Documents/可选/bio-pipeline-kg-matcher/docs/import_manifest_20260724T085734.559720Z.json",
+  "material_differences": [],
+  "primary_keys": [
+    {
+      "distinct": 26,
+      "empty": 0,
+      "key": "status",
+      "label": "cohort",
+      "ok": true,
+      "total": 26
+    },
+    {
+      "distinct": 28,
+      "empty": 0,
+      "key": "format",
+      "label": "data_format",
+      "ok": true,
+      "total": 28
+    },
+    {
+      "distinct": 29,
+      "empty": 0,
+      "key": "format_row_id",
+      "label": "data_format_row",
+      "ok": true,
+      "total": 29
+    },
+    {
+      "distinct": 4,
+      "empty": 0,
+      "key": "level",
+      "label": "data_level",
+      "ok": true,
+      "total": 4
+    },
+    {
+      "distinct": 8,
+      "empty": 0,
+      "key": "modal",
+      "label": "data_modal",
+      "ok": true,
+      "total": 8
+    },
+    {
+      "distinct": 3494,
+      "empty": 0,
+      "key": "individual_accession",
+      "label": "individual",
+      "ok": true,
+      "total": 3494
+    },
+    {
+      "distinct": 11,
+      "empty": 0,
+      "key": "project_accession",
+      "label": "project",
+      "ok": true,
+      "total": 11
+    },
+    {
+      "distinct": 8354,
+      "empty": 0,
+      "key": "run_accession",
+      "label": "run",
+      "ok": true,
+      "total": 8354
+    },
+    {
+      "distinct": 6918,
+      "empty": 0,
+      "key": "sample_accession",
+      "label": "sample",
+      "ok": true,
+      "total": 6918
+    },
+    {
+      "distinct": 14,
+      "empty": 0,
+      "key": "study_accession",
+      "label": "study",
+      "ok": true,
+      "total": 14
+    },
+    {
+      "distinct": 13772,
+      "empty": 0,
+      "key": "files",
+      "label": "t1",
+      "ok": true,
+      "total": 13772
+    },
+    {
+      "distinct": 86,
+      "empty": 0,
+      "key": "t2_id",
+      "label": "t2",
+      "ok": true,
+      "total": 86
+    }
+  ],
+  "roundtrip": {
+    "differences": [],
+    "source_tables": {
+      "T11.csv": 13772,
+      "entities/T1.csv": 13772,
+      "entities/T2.csv": 86,
+      "entities/individual.csv": 3494,
+      "entities/project.csv": 11,
+      "entities/sample.csv": 6918,
+      "entities/study.csv": 14,
+      "reference/cohort_subclass.csv": 24,
+      "reference/cohorts.csv": 26,
+      "reference/data_level.csv": 4,
+      "reference/formats.csv": 29,
+      "reference/multimodal.csv": 8,
+      "relations/T1_in_format.csv": 13772,
+      "relations/T1_in_level.csv": 13772,
+      "relations/T1_in_run.csv": 13772,
+      "relations/T1_in_study.csv": 13772,
+      "relations/T2_in_format.csv": 86,
+      "relations/T2_in_level.csv": 86,
+      "relations/T2_in_study.csv": 86,
+      "relations/individual_in_study.csv": 3653,
+      "relations/run_in_sample.csv": 8354,
+      "relations/sample_in_individual.csv": 6850,
+      "relations/study_in_project.csv": 14
+    }
+  },
+  "schema_version": "datagraph-verification/v1",
+  "scope": "t1",
+  "snapshot_id": "dg-b23135d49c950d0846a563bc",
+  "summary": {
+    "known_representation_difference_count": 0,
+    "material_difference_count": 0,
+    "ok": true
+  },
+  "target": {
+    "creation_date": "2026-07-24T08:46:03.712Z",
+    "database": "datagraph-staging",
+    "database_id": "AF76A4FDB2817F94BD15471B3956E277CD52659FC960C514A67345F59531F1EF",
+    "database_name": "datagraph-staging",
+    "tool_catalog_node_count": 0,
+    "uri": "bolt://127.0.0.1:7689"
+  },
+  "value_sampling": {
+    "seed": 20260724,
+    "special_studies": {
+      "HRA000021": {
+        "available_in_authoritative_scope": 1530,
+        "missing": 0,
+        "required": 20,
+        "sampled": 20,
+        "shortfall": 0
+      },
+      "HRA000122": {
+        "available_in_authoritative_scope": 289,
+        "missing": 0,
+        "required": 20,
+        "sampled": 20,
+        "shortfall": 0
+      },
+      "HRA000321": {
+        "available_in_authoritative_scope": 69,
+        "missing": 0,
+        "required": 20,
+        "sampled": 20,
+        "shortfall": 0
+      },
+      "HRA000873": {
+        "available_in_authoritative_scope": 7114,
+        "missing": 0,
+        "required": 20,
+        "sampled": 20,
+        "shortfall": 0
+      }
+    },
+    "tables": {
+      "T11.csv": {
+        "available": 13772,
+        "missing": 0,
+        "sampled": 100
+      },
+      "entities/T1.csv": {
+        "available": 13772,
+        "missing": 0,
+        "sampled": 100
+      },
+      "entities/T2.csv": {
+        "available": 86,
+        "missing": 0,
+        "sampled": 86
+      },
+      "entities/individual.csv": {
+        "available": 3494,
+        "missing": 0,
+        "sampled": 100
+      },
+      "entities/project.csv": {
+        "available": 11,
+        "missing": 0,
+        "sampled": 11
+      },
+      "entities/sample.csv": {
+        "available": 6918,
+        "missing": 0,
+        "sampled": 100
+      },
+      "entities/study.csv": {
+        "available": 14,
+        "missing": 0,
+        "sampled": 14
+      },
+      "reference/cohort_subclass.csv": {
+        "available": 24,
+        "missing": 0,
+        "sampled": 24
+      },
+      "reference/cohorts.csv": {
+        "available": 26,
+        "missing": 0,
+        "sampled": 26
+      },
+      "reference/data_level.csv": {
+        "available": 4,
+        "missing": 0,
+        "sampled": 4
+      },
+      "reference/formats.csv": {
+        "available": 29,
+        "missing": 0,
+        "sampled": 29
+      },
+      "reference/multimodal.csv": {
+        "available": 8,
+        "missing": 0,
+        "sampled": 8
+      },
+      "relations/T1_in_format.csv": {
+        "available": 13772,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/T1_in_level.csv": {
+        "available": 13772,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/T1_in_run.csv": {
+        "available": 13772,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/T1_in_study.csv": {
+        "available": 13772,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/T2_in_format.csv": {
+        "available": 86,
+        "missing": 0,
+        "sampled": 86
+      },
+      "relations/T2_in_level.csv": {
+        "available": 86,
+        "missing": 0,
+        "sampled": 86
+      },
+      "relations/T2_in_study.csv": {
+        "available": 86,
+        "missing": 0,
+        "sampled": 86
+      },
+      "relations/individual_in_study.csv": {
+        "available": 3653,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/run_in_sample.csv": {
+        "available": 8354,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/sample_in_individual.csv": {
+        "available": 6850,
+        "missing": 0,
+        "sampled": 100
+      },
+      "relations/study_in_project.csv": {
+        "available": 14,
+        "missing": 0,
+        "sampled": 14
+      }
+    }
+  }
+}

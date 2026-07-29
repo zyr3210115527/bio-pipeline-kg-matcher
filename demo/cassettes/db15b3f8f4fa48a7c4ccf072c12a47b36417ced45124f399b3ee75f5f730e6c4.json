@@ -1,0 +1,26 @@
+{
+  "analysis": {
+    "sample_layout": "配对样本，肿瘤和正常",
+    "data_path": "FASTQ → clean FASTQ → aligned BAM → sorted/dedup BAM → (体细胞变异检测) → unfiltered VCF → filtered VCF → annotated VCF",
+    "tool_mapping": "fastp: FASTQ→clean FASTQ, bwa: clean FASTQ→aligned BAM, samtools: aligned BAM→sorted/dedup BAM, gatk: sorted/dedup BAM→unfiltered VCF (但无法接收配对BAM), bcftools: unfiltered VCF→filtered VCF, snpeff: filtered VCF→annotated VCF",
+    "checks": "1. 是配对样本，但单样本工具（fastp/bwa/samtools）尚未生成，因为汇合步骤 gatk 无法表达而中断组链。2. 不适用（未生成单样本步骤）。3. 不适用。4. 是配对样本，gatk 只注册了 1 个 sorted_dedup_bam 输入槽，不够。5. 如实写进 decomposition_gaps。6. 未在 samtools 处合并。7. 尚未生成步骤，但输出名计划逐字匹配。8. 连接边暂未检查。9. 不适用。10. 未编造。"
+  },
+  "steps": [],
+  "decomposition_gaps": [
+    "配对样本汇合无法表达: gatk 在当前目录中只注册了 1 个 sorted_dedup_bam 输入槽，无法同时接收 tumor 和 normal BAM。需要为 gatk 补充分样本输入槽。"
+  ],
+  "__llm_usage": {
+    "prompt_tokens": 3889,
+    "completion_tokens": 1145,
+    "total_tokens": 5034,
+    "prompt_tokens_details": {
+      "cached_tokens": 3456
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 765
+    },
+    "prompt_cache_hit_tokens": 3456,
+    "prompt_cache_miss_tokens": 433
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

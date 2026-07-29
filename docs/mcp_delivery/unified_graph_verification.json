@@ -1,0 +1,110 @@
+{
+  "checks": [
+    {
+      "actual": {
+        "nodes": 32744,
+        "relationships": 73001
+      },
+      "name": "data_counts",
+      "ok": true
+    },
+    {
+      "actual": "f14a565c755f8235ddd13b91223ea7be946d5539a255864c553594456b488afe",
+      "name": "data_fingerprint",
+      "ok": true
+    },
+    {
+      "actual": [
+        {
+          "count": 32744,
+          "snapshot_id": "dg-b23135d49c950d0846a563bc"
+        }
+      ],
+      "name": "snapshot_id",
+      "ok": true
+    },
+    {
+      "actual": {
+        "labels": {
+          "artifact_type": 35,
+          "format": 28,
+          "function": 35,
+          "io_slot": 111,
+          "tool_id": 24
+        },
+        "nodes": 233,
+        "relationship_types": {
+          "ALLOW_FORMAT": 167,
+          "HAS_FUNCTION": 35,
+          "HAS_INPUT_SLOT": 58,
+          "HAS_OUTPUT_SLOT": 53,
+          "HAS_STEP": 7,
+          "INPUT": 21,
+          "MANIFEST_AS": 84,
+          "NEXT": 28,
+          "OUTPUT": 37,
+          "PRODUCES": 53,
+          "REQUIRES": 58
+        },
+        "relationships": 601
+      },
+      "name": "catalog_counts",
+      "ok": true
+    },
+    {
+      "actual": "2ec21a69ff703115ed20a4946b62bf4bf22b3c8bdb6f1562fce0719f2655c903",
+      "name": "catalog_fingerprint",
+      "ok": true
+    },
+    {
+      "actual": {
+        "atomic": 12,
+        "pipeline": 11,
+        "task_pipeline": 1
+      },
+      "name": "tool_counts",
+      "ok": true
+    },
+    {
+      "actual": {
+        "ALLOW_FORMAT": 167,
+        "HAS_FUNCTION": 35,
+        "HAS_INPUT_SLOT": 58,
+        "HAS_OUTPUT_SLOT": 53,
+        "HAS_STEP": 7,
+        "INPUT": 21,
+        "MANIFEST_AS": 84,
+        "NEXT": 28,
+        "OUTPUT": 37,
+        "PRODUCES": 53,
+        "REQUIRES": 58
+      },
+      "name": "catalog_contract_counts",
+      "ok": true
+    },
+    {
+      "actual": {
+        "cross_domain_relationships": 0,
+        "mixed_nodes": 0
+      },
+      "name": "domain_isolation",
+      "ok": true
+    },
+    {
+      "actual": {
+        "nodes": 32977,
+        "relationships": 73602
+      },
+      "name": "total_counts",
+      "ok": true
+    }
+  ],
+  "database": {
+    "creation_date": "2026-07-24T08:46:03.712Z",
+    "id": "AF76A4FDB2817F94BD15471B3956E277CD52659FC960C514A67345F59531F1EF",
+    "name": "datagraph-staging"
+  },
+  "failed_checks": [],
+  "ok": true,
+  "schema_version": "unified-graph-verification/v1"
+}

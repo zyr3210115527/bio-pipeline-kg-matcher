@@ -1,0 +1,122 @@
+{
+  "analysis": {
+    "sample_layout": "单样本",
+    "data_path": "raw FASTQ → (fastqc QC report) → (fastp) clean FASTQ → (star) aligned BAM + transcriptome BAM → (samtools) sorted dedup BAM → (featurecounts) expression count matrix; transcriptome BAM → (rsem) expression abundance matrix",
+    "tool_mapping": "fastqc: raw_fastq_read → quality_control_report; fastp: raw_fastq_read → clean_fastq_read; star: clean_fastq_read → aligned_bam, transcriptome_bam; samtools: aligned_bam → sorted_dedup_bam; featurecounts: sorted_dedup_bam → expression_count_matrix; rsem: transcriptome_bam → expression_abundance_matrix",
+    "checks": "1. 单样本流程，每个单样本工具只出现一次。是。\n2. 不适用（单样本）。\n3. 不适用。\n4. 不适用。\n5. 不适用。\n6. 没有在samtools或更早位置合并样本。\n7. 所有输入输出名与菜单逐字一致。\n8. 所有连接均在allowed_next_tool_ids中。\n9. 除fastqc外，所有步骤均有from或depends_on。\n10. 未编造任何菜单外内容。"
+  },
+  "steps": [
+    {
+      "step_id": "fastqc",
+      "tool_id": "fastqc",
+      "inputs": {
+        "raw_fastq_read": {
+          "asset_role": "raw_fastq_read"
+        }
+      },
+      "depends_on": [],
+      "reason": "原始测序数据质量评估，属于单样本"
+    },
+    {
+      "step_id": "fastp",
+      "tool_id": "fastp",
+      "inputs": {
+        "raw_fastq_read": {
+          "asset_role": "raw_fastq_read"
+        }
+      },
+      "depends_on": [
+        "fastqc"
+      ],
+      "reason": "FASTQ质控和修剪，替代trim_galore，属于单样本"
+    },
+    {
+      "step_id": "star",
+      "tool_id": "star",
+      "inputs": {
+        "clean_fastq_read": {
+          "from": {
+            "step_id": "fastp",
+            "output": "clean_fastq_read"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "fastp"
+      ],
+      "reason": "RNA比对，产生基因组比对BAM和转录组BAM，属于单样本"
+    },
+    {
+      "step_id": "rsem",
+      "tool_id": "rsem",
+      "inputs": {
+        "transcriptome_bam": {
+          "from": {
+            "step_id": "star",
+            "output": "transcriptome_bam"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "star"
+      ],
+      "reason": "基因及转录本定量，产生表达丰度矩阵，属于单样本"
+    },
+    {
+      "step_id": "samtools",
+      "tool_id": "samtools",
+      "inputs": {
+        "aligned_bam": {
+          "from": {
+            "step_id": "star",
+            "output": "aligned_bam"
+          }
+        }
+      },
+      "depends_on": [
+        "star"
+      ],
+      "reason": "BAM排序、索引、去重，产生可计数BAM，属于单样本"
+    },
+    {
+      "step_id": "featurecounts",
+      "tool_id": "featurecounts",
+      "inputs": {
+        "sorted_dedup_bam": {
+          "from": {
+            "step_id": "samtools",
+            "output": "sorted_dedup_bam"
+          }
+        },
+        "genome_annotation": {
+          "asset_role": "genome_annotation"
+        }
+      },
+      "depends_on": [
+        "samtools"
+      ],
+      "reason": "基因水平计数，产生表达计数矩阵，属于单样本"
+    }
+  ],
+  "decomposition_gaps": [],
+  "__llm_usage": {
+    "prompt_tokens": 4407,
+    "completion_tokens": 4652,
+    "total_tokens": 9059,
+    "prompt_tokens_details": {
+      "cached_tokens": 3584
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 3750
+    },
+    "prompt_cache_hit_tokens": 3584,
+    "prompt_cache_miss_tokens": 823
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Neo4j 连通性",
+    "ok": true,
+    "message": "Neo4j 连通 (neo4j, 2026.06.0, latency=133.6ms)",
+    "detail": {
+      "connected": true,
+      "version": "2026.06.0",
+      "database": "neo4j",
+      "latency_ms": 133.6,
+      "node_count": 34838,
+      "relationship_count": 81227,
+      "label_counts": {
+        "t1": 15692,
+        "run": 8354,
+        "sample": 6918,
+        "individual": 3494,
+        "io_slot": 99,
+        "t2": 99,
+        "IOSlot": 44,
+        "function": 35,
+        "artifact_type": 33,
+        "format": 27,
+        "cohort": 26,
+        "Function": 24,
+        "Tool": 24,
+        "tool_id": 24,
+        "Format": 18,
+        "ArtifactType": 14,
+        "study": 14,
+        "project": 11,
+        "modal": 8,
+        "level": 4
+      },
+      "error": null
+    }
+  },
+  {
+    "name": "Neo4j 目录计数",
+    "ok": true,
+    "message": "工具节点 24/24；NEXT 边 14 条（data 11 / order 3）",
+    "detail": {
+      "tool_count": 24,
+      "next_total": 14,
+      "data_next": 11,
+      "order_next": 3
+    }
+  },
+  {
+    "name": ".env.local 关键变量",
+    "ok": true,
+    "message": ".env.local 关键变量已加载",
+    "detail": null
+  },
+  {
+    "name": "LLM 配置",
+    "ok": true,
+    "message": "LLM 配置完整（model=deepseek-v4-pro）",
+    "detail": {
+      "key": true,
+      "base": true,
+      "model": "deepseek-v4-pro"
+    }
+  },
+  {
+    "name": "LLM 最小请求",
+    "ok": true,
+    "message": "LLM 最小请求通 (0.76s)",
+    "detail": {
+      "status": 200,
+      "elapsed_ms": 759
+    }
+  },
+  {
+    "name": "CSV 校验",
+    "ok": true,
+    "message": "validate_csv.py 通过",
+    "detail": {
+      "stdout": "CSV validation passed. All files, columns, and relations are consistent."
+    }
+  },
+  {
+    "name": "app.py /api/health",
+    "ok": true,
+    "message": "/api/health 正常 (LLM configured=True, Neo4j ok=None)",
+    "detail": {
+      "ok": true,
+      "mode": "llm",
+      "llm": {
+        "configured": true,
+        "model": "deepseek-v4-pro",
+        "endpoint_host": "api.deepseek.com",
+        "last_status": "not_called"
+      },
+      "neo4j": {
+        "connected": true,
+        "version": "2026.06.0",
+        "database": "neo4j",
+        "latency_ms": 30.7,
+        "node_count": 34838,
+        "relationship_count": 81227,
+        "label_counts": {
+          "t1": 15692,
+          "run": 8354,
+          "sample": 6918,
+          "individual": 3494,
+          "io_slot": 99,
+          "t2": 99,
+          "IOSlot": 44,
+          "function": 35,
+          "artifact_type": 33,
+          "format": 27,
+          "cohort": 26,
+          "Function": 24,
+          "Tool": 24,
+          "tool_id": 24,
+          "Format": 18,
+          "ArtifactType": 14,
+          "study": 14,
+          "project": 11,
+          "modal": 8,
+          "level": 4
+        },
+        "error": null
+      }
+    }
+  }
+]

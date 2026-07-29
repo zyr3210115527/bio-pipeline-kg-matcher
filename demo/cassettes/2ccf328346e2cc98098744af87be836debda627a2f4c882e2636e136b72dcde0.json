@@ -1,0 +1,51 @@
+{
+  "analysis": {
+    "data_in_hand": "用户未指定具体数据，默认需要表达矩阵（FPKM/TPM），未提及配对样本",
+    "goal": "同时进行GO功能富集和KEGG通路富集",
+    "steps_implied": "差异表达分析 → 分别进行GO富集和KEGG/通路富集",
+    "menu_scan": "diff_expr_go: 差异分析+GO富集；diff_expr_kegg: 差异分析+Reactome通路富集（可满足KEGG需求）"
+  },
+  "mode": "standard",
+  "reason": "菜单中存在两个pipeline组合可覆盖需求，无需自定义。",
+  "requirements": [
+    "差异表达分析",
+    "GO功能富集",
+    "KEGG/通路富集"
+  ],
+  "pipeline_ids": [
+    "diff_expr_go",
+    "diff_expr_kegg"
+  ],
+  "reference_pipeline_ids": [],
+  "pipeline_assessments": [
+    {
+      "pipeline_id": "diff_expr_go",
+      "input_match": "partial",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "用户未明确数据类型，流程需要表达丰度矩阵。"
+    },
+    {
+      "pipeline_id": "diff_expr_kegg",
+      "input_match": "partial",
+      "functional_coverage": "full",
+      "output_match": "match",
+      "note": "该流程内部使用Reactome数据库进行通路富集，可覆盖用户KEGG通路富集需求；用户未明确数据类型，流程需要表达丰度矩阵。"
+    }
+  ],
+  "uncovered_requirements": [],
+  "__llm_usage": {
+    "prompt_tokens": 3722,
+    "completion_tokens": 585,
+    "total_tokens": 4307,
+    "prompt_tokens_details": {
+      "cached_tokens": 3712
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 208
+    },
+    "prompt_cache_hit_tokens": 3712,
+    "prompt_cache_miss_tokens": 10
+  },
+  "__llm_model": "deepseek-v4-pro"
+}

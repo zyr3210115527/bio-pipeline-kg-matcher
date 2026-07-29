@@ -1,0 +1,3992 @@
+[
+  {
+    "study": "HRA000071",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "survival_analysis",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000071",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1152,
+    "t1_strategies": {
+      "WES": 1144
+    },
+    "roles": {
+      "fastq": 1144,
+      "bam": 1,
+      "other": 1,
+      "maf": 2,
+      "vcf": 2,
+      "clinical": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "diff_expr_go",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000074",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1393,
+    "t1_strategies": {
+      "RNA-Seq": 1386
+    },
+    "roles": {
+      "fastq": 1386,
+      "maf": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "diff_expr_go",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007167",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 169,
+    "t1_strategies": {
+      "RNA-Seq": 162
+    },
+    "roles": {
+      "fastq": 162,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA007169",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 344,
+    "t1_strategies": {
+      "WES": 336
+    },
+    "roles": {
+      "fastq": 336,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "diff_expr_go",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA001272",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2375,
+    "t1_strategies": {
+      "WES": 1500,
+      "RNA-Seq": 860
+    },
+    "roles": {
+      "fastq": 2360,
+      "bam": 2,
+      "maf": 4,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "other": 3,
+      "vcf": 2,
+      "clinical": 1
+    }
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "cellranger_workflow",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA000122",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 0,
+    "t1_strategies": {},
+    "roles": {}
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA005191",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 972,
+    "t1_strategies": {
+      "scRNA-Seq": 970
+    },
+    "roles": {
+      "fastq": 970,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001748",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 322,
+    "t1_strategies": {
+      "scRNA-Seq": 320
+    },
+    "roles": {
+      "fastq": 320,
+      "other": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA001749",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 365,
+    "t1_strategies": {
+      "WES": 356
+    },
+    "roles": {
+      "fastq": 356,
+      "bam": 1,
+      "other": 2,
+      "maf": 3,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA006499",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1534,
+    "t1_strategies": {
+      "WES": 1526
+    },
+    "roles": {
+      "fastq": 1526,
+      "bam": 2,
+      "maf": 2,
+      "other": 1,
+      "vcf": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "diff_expr_go",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA003107",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 1159,
+    "t1_strategies": {
+      "WGS": 532,
+      "RNA-Seq": 620
+    },
+    "roles": {
+      "fastq": 1152,
+      "bam": 1,
+      "other": 2,
+      "expression_count": 1,
+      "expression_abundance": 2,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "cellranger_workflow",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000021",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4,
+    "t1_strategies": {},
+    "roles": {
+      "bam": 1,
+      "vcf": 2,
+      "maf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "cellranger_workflow",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "否",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "假阳性",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "是",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000873",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 4067,
+    "t1_strategies": {
+      "WES": 4060
+    },
+    "roles": {
+      "fastq": 4060,
+      "bam": 1,
+      "maf": 4,
+      "other": 1,
+      "vcf": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "cellranger_workflow",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "rnaseq_singletask",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "wes_somatic_pair",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "paired_fastq_to_unmapped_bam",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "否",
+    "topology_ok": false,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "diff_expr_go",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "diff_expr_kegg",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "rnaseq_unsupervised_cluster",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "wgcna",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "immune_infiltration_iobr",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "her2_pfs_survival",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "tmb_survival_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "wes_somatic_maf_landscape",
+    "system_ok": true,
+    "role_ok": true,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": true,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  },
+  {
+    "study": "HRA000321",
+    "pipeline": "driver_gene_gender_analysis",
+    "system_ok": false,
+    "role_ok": false,
+    "assay_ok": "N/A",
+    "topology_ok": true,
+    "truth_ok": false,
+    "type": "一致",
+    "file_count": 2,
+    "t1_strategies": {},
+    "roles": {
+      "maf": 1,
+      "metainfo": 1
+    }
+  }
+]

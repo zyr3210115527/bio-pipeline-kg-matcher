@@ -1,0 +1,344 @@
+[
+  {
+    "run": 1,
+    "status": "draft/draft",
+    "step_count": 6,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "fastqc",
+        "fastqc"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 2,
+    "status": "draft/draft",
+    "step_count": 6,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "fastqc",
+        "fastqc"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 3,
+    "status": "draft/draft",
+    "step_count": 6,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "fastqc",
+        "fastqc"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 4,
+    "status": "draft/draft",
+    "step_count": 5,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 5,
+    "status": "draft/draft",
+    "step_count": 5,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 6,
+    "status": "draft/draft",
+    "step_count": 5,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 7,
+    "status": "draft/draft",
+    "step_count": 6,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "fastqc",
+        "fastqc"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 8,
+    "status": "draft/draft",
+    "step_count": 6,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "fastqc",
+        "fastqc"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  },
+  {
+    "run": 9,
+    "status": "no_match/no_match",
+    "step_count": 10,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp_sample_1",
+        "fastp"
+      ],
+      [
+        "star_sample_1",
+        "star"
+      ],
+      [
+        "samtools_sample_1",
+        "samtools"
+      ],
+      [
+        "featurecounts_sample_1",
+        "featurecounts"
+      ],
+      [
+        "rsem_sample_1",
+        "rsem"
+      ],
+      [
+        "fastp_sample_2",
+        "fastp"
+      ],
+      [
+        "star_sample_2",
+        "star"
+      ],
+      [
+        "samtools_sample_2",
+        "samtools"
+      ],
+      [
+        "featurecounts_sample_2",
+        "featurecounts"
+      ],
+      [
+        "rsem_sample_2",
+        "rsem"
+      ]
+    ],
+    "validation_ok": false,
+    "validation_errors": [
+      "第 6 步（fastp_sample_2）未与前序输出衔接：非首步必须至少有一个 from 或 depends_on，不能仅靠 asset 绑定拼成方法链"
+    ]
+  },
+  {
+    "run": 10,
+    "status": "draft/draft",
+    "step_count": 5,
+    "has_multiqc": false,
+    "steps": [
+      [
+        "fastp",
+        "fastp"
+      ],
+      [
+        "star",
+        "star"
+      ],
+      [
+        "rsem",
+        "rsem"
+      ],
+      [
+        "samtools",
+        "samtools"
+      ],
+      [
+        "featurecounts",
+        "featurecounts"
+      ]
+    ],
+    "validation_ok": true,
+    "validation_errors": []
+  }
+]
