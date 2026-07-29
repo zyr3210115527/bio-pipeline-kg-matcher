@@ -1,0 +1,290 @@
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"source\": \"neo4j\",\n  \"connected\": true,\n  \"error\": null,\n  \"atomic_tool_count\": 12,\n  \"pipeline_tool_count\": 12,\n  \"atomic_tools\": [\n    {\n      \"tool_id\": \"bcftools\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"BCFtools\",\n      \"inputs\": [\n        \"unfiltered_vcf\"\n      ],\n      \"outputs\": [\n        \"filtered_vcf\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"snpeff\"\n      ]\n    },\n    {\n      \"tool_id\": \"bwa\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"BWA\",\n      \"inputs\": [\n        \"clean_fastq_read\",\n        \"genome_annotation\"\n      ],\n      \"outputs\": [\n        \"aligned_bam\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"samtools\"\n      ]\n    },\n    {\n      \"tool_id\": \"fastp\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"fastp\",\n      \"inputs\": [\n        \"raw_fastq_read\"\n      ],\n      \"outputs\": [\n        \"clean_fastq_read\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"fastqc\",\n        \"bwa\",\n        \"star\"\n      ]\n    },\n    {\n      \"tool_id\": \"fastqc\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"FastQC\",\n      \"inputs\": [\n        \"clean_fastq_read\",\n        \"raw_fastq_read\"\n      ],\n      \"outputs\": [\n        \"quality_control_report\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"fastp\",\n        \"bwa\",\n        \"trim_galore\"\n      ]\n    },\n    {\n      \"tool_id\": \"featurecounts\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"featureCounts\",\n      \"inputs\": [\n        \"genome_annotation\",\n        \"sorted_dedup_bam\"\n      ],\n      \"outputs\": [\n        \"expression_count_matrix\"\n      ],\n      \"allowed_next_tool_ids\": []\n    },\n    {\n      \"tool_id\": \"gatk\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"GATK\",\n      \"inputs\": [\n        \"genome_annotation\",\n        \"sorted_dedup_bam\"\n      ],\n      \"outputs\": [\n        \"sorted_dedup_bam\",\n        \"unfiltered_vcf\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"bcftools\"\n      ]\n    },\n    {\n      \"tool_id\": \"multiqc\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"MultiQC\",\n      \"inputs\": [\n        \"quality_control_report\"\n      ],\n      \"outputs\": [\n        \"quality_control_report\"\n      ],\n      \"allowed_next_tool_ids\": []\n    },\n    {\n      \"tool_id\": \"rsem\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"RSEM\",\n      \"inputs\": [\n        \"genome_annotation\",\n        \"transcriptome_bam\"\n      ],\n      \"outputs\": [\n        \"expression_abundance_matrix\"\n      ],\n      \"allowed_next_tool_ids\": []\n    },\n    {\n      \"tool_id\": \"samtools\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"SAMtools\",\n      \"inputs\": [\n        \"aligned_bam\"\n      ],\n      \"outputs\": [\n        \"sorted_dedup_bam\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"gatk\",\n        \"featurecounts\"\n      ]\n    },\n    {\n      \"tool_id\": \"snpeff\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"SnpEff\",\n      \"inputs\": [\n        \"filtered_vcf\",\n        \"genome_annotation\"\n      ],\n      \"outputs\": [\n        \"annotated_vcf\"\n      ],\n      \"allowed_next_tool_ids\": []\n    },\n    {\n      \"tool_id\": \"star\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"STAR\",\n      \"inputs\": [\n        \"clean_fastq_read\",\n        \"genome_annotation\"\n      ],\n      \"outputs\": [\n        \"aligned_bam\",\n        \"clean_fastq_read\",\n        \"transcriptome_bam\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"samtools\",\n        \"rsem\"\n      ]\n    },\n    {\n      \"tool_id\": \"trim_galore\",\n      \"tool_kind\": \"atomic\",\n      \"name\": \"Trim Galore\",\n      \"inputs\": [\n        \"raw_fastq_read\"\n      ],\n      \"outputs\": [\n        \"clean_fastq_read\"\n      ],\n      \"allowed_next_tool_ids\": [\n        \"star\"\n      ]\n    }\n  ],\n  \"pipeline_decomposition_status\": {\n    \"diff_expr_go\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"diff_expr_go\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"diff_expr_kegg\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"diff_expr_kegg\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"driver_gene_gender_analysis\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"driver_gene_gender_analysis\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"her2_pfs_survival\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"her2_pfs_survival\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"immune_infiltration_iobr\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"immune_infiltration_iobr\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"paired_fastq_to_unmapped_bam\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"paired_fastq_to_unmapped_bam\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"rnaseq_unsupervised_cluster\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"rnaseq_unsupervised_cluster\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"survival_analysis\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"survival_analysis\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"tmb_survival_analysis\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"tmb_survival_analysis\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"wes_somatic_maf_landscape\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"wes_somatic_maf_landscape\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"wgcna\": {\n      \"status\": \"neo4j_pipeline_level_tool\",\n      \"registered_units\": [\n        \"wgcna\"\n      ],\n      \"source\": \"neo4j\"\n    },\n    \"rnaseq_singletask\": {\n      \"status\": \"neo4j_locked_recipe\",\n      \"registered_units\": [\n        \"fastqc\",\n        \"trim_galore\",\n        \"star\",\n        \"rsem\",\n        \"samtools\",\n        \"featurecounts\",\n        \"multiqc\"\n      ],\n      \"source\": \"neo4j\"\n    }\n  },\n  \"mcp_timing_ms\": 1351.8\n}"
+      }
+    ],
+    "structuredContent": {
+      "source": "neo4j",
+      "connected": true,
+      "error": null,
+      "atomic_tool_count": 12,
+      "pipeline_tool_count": 12,
+      "atomic_tools": [
+        {
+          "tool_id": "bcftools",
+          "tool_kind": "atomic",
+          "name": "BCFtools",
+          "inputs": [
+            "unfiltered_vcf"
+          ],
+          "outputs": [
+            "filtered_vcf"
+          ],
+          "allowed_next_tool_ids": [
+            "snpeff"
+          ]
+        },
+        {
+          "tool_id": "bwa",
+          "tool_kind": "atomic",
+          "name": "BWA",
+          "inputs": [
+            "clean_fastq_read",
+            "genome_annotation"
+          ],
+          "outputs": [
+            "aligned_bam"
+          ],
+          "allowed_next_tool_ids": [
+            "samtools"
+          ]
+        },
+        {
+          "tool_id": "fastp",
+          "tool_kind": "atomic",
+          "name": "fastp",
+          "inputs": [
+            "raw_fastq_read"
+          ],
+          "outputs": [
+            "clean_fastq_read"
+          ],
+          "allowed_next_tool_ids": [
+            "fastqc",
+            "bwa",
+            "star"
+          ]
+        },
+        {
+          "tool_id": "fastqc",
+          "tool_kind": "atomic",
+          "name": "FastQC",
+          "inputs": [
+            "clean_fastq_read",
+            "raw_fastq_read"
+          ],
+          "outputs": [
+            "quality_control_report"
+          ],
+          "allowed_next_tool_ids": [
+            "fastp",
+            "bwa",
+            "trim_galore"
+          ]
+        },
+        {
+          "tool_id": "featurecounts",
+          "tool_kind": "atomic",
+          "name": "featureCounts",
+          "inputs": [
+            "genome_annotation",
+            "sorted_dedup_bam"
+          ],
+          "outputs": [
+            "expression_count_matrix"
+          ],
+          "allowed_next_tool_ids": []
+        },
+        {
+          "tool_id": "gatk",
+          "tool_kind": "atomic",
+          "name": "GATK",
+          "inputs": [
+            "genome_annotation",
+            "sorted_dedup_bam"
+          ],
+          "outputs": [
+            "sorted_dedup_bam",
+            "unfiltered_vcf"
+          ],
+          "allowed_next_tool_ids": [
+            "bcftools"
+          ]
+        },
+        {
+          "tool_id": "multiqc",
+          "tool_kind": "atomic",
+          "name": "MultiQC",
+          "inputs": [
+            "quality_control_report"
+          ],
+          "outputs": [
+            "quality_control_report"
+          ],
+          "allowed_next_tool_ids": []
+        },
+        {
+          "tool_id": "rsem",
+          "tool_kind": "atomic",
+          "name": "RSEM",
+          "inputs": [
+            "genome_annotation",
+            "transcriptome_bam"
+          ],
+          "outputs": [
+            "expression_abundance_matrix"
+          ],
+          "allowed_next_tool_ids": []
+        },
+        {
+          "tool_id": "samtools",
+          "tool_kind": "atomic",
+          "name": "SAMtools",
+          "inputs": [
+            "aligned_bam"
+          ],
+          "outputs": [
+            "sorted_dedup_bam"
+          ],
+          "allowed_next_tool_ids": [
+            "gatk",
+            "featurecounts"
+          ]
+        },
+        {
+          "tool_id": "snpeff",
+          "tool_kind": "atomic",
+          "name": "SnpEff",
+          "inputs": [
+            "filtered_vcf",
+            "genome_annotation"
+          ],
+          "outputs": [
+            "annotated_vcf"
+          ],
+          "allowed_next_tool_ids": []
+        },
+        {
+          "tool_id": "star",
+          "tool_kind": "atomic",
+          "name": "STAR",
+          "inputs": [
+            "clean_fastq_read",
+            "genome_annotation"
+          ],
+          "outputs": [
+            "aligned_bam",
+            "clean_fastq_read",
+            "transcriptome_bam"
+          ],
+          "allowed_next_tool_ids": [
+            "samtools",
+            "rsem"
+          ]
+        },
+        {
+          "tool_id": "trim_galore",
+          "tool_kind": "atomic",
+          "name": "Trim Galore",
+          "inputs": [
+            "raw_fastq_read"
+          ],
+          "outputs": [
+            "clean_fastq_read"
+          ],
+          "allowed_next_tool_ids": [
+            "star"
+          ]
+        }
+      ],
+      "pipeline_decomposition_status": {
+        "diff_expr_go": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "diff_expr_go"
+          ],
+          "source": "neo4j"
+        },
+        "diff_expr_kegg": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "diff_expr_kegg"
+          ],
+          "source": "neo4j"
+        },
+        "driver_gene_gender_analysis": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "driver_gene_gender_analysis"
+          ],
+          "source": "neo4j"
+        },
+        "her2_pfs_survival": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "her2_pfs_survival"
+          ],
+          "source": "neo4j"
+        },
+        "immune_infiltration_iobr": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "immune_infiltration_iobr"
+          ],
+          "source": "neo4j"
+        },
+        "paired_fastq_to_unmapped_bam": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "paired_fastq_to_unmapped_bam"
+          ],
+          "source": "neo4j"
+        },
+        "rnaseq_unsupervised_cluster": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "rnaseq_unsupervised_cluster"
+          ],
+          "source": "neo4j"
+        },
+        "survival_analysis": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "survival_analysis"
+          ],
+          "source": "neo4j"
+        },
+        "tmb_survival_analysis": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "tmb_survival_analysis"
+          ],
+          "source": "neo4j"
+        },
+        "wes_somatic_maf_landscape": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "wes_somatic_maf_landscape"
+          ],
+          "source": "neo4j"
+        },
+        "wgcna": {
+          "status": "neo4j_pipeline_level_tool",
+          "registered_units": [
+            "wgcna"
+          ],
+          "source": "neo4j"
+        },
+        "rnaseq_singletask": {
+          "status": "neo4j_locked_recipe",
+          "registered_units": [
+            "fastqc",
+            "trim_galore",
+            "star",
+            "rsem",
+            "samtools",
+            "featurecounts",
+            "multiqc"
+          ],
+          "source": "neo4j"
+        }
+      },
+      "mcp_timing_ms": 1351.8
+    }
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "schema_version": "tool-chain/v2",
+  "selection_status": "information",
+  "candidate_count": 0,
+  "candidates": [],
+  "recommendation_count": 1,
+  "recommendations": [
+    {
+      "rank": 1,
+      "match_id": "recommendation-e824d296e38e61c9",
+      "pipeline_id": "rnaseq_singletask",
+      "match_note": "确定性规则识别为双端 bulk RNA-seq 上游质控和表达定量。",
+      "tool": {
+        "tool_id": "rnaseq_singletask",
+        "catalog_id": "TASK_RNASEQ_SINGLETASK",
+        "tool_kind": "task_pipeline",
+        "name": "RNA-seq 单任务完整上游流程",
+        "description": "从双端 RNA-seq FASTQ 完成质控、剪切、rRNA 去除、STAR 比对、RSEM、featureCounts 和 MultiQC。",
+        "inputs": [
+          {
+            "name": "fastq_1",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "raw_fastq_read",
+            "formats": [
+              "fq.gz"
+            ],
+            "description": "fastq_1",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "fastq_2",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "raw_fastq_read",
+            "formats": [
+              "fq.gz"
+            ],
+            "description": "fastq_2",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "gtf_file",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "genome_annotation",
+            "formats": [
+              "gtf"
+            ],
+            "description": "gtf_file",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "rrna_star_index",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "genome_annotation",
+            "formats": [
+              "index"
+            ],
+            "description": "rrna_star_index",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "rsem_index",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "genome_annotation",
+            "formats": [
+              "index"
+            ],
+            "description": "rsem_index",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "star_genome_index",
+            "type": "File",
+            "is_file": true,
+            "optional": false,
+            "artifact": "genome_annotation",
+            "formats": [
+              "index"
+            ],
+            "description": "star_genome_index",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          }
+        ],
+        "outputs": [
+          {
+            "name": "aligned_bam",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "sorted_dedup_bam",
+            "formats": [
+              "bam",
+              "bai"
+            ],
+            "description": "aligned_bam",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "count_matrix",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "expression_count_matrix",
+            "formats": [
+              "tsv",
+              "txt"
+            ],
+            "description": "count_matrix",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "expression_matrix",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "expression_abundance_matrix",
+            "formats": [
+              "tsv"
+            ],
+            "description": "expression_matrix",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          },
+          {
+            "name": "quality_control",
+            "type": "File",
+            "is_file": true,
+            "optional": true,
+            "artifact": "quality_control_report",
+            "formats": [
+              "html",
+              "zip"
+            ],
+            "description": "quality_control",
+            "dimension": "",
+            "dimension_value": "",
+            "variant": "",
+            "variant_alias_for": ""
+          }
+        ],
+        "catalog_status": "registered",
+        "source": "neo4j"
+      },
+      "data": {
+        "status": "available",
+        "source": "neo4j",
+        "assets": [
+          {
+            "name": "HRR1402797_f1.fastq.gz (7818911607 bytes)",
+            "graph_status": "available",
+            "source": "T1",
+            "t2_id": null,
+            "file_id": "HRR1402797_f1.fastq.gz (7818911607 bytes)",
+            "file_name": "HRR1402797_f1.fastq.gz (7818911607 bytes)",
+            "files": "HRR1402797_f1.fastq.gz (7818911607 bytes)",
+            "format": "fq.gz",
+            "strategy": "RNA-Seq",
+            "data_level": "1",
+            "study_accession": "HRA001272",
+            "sample_accession": "HRS959806",
+            "run_accession": "HRR1402797",
+            "individual_accession": "HRI728840",
+            "individual_name": "",
+            "sample_name": "",
+            "specimen_types": "Patient Solid Tissue",
+            "read_pair": "R1",
+            "file_path": "HRR1402797_f1.fastq.gz (7818911607 bytes)",
+            "match_reason": "格式匹配 fq.gz; strategy 匹配 RNA-Seq"
+          },
+          {
+            "name": "HRR1402797_r2.fastq.gz (8138278934 bytes)",
+            "graph_status": "available",
+            "source": "T1",
+            "t2_id": null,
+            "file_id": "HRR1402797_r2.fastq.gz (8138278934 bytes)",
+            "file_name": "HRR1402797_r2.fastq.gz (8138278934 bytes)",
+            "files": "HRR1402797_r2.fastq.gz (8138278934 bytes)",
+            "format": "fq.gz",
+            "strategy": "RNA-Seq",
+            "data_level": "1",
+            "study_accession": "HRA001272",
+            "sample_accession": "HRS959806",
+            "run_accession": "HRR1402797",
+            "individual_accession": "HRI728840",
+            "individual_name": "",
+            "sample_name": "",
+            "specimen_types": "Patient Solid Tissue",
+            "read_pair": "R2",
+            "file_path": "HRR1402797_r2.fastq.gz (8138278934 bytes)",
+            "match_reason": "格式匹配 fq.gz; strategy 匹配 RNA-Seq"
+          }
+        ],
+        "matched_count": 2,
+        "expected_count": 2,
+        "missing_asset_names": [],
+        "study_accessions": [
+          "HRA001272"
+        ]
+      },
+      "source": "deterministic_rule+neo4j",
+      "reference_case_id": null
+    }
+  ],
+  "intent": {
+    "query_text": "我有双端 RNA-seq 的 FASTQ 数据，想做比对并得到基因表达定量的 count 矩阵，请推荐流程和可用数据",
+    "analysis_goal": "RNA-seq 表达定量",
+    "disease": null,
+    "omics_type": "bulk RNA-seq",
+    "input_hint": "fq.gz",
+    "quant_hint": "counts",
+    "requested_outputs": [],
+    "study_accessions": [],
+    "source": "rule",
+    "ambiguous": false
+  },
+  "planner_metadata": {
+    "used": false,
+    "status": "force_rule",
+    "calls": 0,
+    "stages": []
+  },
+  "data_matcher_mode": "neo4j",
+  "mcp_timing_ms": 1482.5
+}

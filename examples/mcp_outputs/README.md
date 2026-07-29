@@ -1,0 +1,51 @@
+# MCP 真实输出实例（前端联调用）
+
+这里是 **MCP 服务在真实 Neo4j 后端上跑出来的真实返回**，直接拿去做前端 mock / 联调，不用先把后端跑起来。
+
+每个场景有两个文件：
+
+| 文件 | 内容 | 前端该读哪个 |
+|---|---|---|
+| `*.envelope.json` | 完整 JSON-RPC 2.0 信封（`result.content[]` + `result.structuredContent`） | 想看 MCP 传输层长啥样时看这个 |
+| `*.json` | 只有 `structuredContent` 那一层（业务数据） | **前端渲染就用这个** |
+
+> 关键规则：agent/前端**永远解析 `structuredContent`**，不要去正则 `content[0].text`（那只是同一对象的字符串镜像，给纯文本客户端兜底的）。
+
+## 场景清单（覆盖 4 种 UI 状态）
+
+| 文件 | 工具 | `selection_status` | 用来测什么 UI |
+|---|---|---|---|
+| `route_pipeline_request.rnaseq.json` | `route_pipeline_request` | `information` | **主力成功态**：有 pipeline 推荐 + 选中的真实数据（双端 FASTQ）。渲染推荐卡片、I/O 槽、数据资产表 |
+| `route_pipeline_request.wes_somatic.json` | `route_pipeline_request` | `no_candidate` | **空结果态**：没匹配上，`recommendations`/`candidates` 都空。测"无结果"占位 |
+| `list_workflow_methods.json` | `list_workflow_methods` | — | **目录态**：Neo4j 里的原子/pipeline 工具清单。测工具浏览页 |
+| `health_check.json` | `health_check` | — | **后端状态**：连接、版本、节点/关系数、快照校验。测健康指示灯 |
+
+## 主力实例 `route_pipeline_request.rnaseq.json` 长什么样
+
+- 顶层：`schema_version="tool-chain/v2"`、`selection_status`、`recommendations[]`、`candidates[]`、`intent`、`planner_metadata`
+- `recommendations[0].tool` —— 选中的 pipeline（`rnaseq_singletask`）及其 `inputs[]`/`outputs[]` 槽
+- `recommendations[0].data.assets[]` —— **选中的真实数据**：一对双端测序文件
+  `HRR1402797_f1.fastq.gz` / `HRR1402797_r2.fastq.gz`，带 study/sample/run/individual 溯源
+- 字段完整语义见仓库 `docs/mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md` 和
+  正式 schema `docs/mcp_delivery/schemas/tool_chain_output.schema.json`
+
+## 前端快速加载示例
+
+```js
+// 直接 import 结构化层即可渲染
+import res from "./examples/mcp_outputs/route_pipeline_request.rnaseq.json";
+
+res.recommendations.forEach(rec => {
+  console.log(rec.pipeline_id, rec.tool.name);
+  rec.data.assets.forEach(a =>
+    console.log("  data:", a.file_name, a.format, a.study_accession));
+});
+```
+
+## 说明
+
+- 这批 fixture 由 `route_pipeline_request` 在 `FORCE_RULE=1`（确定性规则路由，不依赖 LLM）下生成，
+  所以结果稳定、可复现，适合做测试基线。
+- `health_check.json` 里 `error: unified_graph_contract_mismatch` + `snapshot_id: null` 是因为
+  它连的是数据提供方的 legacy 后端；换成随仓库发布的 `datagraph-staging.dump` 恢复的后端时，
+  这里会是 `ready: true` / `snapshot_id: dg-b23135…`。两种都真实，前端两种状态都可以照着测。
