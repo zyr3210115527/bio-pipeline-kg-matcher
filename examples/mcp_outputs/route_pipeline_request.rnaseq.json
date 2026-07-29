@@ -252,6 +252,21 @@
           "HRA001272"
         ]
       },
+      "execution_params": {},
+      "execution_params_missing": [
+        {
+          "param": "sample_r1",
+          "slot": "fastq_1",
+          "role": "fastq_r1",
+          "reason": "no_confirmed_path"
+        },
+        {
+          "param": "sample_r2",
+          "slot": "fastq_2",
+          "role": "fastq_r2",
+          "reason": "no_confirmed_path"
+        }
+      ],
       "source": "deterministic_rule+neo4j",
       "reference_case_id": null
     }

@@ -938,13 +938,17 @@ class CsvKGDataMatcher:
         requested = [self._clean_data_name(str(value).strip()) for value in file_names if value]
         by_name: Dict[str, List[Dict[str, Any]]] = {}
         for source, row in [("T1", item) for item in self.t1] + [("T2", item) for item in self.t2]:
-            aliases = {
-                self._clean_data_name(str(row.get("files") or "")),
-                self._clean_data_name(str(row.get("file_name") or "")),
-                self._clean_data_name(str(row.get("file_id") or "")),
-                self._clean_data_name(str(row.get("file") or "")),
-                self._clean_data_name(str(row.get("t2_id") or "")),
-            }
+            aliases: Set[str] = set()
+            for key in ("files", "file_name", "file_id", "file", "t2_id"):
+                raw = str(row.get(key) or "")
+                if not raw:
+                    continue
+                aliases.add(self._clean_data_name(raw))
+                # Composite-key quirk: reference rows key the file as
+                # "<file_name>::<file_path>"; also alias the bare file name so a
+                # reviewed bare-name lookup (e.g. expected_data) resolves.
+                if "::" in raw:
+                    aliases.add(self._clean_data_name(raw.split("::", 1)[0]))
             record = self._file_record(source, row, "文件名精确匹配")
             for name in {alias for alias in aliases if alias}:
                 by_name.setdefault(name, []).append(record)
@@ -980,8 +984,14 @@ class CsvKGDataMatcher:
     def _file_record(
         self, source: str, row: Dict[str, Any], match_reason: str
     ) -> Dict[str, Any]:
-        file_name = row.get("file_name") or row.get("files") or row.get("file") or row.get("t2_id")
-        file_id = row.get("file_id") or row.get("files") or row.get("t2_id")
+        def _bare(value: Any) -> Any:
+            # Strip the "::<path>" composite-key suffix from display names only;
+            # leaves "(N bytes)" and plain names untouched.
+            text = str(value or "")
+            return text.split("::", 1)[0] if "::" in text else value
+
+        file_name = _bare(row.get("file_name") or row.get("files") or row.get("file") or row.get("t2_id"))
+        file_id = _bare(row.get("file_id") or row.get("files") or row.get("t2_id"))
         return {
             "source": source,
             "t2_id": row.get("t2_id") if source == "T2" else None,

@@ -64,6 +64,19 @@ MCP 返回值同时出现在 `result.structuredContent` 和 `result.content[0].t
 
 每个 `recommendation` 的 `tool.catalog_status` 为 `registered` 或 `missing_from_neo4j`。`data.status` 为 `available` 或 `missing_from_graph`；`data.assets[].graph_status` 逐文件说明图谱是否确认，缺失文件不会带虚构路径。`recommendations[]` 是信息层，不能直接当作 atomic 执行链。
 
+### 3.1 `execution_params`（可直接投递的参数）
+
+每个 `recommendation` 另带 `execution_params` 与 `execution_params_missing`，把 `data.assets` 转成 PipelineBuilder 可直接投递的键值：
+
+| 字段 | 说明 |
+|---|---|
+| `execution_params` | `{真实参数名: 真实路径}`。键 = 该流程 `knowledge_card.yaml` 的 `interface.params[].name`（即图内 `io_slot.builder_param`，如 `maf_file`/`counts_tsv`），**不是** slot 名，也不是 `wdl_target`；值 = `data.assets` 里已被图谱确认的真实文件路径。多文件流程给多个键（如 wgcna → `counts_tsv`/`clinical_xls`/`metainfo_xlsx`）。 |
+| `execution_params_missing` | 无法解析出确认路径的数据参数清单（`param`/`slot`/`role`/`reason`）。**绝不臆造路径**。 |
+
+规则：只映射图谱确认的**数据**输入；参考基因组 / 索引 / GTF / interval / PoN 等有卡片默认值的参考资源不出现在 `execution_params` 里（既不映射也不报缺）。用户选定某条后，可直接 `{pipeline_id, params: <execution_params>}` 投递。
+
+> 注意：上游 FASTQ（T1）在参考数据里 `file_path` 为 `NOT_FOUND`，故 rnaseq / 配对 WES 等以 fastq 为输入的流程，其 `sample_r1`/`sample_r2` 会进入 `execution_params_missing`，需数据侧补齐 `file_path` 后才能给出真实路径。maf / 表达矩阵 / 临床 / metainfo 等 T2 产物路径齐全，可直接给出。
+
 ## 4. Agent 消费规则
 
 1. 先检查 `schema_version == "tool-chain/v2"`。
