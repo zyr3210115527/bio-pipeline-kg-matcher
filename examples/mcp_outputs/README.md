@@ -2,14 +2,9 @@
 
 这里是 **MCP 服务在真实 Neo4j 后端上跑出来的真实返回**，直接拿去做前端 mock / 联调，不用先把后端跑起来。
 
-每个场景有两个文件：
+每个 `.json` 就是前端要渲染的业务数据（即 MCP 返回里的 `structuredContent` 那一层，已经帮你拆出来了）。
 
-| 文件 | 内容 | 前端该读哪个 |
-|---|---|---|
-| `*.envelope.json` | 完整 JSON-RPC 2.0 信封（`result.content[]` + `result.structuredContent`） | 想看 MCP 传输层长啥样时看这个 |
-| `*.json` | 只有 `structuredContent` 那一层（业务数据） | **前端渲染就用这个** |
-
-> 关键规则：agent/前端**永远解析 `structuredContent`**，不要去正则 `content[0].text`（那只是同一对象的字符串镜像，给纯文本客户端兜底的）。
+> 注意：真到了直连 MCP 联调时，收到的是带 JSON-RPC 信封的完整返回，业务数据在 `result.structuredContent` 里——和这里的 `.json` 内容一致，取那一层即可。
 
 ## 场景清单
 
