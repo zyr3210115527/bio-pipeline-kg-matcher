@@ -21,6 +21,8 @@
             "name": "fastq_1",
             "type": "File",
             "is_file": true,
+            "builder_param": "sample_r1",
+            "wdl_target": "RNASeqPipeline.sample_r1",
             "optional": false,
             "artifact": "raw_fastq_read",
             "formats": [
@@ -36,6 +38,8 @@
             "name": "fastq_2",
             "type": "File",
             "is_file": true,
+            "builder_param": "sample_r2",
+            "wdl_target": "RNASeqPipeline.sample_r2",
             "optional": false,
             "artifact": "raw_fastq_read",
             "formats": [
@@ -51,6 +55,8 @@
             "name": "gtf_file",
             "type": "File",
             "is_file": true,
+            "builder_param": "gtf_file",
+            "wdl_target": "RNASeqPipeline.gtf_file",
             "optional": false,
             "artifact": "genome_annotation",
             "formats": [
@@ -66,6 +72,8 @@
             "name": "rrna_star_index",
             "type": "File",
             "is_file": true,
+            "builder_param": "rrna_star_index",
+            "wdl_target": "RNASeqPipeline.rrna_star_index",
             "optional": false,
             "artifact": "genome_annotation",
             "formats": [
@@ -81,6 +89,8 @@
             "name": "rsem_index",
             "type": "File",
             "is_file": true,
+            "builder_param": "rsem_index",
+            "wdl_target": "RNASeqPipeline.rsem_index",
             "optional": false,
             "artifact": "genome_annotation",
             "formats": [
@@ -96,6 +106,8 @@
             "name": "star_genome_index",
             "type": "File",
             "is_file": true,
+            "builder_param": "star_genome_index",
+            "wdl_target": "RNASeqPipeline.star_genome_index",
             "optional": false,
             "artifact": "genome_annotation",
             "formats": [
@@ -113,6 +125,8 @@
             "name": "aligned_bam",
             "type": "File",
             "is_file": true,
+            "builder_param": "",
+            "wdl_target": "",
             "optional": true,
             "artifact": "sorted_dedup_bam",
             "formats": [
@@ -129,6 +143,8 @@
             "name": "count_matrix",
             "type": "File",
             "is_file": true,
+            "builder_param": "",
+            "wdl_target": "",
             "optional": true,
             "artifact": "expression_count_matrix",
             "formats": [
@@ -145,6 +161,8 @@
             "name": "expression_matrix",
             "type": "File",
             "is_file": true,
+            "builder_param": "",
+            "wdl_target": "",
             "optional": true,
             "artifact": "expression_abundance_matrix",
             "formats": [
@@ -160,6 +178,8 @@
             "name": "quality_control",
             "type": "File",
             "is_file": true,
+            "builder_param": "",
+            "wdl_target": "",
             "optional": true,
             "artifact": "quality_control_report",
             "formats": [
@@ -255,5 +275,5 @@
     "stages": []
   },
   "data_matcher_mode": "neo4j",
-  "mcp_timing_ms": 1482.5
+  "mcp_timing_ms": 1549.3
 }
