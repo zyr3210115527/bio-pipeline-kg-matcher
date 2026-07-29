@@ -1,0 +1,20 @@
+{
+  "database": "datagraph-staging",
+  "dump_file": "datagraph-staging.dump",
+  "format": "neo4j-admin-database-dump",
+  "neo4j_edition": "community",
+  "neo4j_version": "2026.06.0",
+  "refreshed_at": "2026-07-30",
+  "source_database": "neo4j",
+  "scope": "full-live-graph",
+  "sha256": "32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26",
+  "size_bytes": 41242279,
+  "node_count": 82659,
+  "relationship_count": 103084,
+  "node_breakdown": {
+    "datagraph": 82427,
+    "tool_catalog": 370
+  },
+  "change_note": "Refresh of the prior delivery dump. Only delta vs previous: t1.file_path backfill. Parsed real absolute paths from data/update728/csv/entities/T1.csv dataName ('name::/abs/path') and set file_path on 11700 / 19178 raw fastq (t1) nodes; the remaining 7478 have no path in the source CSV. Enables route_pipeline_request recommendations to derive real execution_params for fastq-input pipelines. Backfill script: scripts/python/backfill_t1_file_path.py (idempotent).",
+  "verification_status": "dump binary + identity refreshed; full unified-graph verification suite (verify_unified_graph.py, 191-case dual-read, MCP smoke) not re-run this pass and still describes the prior snapshot"
+}

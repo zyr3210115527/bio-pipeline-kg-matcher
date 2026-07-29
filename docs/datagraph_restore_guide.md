@@ -1,12 +1,20 @@
 # 数据图恢复手册
 
-> **当前交付更新（2026-07-24）**：MCP 交付应使用
+> **当前交付更新（2026-07-30）**：MCP 交付应使用
 > `docs/mcp_delivery/neo4j/datagraph-staging.dump`，SHA-256
-> `07572b120251d549062890c29e64a3f9ac2f5ea95dc5d0c517ec3a768c8017a9`。
-> 它包含数据图 32,744 节点/73,001 关系和工具目录 233 节点/601 关系；统一图总计 32,977 节点/73,602 关系。
+> `32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26`。
+> 它是当前完整活图的离线 dump：统一图共 **82,659 节点 / 103,084 关系**
+> （数据图 82,427 节点、工具目录 370 节点）。本轮相对上一版仅新增
+> `t1.file_path` 回填 —— 从源 `data/update728/csv/entities/T1.csv` 的
+> `dataName`（`文件名::绝对路径`）解析，为 **11,700 / 19,178** 个原始 fastq
+> 节点补齐真实磁盘路径（其余 7,478 个源 CSV 无路径）。这使
+> `route_pipeline_request` 推荐可对 fastq 输入流程派生真实 `execution_params`。
 > 恢复后应运行 `scripts/python/verify_unified_graph.py`、191-case 双读和 MCP smoke；
-> 完整命令见 `docs/mcp_delivery/datagraph_restore_guide.md`。下文的纯数据图 dump
-> 仅保留为上一轮历史恢复记录，不应作为当前 MCP 交付物。
+> 完整命令见 `docs/mcp_delivery/datagraph_restore_guide.md`。
+>
+> 注：本手册下文各分层计数、fingerprint 及 `docs/**` 下验证报告仍描述上一交付
+> 快照（含历史 32,977 节点口径），需一次完整验证 pass 才能重新认证；本轮只刷新
+> dump 二进制与本抬头。下文的纯数据图 dump 仅为历史恢复记录，不应作为当前交付物。
 
 本手册对应 `datagraph/v1`。已演练环境为 Neo4j Community `2026.06.0` + JDK 21，不依赖 APOC 或其他插件。
 

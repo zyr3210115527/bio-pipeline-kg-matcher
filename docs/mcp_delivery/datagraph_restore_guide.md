@@ -6,7 +6,8 @@
 - Java 21
 - 一个全新的 Neo4j home；不要覆盖已有生产 home
 - dump: `neo4j/datagraph-staging.dump`
-- SHA-256: `07572b120251d549062890c29e64a3f9ac2f5ea95dc5d0c517ec3a768c8017a9`
+- SHA-256: `32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26`
+  （2026-07-30 刷新：完整活图 82,659 节点 / 103,084 关系，新增 t1.file_path 回填）
 
 ## 1. 校验文件
 

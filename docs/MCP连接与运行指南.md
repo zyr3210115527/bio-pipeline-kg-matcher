@@ -46,7 +46,7 @@ cd bio-pipeline-kg-matcher
 ```
 
 仓库自带后端 dump：`docs/mcp_delivery/neo4j/datagraph-staging.dump`
-（SHA-256 `07572b120251d549062890c29e64a3f9ac2f5ea95dc5d0c517ec3a768c8017a9`）。
+（SHA-256 `32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26`）。
 
 ---
 
@@ -73,7 +73,7 @@ pip install -r requirements-llm.txt      # requests，走 LLM 路由时才需要
 
 ```bash
 shasum -a 256 docs/mcp_delivery/neo4j/datagraph-staging.dump
-# 必须等于 07572b120251d549062890c29e64a3f9ac2f5ea95dc5d0c517ec3a768c8017a9
+# 必须等于 32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26
 ```
 
 ### 4.2 准备全新 home 的 conf
