@@ -11,14 +11,12 @@
 
 > 关键规则：agent/前端**永远解析 `structuredContent`**，不要去正则 `content[0].text`（那只是同一对象的字符串镜像，给纯文本客户端兜底的）。
 
-## 场景清单（覆盖 4 种 UI 状态）
+## 场景清单
 
 | 文件 | 工具 | `selection_status` | 用来测什么 UI |
 |---|---|---|---|
 | `route_pipeline_request.rnaseq.json` | `route_pipeline_request` | `information` | **主力成功态**：有 pipeline 推荐 + 选中的真实数据（双端 FASTQ）。渲染推荐卡片、I/O 槽、数据资产表 |
 | `route_pipeline_request.wes_somatic.json` | `route_pipeline_request` | `no_candidate` | **空结果态**：没匹配上，`recommendations`/`candidates` 都空。测"无结果"占位 |
-| `list_workflow_methods.json` | `list_workflow_methods` | — | **目录态**：Neo4j 里的原子/pipeline 工具清单。测工具浏览页 |
-| `health_check.json` | `health_check` | — | **后端状态**：连接、版本、节点/关系数、快照校验。测健康指示灯 |
 
 ## 主力实例 `route_pipeline_request.rnaseq.json` 长什么样
 
@@ -46,6 +44,3 @@ res.recommendations.forEach(rec => {
 
 - 这批 fixture 由 `route_pipeline_request` 在 `FORCE_RULE=1`（确定性规则路由，不依赖 LLM）下生成，
   所以结果稳定、可复现，适合做测试基线。
-- `health_check.json` 里 `error: unified_graph_contract_mismatch` + `snapshot_id: null` 是因为
-  它连的是数据提供方的 legacy 后端；换成随仓库发布的 `datagraph-staging.dump` 恢复的后端时，
-  这里会是 `ready: true` / `snapshot_id: dg-b23135…`。两种都真实，前端两种状态都可以照着测。
