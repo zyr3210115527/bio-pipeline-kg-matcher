@@ -667,6 +667,7 @@ Neo4j atomic 方法目录：
                 ensure_ascii=False,
                 sort_keys=True,
             )
+            execution_params, execution_params_missing = self._execution_params(method, data)
             recommendations.append({
                 "rank": value["rank"],
                 "match_id": "recommendation-" + hashlib.sha256(
@@ -676,6 +677,8 @@ Neo4j atomic 方法目录：
                 "match_note": value.get("match_note") or "",
                 "tool": self._recommendation_tool(pipeline_id, method),
                 "data": data,
+                "execution_params": execution_params,
+                "execution_params_missing": execution_params_missing,
                 "source": recommendation_source,
                 "reference_case_id": reference.get("case_id") if reference else None,
             })
@@ -774,6 +777,109 @@ Neo4j atomic 方法目录：
             "missing_asset_names": [],
             "study_accessions": studies,
         }
+
+    @staticmethod
+    def _real_execution_path(asset: Dict[str, Any]) -> str:
+        """Return the asset's real filesystem path, or "" if it is not a
+        confirmed path. ``data.assets`` from the graph carry ``file_path`` that
+        for T2 products (maf/tsv/xlsx…) is a real ``/...`` path, but for T1
+        fastq is either ``NOT_FOUND`` or the ``"<name> (<n> bytes)"`` placeholder
+        (no real location in the upstream CSV). We never fabricate a path."""
+        path = str(asset.get("file_path") or "").strip()
+        if not path.startswith("/"):
+            return ""
+        if "NOT_FOUND" in path:
+            return ""
+        if re.search(r"\(\d+\s*bytes\)\s*$", path):
+            return ""
+        return path
+
+    def _execution_asset_role(self, asset: Dict[str, Any]) -> str:
+        """Canonical role for a ``data.assets`` item (which carries no
+        ``input_role``), derived from file name + physical format + read pair,
+        mapped into the same vocabulary as ``_canonical_asset_role``."""
+        name = str(asset.get("files") or asset.get("name") or "")
+        fmt = str(asset.get("format") or "").lower()
+        read_pair = str(asset.get("read_pair") or "").lower()
+        role = self._role_for_input(name)
+        if role in {"fastq_r1", "fastq_r2", "fastq_file"}:
+            if read_pair == "r1":
+                return "fastq_r1"
+            if read_pair == "r2":
+                return "fastq_r2"
+            return role
+        if role != "data_file":
+            return role
+        if "maf" in fmt:
+            return "maf_file"
+        if "vcf" in fmt:
+            return "vcf_file"
+        if "bam" in fmt:
+            return "bam_file"
+        if "fastq" in fmt or fmt.startswith("fq"):
+            if read_pair == "r1":
+                return "fastq_r1"
+            if read_pair == "r2":
+                return "fastq_r2"
+            return "fastq_file"
+        return "data_file"
+
+    def _execution_params(
+        self,
+        method: Optional[RegisteredMethod],
+        data: Dict[str, Any],
+    ) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
+        """Convert this recommendation's confirmed data assets into
+        directly-usable PipelineBuilder params, keyed by the **real WDL param
+        name** (``io_slot.builder_param``, e.g. ``maf_file``) — not the slot
+        name and not ``wdl_target``. Only KG-confirmed file inputs with a real
+        path are mapped; anything unresolved is reported in the missing list
+        rather than guessed (no fabricated paths)."""
+        params: Dict[str, Any] = {}
+        missing: List[Dict[str, Any]] = []
+        if method is None:
+            return params, missing
+        assets = list((data or {}).get("assets") or [])
+        usage: Dict[str, int] = {}
+        for slot in method.inputs or []:
+            builder_param = str(slot.get("builder_param") or "").strip()
+            if not builder_param:
+                # slots without a builder_param are sample-lookup / reference
+                # index inputs with card defaults — not direct data params.
+                continue
+            slot_name = str(slot.get("name") or "")
+            role = self._canonical_asset_role(slot_name, str(slot.get("input_role") or ""))
+            if role == "reference_file":
+                # Reference/index resources (genome index, gtf, PoN, known-sites…)
+                # carry knowledge-card defaults and are not user data — never map
+                # nor report them as missing (师兄 rule 4).
+                continue
+            candidates = []
+            for asset in assets:
+                if self._execution_asset_role(asset) != role:
+                    continue
+                path = self._real_execution_path(asset)
+                if path:
+                    candidates.append((asset, path))
+            if not candidates:
+                missing.append({
+                    "param": builder_param,
+                    "slot": slot_name,
+                    "role": role,
+                    "reason": "no_confirmed_path",
+                })
+                continue
+            # Prefer a study-level aggregate (dotted format e.g. ".maf") over
+            # per-run files when several match a single-valued slot.
+            candidates.sort(
+                key=lambda ap: 0 if str(ap[0].get("format") or "").strip().startswith(".") else 1
+            )
+            index = usage.get(role, 0)
+            if index >= len(candidates):
+                index = len(candidates) - 1
+            params[builder_param] = candidates[index][1]
+            usage[role] = index + 1
+        return params, missing
 
     def _partial_recommendation_assets(
         self,

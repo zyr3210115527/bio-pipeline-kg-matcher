@@ -281,6 +281,27 @@
               }
             },
             "additionalProperties": true
+          },
+          "execution_params": {
+            "type": "object",
+            "description": "Confirmed data assets converted to directly-usable PipelineBuilder params, keyed by the real WDL parameter name (io_slot.builder_param, e.g. maf_file). Values are real filesystem paths. Only KG-confirmed file inputs with a real path are present; reference/index resources and params with knowledge-card defaults are omitted. After picking a recommendation, invoke with {pipeline_id, params: <this object>}.",
+            "additionalProperties": {
+              "type": ["string", "array"]
+            }
+          },
+          "execution_params_missing": {
+            "type": "array",
+            "description": "Data params that could not be resolved to a confirmed path (never fabricated). Typically fastq inputs, whose upstream file_path is NOT_FOUND / unresolved.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "param": { "type": "string" },
+                "slot": { "type": "string" },
+                "role": { "type": "string" },
+                "reason": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
           }
         },
         "additionalProperties": true
