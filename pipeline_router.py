@@ -1002,7 +1002,7 @@ class CsvKGDataMatcher:
             "strategy": row.get("strategy") or row.get("data_type") or row.get("Experiment") or "",
             "data_level": row.get("data_level"),
             "study_accession": row.get("study_accession"),
-            "sample_accession": row.get("sample_accession"),
+            "sample_id": row.get("sample_accession"),
             "run_accession": row.get("run_accession"),
             "individual_accession": row.get("individual_accession"),
             "individual_name": row.get("individual_name"),

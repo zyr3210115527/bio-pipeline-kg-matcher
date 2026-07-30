@@ -2005,7 +2005,7 @@ Neo4j atomic 方法目录：
                 "format": detail.get("format"),
                 "path_verified": Path(path).exists(),
                 "source": detail.get("source"),
-                "sample_accession": detail.get("sample_accession"),
+                "sample_id": detail.get("sample_accession"),
                 "run_accession": detail.get("run_accession"),
                 "individual_accession": detail.get("individual_accession"),
                 "sample_role": detail.get("sample_role"),

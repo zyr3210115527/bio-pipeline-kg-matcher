@@ -29,11 +29,16 @@ class Top3ContractTests(unittest.TestCase):
         self.assertNotIn("force_custom", parameters)
         self.assertNotIn("expand_standard_steps", parameters)
 
-    def test_atomic_menu_contains_multiqc_and_no_pipeline_nodes(self):
+    def test_atomic_menu_excludes_multiqc_and_has_no_pipeline_nodes(self):
+        # multiqc has zero NEXT edges in the live graph, so it can never be a
+        # legal link in any atomic chain. PR #9 deliberately drops it from the
+        # menu advertised to the LLM; the rest of the atomic methods stay.
         lines = self.composer._method_menu_lines()
-        self.assertTrue(any(line.startswith("- multiqc ") for line in lines))
+        self.assertFalse(any(line.startswith("- multiqc ") for line in lines))
         ids = {line.split(" | ", 1)[0].removeprefix("- ") for line in lines}
-        self.assertEqual(ids, set(self.composer.registered_methods.methods))
+        self.assertEqual(
+            ids, set(self.composer.registered_methods.methods) - {"multiqc"}
+        )
         self.assertFalse(ids & set(self.composer.registered_methods.pipeline_methods))
 
     def test_capability_query_uses_v2_information_contract(self):
