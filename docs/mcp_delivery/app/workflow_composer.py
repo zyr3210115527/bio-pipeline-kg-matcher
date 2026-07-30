@@ -423,7 +423,7 @@ class WorkflowComposer:
 - paired-end FASTQ 的 FastQC 当前只有单一泛化 raw_fastq_read 槽，无法忠实表达 R1/R2 两个独立输入；禁止创建 fastqc_r1/fastqc_r2 两个并行根，也禁止只取一个 mate 冒充双端质控。若用户只要求双端 FastQC/质控且不允许修剪，candidates 为空。
 - 当前 Knowledge Card 合同尚不能把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递。只要最终目标需要过滤 VCF、标准化 VCF 或功能注释 VCF，且起点是 FASTQ/BAM、路径必须经过 GATK -> BCFtools 或 GATK -> BCFtools -> SnpEff，就必须立即令 candidates 为空；即使 Neo4j 目录显示这些 NEXT，也绝对不能生成这些步骤。
 - 单样本 GATK 的 sorted_dedup_bam 目录槽虽存在，但当前外部 Knowledge Card 只支持 tumor-normal 四槽形式；单样本 GATK candidates 为空。
-- MultiQC 只能 depends_on 目录中明确允许 NEXT 到 multiqc 且能产生 QC 报告的步骤。不得让 MultiQC 依赖 BWA、BCFtools 或其他未列出 multiqc NEXT 的步骤。
+- 目录不含 multiqc。任何 candidate 都绝对不得输出 tool_id 为 multiqc 的步骤，也不得让任何步骤 depends_on 或 from 引用 multiqc；需要 QC 汇总时也不在 atomic 候选里体现。
 - FastQC 输出的是 quality_control_report，不是 reads。`FastQC -> STAR` 没有 NEXT 且数据类型不相容，绝对禁止；若需要先做 FastQC 再做 STAR，中间必须使用目录允许的 fastp 或 trim_galore，并由其 clean_fastq_read 连接 STAR。任何 depends_on 也必须逐项出现在 source 的 order_next/data_next 中，不能用“仅表示顺序”为理由越过 NEXT。
 
 配对 tumor/normal 的硬约束：
@@ -469,6 +469,7 @@ Neo4j atomic 方法目录：
     ) -> Dict[str, Any]:
         intent = self.router._rule_intent(text)
         raw_candidates = (decision or {}).get("candidates") or []
+        raw_candidates = self._strip_multiqc_from_candidates(raw_candidates)
         normalized = self._normalize_ranked_candidates(raw_candidates)
         accepted: List[Dict[str, Any]] = []
         rejected: List[Dict[str, Any]] = []
@@ -926,6 +927,70 @@ Neo4j atomic 方法目录：
         return assets, ([] if study == "unknown" else [study]), missing_roles
 
     @staticmethod
+    def _strip_multiqc_from_candidates(values: Any) -> List[Dict[str, Any]]:
+        """Drop any multiqc steps (and references to them) before validation.
+
+        multiqc has zero NEXT edges in the graph, so it can never form a valid
+        chain; the LLM occasionally emits X->multiqc fan-in that fails the closed
+        -set NEXT / parallel-root checks, which is why the same query returns
+        inconsistently. Removing it here makes validation deterministic
+        regardless of whether the LLM included it. Safe because multiqc is a
+        terminal QC-report aggregator whose output no analytic step consumes, so
+        dropping it never breaks the surviving backbone.
+        """
+        if not isinstance(values, list):
+            return []
+        cleaned: List[Dict[str, Any]] = []
+        for item in values:
+            if not isinstance(item, dict):
+                cleaned.append(item)
+                continue
+            steps = item.get("steps")
+            if not isinstance(steps, list):
+                cleaned.append(item)
+                continue
+            removed_ids = {
+                str(step.get("step_id") or "")
+                for step in steps
+                if isinstance(step, dict)
+                and str(step.get("tool_id") or "").lower() == "multiqc"
+            }
+            if not removed_ids:
+                cleaned.append(item)
+                continue
+            new_steps: List[Any] = []
+            for step in steps:
+                if not isinstance(step, dict):
+                    new_steps.append(step)
+                    continue
+                if str(step.get("tool_id") or "").lower() == "multiqc":
+                    continue
+                step = dict(step)
+                depends = step.get("depends_on")
+                if isinstance(depends, str):
+                    depends = [depends]
+                if isinstance(depends, list):
+                    step["depends_on"] = [
+                        dep for dep in depends if str(dep) not in removed_ids
+                    ]
+                inputs = step.get("inputs")
+                if isinstance(inputs, dict):
+                    step["inputs"] = {
+                        name: binding
+                        for name, binding in inputs.items()
+                        if not (
+                            isinstance(binding, dict)
+                            and isinstance(binding.get("from"), dict)
+                            and str(binding["from"].get("step_id") or "") in removed_ids
+                        )
+                    }
+                new_steps.append(step)
+            item = dict(item)
+            item["steps"] = new_steps
+            cleaned.append(item)
+        return cleaned
+
+    @staticmethod
     def _normalize_ranked_candidates(values: Any) -> List[Dict[str, Any]]:
         if not isinstance(values, list):
             return []
@@ -1190,6 +1255,12 @@ Neo4j atomic 方法目录：
             order_by_source[source].sort()
         for method in self.registered_methods.capabilities():
             tool_id = method["tool_id"]
+            # multiqc has zero NEXT edges in the graph, so it can never be a
+            # legal link in any chain. Advertising it only tempts the LLM to
+            # hallucinate X->multiqc fan-in that fails validation and makes the
+            # same query return inconsistently. Keep it out of the atomic menu.
+            if tool_id == "multiqc":
+                continue
             inputs = ", ".join(
                 f"{item['name']}[{item.get('artifact') or 'file'};"
                 f"{','.join(item.get('formats') or [])};"
