@@ -255,7 +255,7 @@ class KnowledgeCardExecutionRegistry:
     ) -> List[Dict[str, Any]]:
         if not seed:
             return []
-        keys = ("sample_accession", "run_accession", "individual_accession")
+        keys = ("sample_id", "sample_accession", "run_accession", "individual_accession")
         identity = next((key for key in keys if seed.get(key)), None)
         if not identity:
             return []
@@ -276,28 +276,70 @@ class KnowledgeCardExecutionRegistry:
         assets: Sequence[Dict[str, Any]],
     ) -> None:
         paired = any(asset.get("mate") == "r2" for asset in assets)
+        assets_by_id = {
+            str(asset.get("asset_id") or ""): asset for asset in assets
+        }
         dedup_steps = {
             str((binding.get("from") or {}).get("step_id") or "")
             for step in internal
             for binding in (step.get("inputs") or {}).values()
             if (binding.get("from") or {}).get("output") == "sorted_dedup_bam"
         }
+        # Real sample accession per step: fastp binds read assets directly, so its
+        # sample number comes from the bound asset; downstream steps (bwa, samtools)
+        # read from an upstream step and inherit that step's sample number.
+        sample_by_step: Dict[str, str] = {}
         for step in external:
             step_id = str(step.get("step_id") or "")
             tool_id = str(step.get("tool_id") or "")
             inputs = step.get("inputs") or {}
+            sample_accession = self._resolve_step_sample(
+                inputs, assets_by_id, sample_by_step
+            )
+            if sample_accession:
+                sample_by_step[step_id] = sample_accession
             if tool_id in {
                 "fastp_paired_end",
                 "bwa_mem_paired",
                 "samtools_alignment_processing",
             }:
-                inputs.setdefault("sample_id", {"value": step_id})
+                # The required WDL sample_id must carry the real sample number
+                # (e.g. HRS024297). Fall back to step_id only when the asset has
+                # no resolvable sample, so a required input is never empty.
+                inputs.setdefault(
+                    "sample_id", {"value": sample_accession or step_id}
+                )
             if tool_id == "samtools_alignment_processing" and step_id in dedup_steps:
                 inputs["remove_duplicates"] = {"value": True}
             if tool_id in {"rsem_quantification", "featurecounts_gene_counting"}:
                 inputs.setdefault("paired_end", {"value": paired})
             if tool_id == "multiqc":
                 inputs.setdefault("report_id", {"value": step_id})
+
+    @staticmethod
+    def _resolve_step_sample(
+        inputs: Dict[str, Any],
+        assets_by_id: Dict[str, Dict[str, Any]],
+        sample_by_step: Dict[str, str],
+    ) -> Optional[str]:
+        # Prefer a directly bound read asset's sample number.
+        for binding in inputs.values():
+            if not isinstance(binding, dict):
+                continue
+            asset_id = binding.get("asset_id")
+            if asset_id:
+                asset = assets_by_id.get(str(asset_id)) or {}
+                accession = asset.get("sample_id") or asset.get("sample_accession")
+                if accession:
+                    return str(accession)
+        # Otherwise inherit from the upstream step feeding this one.
+        for binding in inputs.values():
+            if not isinstance(binding, dict):
+                continue
+            source_step = str((binding.get("from") or {}).get("step_id") or "")
+            if source_step in sample_by_step:
+                return sample_by_step[source_step]
+        return None
 
     def _augment_multiqc(self, chain: List[Dict[str, Any]]) -> None:
         reports: List[Dict[str, Any]] = []
