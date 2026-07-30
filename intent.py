@@ -452,7 +452,7 @@ def extract_intent(nl_text: str, capabilities: List[Dict[str, Any]]) -> Dict[str
         formats = sorted(FORMAT_VOCAB)
         system = (
             "你是生物医学分析意图解析器。必须从给定菜单中闭集选择，禁止自造功能名。\n"
-            "输出严格 JSON，字段: input_format, target_function, cohort, ambiguous。\n"
+            "输出严格 json，字段: input_format, target_function, cohort, ambiguous。\n"
             "规则:\n"
             "1) target_function 必须是菜单里某个 function 的原文；没有合适的则 target_function=null 且 ambiguous=true。\n"
             "2) input_format 必须归一化到词表之一；用户没说清时按语义推断"

@@ -338,7 +338,7 @@ def _compact_route(value: Dict[str, Any], include_internal: bool) -> Dict[str, A
             "planner_metadata": value.get("planner_metadata"),
             "data_matcher_mode": value.get("data_matcher_mode"),
         }.items()
-        if item is not None
+        if item is not None or key == "unsupported_reason"
     }
 
 
