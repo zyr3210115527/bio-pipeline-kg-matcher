@@ -1080,7 +1080,11 @@ Neo4j atomic 方法目录：
                 "format": item.get("format"),
                 "source": item.get("source"),
                 "study_accession": item.get("study_accession"),
-                "sample_accession": item.get("sample_accession"),
+                # Matched combination file records carry the sample number under
+                # `sample_id` (the source projection); older shapes use
+                # `sample_accession`. Accept either so the asset — and the
+                # required WDL sample_id derived from it — is never empty.
+                "sample_accession": item.get("sample_id") or item.get("sample_accession"),
                 "run_accession": item.get("run_accession"),
                 "individual_accession": item.get("individual_accession"),
                 "sample_role": item.get("sample_role"),
