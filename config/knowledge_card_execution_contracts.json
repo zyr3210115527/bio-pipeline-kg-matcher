@@ -5,19 +5,60 @@
   "tools": {
     "bcftools": {
       "execution_tool_id": "bcftools_somatic_postprocess",
-      "input_map": {"unfiltered_vcf": "filtered_vcf"},
-      "output_map": {"filtered_vcf": "normalized_vcf"},
+      "input_map": {
+        "unfiltered_vcf": "filtered_vcf"
+      },
+      "output_map": {
+        "filtered_vcf": "normalized_vcf"
+      },
       "inputs": {
-        "filtered_vcf": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["gatk_wes_somatic.filtered_vcf"]},
-        "filtered_vcf_index": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["gatk_wes_somatic.filtered_vcf_index"]},
-        "reference_fasta": {"type": "String", "required": true, "managed_by": "executor"}
+        "filtered_vcf": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "gatk_wes_somatic.filtered_vcf"
+          ]
+        },
+        "filtered_vcf_index": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "gatk_wes_somatic.filtered_vcf_index"
+          ]
+        },
+        "reference_fasta": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "pair_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "pass_vcf": {"type": "File"},
-        "normalized_vcf": {"type": "File"},
-        "qc_files": {"type": "Array[File]"}
+        "pass_vcf": {
+          "type": "File"
+        },
+        "normalized_vcf": {
+          "type": "File"
+        },
+        "qc_files": {
+          "type": "Array[File]"
+        },
+        "pass_vcf_index": {
+          "type": "File"
+        },
+        "normalized_vcf_index": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["qc_files"]
+      "report_outputs": [
+        "qc_files"
+      ]
     },
     "bwa": {
       "execution_tool_id": "bwa_mem_paired",
@@ -27,18 +68,52 @@
         "clean_fastq_read_r2": "read2",
         "genome_annotation": "reference_fasta"
       },
-      "output_map": {"aligned_bam": "aligned_sam"},
+      "output_map": {
+        "aligned_bam": "aligned_sam"
+      },
       "inputs": {
-        "sample_id": {"type": "String", "required": true, "managed_by": "executor"},
-        "read1": {"type": "File", "required": true, "managed_by": "mcp"},
-        "read2": {"type": "File", "required": true, "managed_by": "mcp"},
-        "reference_fasta": {"type": "String", "required": true, "managed_by": "executor"}
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "read1": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp"
+        },
+        "read2": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp"
+        },
+        "reference_fasta": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "read_group_platform": {
+          "type": "String",
+          "required": false,
+          "managed_by": "executor"
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "aligned_sam": {"type": "File"},
-        "bwa_log": {"type": "File"}
+        "aligned_sam": {
+          "type": "File"
+        },
+        "bwa_log": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["bwa_log"]
+      "report_outputs": [
+        "bwa_log"
+      ]
     },
     "fastp": {
       "execution_tool_id": "fastp_paired_end",
@@ -53,17 +128,40 @@
         "clean_fastq_read_r2": "trimmed_r2"
       },
       "inputs": {
-        "sample_id": {"type": "String", "required": true, "managed_by": "executor"},
-        "read1": {"type": "File", "required": true, "managed_by": "mcp"},
-        "read2": {"type": "File", "required": true, "managed_by": "mcp"}
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "read1": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp"
+        },
+        "read2": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp"
+        }
       },
       "outputs": {
-        "trimmed_r1": {"type": "File"},
-        "trimmed_r2": {"type": "File"},
-        "html_report": {"type": "File"},
-        "json_report": {"type": "File"}
+        "trimmed_r1": {
+          "type": "File"
+        },
+        "trimmed_r2": {
+          "type": "File"
+        },
+        "html_report": {
+          "type": "File"
+        },
+        "json_report": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["html_report", "json_report"]
+      "report_outputs": [
+        "html_report",
+        "json_report"
+      ]
     },
     "fastqc": {
       "execution_tool_id": "fastqc",
@@ -71,15 +169,34 @@
         "raw_fastq_read": "fastqs",
         "clean_fastq_read": "fastqs"
       },
-      "output_map": {"quality_control_report": "zip_reports"},
+      "output_map": {
+        "quality_control_report": "zip_reports"
+      },
       "inputs": {
-        "fastqs": {"type": "Array[File]+", "required": true, "managed_by": "mcp", "array": true}
+        "fastqs": {
+          "type": "Array[File]+",
+          "required": true,
+          "managed_by": "mcp",
+          "array": true
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "html_reports": {"type": "Array[File]"},
-        "zip_reports": {"type": "Array[File]"}
+        "html_reports": {
+          "type": "Array[File]"
+        },
+        "zip_reports": {
+          "type": "Array[File]"
+        }
       },
-      "report_outputs": ["html_reports", "zip_reports"]
+      "report_outputs": [
+        "html_reports",
+        "zip_reports"
+      ]
     },
     "featurecounts": {
       "execution_tool_id": "featurecounts_gene_counting",
@@ -87,19 +204,61 @@
         "sorted_dedup_bam": "bam",
         "genome_annotation": "gtf_file"
       },
-      "output_map": {"expression_count_matrix": "counts"},
+      "output_map": {
+        "expression_count_matrix": "counts"
+      },
       "inputs": {
-        "bam": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["samtools_alignment_processing.sorted_bam"]},
-        "gtf_file": {"type": "File", "required": true, "managed_by": "executor"},
-        "paired_end": {"type": "Boolean", "required": false, "managed_by": "executor", "default": true},
-        "strandedness": {"type": "Int", "required": false, "managed_by": "executor", "default": 0}
+        "bam": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "samtools_alignment_processing.sorted_bam"
+          ]
+        },
+        "gtf_file": {
+          "type": "File",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "paired_end": {
+          "type": "Boolean",
+          "required": false,
+          "managed_by": "executor",
+          "default": true
+        },
+        "strandedness": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor",
+          "default": 0
+        },
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "counts": {"type": "File"},
-        "summary": {"type": "File"},
-        "featurecounts_log": {"type": "File"}
+        "counts": {
+          "type": "File"
+        },
+        "summary": {
+          "type": "File"
+        },
+        "featurecounts_log": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["summary", "featurecounts_log"]
+      "report_outputs": [
+        "summary",
+        "featurecounts_log"
+      ]
     },
     "gatk": {
       "execution_tool_id": "gatk_wes_somatic",
@@ -110,35 +269,101 @@
         "normal_bai": "normal_bai",
         "interval_list": "interval_list"
       },
-      "output_map": {"unfiltered_vcf": "unfiltered_vcf"},
+      "output_map": {
+        "unfiltered_vcf": "unfiltered_vcf"
+      },
       "inputs": {
-        "tumor_bam": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["samtools_alignment_processing.sorted_bam"]},
-        "tumor_bai": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["samtools_alignment_processing.sorted_bai"]},
-        "normal_bam": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["samtools_alignment_processing.sorted_bam"]},
-        "normal_bai": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["samtools_alignment_processing.sorted_bai"]},
-        "interval_list": {"type": "File", "required": true, "managed_by": "executor"}
+        "tumor_bam": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "samtools_alignment_processing.sorted_bam"
+          ]
+        },
+        "tumor_bai": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "samtools_alignment_processing.sorted_bai"
+          ]
+        },
+        "normal_bam": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "samtools_alignment_processing.sorted_bam"
+          ]
+        },
+        "normal_bai": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "samtools_alignment_processing.sorted_bai"
+          ]
+        },
+        "interval_list": {
+          "type": "File",
+          "required": true,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "tumor_bqsr_bam": {"type": "File"},
-        "normal_bqsr_bam": {"type": "File"},
-        "unfiltered_vcf": {"type": "File"},
-        "filtered_vcf": {"type": "File"},
-        "contamination": {"type": "File"},
-        "read_orientation_model": {"type": "File"}
+        "tumor_bqsr_bam": {
+          "type": "File"
+        },
+        "normal_bqsr_bam": {
+          "type": "File"
+        },
+        "unfiltered_vcf": {
+          "type": "File"
+        },
+        "filtered_vcf": {
+          "type": "File"
+        },
+        "contamination": {
+          "type": "File"
+        },
+        "read_orientation_model": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["contamination", "read_orientation_model"]
+      "report_outputs": [
+        "contamination",
+        "read_orientation_model"
+      ]
     },
     "multiqc": {
       "execution_tool_id": "multiqc",
-      "input_map": {"quality_control_report": "qc_files"},
-      "output_map": {"quality_control_report": "multiqc_html"},
+      "input_map": {
+        "quality_control_report": "qc_files"
+      },
+      "output_map": {
+        "quality_control_report": "multiqc_html"
+      },
       "inputs": {
-        "report_id": {"type": "String", "required": true, "managed_by": "executor"},
-        "qc_files": {"type": "Array[File]+", "required": true, "managed_by": "mcp", "array": true}
+        "report_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "qc_files": {
+          "type": "Array[File]+",
+          "required": true,
+          "managed_by": "mcp",
+          "array": true
+        }
       },
       "outputs": {
-        "multiqc_html": {"type": "File"},
-        "multiqc_config": {"type": "File"}
+        "multiqc_html": {
+          "type": "File"
+        },
+        "multiqc_config": {
+          "type": "File"
+        }
       },
       "report_outputs": []
     },
@@ -148,42 +373,127 @@
         "transcriptome_bam": "transcriptome_bam",
         "genome_annotation": "rsem_index"
       },
-      "output_map": {"expression_abundance_matrix": "genes_results"},
+      "output_map": {
+        "expression_abundance_matrix": "genes_results"
+      },
       "inputs": {
-        "transcriptome_bam": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["star_rrna_and_genome_alignment.transcriptome_bam"]},
-        "rsem_index": {"type": "File", "required": true, "managed_by": "executor"},
-        "paired_end": {"type": "Boolean", "required": false, "managed_by": "executor", "default": true}
+        "transcriptome_bam": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "star_rrna_and_genome_alignment.transcriptome_bam"
+          ]
+        },
+        "rsem_index": {
+          "type": "File",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "paired_end": {
+          "type": "Boolean",
+          "required": false,
+          "managed_by": "executor",
+          "default": true
+        },
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "genes_results": {"type": "File"},
-        "isoforms_results": {"type": "File"},
-        "stat_files": {"type": "Array[File]"},
-        "rsem_log": {"type": "File"}
+        "genes_results": {
+          "type": "File"
+        },
+        "isoforms_results": {
+          "type": "File"
+        },
+        "stat_files": {
+          "type": "Array[File]"
+        },
+        "rsem_log": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["stat_files", "rsem_log"]
+      "report_outputs": [
+        "stat_files",
+        "rsem_log"
+      ]
     },
     "samtools": {
       "execution_tool_id": "samtools_alignment_processing",
-      "input_map": {"aligned_bam": "alignment"},
+      "input_map": {
+        "aligned_bam": "alignment"
+      },
       "output_map": {
         "sorted_dedup_bam": "sorted_bam",
         "bai": "sorted_bai"
       },
       "inputs": {
-        "sample_id": {"type": "String", "required": true, "managed_by": "executor"},
-        "alignment": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["bwa_mem_paired.aligned_sam", "star_rrna_and_genome_alignment.genome_bam"]},
-        "remove_duplicates": {"type": "Boolean", "required": false, "managed_by": "executor", "default": false}
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "alignment": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "bwa_mem_paired.aligned_sam",
+            "star_rrna_and_genome_alignment.genome_bam"
+          ]
+        },
+        "remove_duplicates": {
+          "type": "Boolean",
+          "required": false,
+          "managed_by": "executor",
+          "default": false
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "sorted_bam": {"type": "File"},
-        "sorted_bai": {"type": "File"},
-        "flagstat": {"type": "File"},
-        "stats": {"type": "File"},
-        "idxstats": {"type": "File"},
-        "dedup_bam": {"type": "File?"},
-        "markdup_metrics": {"type": "File?"}
+        "sorted_bam": {
+          "type": "File"
+        },
+        "sorted_bai": {
+          "type": "File"
+        },
+        "flagstat": {
+          "type": "File"
+        },
+        "stats": {
+          "type": "File"
+        },
+        "idxstats": {
+          "type": "File"
+        },
+        "dedup_bam": {
+          "type": "File?"
+        },
+        "markdup_metrics": {
+          "type": "File?"
+        },
+        "dedup_bai": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["flagstat", "stats", "idxstats", "markdup_metrics"]
+      "report_outputs": [
+        "flagstat",
+        "stats",
+        "idxstats",
+        "markdup_metrics"
+      ]
     },
     "snpeff": {
       "execution_tool_id": "snpeff_annotation",
@@ -191,18 +501,58 @@
         "filtered_vcf": "input_vcf",
         "genome_annotation": "genome"
       },
-      "output_map": {"annotated_vcf": "annotated_vcf"},
+      "output_map": {
+        "annotated_vcf": "annotated_vcf"
+      },
       "inputs": {
-        "input_vcf": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["bcftools_somatic_postprocess.normalized_vcf"]},
-        "genome": {"type": "String", "required": true, "managed_by": "executor"}
+        "input_vcf": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "bcftools_somatic_postprocess.normalized_vcf"
+          ]
+        },
+        "genome": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "pair_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "snpeff_memory": {
+          "type": "String",
+          "required": false,
+          "managed_by": "executor"
+        },
+        "snpeff_config": {
+          "type": "String",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "annotated_vcf": {"type": "File"},
-        "stats_html": {"type": "File"},
-        "stats_csv": {"type": "File"},
-        "snpeff_log": {"type": "File"}
+        "annotated_vcf": {
+          "type": "File"
+        },
+        "stats_html": {
+          "type": "File"
+        },
+        "stats_csv": {
+          "type": "File"
+        },
+        "snpeff_log": {
+          "type": "File"
+        }
       },
-      "report_outputs": ["stats_html", "stats_csv", "snpeff_log"]
+      "report_outputs": [
+        "stats_html",
+        "stats_csv",
+        "snpeff_log"
+      ]
     },
     "star": {
       "execution_tool_id": "star_rrna_and_genome_alignment",
@@ -216,35 +566,125 @@
         "transcriptome_bam": "transcriptome_bam"
       },
       "inputs": {
-        "read1": {"type": "File", "required": true, "managed_by": "mcp", "accepted_sources": ["fastp_paired_end.trimmed_r1", "trim_galore.trimmed_r1"]},
-        "read2": {"type": "File?", "required": false, "managed_by": "mcp", "accepted_sources": ["fastp_paired_end.trimmed_r2", "trim_galore.trimmed_r2"]},
-        "rrna_star_index": {"type": "File", "required": true, "managed_by": "executor"},
-        "genome_star_index": {"type": "File", "required": true, "managed_by": "executor"}
+        "read1": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "fastp_paired_end.trimmed_r1",
+            "trim_galore.trimmed_r1"
+          ]
+        },
+        "read2": {
+          "type": "File?",
+          "required": false,
+          "managed_by": "mcp",
+          "accepted_sources": [
+            "fastp_paired_end.trimmed_r2",
+            "trim_galore.trimmed_r2"
+          ]
+        },
+        "rrna_star_index": {
+          "type": "File",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "genome_star_index": {
+          "type": "File",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "rrna_removed_r1": {"type": "File"},
-        "rrna_removed_r2": {"type": "File?"},
-        "genome_bam": {"type": "File"},
-        "transcriptome_bam": {"type": "File"},
-        "gene_counts": {"type": "File"}
+        "rrna_removed_r1": {
+          "type": "File"
+        },
+        "rrna_removed_r2": {
+          "type": "File?"
+        },
+        "genome_bam": {
+          "type": "File"
+        },
+        "transcriptome_bam": {
+          "type": "File"
+        },
+        "gene_counts": {
+          "type": "File"
+        },
+        "rrna_star_log": {
+          "type": "File"
+        },
+        "genome_star_log": {
+          "type": "File"
+        }
       },
       "report_outputs": []
     },
     "trim_galore": {
       "execution_tool_id": "trim_galore",
-      "input_map": {"raw_fastq_read": "read1"},
-      "output_map": {"clean_fastq_read": "trimmed_r1"},
+      "input_map": {
+        "raw_fastq_read": "read1"
+      },
+      "output_map": {
+        "clean_fastq_read": "trimmed_r1"
+      },
       "inputs": {
-        "read1": {"type": "File", "required": true, "managed_by": "mcp"},
-        "read2": {"type": "File?", "required": false, "managed_by": "mcp"},
-        "adapter": {"type": "String?", "required": false, "managed_by": "executor"}
+        "read1": {
+          "type": "File",
+          "required": true,
+          "managed_by": "mcp"
+        },
+        "read2": {
+          "type": "File?",
+          "required": false,
+          "managed_by": "mcp"
+        },
+        "adapter": {
+          "type": "String?",
+          "required": false,
+          "managed_by": "executor"
+        },
+        "sample_id": {
+          "type": "String",
+          "required": true,
+          "managed_by": "executor"
+        },
+        "threads": {
+          "type": "Int",
+          "required": false,
+          "managed_by": "executor"
+        }
       },
       "outputs": {
-        "trimmed_r1": {"type": "File"},
-        "trimmed_r2": {"type": "File?"},
-        "trimming_reports": {"type": "Array[File]"}
+        "trimmed_r1": {
+          "type": "File"
+        },
+        "trimmed_r2": {
+          "type": "File?"
+        },
+        "trimming_reports": {
+          "type": "Array[File]"
+        }
       },
-      "report_outputs": ["trimming_reports"]
+      "report_outputs": [
+        "trimming_reports"
+      ]
     }
+  },
+  "reconciled_with": {
+    "archive": "workflow.zip",
+    "sha256": "511df3878457a72d70e5a139f75277266fc2da778562d58804a065a01d309a00",
+    "cards": 25,
+    "note": "12 个原子工具的 inputs/outputs 已按知识卡补齐；infra 级运行参数（docker_image/memory）不纳入合同。"
   }
 }
