@@ -3,11 +3,16 @@
 > 本文面向 **agent 端同门**：从 GitHub clone 本仓库后，如何在本机跑起一个**基于 Neo4j** 的完整
 > MCP 服务，并把它接入你的 agent 客户端。全流程走 Neo4j 后端，不使用 CSV 兜底模式。
 >
-> **2026-08-12 起数据后端换成 0811 图谱，且不再随包提供 dump。**
-> 图由 `data/0811/` 的 30 个 CSV 经 `scripts/python/import_0811.py` 重建，约 17 秒，
-> 结果与数据提供方自带实例逐项一致。dump 是同一份数据的第二个副本，必然漂移
-> （旧的那份就停在 7 月 30 日），且新图 352,245 条关系导出后有 134 MiB，
-> 超过 GitHub 单文件 100 MiB 上限，因此已删除。见第 4 节。
+> **2026-08-12 起数据后端换成 0811 图谱。** 有两条路，任选其一：
+>
+> - **连组内共享服务器**（最省事，不用装 Neo4j）：`bolt://192.168.130.24:7690`，
+>   浏览器 `http://192.168.130.24:7480`，账号密码找组内要。这台已经是 0811 图，
+>   跳过第 4 节直接配第 5 节即可。
+> - **本机自建**：`data/0811/` 的 30 个 CSV 经 `scripts/python/import_0811.py` 重建，
+>   约 17 秒，见第 4 节。
+>
+> 不再随包提供 dump：它是同一份数据的第二个副本，必然漂移（旧的那份停在 7 月 30 日），
+> 且新图 352,245 条关系导出后有 134 MiB，超过 GitHub 单文件 100 MiB 上限。
 > 落地细节与偏离项见 [`docs/图谱变更说明_0811_落地记录.md`](图谱变更说明_0811_落地记录.md)。
 >
 > 配套文档：
@@ -36,9 +41,9 @@
 | 依赖 | 版本 | 说明 |
 |---|---|---|
 | Python | 3.9+ | 跑 `server.py` |
-| Neo4j Community | **2026.06.0** | 必须与 dump 创建版本一致，否则 `database load` 可能不兼容 |
-| Java | 21 | Neo4j 2026.06.0 运行时依赖 |
-| git | 任意 | clone 仓库（仓库含 90MB dump，clone 会稍慢） |
+| Neo4j Community | **2026.06.0** | 只有本机自建才需要；连共享服务器可跳过 |
+| Java | 21 | 同上，Neo4j 2026.06.0 运行时依赖 |
+| git | 任意 | clone 仓库（含 62MB CSV，clone 会稍慢） |
 
 Neo4j 下载：https://neo4j.com/deployment-center/ （选 Community 2026.06.0）。
 
@@ -307,19 +312,49 @@ print(call({"jsonrpc":"2.0","id":2,"method":"tools/call",
 
 ---
 
-## 9. 备选：连接师姐的远程服务器（生产路径）
+## 9. 备选：连接远程服务器（生产路径）
 
-如果不想本地恢复 dump，而是直接连师姐已经部署好的 Neo4j 服务器：
+不想本机装 Neo4j 就直接连组内共享的那台，它在 2026-08-12 已刷成 0811 图：
 
 ```ini
 # .env.local
-NEO4J_URI=bolt://<她的服务器地址>:7687
+NEO4J_URI=bolt://192.168.130.24:7690
 NEO4J_USER=neo4j
-NEO4J_PASSWORD=<她给的口令>
-NEO4J_DATABASE=<她的数据库名>      # 常见是 neo4j；以她实际为准
+NEO4J_PASSWORD=<找组内要>
+NEO4J_DATABASE=neo4j
 DATA_MATCHER_MODE=neo4j
 DATAGRAPH_SCHEMA_MODE=auto         # ★ 自动识别大小写标签(Project/project…)，两种导入都能读
 ```
+
+浏览器 `http://192.168.130.24:7480`。注意端口是 7690/7480，不是默认的 7687/7474；
+要先接进能路由到 `192.168.130.0/24` 的网络（不在同一网段时 ping 都不通）。
+
+**这台服务器和本机自建有一处不同**：它的 `sample` 节点额外带 `specimen_types`、
+`sample_role`（tumor/normal）和 `specimen_source` 三个属性，本机自建的图没有。
+0811 交付丢了样本级的肿瘤/正常标注，运行时一直是从 `data/0811_supplement/` 的旁路
+CSV 在内存里补，图本身保持交付原样；服务器是共享的，直接写进去别人裸查 Cypher 也
+能分辨肿瘤和正常，所以那 8,353 行落了盘。角色没有沿用旁路表的 `tissue_type` 列名，
+因为 0811 的 `sample` 表已经用 `tissue_type` 存材料（Blood），同名会让一个属性背两个
+含义。MCP 运行时不读这三个属性，两边跑出来的结果一致。
+
+### 9.1 重刷这台服务器
+
+`import_0811.py` 要求 CSV 躺在服务器的 `import/` 目录里，远程没有文件系统权限，
+所以另有一份 `scripts/python/import_0811_remote.py`：它把交付 Cypher 里的
+`LOAD CSV FROM 'file:///…'` 改写成 `UNWIND $rows`，从本地 CSV 分批推过去，
+MERGE/SET 主体、约束和索引都还是交付原文，因此产出与本机导入同源。
+
+```bash
+export NEO4J_REMOTE_PW='<口令>'
+python3 scripts/python/import_0811_remote.py \
+  --uri bolt://192.168.130.24:7690 --user neo4j --password-env NEO4J_REMOTE_PW \
+  --confirm-clear \
+  --write-specimen data/0811_supplement/sample_specimen_backfill.csv
+```
+
+约 1 分钟（43.3 万行）。**会先清空整库**，跑完自动比对
+`config/senior_0811_reference_counts.json`，逐项一致才返回 0。
+去掉 `--write-specimen` 就得到与本机完全一致的纯交付图。
 
 > `DATAGRAPH_SCHEMA_MODE=auto` 已做过大小写标签自适配和计数容差：无论她的库是大写标签
 > (`Project/Study/…`) 还是小写标签 (`project/study/…`)、节点数是否与契约完全一致，MCP 都能
@@ -338,7 +373,8 @@ DATAGRAPH_SCHEMA_MODE=auto         # ★ 自动识别大小写标签(Project/pro
 | `Neo4j data matcher is not configured` | `.env.local` 缺 `NEO4J_URI` / `NEO4J_DATABASE` / `NEO4J_PASSWORD` 其一。 |
 | `ready=false` 但 connected=true | 计数不符合合同：对比 `health_check` 的 `legacy_label_counts` 与 `config/unified_graph_expectations.json`，通常是 4.5 只跑了一半。 |
 | `unsupported_reason` 非空 / `selection_status=unsupported` | 需求依赖尚未原子化的能力（差异表达、GO/KEGG、WGCNA、生存分析等），属正常返回，不是报错。 |
-| clone 很慢 | 仓库含 90MB Neo4j dump，属正常。 |
+| clone 很慢 | 仓库含 62MB CSV，属正常。 |
+| 连 `192.168.130.24` 超时 | 不在能路由到 `192.168.130.0/24` 的网络上。先 `ping 192.168.130.24`，不通就连 VPN 或换网，光看端口没用。 |
 
 ---
 

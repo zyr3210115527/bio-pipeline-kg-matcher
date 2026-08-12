@@ -122,7 +122,7 @@ RUN_REAL_INTEGRATION=1 python3 -m unittest discover -s tests -p 'test_runtime_in
 - `docs/图谱变更说明_旧版vs新版_20260811.md`：数据提供方给出的 0723 vs 0811 变更说明；
 - `docs/catalog_0811_extension_review.md`：27 个新工具的 slot 建模评审单与 atomic 提升候选；
 - `项目说明.md`：原系统设计与 benchmark 说明；
-- `docs/MCP连接与运行指南.md`：**agent 端 clone-and-run 全流程（基于 Neo4j，恢复 dump→起 MCP→接入客户端）**；
+- `docs/MCP连接与运行指南.md`：**agent 端 clone-and-run 全流程（连共享服务器或本机导入 → 起 MCP → 接入客户端）**；
 - `MCP连接文档.md`：MCP 接入说明；
 - `docs/bio_pipelines_bug_report.md`：14 个 pipeline 静态审查与质量门禁依据；
 - `docs/mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md`：agent 端 `tool-chain/v2` 字段与迁移说明；
