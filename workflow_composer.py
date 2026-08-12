@@ -408,22 +408,22 @@ class WorkflowComposer:
 候选规则：
 0. recommendations 是业务流程推荐，pipeline_id 只能来自下方“业务 pipeline 目录”；按匹配度给 1 到 3 条，不得用 atomic tool 代替。candidates 是可执行 atomic 链，两者含义不同。业务流程必须同时匹配用户明确给出的输入类型、样本布局和最终目标；只覆盖部分目标、只消费同类数据、或会执行用户明确排除步骤的流程不能推荐。若没有完整匹配项，recommendations 必须为空。即使完整匹配的业务流程尚未原子化，也应保留正确 recommendation，同时令 candidates 为空。
 1. rank 必须唯一，1 最贴合；第一条必须是覆盖完整目标的首选链，其余必须是覆盖同一完整目标的不同工具组合、终点侧重或数据资产组合。用户未指定单一终点时，若存在合法替代方案必须保留 rank 2/3；不要为了凑数复制、截短或给出明显不完整的链。
-2. 每个 input 名、from.output 名、tool_id 必须逐字匹配目录。tool_id 只能取每行开头 `-` 后、第一根 `|` 前的小写名称（如 fastp、star、samtools）；T01/T02 之类编号不是 tool_id，绝对不能输出。from 只能引用前序 step；每条 from 和 depends_on 都必须存在对应 NEXT 边，数据连接还必须匹配目录中的 output->input 数据边。
-3. 除首个根步骤外，每步必须通过 from 或 depends_on 与前序相连。MultiQC 只汇总 QC 日志，步骤必须写 `inputs: {}` 并只用 depends_on 连接需要汇总的前序步骤，执行合同会自动聚合 QC 来源；禁止为 MultiQC 编造或直接绑定任何 input。它不解析表达矩阵、变异表或富集结果。
+2. 每个 input 名、from.output 名、tool_id 必须逐字匹配目录。tool_id 只能取每行开头 `-` 后、第一根 `|` 前的小写名称（如 fastp、star、samtools）；T001/T002 之类编号不是 tool_id，绝对不能输出。from 只能引用前序 step；每条 from 和 depends_on 都必须存在对应 NEXT 边，数据连接还必须匹配目录中的 output->input 数据边。
+3. 除首个根步骤外，每步必须通过 from 或 depends_on 与前序相连。
 4. raw count 与 TPM/FPKM 不可互换；uBAM 不等于 aligned BAM；STAR transcriptome_bam 只给 RSEM，aligned_bam 才能给 SAMtools。STAR 的 clean_fastq_read 是可承载双端 R1/R2 的成对 reads bundle；不要因为目录只有一个语义槽就把双端 RNA-seq 判为不支持。
 4a. candidates 先按 Neo4j 内部 tool/slot/NEXT 合同生成；MCP 会把通过的链转换为公开执行端 tool_id 和 Knowledge Card I/O，并原样回验。不得输出执行端命名空间中的 input/output，也不得混用两套 tool_id；候选必须在公开合同回验后仍然成立。
 5. reference/index/annotation 等执行端管理资产使用 reference_file。用户样本数据必须明确 asset_role；不要把运行参数当资产。
 6. 用户写出的“只要、不要、不做、不能修改、已有、只有”都是硬约束。不得增加被排除步骤，不得用其他 assay 的流程兜底，也不得把已有结果倒推成原始输入。若输入与方法冲突（例如 MAF 做 STAR、RNA-seq 用 DNA 体细胞流程），recommendations 和 candidates 都必须为空并说明冲突。
 6a. 用户不需要写出每一步工具名。若用户只描述 assay、输入数据和最终目标（例如“完整 bulk RNA-seq 分析并得到表达矩阵”），必须根据 Neo4j 的 tool、slot、artifact 和 NEXT/data 边反推出完整合法链；不能因为没有出现 STAR、SAMtools 等字样就拒绝或只返回空流程。只有在存在多个终点或方法分支时，才按用户明确约束和候选匹配度排序。
 7. 不得从“一对双端 FASTQ”推断 tumor/normal。只有用户明确说明 tumor-normal 配对，或明确给出两个样本及其 tumor/normal 角色时，才能推荐 wes_somatic_pair 或生成四 FASTQ 配对链；缺少角色时应说明样本布局不足，不能自行补角色。
-8. 最终产物是完整性门禁：若用户要求的最后产物需要未登记工具或当前合同无法到达，整条 candidates 必须为空，不能返回只做到上游中间产物的前缀链。pipeline recommendation 只是业务信息，不等于 atomic candidate 可执行。
+8. 最终产物是完整性门禁：若用户要求的最后产物需要未登记工具或当前合同无法到达，整条 candidates 必须为空，不能返回只做到上游中间产物的前缀链。pipeline recommendation 只是业务信息，不等于 atomic candidate 可执行。唯一例外是 MultiQC/QC 汇总，见下方边界条目。
 
 当前目录/执行合同的已知边界：
 - 这些边界是 candidates 生成前的强制短路条件，优先级高于目录中显示的 NEXT。命中后必须直接输出 `"candidates": []`，不得先尝试构造步骤、不得输出“理论可行但会被校验器拒绝”的候选。
 - paired-end FASTQ 的 FastQC 当前只有单一泛化 raw_fastq_read 槽，无法忠实表达 R1/R2 两个独立输入；禁止创建 fastqc_r1/fastqc_r2 两个并行根，也禁止只取一个 mate 冒充双端质控。若用户只要求双端 FastQC/质控且不允许修剪，candidates 为空。
-- 当前 Knowledge Card 合同尚不能把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递。只要最终目标需要过滤 VCF、标准化 VCF 或功能注释 VCF，且起点是 FASTQ/BAM、路径必须经过 GATK -> BCFtools 或 GATK -> BCFtools -> SnpEff，就必须立即令 candidates 为空；即使 Neo4j 目录显示这些 NEXT，也绝对不能生成这些步骤。
+- 当前 Knowledge Card 合同尚不能把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递。仅当用户明确要求过滤 VCF、标准化 VCF 或功能注释 VCF（即路径必须经过 GATK -> BCFtools 或 GATK -> BCFtools -> SnpEff）时才命中本条，此时 candidates 必须为空，即使 Neo4j 目录显示这些 NEXT 也不能生成这些步骤。反过来，只要终点是 GATK 直接产出的变异 VCF（包括 tumor-normal 配对的体细胞突变检测/somatic variant calling），就不属于本条边界，必须照常生成到 GATK 为止的完整链，不得以"后续还要过滤"为由清空 candidates。
 - 单样本 GATK 的 sorted_dedup_bam 目录槽虽存在，但当前外部 Knowledge Card 只支持 tumor-normal 四槽形式；单样本 GATK candidates 为空。
-- 目录不含 multiqc。任何 candidate 都绝对不得输出 tool_id 为 multiqc 的步骤，也不得让任何步骤 depends_on 或 from 引用 multiqc；需要 QC 汇总时也不在 atomic 候选里体现。
+- 多样本 QC 汇总（MultiQC）不属于原子链的表达范围，目录里也没有它。任何 candidate 都不得输出 tool_id 为 multiqc 的步骤，也不得让任何步骤 depends_on 或 from 引用 multiqc。用户即使逐字点名 MultiQC 或“QC 汇总报告”，也只是把这一步从链中略去、其余步骤照常完整生成；绝不能因为无法表达 MultiQC 就令 candidates 为空，本条不受第 8 条最终产物门禁约束。各步骤自身的 QC 报告仍由执行端产出。
 - FastQC 输出的是 quality_control_report，不是 reads。`FastQC -> STAR` 没有 NEXT 且数据类型不相容，绝对禁止；若需要先做 FastQC 再做 STAR，中间必须使用目录允许的 fastp 或 trim_galore，并由其 clean_fastq_read 连接 STAR。任何 depends_on 也必须逐项出现在 source 的 order_next/data_next 中，不能用“仅表示顺序”为理由越过 NEXT。
 
 配对 tumor/normal 的硬约束：
@@ -500,11 +500,13 @@ Neo4j atomic 方法目录：
             min(3, max(1, int(top_k))),
         )
 
-        # Keep the common reviewed RNA-seq upstream path usable when the LLM
-        # returns only the business recommendation. The chain is still built
-        # from the Neo4j atomic registry and passes the same data/contract
-        # gates as an LLM-produced candidate.
-        if not accepted and not normalized and self._eligible_rnaseq_fallback(text, intent, recommendations):
+        # Keep the common reviewed RNA-seq upstream path usable whenever no LLM
+        # candidate survives, not only when the LLM returned nothing at all: the
+        # same query otherwise flips between ready and information depending on
+        # which chain the model happened to emit. The chain is still built from
+        # the Neo4j atomic registry and passes the same data/contract gates as
+        # an LLM-produced candidate, so this cannot admit an invalid chain.
+        if not accepted and self._eligible_rnaseq_fallback(text, intent, recommendations):
             fallback = {
                 "rank": 1,
                 "match_note": "确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。",
@@ -585,10 +587,22 @@ Neo4j atomic 方法目录：
             result["answer"] = unsupported_reason
         return result
 
+    def _allowed_pipeline_ids(self) -> List[str]:
+        """Every business pipeline the model may recommend.
+
+        The benchmark reference list alone would hide the pipelines 0811 added
+        (cnvkit_cnv_clinical, km_survival, the WGCNA and scRNA families...),
+        so a request they answer would come back unsupported even though the
+        catalog registers them. Union the two and keep the order stable.
+        """
+        return sorted(
+            set(reference_pipeline_ids()) | set(self.registered_methods.pipeline_methods)
+        )
+
     def _business_pipeline_menu_lines(self) -> List[str]:
         known = self.registered_methods.pipeline_methods
         lines: List[str] = []
-        for pipeline_id in reference_pipeline_ids():
+        for pipeline_id in self._allowed_pipeline_ids():
             method = known.get(pipeline_id)
             if method:
                 lines.append(
@@ -598,11 +612,10 @@ Neo4j atomic 方法目录：
                 lines.append(f"- {pipeline_id} | missing_from_neo4j")
         return lines
 
-    @staticmethod
-    def _normalize_recommendation_values(values: Any) -> List[Dict[str, Any]]:
+    def _normalize_recommendation_values(self, values: Any) -> List[Dict[str, Any]]:
         if not isinstance(values, list):
             return []
-        allowed = set(reference_pipeline_ids())
+        allowed = set(self._allowed_pipeline_ids())
         prepared: List[Dict[str, Any]] = []
         seen: Set[str] = set()
         for index, item in enumerate(values[:5], 1):
@@ -1645,12 +1658,6 @@ Neo4j atomic 方法目录：
                 },
                 "depends_on": ["samtools"],
             },
-            {
-                "step_id": "multiqc",
-                "tool_id": "multiqc",
-                "inputs": {},
-                "depends_on": ["fastp", "rsem", "featurecounts"],
-            },
         ]
 
     @staticmethod
@@ -1762,6 +1769,17 @@ Neo4j atomic 方法目录：
                             )
                             continue
                     clean_bindings[input_name] = {"from": {"step_id": source_step, "output": source_output}}
+                    continue
+                if self._role_for_input(input_name) in EXECUTION_MANAGED_ASSET_ROLES:
+                    # Reference genomes, indexes and interval lists are hosted by
+                    # the execution side and never come from user data, so an
+                    # empty binding here carries no information. Filling it is
+                    # deterministic and keeps a common model slip from sinking an
+                    # otherwise valid chain.
+                    clean_bindings[input_name] = {"asset_role": "reference_file"}
+                    warnings.append(
+                        f"已补全 {step_id}.{input_name} 的执行端资源绑定"
+                    )
                     continue
                 errors.append(f"{step_id}.{input_name} 缺少 asset_role 或 from")
             if tool_id != "multiqc" and input_specs and not clean_bindings:

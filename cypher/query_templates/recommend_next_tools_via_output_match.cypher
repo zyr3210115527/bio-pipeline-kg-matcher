@@ -1,12 +1,10 @@
-// 问题描述
-//STAR 之后还能接哪些工具？
-//某个工具输出的格式，哪些工具可以继续接？
-//说明
-//这是非常适合智能体做“下一步推荐”的基础模板。
+//问题描述
+//某个工具之后还能接哪些工具？
+//依据是输出语义格式与下游输入语义格式相接，不依赖 next_tool 边。
 
-MATCH (t1:Tool {toolName:'STAR'})-[:OUTPUT]->(f:Format)
-MATCH (t2:Tool)-[:INPUT]->(f)
+MATCH (t1:tool {tool_id: $tool_id})-[:output]->(f:format)
+MATCH (t2:tool)-[:input]->(f)
 WHERE t1 <> t2
-RETURN t1.toolName AS current_tool,
-       f.name AS intermediate_format,
-       collect(DISTINCT t2.toolName) AS candidate_next_tools;
+RETURN t1.tool_name AS current_tool,
+       f.format AS intermediate_format,
+       collect(DISTINCT t2.tool_name) AS candidate_next_tools;

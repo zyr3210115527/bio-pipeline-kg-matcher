@@ -1,29 +1,32 @@
 identity,labels,format,description
-format:bai,Format|format,bai,
-format:bam,Format|format,bam,Aligned reads format
-format:csv,format,csv,Comma-separated values format
-format:database,Format|format,database,
-format:dir,format,dir,wenjianjia
-format:fasta,Format|format,fasta,
-format:fq.gz,Format|format,fq.gz,Raw sequencing reads format (gzipped)
-format:gtf,Format|format,gtf,
-format:gz,format,gz,Gzip compressed format
-format:html,Format|format,html,
-format:html/txt,Format|format,html/txt,
-format:index,Format|format,index,
-format:json,Format|format,json,JSON format
-format:list,format,list,List format (plain text)
-format:log,Format|format,log,
-format:maf,format,maf,Mutation annotation format
-format:pdf,format,pdf,Portable Document Format
-format:png,format,png,Portable Network Graphics format
-format:sam,Format|format,sam,
-format:tbi,Format|format,tbi,
-format:tsv,Format|format,tsv,Tab-separated values format
-format:txt,Format|format,txt,Plain text format
-format:txt/html,Format|format,txt/html,
-format:vcf,Format|format,vcf,Variant call format
-format:xls,format,xls,Excel Binary Spreadsheet format
-format:xlsx,format,xlsx,Excel Open XML Spreadsheet format
-format:zip,Format|format,zip,
-format:interval_list,Format|format,interval_list,GATK interval list
+catalog_format:bai,CatalogFormat|catalog_format,bai,
+catalog_format:bam,CatalogFormat|catalog_format,bam,Aligned reads format
+catalog_format:csv,catalog_format,csv,Comma-separated values format
+catalog_format:database,CatalogFormat|catalog_format,database,
+catalog_format:dir,catalog_format,dir,wenjianjia
+catalog_format:fasta,CatalogFormat|catalog_format,fasta,
+catalog_format:fq.gz,CatalogFormat|catalog_format,fq.gz,Raw sequencing reads format (gzipped)
+catalog_format:gtf,CatalogFormat|catalog_format,gtf,
+catalog_format:gz,catalog_format,gz,Gzip compressed format
+catalog_format:html,CatalogFormat|catalog_format,html,
+catalog_format:html/txt,CatalogFormat|catalog_format,html/txt,
+catalog_format:index,CatalogFormat|catalog_format,index,
+catalog_format:json,CatalogFormat|catalog_format,json,JSON format
+catalog_format:list,catalog_format,list,List format (plain text)
+catalog_format:log,CatalogFormat|catalog_format,log,
+catalog_format:maf,catalog_format,maf,Mutation annotation format
+catalog_format:pdf,catalog_format,pdf,Portable Document Format
+catalog_format:png,catalog_format,png,Portable Network Graphics format
+catalog_format:sam,CatalogFormat|catalog_format,sam,
+catalog_format:tbi,CatalogFormat|catalog_format,tbi,
+catalog_format:tsv,CatalogFormat|catalog_format,tsv,Tab-separated values format
+catalog_format:txt,CatalogFormat|catalog_format,txt,Plain text format
+catalog_format:txt/html,CatalogFormat|catalog_format,txt/html,
+catalog_format:vcf,CatalogFormat|catalog_format,vcf,Variant call format
+catalog_format:xls,catalog_format,xls,Excel Binary Spreadsheet format
+catalog_format:xlsx,catalog_format,xlsx,Excel Open XML Spreadsheet format
+catalog_format:zip,CatalogFormat|catalog_format,zip,
+catalog_format:interval_list,CatalogFormat|catalog_format,interval_list,GATK interval list
+catalog_format:rds,CatalogFormat|catalog_format,rds,R serialized object (Seurat/SingleCellExperiment)
+catalog_format:h5,CatalogFormat|catalog_format,h5,HDF5 matrix container
+catalog_format:tab,CatalogFormat|catalog_format,tab,Tab-delimited table without a .tsv suffix

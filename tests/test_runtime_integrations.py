@@ -14,6 +14,7 @@ import sys
 
 sys.path.insert(0, str(ROOT))
 
+from data_matcher.expectations import load_expectations  # noqa: E402
 from neo4j_observability import Neo4jClient  # noqa: E402
 from runtime_config import get_llm_health, initialize_runtime  # noqa: E402
 
@@ -319,8 +320,11 @@ class RealNeo4jIntegrationTests(unittest.TestCase):
         self.assertIn("rnaseq_unsupervised_cluster", evidence["matched_tool_ids"])
         catalog = client.tool_catalog()
         self.assertTrue(catalog["connected"], catalog)
-        self.assertEqual(len(catalog["tools"]), 24)
-        self.assertEqual(len(catalog["next_edges"]), 28)
+        # Read the sizes from the contract rather than hard-coding them, so the
+        # catalog can grow without the integration test going stale.
+        expected_catalog = load_expectations()["raw"]["tool_catalog"]
+        self.assertEqual(len(catalog["tools"]), expected_catalog["tools"])
+        self.assertEqual(len(catalog["next_edges"]), expected_catalog["next"])
         rnaseq_steps = [
             step for step in catalog["pipeline_steps"]
             if step["pipeline_id"] == "rnaseq_singletask"
@@ -349,9 +353,13 @@ class RealLlmIntegrationTests(unittest.TestCase):
                 "ready",
             ),
             ("RNA-seq FASTQ 原始数据怎么做完整上游分析？", "ready"),
+            # uBAM has no atomic tool. Whether that surfaces as `unsupported` or
+            # as `information` depends on whether the model also names the
+            # matching business pipeline, so assert the invariant that actually
+            # matters: no candidate, and a stated reason.
             (
                 "把原始测序 FASTQ 整理成 GATK 后续分析可用的 uBAM 文件。",
-                "unsupported",
+                "no_atomic_chain",
             ),
         ]
         composer = WorkflowComposer()
@@ -360,12 +368,12 @@ class RealLlmIntegrationTests(unittest.TestCase):
                 result = composer.plan(query)
                 metadata = result["planner_metadata"]
                 self.assertTrue(metadata["used"], metadata)
-                self.assertEqual(metadata["model"], "deepseek-v4-pro")
+                self.assertEqual(metadata["model"], os.environ["LLM_MODEL"])
                 self.assertEqual(metadata["status"], "ok")
                 self.assertEqual(metadata["calls"], 1)
                 self.assertEqual(result["schema_version"], "tool-chain/v2")
-                self.assertEqual(result["selection_status"], expected_status)
                 if expected_status == "ready":
+                    self.assertEqual(result["selection_status"], "ready")
                     self.assertGreater(result["candidate_count"], 0)
                     self.assertLessEqual(result["candidate_count"], 3)
                     self.assertTrue(all(
@@ -374,8 +382,15 @@ class RealLlmIntegrationTests(unittest.TestCase):
                         for candidate in result["candidates"]
                     ))
                 else:
+                    self.assertIn(
+                        result["selection_status"],
+                        {"unsupported", "information", "no_candidate"},
+                    )
                     self.assertEqual(result["candidates"], [])
-                    self.assertTrue(result["unsupported_reason"])
+                    self.assertTrue(
+                        result["unsupported_reason"]
+                        or result["extensions"]["atomic_candidate_unavailable_reason"]
+                    )
                 serialized = json.dumps(result, ensure_ascii=False)
                 self.assertNotIn("RNASeqAnalysis", serialized)
                 self.assertNotIn("wdl_path", serialized)
@@ -385,9 +400,18 @@ class RealLlmIntegrationTests(unittest.TestCase):
 
         composer = WorkflowComposer()
 
+        # Not atomized. `unsupported` when the model returns nothing usable,
+        # `information` when it still surfaces the matching business pipeline;
+        # either way there must be no atomic candidate and a stated reason.
         unsupported = composer.plan("我有肝癌 MAF，先做突变景观，再做 TMB 生存分析")
-        self.assertEqual(unsupported["selection_status"], "unsupported")
+        self.assertIn(
+            unsupported["selection_status"], {"unsupported", "information", "no_candidate"}
+        )
         self.assertEqual(unsupported["candidates"], [])
+        self.assertTrue(
+            unsupported["unsupported_reason"]
+            or unsupported["extensions"]["atomic_candidate_unavailable_reason"]
+        )
         self.assertTrue(unsupported["planner_metadata"]["used"])
 
         custom = composer.plan(

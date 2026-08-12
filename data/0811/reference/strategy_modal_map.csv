@@ -1,0 +1,11 @@
+strategy,modal,action,evidence
+bulk_RNA,bulk_RNA,map,T1/sample 策略为 bulk_RNA，平台 Illumina NovaSeq 6000/HiSeq X Ten/DNBSEQ-T7 等，属 bulk RNA-seq
+WGS,WGS,map,策略 WGS，平台 Illumina HiSeq X Ten，全基因组测序
+WES,WES,map,策略 WES，平台 NovaSeq 6000/HiSeq 4000 等，全外显子测序
+WXS,WES,map,SRA 术语 WXS 即 whole exome sequencing，平台全部为 Illumina NovaSeq 6000，与 WES 同义
+Targeted-Capture,WES,map,靶向捕获测序，平台以 Illumina NovaSeq 6000 为主（355/362），与 WES 同属 DNA 捕获测序
+TCR-Seq,bulk_RNA,map,TCR 组库测序，平台 Illumina NovaSeq 6000，基于 RNA/cDNA 扩增，归入 bulk RNA 模态
+Unknow,,skip,策略值 Unknow（拼写即数据原值），无法判定模态
+Clinical,Clinical,map,临床数据文件（Clinical-1.0.xlsx）
+Meta,Meta,map,元数据文件（MetaInfo-1.0.xlsx）
+sc-RNA,sc-RNA,map,单细胞 RNA 测序

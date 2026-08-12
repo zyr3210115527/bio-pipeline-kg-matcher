@@ -7,6 +7,12 @@ import threading
 import time
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Sequence
 
+from tool_catalog_source import (
+    load_local_catalog,
+    merge_with_graph,
+    runtime_to_catalog_id,
+)
+
 
 VERSION_QUERY = "CALL dbms.components() YIELD versions RETURN versions[0] AS version LIMIT 1"
 NODE_COUNT_QUERY = "MATCH (n) RETURN count(n) AS node_count"
@@ -17,8 +23,7 @@ LABEL_COUNT_QUERY = (
 )
 EVIDENCE_QUERY = """
 UNWIND $tool_ids AS requested_id
-OPTIONAL MATCH (tool {tool_id: requested_id})
-WHERE 'Tool' IN labels(tool) OR 'tool_id' IN labels(tool)
+OPTIONAL MATCH (tool:tool {tool_id: requested_id})
 OPTIONAL MATCH (tool)-[relationship]-(neighbor)
 RETURN requested_id AS tool_id,
        tool IS NOT NULL AS matched,
@@ -35,50 +40,29 @@ ORDER BY tool_id, relationship_type
 LIMIT 300
 """.strip()
 
-TOOL_CATALOG_QUERY = """
-MATCH (tool:tool_id)
-WHERE tool.catalog_id IS NOT NULL
-RETURN properties(tool) AS tool
-ORDER BY tool.catalog_id
-""".strip()
-
-TOOL_SLOT_QUERY = """
-MATCH (tool:tool_id)-[edge:HAS_INPUT_SLOT|HAS_OUTPUT_SLOT]->(slot:io_slot)
-WHERE tool.catalog_id IS NOT NULL
-OPTIONAL MATCH (slot)-[:REQUIRES|PRODUCES]->(artifact:artifact_type)
-OPTIONAL MATCH (slot)-[:ALLOW_FORMAT]->(format:format)
-RETURN tool.tool_id AS tool_id,
-       tool.catalog_id AS catalog_id,
-       type(edge) AS edge_type,
-       properties(slot) AS slot,
-       collect(DISTINCT artifact.artifact_type) AS artifacts,
-       collect(DISTINCT format.format) AS formats
-ORDER BY catalog_id, edge_type, slot.slot_id
+# The graph is the 0811 delivery verbatim, so the tool roster and the NEXT
+# topology are read from her `:tool` / `next_tool` model. Slot names, WDL
+# bindings and input variants are execution-side contracts that her graph does
+# not carry; they come from data/csv/catalog via tool_catalog_source.
+TOOL_ROSTER_QUERY = """
+MATCH (tool:tool)
+OPTIONAL MATCH (tool)-[:input]->(fi:format)
+OPTIONAL MATCH (tool)-[:output]->(fo:format)
+OPTIONAL MATCH (tool)-[:suitable_for]->(modal:modal)
+RETURN tool.tool_id AS catalog_id,
+       tool.tool_name AS tool_name,
+       collect(DISTINCT fi.format) AS semantic_inputs,
+       collect(DISTINCT fo.format) AS semantic_outputs,
+       collect(DISTINCT modal.modal) AS modals
+ORDER BY catalog_id
 """.strip()
 
 TOOL_NEXT_QUERY = """
-MATCH (source:tool_id)-[edge:NEXT {source:'curated-next-csv'}]->(target:tool_id)
-RETURN source.tool_id AS source_tool_id,
-       target.tool_id AS target_tool_id,
-       source.catalog_id AS source_catalog_id,
-       target.catalog_id AS target_catalog_id,
-       edge.kind AS kind,
-       edge.output AS output,
-       edge.input AS input
-ORDER BY source.catalog_id, target.catalog_id
-""".strip()
-
-PIPELINE_STEP_QUERY = """
-MATCH (pipeline:tool_id)-[edge:HAS_STEP]->(method:tool_id)
-WHERE pipeline.catalog_id IS NOT NULL AND method.catalog_id IS NOT NULL
-RETURN pipeline.tool_id AS pipeline_id,
-       method.tool_id AS tool_id,
-       edge.step_id AS step_id,
-       edge.order AS step_order,
-       edge.depends_on AS depends_on,
-       edge.locked AS locked,
-       edge.source AS source
-ORDER BY pipeline_id, step_order, step_id
+MATCH (source:tool)-[edge:next_tool]->(target:tool)
+RETURN source.tool_id AS source_catalog_id,
+       target.tool_id AS target_catalog_id,
+       edge.kind AS kind
+ORDER BY source_catalog_id, target_catalog_id
 """.strip()
 
 
@@ -151,6 +135,7 @@ class Neo4jClient:
         self._driver: Any = None
         self._clock = clock
         self._lock = threading.Lock()
+        self._local_catalog_cache: Optional[Dict[str, Any]] = None
         self._health_cache: Optional[Dict[str, Any]] = None
         self._health_cached_at = 0.0
 
@@ -174,18 +159,31 @@ class Neo4jClient:
                 return self._driver
             if not self.password:
                 raise RuntimeError("neo4j_password_missing")
+            notification_options: Dict[str, Any] = {}
             if self._driver_factory is None:
-                from neo4j import GraphDatabase, Query, READ_ACCESS
+                from neo4j import (
+                    GraphDatabase,
+                    NotificationDisabledCategory,
+                    Query,
+                    READ_ACCESS,
+                )
 
                 self._driver_factory = GraphDatabase.driver
                 self._query_factory = Query
                 self._read_access = READ_ACCESS
+                # Health probes intentionally look for optional markers such as
+                # datagraph_managed and BackendSnapshot, which the 0811 backend
+                # does not have. Silence those notices so stderr stays usable.
+                notification_options["notifications_disabled_categories"] = [
+                    NotificationDisabledCategory.UNRECOGNIZED
+                ]
             self._driver = self._driver_factory(
                 self.uri,
                 auth=(self.user, self.password),
                 connection_timeout=self.connect_timeout,
                 connection_acquisition_timeout=self.connect_timeout,
                 max_connection_pool_size=5,
+                **notification_options,
             )
             return self._driver
 
@@ -269,13 +267,24 @@ class Neo4jClient:
 
         started = self._clock()
         try:
+            # Callers use runtime ids (fastp); the graph keys tools by her
+            # catalog id (T001), so translate before querying and back after.
+            catalog_id_by_runtime = runtime_to_catalog_id(self._local_catalog())
+            runtime_by_catalog_id = {
+                catalog_id: runtime
+                for runtime, catalog_id in catalog_id_by_runtime.items()
+            }
+            query_ids = [
+                catalog_id_by_runtime.get(item, item) for item in requested
+            ]
             driver = self._get_driver()
             with driver.session(database=self.database, default_access_mode=self._read_access) as session:
-                rows = list(session.run(self._query(EVIDENCE_QUERY), tool_ids=requested))
+                rows = list(session.run(self._query(EVIDENCE_QUERY), tool_ids=query_ids))
             matched = []
             evidence: List[Dict[str, Any]] = []
             for row in rows:
-                tool_id = str(_record_value(row, "tool_id") or "")
+                queried_id = str(_record_value(row, "tool_id") or "")
+                tool_id = runtime_by_catalog_id.get(queried_id, queried_id)
                 if _record_value(row, "matched") and tool_id and tool_id not in matched:
                     matched.append(tool_id)
                 relationship_type = _record_value(row, "relationship_type")
@@ -320,68 +329,46 @@ class Neo4jClient:
             with driver.session(
                 database=self.database, default_access_mode=self._read_access
             ) as session:
-                tool_rows = list(session.run(self._query(TOOL_CATALOG_QUERY)))
-                slot_rows = list(session.run(self._query(TOOL_SLOT_QUERY)))
+                roster_rows = list(session.run(self._query(TOOL_ROSTER_QUERY)))
                 next_rows = list(session.run(self._query(TOOL_NEXT_QUERY)))
-                pipeline_step_rows = list(session.run(self._query(PIPELINE_STEP_QUERY)))
-            tools: Dict[str, Dict[str, Any]] = {}
-            for row in tool_rows:
-                properties = _json_value(_record_value(row, "tool", {}) or {})
-                tool_id = str(properties.get("tool_id") or "")
-                if not tool_id:
-                    continue
-                tools[tool_id] = {**properties, "inputs": [], "outputs": []}
-            for row in slot_rows:
-                tool_id = str(_record_value(row, "tool_id") or "")
-                if tool_id not in tools:
-                    continue
-                slot = _json_value(_record_value(row, "slot", {}) or {})
-                slot["artifacts"] = _json_value(
-                    _record_value(row, "artifacts", []) or []
-                )
-                slot["formats"] = _json_value(
-                    _record_value(row, "formats", []) or []
-                )
-                key = (
-                    "inputs"
-                    if _record_value(row, "edge_type") == "HAS_INPUT_SLOT"
-                    else "outputs"
-                )
-                tools[tool_id][key].append(slot)
-            next_edges = [
+            graph_tools = [
                 {
-                    "source_tool_id": _record_value(row, "source_tool_id"),
-                    "target_tool_id": _record_value(row, "target_tool_id"),
+                    "catalog_id": _record_value(row, "catalog_id"),
+                    "tool_name": _record_value(row, "tool_name"),
+                    "semantic_inputs": _json_value(
+                        _record_value(row, "semantic_inputs", []) or []
+                    ),
+                    "semantic_outputs": _json_value(
+                        _record_value(row, "semantic_outputs", []) or []
+                    ),
+                    "modals": _json_value(_record_value(row, "modals", []) or []),
+                }
+                for row in roster_rows
+            ]
+            graph_next = [
+                {
                     "source_catalog_id": _record_value(row, "source_catalog_id"),
                     "target_catalog_id": _record_value(row, "target_catalog_id"),
                     "kind": _record_value(row, "kind"),
-                    "output": _record_value(row, "output"),
-                    "input": _record_value(row, "input"),
                 }
                 for row in next_rows
             ]
+            merged = merge_with_graph(self._local_catalog(), graph_tools, graph_next)
             result.update({
                 "connected": True,
-                "tools": list(tools.values()),
-                "next_edges": next_edges,
-                "pipeline_steps": [
-                    {
-                        "pipeline_id": _record_value(row, "pipeline_id"),
-                        "tool_id": _record_value(row, "tool_id"),
-                        "step_id": _record_value(row, "step_id"),
-                        "step_order": _record_value(row, "step_order"),
-                        "depends_on": _json_value(
-                            _record_value(row, "depends_on", []) or []
-                        ),
-                        "locked": bool(_record_value(row, "locked")),
-                        "source": _record_value(row, "source"),
-                    }
-                    for row in pipeline_step_rows
-                ],
+                "tools": merged["tools"],
+                "next_edges": merged["next_edges"],
+                "pipeline_steps": merged["pipeline_steps"],
+                "divergence": merged["divergence"],
             })
         except Exception as exc:
             result["error"] = _safe_error(exc)
         return result
+
+    def _local_catalog(self) -> Dict[str, Any]:
+        if self._local_catalog_cache is None:
+            self._local_catalog_cache = load_local_catalog()
+        return self._local_catalog_cache
 
     def close(self) -> None:
         with self._lock:

@@ -34,3 +34,11 @@ artifact_type:unmapped_bam,ArtifactType|artifact_type,unmapped_bam,Unmapped BAM 
 artifact_type:wgcna_module_table,artifact_type,wgcna_module_table,WGCNA module and module-trait result table,false
 artifact_type:bai,ArtifactType|artifact_type,bai,BAM index,false
 artifact_type:interval_list,ArtifactType|artifact_type,interval_list,WES interval list,false
+artifact_type:vcf_index,ArtifactType|artifact_type,vcf_index,Tabix index for a compressed VCF,false
+artifact_type:somatic_cnv_table,ArtifactType|artifact_type,somatic_cnv_table,Somatic copy-number segment table,false
+artifact_type:splice_junction_table,ArtifactType|artifact_type,splice_junction_table,RNA splice junction table,false
+artifact_type:scrna_object,ArtifactType|artifact_type,scrna_object,Single-cell analysis object (Seurat RDS etc.),false
+artifact_type:scrna_matrix,ArtifactType|artifact_type,scrna_matrix,Single-cell expression matrix container,false
+artifact_type:bio_data_container,ArtifactType|artifact_type,bio_data_container,Generic serialized bioinformatics data container,true
+artifact_type:directory_bundle,ArtifactType|artifact_type,directory_bundle,Directory of related result files,true
+artifact_type:unclassified_data,ArtifactType|artifact_type,unclassified_data,Data whose semantic type is not yet classified,true

@@ -1,5 +1,13 @@
 # 数据图目标 schema
 
+> **已被取代（2026-08-12）。** 本文描述的是 `datagraph/v1` 托管模型（小写 `t1/t2/run`
+> 标签、`datagraph_managed` / `snapshot_id` provenance、`data_format` 等 `data_*` 参考标签）。
+> 当前运行的后端是 0811 交付图，标签为 `T1`/`T2`/`sample`/`individual`/`format`/`modal`，
+> 不带 managed 标记，matcher 走 legacy 路径。现行 schema 见
+> [`docs/图谱变更说明_0811_落地记录.md`](图谱变更说明_0811_落地记录.md) 和
+> [`cypher/query_templates/README.md`](../cypher/query_templates/README.md)。
+> 本文保留用于理解 `import_datagraph.py` / `verify_datagraph.py` 这条托管导入路径。
+
 版本：`datagraph/v1`；默认范围：`--scope t1`；已验证快照：`dg-b23135d49c950d0846a563bc`。
 
 ## 设计边界

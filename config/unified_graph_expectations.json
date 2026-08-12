@@ -2,38 +2,42 @@
   "schema_version": "unified-graph-expectations/v1",
   "data_graph": {
     "counts": {
-      "nodes": 32744,
-      "relationships": 73001
+      "nodes": 80295,
+      "relationships": 352245
     },
-    "graph_fingerprint": "f14a565c755f8235ddd13b91223ea7be946d5539a255864c553594456b488afe",
-    "schema_version": "datagraph/v1",
-    "snapshot_id": "dg-b23135d49c950d0846a563bc"
+    "graph_fingerprint": "",
+    "schema_version": "senior-0811/v1",
+    "snapshot_id": "",
+    "source_csv_sha256": "16c33e8fa56b91efa66dcef68c44cb86c33616fc085ab798a85796b587b6aad5",
+    "comment": "Neo4j 里只有 0811 交付本身，没有任何我方新增的标签、节点或属性。逐项计数见 config/senior_0811_reference_counts.json。"
   },
   "legacy_backend": {
-    "schema_version": "update728-legacy/v1",
-    "source_sha256": "3fe51d1cc8188d531a97c7d5accdecd96f16c5a07fe136613571f36a05e908c1",
-    "core_node_count": 76540,
+    "schema_version": "senior-0811/v1",
+    "source_sha256": "16c33e8fa56b91efa66dcef68c44cb86c33616fc085ab798a85796b587b6aad5",
+    "core_node_count": 80114,
     "label_counts": {
-      "Project": 17,
-      "Study": 19,
-      "Individual": 5335,
-      "Sample": 8640,
-      "T1": 24518,
-      "T2": 38011
-    }
+      "Project": 18,
+      "Study": 20,
+      "Individual": 7050,
+      "Sample": 10178,
+      "T1": 26089,
+      "T2": 36759
+    },
+    "comment": "键是逻辑标签名；0811 实际标签为 project/study/individual/sample/T1/T2，由 resolve_legacy_labels 自动对应。Individual 7050 是 CSV 7209 行按 accession MERGE 去重后的结果。"
   },
   "tool_catalog": {
-    "atomic_tools": 12,
-    "counts": {
-      "nodes": 233,
-      "relationships": 601
-    },
-    "fingerprint": "2ec21a69ff703115ed20a4946b62bf4bf22b3c8bdb6f1562fce0719f2655c903",
-    "has_step": 7,
-    "input_slots": 58,
-    "next": 28,
-    "output_slots": 53,
-    "pipeline_tools": 12,
-    "tools": 24
+    "tools": 51,
+    "comment": "tools 是图里 :tool 节点数，health_check 用它核对后端。槽位模型、WDL 绑定、输入变体和 GATK 四槽不在图里，由 tool_catalog_source 在运行时从 data/csv/catalog 合并。",
+    "runtime_catalog": {
+      "tools": 50,
+      "atomic_tools": 11,
+      "pipeline_tools": 38,
+      "task_pipeline_tools": 1,
+      "next_pairs": 12,
+      "next_edges": 18,
+      "pipeline_steps": 6,
+      "excluded_tool_ids": ["multiqc"],
+      "comment": "运行时目录把 multiqc 排除在原子层之外，所以比图里的 51 少 1；next_pairs 与她的 next_tool 去掉 multiqc 后的 12 对完全一致。"
+    }
   }
 }

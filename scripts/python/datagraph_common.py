@@ -37,10 +37,10 @@ TOOL_LABELS = {
     "io_slot",
     "ArtifactType",
     "artifact_type",
-    "Function",
-    "function",
-    "Format",
-    "format",
+    "CatalogFunction",
+    "catalog_function",
+    "CatalogFormat",
+    "catalog_format",
 }
 
 T1_COLUMN_MAP = {

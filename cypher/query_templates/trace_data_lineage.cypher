@@ -1,13 +1,7 @@
 //问题描述
-//Annotated_MAF_Sample_1 是从哪些数据派生来的？
-//Count_Matrix_Sample_1 的上游来源是什么？
-//某个结果文件是如何一路产生的？
+//某个二级分析结果是从哪些一级数据产生的？
+//0811 用 generated_from 按 run_accession 关联，替代旧模型的 DERIVED_FROM。
 
-MATCH path = (d:Data {dataName:'Annotated_MAF_Sample_1'})-[:DERIVED_FROM*]->(upstream:Data)
-RETURN path;
-//结构化版本
-//说明
-//这是数据追溯的关键模板。
-
-MATCH path = (d:Data {dataName:'Annotated_MAF_Sample_1'})-[:DERIVED_FROM*0..]->(upstream:Data)
-RETURN [n IN nodes(path) | n.dataName] AS lineage;
+MATCH (t2:T2 {T2_id: $t2_id})-[:generated_from]->(t1:T1)
+RETURN t2.T2_id, t2.file_name, t2.semantic_format,
+       collect(DISTINCT t1.file_name) AS source_t1_files;

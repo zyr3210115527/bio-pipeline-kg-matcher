@@ -3,8 +3,12 @@
 > 本文面向 **agent 端同门**：从 GitHub clone 本仓库后，如何在本机跑起一个**基于 Neo4j** 的完整
 > MCP 服务，并把它接入你的 agent 客户端。全流程走 Neo4j 后端，不使用 CSV 兜底模式。
 >
+> **2026-08-12 起数据后端换成 0811 图谱。** `docs/mcp_delivery/neo4j/datagraph-staging.dump`
+> 是改造前的旧图，照它恢复会拿到旧数据；现在的主路径是从 `data/0811/` 直接导入，见第 4 节。
+> 落地细节与偏离项见 [`docs/图谱变更说明_0811_落地记录.md`](图谱变更说明_0811_落地记录.md)。
+>
 > 配套文档：
-> - 恢复细节：[`docs/mcp_delivery/datagraph_restore_guide.md`](mcp_delivery/datagraph_restore_guide.md)
+> - 恢复细节（旧 dump 路径，仅历史参考）：[`docs/mcp_delivery/datagraph_restore_guide.md`](mcp_delivery/datagraph_restore_guide.md)
 > - 返回值契约（tool-chain/v2）：[`docs/mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md`](mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md)
 
 ---
@@ -14,14 +18,14 @@
 ```
 ┌────────────┐   MCP (JSON-RPC 2.0 / stdio)   ┌─────────────────────┐   Bolt    ┌───────────────────────┐
 │  你的 Agent │ ─────────────────────────────▶ │  server.py (本仓库)  │ ────────▶ │ Neo4j 2026.06.0        │
-│  (客户端)   │ ◀───────────────────────────── │  MCP 编排/数据匹配   │ ◀──────── │ database: datagraph-  │
-└────────────┘        7 个 tools               └─────────────────────┘           │ staging (由 dump 恢复) │
+│  (客户端)   │ ◀───────────────────────────── │  MCP 编排/数据匹配   │ ◀──────── │ database: neo4j        │
+└────────────┘        7 个 tools               └─────────────────────┘           │ (由 data/0811 导入)     │
                                                                                    └───────────────────────┘
 ```
 
 - **MCP 只做流程编排 + 数据匹配，不执行生信任务。**
-- 数据后端 = Neo4j 里的统一图 `datagraph-staging`（本仓库自带 dump，可本地一键恢复）。
-- 工具目录（24 个 atomic 工具 + pipeline 工具）随图一起在 Neo4j 中。
+- 数据后端 = Neo4j 里的 0811 图谱，80,295 节点，与数据提供方的实例逐项一致。
+- 工具目录不在图里：图只有她的 51 个 `tool` 节点，槽位模型由运行时从 `data/csv/catalog/` 合并。
 
 ---
 
@@ -45,8 +49,8 @@ git clone <本仓库的 GitHub 地址>
 cd bio-pipeline-kg-matcher
 ```
 
-仓库自带后端 dump：`docs/mcp_delivery/neo4j/datagraph-staging.dump`
-（SHA-256 `32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26`）。
+后端数据在仓库里：`data/0811/`（0811 交付的 entities / reference / relations CSV）
+和 `data/csv/catalog/`（我方工具目录 slot 模型）。
 
 ---
 
@@ -64,56 +68,70 @@ pip install -r requirements-llm.txt      # requests，走 LLM 路由时才需要
 
 ---
 
-## 4. 恢复 Neo4j 后端（主路径）
+## 4. 导入 Neo4j 后端（主路径）
 
-> 目标：把 `datagraph-staging.dump` 恢复进一个**全新的** Neo4j home，数据库名必须是
-> `datagraph-staging`（与 dump 文件名一致，否则报 `No matching archives`）。
+> 目标：在一个 Neo4j 2026.06.0 实例的 `neo4j` 库里建出 0811 数据层 + 我方工具目录。
+> 这一步会**清空目标库**，只对确认过的本地实例执行。
 
-### 4.1 校验 dump
-
-```bash
-shasum -a 256 docs/mcp_delivery/neo4j/datagraph-staging.dump
-# 必须等于 32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26
-```
-
-### 4.2 准备全新 home 的 conf
-
-在新 Neo4j home 的 `conf/neo4j.conf` 中至少设置：
+### 4.1 准备 conf
 
 ```properties
-initial.dbms.default_database=datagraph-staging
 server.default_listen_address=127.0.0.1
 server.bolt.listen_address=127.0.0.1:7687
 server.http.listen_address=127.0.0.1:7474
+server.directories.import=import
 dbms.security.auth_enabled=true
 ```
 
-### 4.3 设初始密码（首次启动前）
+### 4.2 设初始密码并启动
 
 ```bash
-NEO4J_HOME=/path/to/new-home NEO4J_CONF=/path/to/new-home/conf \
+NEO4J_HOME=/path/to/neo4j NEO4J_CONF=/path/to/neo4j/conf \
   /path/to/neo4j/bin/neo4j-admin dbms set-initial-password 'replace-me'
-```
-
-### 4.4 载入 dump（数据库名必须为 datagraph-staging）
-
-```bash
-NEO4J_HOME=/path/to/new-home NEO4J_CONF=/path/to/new-home/conf \
-  /path/to/neo4j/bin/neo4j-admin database load datagraph-staging \
-  --from-path="$(pwd)/docs/mcp_delivery/neo4j" \
-  --overwrite-destination=true
-```
-
-> `--overwrite-destination` 只对确认过的**全新** home 使用。
-
-### 4.5 启动 Neo4j
-
-```bash
-NEO4J_HOME=/path/to/new-home NEO4J_CONF=/path/to/new-home/conf \
+NEO4J_HOME=/path/to/neo4j NEO4J_CONF=/path/to/neo4j/conf \
   /path/to/neo4j/bin/neo4j console
 ```
 
-启动后 Bolt 应监听 `bolt://127.0.0.1:7687`。
+### 4.3 取目标库的 database id
+
+导入器要求显式确认库 ID，防止误清生产库：
+
+```bash
+# 在 Neo4j Browser 或 cypher-shell 执行
+CALL db.info() YIELD id RETURN id;
+```
+
+### 4.4 生成样本级 specimen 旁路表
+
+0811 的 sample 表不带 `specimen_types`，而 tumor/normal 判据依赖它。这张表**不写进图**，
+只在 matcher 启动时加载成内存映射。若你手上有改造前的逻辑备份就用它生成；
+没有的话跳过这步，配对分析会退化为不可用。
+
+```bash
+python3 scripts/python/build_sample_specimen_backfill.py \
+  --backup docs/backups/pre_0811/pre_0811_full_*.jsonl.gz
+```
+
+### 4.5 导入数据层 + 重建工具目录
+
+```bash
+export NEO4J_PW='replace-me'
+python3 scripts/python/import_0811.py --project-root . \
+  --neo4j-import-dir /path/to/neo4j/import \
+  --uri bolt://127.0.0.1:7687 --user neo4j --password-env NEO4J_PW \
+  --database neo4j --expected-database-id <4.3 拿到的 id> --confirm-clear
+
+```
+
+导入器会自己把 CSV 同步进 `import/` 目录、批量清库、建约束和索引、跑 0811 的
+`01`–`04`，最后打印节点与关系计数。期望值：
+
+```
+80,295 节点 / 352,245 关系   （与 config/senior_0811_reference_counts.json 逐项一致）
+```
+
+图里就只有这些，没有目录同步步骤：我方的 slot 模型不进图，运行时由
+`tool_catalog_source.py` 从 `data/csv/catalog/` 合并。
 
 ---
 
@@ -132,12 +150,12 @@ cp .env.local.example .env.local
 NEO4J_URI=bolt://127.0.0.1:7687
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=replace-me          # 4.3 里设的密码
-NEO4J_DATABASE=datagraph-staging   # ★ 恢复 dump 时用这个库名，别写成 neo4j
+NEO4J_DATABASE=neo4j               # 4.5 导入的目标库
 
 # —— 运行模式 ——
 DATA_MATCHER_MODE=neo4j            # 走 Neo4j，不用 CSV
 DATAGRAPH_SCHEMA_MODE=auto         # 自动识别 managed / legacy 两种 schema
-DATAGRAPH_SNAPSHOT_ID=dg-b23135d49c950d0846a563bc   # datagraph-staging 的快照 ID
+DATAGRAPH_SNAPSHOT_ID=             # 0811 后端没有 managed 快照，留空
 
 # —— LLM（可选，不填则规则路由）——
 # LLM_API_KEY=sk-...
@@ -168,8 +186,8 @@ printf '%s\n%s\n' \
 {
   "connected": true,
   "version": "2026.06.0",
-  "database": "datagraph-staging",
-  "snapshot_id": "dg-b23135d49c950d0846a563bc",
+  "database": "neo4j",
+  "snapshot_id": null,
   "datagraph_node_count": 32744,
   "tool_count": 24,
   "ready": true
@@ -184,7 +202,7 @@ printf '%s\n%s\n' \
 export RESTORE_NEO4J_PASSWORD='replace-me'
 python scripts/python/verify_unified_graph.py \
   --expectations config/unified_graph_expectations.json \
-  --uri bolt://127.0.0.1:7687 --database datagraph-staging \
+  --uri bolt://127.0.0.1:7687 --database neo4j \
   --user neo4j --password-env RESTORE_NEO4J_PASSWORD \
   --output restore_unified_graph_verification.json
 ```
@@ -232,8 +250,8 @@ MCP 走 **stdio + JSON-RPC 2.0**，启动命令统一是 `python3 server.py`（�
         "NEO4J_URI": "bolt://127.0.0.1:7687",
         "NEO4J_USER": "neo4j",
         "NEO4J_PASSWORD": "replace-me",
-        "NEO4J_DATABASE": "datagraph-staging",
-        "DATAGRAPH_SNAPSHOT_ID": "dg-b23135d49c950d0846a563bc"
+        "NEO4J_DATABASE": "neo4j",
+        "DATAGRAPH_SNAPSHOT_ID": ""
       }
     }
   }
@@ -312,11 +330,11 @@ DATAGRAPH_SCHEMA_MODE=auto         # ★ 自动识别大小写标签(Project/pro
 | 现象 | 原因 / 处理 |
 |---|---|
 | `health_check: connected=false, error=connection_timeout` | Neo4j 没起 / URI 端口错 / 防火墙。先 `nc -z 127.0.0.1 7687`。 |
-| `No matching archives` | `database load` 的库名必须是 `datagraph-staging`，且 `--from-path` 指到含 dump 的目录。 |
+| `database id mismatch` | `--expected-database-id` 与 `CALL db.info()` 返回的不一致，导入器拒绝写入。按 4.3 重新取 id。 |
 | `database is in use` | dump/load 要在目标实例**停止**时执行。 |
 | `authentication_failed` | 初始密码要在新实例**第一次启动前** `set-initial-password`；`.env.local` 密码要一致。 |
 | `Neo4j data matcher is not configured` | `.env.local` 缺 `NEO4J_URI` / `NEO4J_DATABASE` / `NEO4J_PASSWORD` 其一。 |
-| `ready=false` 但 connected=true | 快照/库/计数不符合合同：确认 `NEO4J_DATABASE=datagraph-staging`、`DATAGRAPH_SNAPSHOT_ID=dg-b23135…`。 |
+| `ready=false` 但 connected=true | 计数不符合合同：对比 `health_check` 的 `legacy_label_counts` 与 `config/unified_graph_expectations.json`，通常是 4.5 只跑了一半。 |
 | `unsupported_reason` 非空 / `selection_status=unsupported` | 需求依赖尚未原子化的能力（差异表达、GO/KEGG、WGCNA、生存分析等），属正常返回，不是报错。 |
 | clone 很慢 | 仓库含 90MB Neo4j dump，属正常。 |
 

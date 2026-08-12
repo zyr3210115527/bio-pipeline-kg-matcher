@@ -1,0 +1,43 @@
+{
+  "schema_version": "senior-0811-reference/v1",
+  "source": "neo4j-community0811.zip 内自带的 data/databases/neo4j，师姐本人导入后的权威结果",
+  "read_via": "临时只读实例 bolt://127.0.0.1:7688",
+  "totals": {
+    "nodes": 80295,
+    "relationships": 352245
+  },
+  "labels": {
+    "T2": 36759,
+    "T1": 26089,
+    "sample": 10178,
+    "individual": 7050,
+    "function": 90,
+    "tool": 51,
+    "format": 30,
+    "study": 20,
+    "project": 18,
+    "modal": 6,
+    "datalevel": 4
+  },
+  "relationships": {
+    "in_study": 70057,
+    "generated_from": 64545,
+    "in_level": 62848,
+    "in_format": 62841,
+    "in_modal": 62122,
+    "in_sample": 19241,
+    "in_individual": 10178,
+    "output": 121,
+    "input": 114,
+    "suitable_for": 85,
+    "has_function": 51,
+    "next_tool": 22,
+    "in_project": 20
+  },
+  "notes": [
+    "individual 7050 = CSV 7209 行经 MERGE 去重 159 个跨研究重复 accession",
+    "0811 图不再有 run 和 cohort 节点，旧版的 IN_RUN 关系整体消失",
+    "in_study 70057 = T1 26089 + T2 36759 + individual 7209",
+    "in_format 62841 = T1 26089 + T2 36752，T2 有 7 行 semantic_format 为空被过滤"
+  ]
+}
