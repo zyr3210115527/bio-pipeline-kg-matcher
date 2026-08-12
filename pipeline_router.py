@@ -265,50 +265,47 @@ ROLE_LABELS = {
 }
 
 
-# 样本角色判据逐 study 定义。没有登记的 study 一律不支持配对分析（fail closed）。
+# 角色的第一来源是 0812 sample 表的 tissue_type（Tumor/Normal，9,143 个样本有值）。
+# 下面登记的是它标错的 study，逐个覆盖掉。核对方式是拿样本名里的 T/N 标记做仲裁：
+# 全库 3,048 个带明确标记的样本里，只有 HRA016026 与她矛盾。
+#
 # 三种规则类型：
-#   ("specimen_types", {取值: 角色})
+#   ("specimen_type",  {取值: 角色})
 #   ("name_suffix",    {后缀: 角色})
 #   ("study_constant", 角色)
-STUDY_ROLE_RULES: Dict[str, Tuple[str, Any]] = {
-    "HRA000873": ("specimen_types", {"Patient Solid Tissue": "tumor",
-                                      "Peritumoral": "normal"}),
-    "HRA000021": ("specimen_types", {"Patient Solid Tissue": "tumor",
-                                      "Peritumoral": "normal"}),
-    "HRA001272": ("specimen_types", {"Patient Solid Tissue": "tumor",
-                                      "Peritumoral": "normal"}),
-    "HRA006499": ("name_suffix", {"_T": "tumor", "_N": "normal"}),
-    # 0811 自带的判据，不依赖旁路补的 specimen_types：
-    # HRA003107 的 sample_name 是 BDESCC2-1N / BDESCC2-1T，155 对全部成对；
-    # HRA016026 是 L0240_Normal / L0240_Tumor，350 对全部成对。
-    "HRA003107": ("name_suffix", {"T": "tumor", "N": "normal"}),
+STUDY_ROLE_OVERRIDES: Dict[str, Tuple[str, Any]] = {
+    # 700 个样本被整体标成 Normal，其中 350 个名字就叫 L0240_Tumor。按名字来。
     "HRA016026": ("name_suffix", {"_Tumor": "tumor", "_Normal": "normal"}),
-    "HRA001748": ("study_constant", "tumor"),
-    "HRA001749": ("study_constant", "normal"),
+    # 胶质瘤研究：286 个 T_ 开头的组织标 Tumor 没问题，286 个 B_ 开头的血样里
+    # 却有 104 个标成 Tumor、182 个标成 Normal。同前缀同 specimen 分成两派，
+    # 血样在这里是配对的对照，按 specimen 统一判。
+    "HRA000071": ("specimen_type", {"Blood": "normal",
+                                     "Patient Solid Tissue": "tumor"}),
 }
+
+_ROLE_BY_TISSUE_TYPE = {"tumor": "tumor", "normal": "normal"}
 
 
 def _sample_role(record: Dict[str, Any]) -> Optional[str]:
-    """按 STUDY_ROLE_RULES 推断样本角色；推不出返回 None，不要猜。"""
+    """推断样本角色；推不出返回 None，不要猜。"""
     study = _norm(record.get("study_accession"))
-    rule = STUDY_ROLE_RULES.get(study)
-    if not rule:
+    rule = STUDY_ROLE_OVERRIDES.get(study)
+    if rule:
+        kind, mapping = rule
+        if kind == "study_constant":
+            return str(mapping)
+        if kind == "specimen_type":
+            return mapping.get(_norm(record.get("specimen_type"))
+                               or _norm(record.get("specimen_types")))
+        if kind == "name_suffix":
+            # 后缀写在规则里，因为每个 study 的命名习惯不同：BDESCC2-1N/T 没有
+            # 分隔符，L0240_Tumor 把词拼全。长后缀优先，"_Normal" 才不会被 "N" 抢走。
+            name = _norm(record.get("sample_name")).lower()
+            for suffix in sorted(mapping, key=len, reverse=True):
+                if name.endswith(str(suffix).lower()):
+                    return mapping[suffix]
         return None
-    kind, mapping = rule
-    if kind == "study_constant":
-        return str(mapping)
-    if kind == "specimen_types":
-        return mapping.get(_norm(record.get("specimen_types")))
-    if kind == "name_suffix":
-        # The suffixes come from the rule itself, because each study names its
-        # samples differently: BDESCC2-1N/T has no separator, L0240_Tumor spells
-        # the word out. Longest suffix first so "_Normal" wins over a bare "N".
-        name = _norm(record.get("sample_name")).lower()
-        for suffix in sorted(mapping, key=len, reverse=True):
-            if name.endswith(str(suffix).lower()):
-                return mapping[suffix]
-        return None
-    return None
+    return _ROLE_BY_TISSUE_TYPE.get(_norm(record.get("tissue_type")).lower())
 
 
 def _assess_wes_somatic_cases(fastqs: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -337,11 +334,15 @@ def _wes_somatic_infeasibility_reason(fastqs: Sequence[Dict[str, Any]]) -> str:
     if not fastqs:
         return "「wes_somatic_pair」未匹配到任何 FASTQ 文件。"
     studies = {_norm(f.get("study_accession")) for f in fastqs}
-    unregistered_studies = studies - set(STUDY_ROLE_RULES.keys())
-    if unregistered_studies == studies:
+    resolvable = {
+        _norm(f.get("study_accession"))
+        for f in fastqs
+        if _sample_role(f) in {"tumor", "normal"}
+    }
+    if not resolvable:
         return (
-            "「wes_somatic_pair」需要为 study 登记肿瘤/正常角色规则；"
-            f"当前 matched 的 study 均未登记: {', '.join(sorted(studies))}。"
+            "「wes_somatic_pair」需要知道每个样本是肿瘤还是正常；"
+            f"当前 matched 的 study 都判不出角色: {', '.join(sorted(studies))}。"
         )
 
     by_individual: Dict[str, Dict[str, List[Dict[str, Any]]]] = {}
@@ -681,10 +682,17 @@ class CsvKGDataMatcher:
         self.project = _read_csv(self.entity_dir / "project.csv")
         self.sample = _read_csv(self.entity_dir / "sample.csv")
         self.individual = _read_csv(self.entity_dir / "individual.csv")
-        self.sample_specimen_types = {
-            row.get("sample_accession"): row.get("specimen_types") or ""
+        self.sample_attributes = {
+            row.get("sample_accession"): {
+                "specimen_type": row.get("specimen_type") or row.get("specimen_types") or "",
+                "tissue_type": row.get("tissue_type") or "",
+            }
             for row in self.sample
             if row.get("sample_accession")
+        }
+        self.sample_specimen_types = {
+            accession: values["specimen_type"]
+            for accession, values in self.sample_attributes.items()
         }
 
         legacy_t1 = _read_csv(self.csv_dir / "T11.csv") or _read_csv(self.csv_dir / "merge_metainfo.csv")
@@ -741,6 +749,7 @@ class CsvKGDataMatcher:
             name = self._clean_data_name(row.get("dataName") or "")
             legacy = legacy_by_name.get(name, {})
             file_name = legacy.get("file_name") or legacy.get("files") or name
+            attributes = self.sample_attributes.get(row.get("sampleAccession") or "", {})
             adapted.append({
                 "study_accession": row.get("studyAccession") or legacy.get("study_accession") or "",
                 "sample_accession": row.get("sampleAccession") or legacy.get("sample_accession") or "",
@@ -760,7 +769,9 @@ class CsvKGDataMatcher:
                 "individual_accession": row.get("individualAccession") or "",
                 "individual_name": row.get("individualName") or "",
                 "sample_name": row.get("sampleName") or "",
-                "specimen_types": self.sample_specimen_types.get(row.get("sampleAccession") or "") or "",
+                "specimen_type": attributes.get("specimen_type", ""),
+                "specimen_types": attributes.get("specimen_type", ""),
+                "tissue_type": attributes.get("tissue_type", ""),
                 "gender": row.get("gender") or "",
             })
         return adapted
@@ -1017,7 +1028,9 @@ class CsvKGDataMatcher:
             "individual_accession": row.get("individual_accession"),
             "individual_name": row.get("individual_name"),
             "sample_name": row.get("sample_name"),
+            "specimen_type": row.get("specimen_type") or row.get("specimen_types"),
             "specimen_types": row.get("specimen_types"),
+            "tissue_type": row.get("tissue_type"),
             "read_pair": row.get("read_pair") or row.get("Read Pair"),
             "file_path": row.get("file_path"),
             "match_reason": match_reason,

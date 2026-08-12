@@ -2,18 +2,18 @@
   "schema_version": "unified-graph-expectations/v1",
   "data_graph": {
     "counts": {
-      "nodes": 80295,
-      "relationships": 352245
+      "nodes": 80293,
+      "relationships": 352252
     },
     "graph_fingerprint": "",
-    "schema_version": "senior-0811/v1",
+    "schema_version": "senior-0812/v1",
     "snapshot_id": "",
-    "source_csv_sha256": "16c33e8fa56b91efa66dcef68c44cb86c33616fc085ab798a85796b587b6aad5",
-    "comment": "Neo4j 里只有 0811 交付本身，没有任何我方新增的标签、节点或属性。逐项计数见 config/senior_0811_reference_counts.json。"
+    "source_csv_sha256": "824e47e222544c77e00732d0e50ecbb6af6bdc591956e25f0b7417ed7e78cdbb",
+    "comment": "Neo4j 里只有 0812 交付本身，没有任何我方新增的标签、节点或属性。逐项计数见 config/senior_0812_reference_counts.json。"
   },
   "legacy_backend": {
-    "schema_version": "senior-0811/v1",
-    "source_sha256": "16c33e8fa56b91efa66dcef68c44cb86c33616fc085ab798a85796b587b6aad5",
+    "schema_version": "senior-0812/v1",
+    "source_sha256": "824e47e222544c77e00732d0e50ecbb6af6bdc591956e25f0b7417ed7e78cdbb",
     "core_node_count": 80114,
     "label_counts": {
       "Project": 18,
@@ -23,7 +23,7 @@
       "T1": 26089,
       "T2": 36759
     },
-    "comment": "键是逻辑标签名；0811 实际标签为 project/study/individual/sample/T1/T2，由 resolve_legacy_labels 自动对应。Individual 7050 是 CSV 7209 行按 accession MERGE 去重后的结果。"
+    "comment": "键是逻辑标签名；0812 实际标签为 project/study/individual/sample/T1/T2，由 resolve_legacy_labels 自动对应。Individual 7050 是 CSV 7209 行按 accession MERGE 去重后的结果。核心实体计数与 0811 一致，0812 只改了 format 词表和 sample 的列。"
   },
   "tool_catalog": {
     "tools": 51,
@@ -36,7 +36,9 @@
       "next_pairs": 12,
       "next_edges": 18,
       "pipeline_steps": 6,
-      "excluded_tool_ids": ["multiqc"],
+      "excluded_tool_ids": [
+        "multiqc"
+      ],
       "comment": "运行时目录把 multiqc 排除在原子层之外，所以比图里的 51 少 1；next_pairs 与她的 next_tool 去掉 multiqc 后的 12 对完全一致。"
     }
   }

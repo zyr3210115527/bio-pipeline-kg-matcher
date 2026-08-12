@@ -9,8 +9,6 @@ DNA_SOMATIC_SV_VCF,DNA 体细胞变异 VCF 文件。记录 SNV、InDel 或结构
 DNA_VARIANT_INDEX_TBI,VCF 文件对应的 Tabix（TBI）索引文件，用于快速定位压缩 VCF（VCF.GZ）中特定基因组区域的变异记录，提高变异查询效率。
 DNA_VARIANT_STATS_REPORT,DNA 变异或测序统计报告。包括测序质量、比对统计、覆盖度、变异数量、Ti/Tv 比值、过滤统计、QC 指标等文本或结构化统计结果，可用于质量评估和流程汇总。
 DNA_VARIANT_VCF_GENERAL,通用 DNA 变异 VCF 文件。符合 Variant Call Format 标准，可表示胚系或体细胞变异，是注释、过滤、标准化、统计及可视化分析的标准交换格式。
-METADATA_SAMPLEINFO,样本元数据。描述样本的来源及实验设计信息，包括 Sample ID、Patient ID、分组、批次、组织来源、测序平台、实验条件等，用于关联表达数据、临床数据及分析结果。
-MUTATION_ANNOTATION_FORMA_MAF,Mutation Annotation Format（MAF）标准突变注释文件。整合了基因注释、突变类型、功能影响、样本信息等内容，是 maftools、TMB 分析、驱动基因分析及突变景观分析的标准输入格式。
 OTHER_UNCLASSIFIED_DATA,其他未分类数据类型。用于暂时无法归类到已有语义格式的数据对象，可包括特殊脚本输出、自定义格式文件或第三方工具专有数据。
 RNA_SPLICEJUNCTION_TAB,RNA 剪接位点（Splice Junction）表格。记录 RNA-seq 比对过程中识别到的剪接连接位置、支持 reads 数量及相关统计信息，通常由 STAR 等工具生成，可用于可变剪接分析。
 RNA_TRANSCRIPTOME_ALIGNMENT_BAM,RNA 转录组比对 BAM 文件。RNA-seq Reads 比对到参考基因组或转录组后的标准 BAM 文件，可用于表达定量、可变剪接分析、基因计数及质量评估。

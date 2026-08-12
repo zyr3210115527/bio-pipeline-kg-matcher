@@ -1,0 +1,44 @@
+{
+  "schema_version": "senior-0812-reference/v1",
+  "source": "neo4j-community-2026.0812.zip 内自带的 data/databases/neo4j，师姐本人导入后的权威结果",
+  "read_via": "临时只读实例 bolt://127.0.0.1:7691",
+  "totals": {
+    "nodes": 80293,
+    "relationships": 352252
+  },
+  "labels": {
+    "T2": 36759,
+    "T1": 26089,
+    "sample": 10178,
+    "individual": 7050,
+    "function": 90,
+    "tool": 51,
+    "format": 28,
+    "study": 20,
+    "project": 18,
+    "modal": 6,
+    "datalevel": 4
+  },
+  "relationships": {
+    "in_study": 70057,
+    "generated_from": 64545,
+    "in_level": 62848,
+    "in_format": 62841,
+    "in_modal": 62122,
+    "in_sample": 19241,
+    "in_individual": 10178,
+    "output": 122,
+    "input": 116,
+    "suitable_for": 85,
+    "has_function": 51,
+    "next_tool": 22,
+    "in_project": 20,
+    "subclass_of": 4
+  },
+  "notes": [
+    "相对 0811：节点 -2（formats 删掉两个拼错的重复项 METADATA_SAMPLEINFO 和 MUTATION_ANNOTATION_FORMA_MAF）",
+    "关系 +7 = subclass_of 4（新增 format 父子边）+ input 2 + output 1（T002 改配对输入输出、T007/T008 补 BAI）",
+    "数据层 T1/T2/study/project 与 0811 逐字节一致，individual 只补了 population_type",
+    "sample 表补齐样本级 tissue_type 9,700 / specimen_type 9,279，另新增 biospecimen_anatomic_site 8,676 / tumor_descriptor 8,740"
+  ]
+}

@@ -144,10 +144,7 @@ SET i.project_accession = nullIf(row.project_accession, ''),
     i.adjuvant_treatment_5_type = nullIf(row.adjuvant_treatment_5_type, ''),
     i.tumor_average_diameter_cm = nullIf(row.tumor_average_diameter_cm, ''),
     i.experiment_accession = nullIf(row.experiment_accession, ''),
-    i.population_type = nullIf(row.population_type, ''),
-    i.sample_count = nullIf(row.sample_count, ''),
-    i.file_count = nullIf(row.file_count, ''),
-    i.organization = nullIf(row.organization, '');
+    i.population_type = nullIf(row.population_type, '');
 
 // --- 4. Sample ---
 LOAD CSV WITH HEADERS FROM 'file:///entities/sample.csv' AS row
@@ -165,7 +162,9 @@ SET s.project_accession = nullIf(row.project_accession, ''),
     s.run_accession = nullIf(row.run_accession, ''),
     s.experiment_accession = nullIf(row.experiment_accession, ''),
     s.tissue_type = nullIf(row.tissue_type, ''),
-    s.specimen_type = nullIf(row.specimen_type, '');
+    s.specimen_type = nullIf(row.specimen_type, ''),
+    s.biospecimen_anatomic_site = nullIf(row.biospecimen_anatomic_site, ''),
+    s.tumor_descriptor = nullIf(row.tumor_descriptor, '');
 
 // --- 5. T1 ---
 /*======================================================
@@ -210,7 +209,6 @@ SET
     t2.semantic_format = nullIf(row.semantic_format, ''),
     t2.size = nullIf(row.size, ''),
     t2.strategy = nullIf(row.strategy, ''),
-    t2.strategy_original = nullIf(row.strategy_original, ''),
     t2.data_level = nullIf(row.data_level, '');
 
 // --- 7. Tool ---

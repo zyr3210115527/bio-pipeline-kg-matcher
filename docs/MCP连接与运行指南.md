@@ -3,17 +3,17 @@
 > 本文面向 **agent 端同门**：从 GitHub clone 本仓库后，如何在本机跑起一个**基于 Neo4j** 的完整
 > MCP 服务，并把它接入你的 agent 客户端。全流程走 Neo4j 后端，不使用 CSV 兜底模式。
 >
-> **2026-08-12 起数据后端换成 0811 图谱。** 有两条路，任选其一：
+> **2026-08-12 起数据后端换成 0812 图谱。** 有两条路，任选其一：
 >
 > - **连组内共享服务器**（最省事，不用装 Neo4j）：`bolt://192.168.130.24:7690`，
->   浏览器 `http://192.168.130.24:7480`，账号密码找组内要。这台已经是 0811 图，
+>   浏览器 `http://192.168.130.24:7480`，账号密码找组内要。这台已经是 0812 图，
 >   跳过第 4 节直接配第 5 节即可。
-> - **本机自建**：`data/0811/` 的 30 个 CSV 经 `scripts/python/import_0811.py` 重建，
+> - **本机自建**：`data/0812/` 的 31 个 CSV 经 `scripts/python/import_0812.py` 重建，
 >   约 17 秒，见第 4 节。
 >
 > 不再随包提供 dump：它是同一份数据的第二个副本，必然漂移（旧的那份停在 7 月 30 日），
 > 且新图 352,245 条关系导出后有 134 MiB，超过 GitHub 单文件 100 MiB 上限。
-> 落地细节与偏离项见 [`docs/图谱变更说明_0811_落地记录.md`](图谱变更说明_0811_落地记录.md)。
+> 落地细节与偏离项见 [`docs/图谱变更说明_0812_落地记录.md`](图谱变更说明_0812_落地记录.md)。
 >
 > 配套文档：
 > - 返回值契约（tool-chain/v2）：[`docs/mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md`](mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md)
@@ -26,12 +26,12 @@
 ┌────────────┐   MCP (JSON-RPC 2.0 / stdio)   ┌─────────────────────┐   Bolt    ┌───────────────────────┐
 │  你的 Agent │ ─────────────────────────────▶ │  server.py (本仓库)  │ ────────▶ │ Neo4j 2026.06.0        │
 │  (客户端)   │ ◀───────────────────────────── │  MCP 编排/数据匹配   │ ◀──────── │ database: neo4j        │
-└────────────┘        7 个 tools               └─────────────────────┘           │ (由 data/0811 导入)     │
+└────────────┘        7 个 tools               └─────────────────────┘           │ (由 data/0812 导入)     │
                                                                                    └───────────────────────┘
 ```
 
 - **MCP 只做流程编排 + 数据匹配，不执行生信任务。**
-- 数据后端 = Neo4j 里的 0811 图谱，80,295 节点，与数据提供方的实例逐项一致。
+- 数据后端 = Neo4j 里的 0812 图谱，80,295 节点，与数据提供方的实例逐项一致。
 - 工具目录不在图里：图只有她的 51 个 `tool` 节点，槽位模型由运行时从 `data/csv/catalog/` 合并。
 
 ---
@@ -56,7 +56,7 @@ git clone <本仓库的 GitHub 地址>
 cd bio-pipeline-kg-matcher
 ```
 
-后端数据在仓库里：`data/0811/`（0811 交付的 entities / reference / relations CSV）
+后端数据在仓库里：`data/0812/`（0812 交付的 entities / reference / relations CSV）
 和 `data/csv/catalog/`（我方工具目录 slot 模型）。
 
 ---
@@ -77,7 +77,7 @@ pip install -r requirements-llm.txt      # requests，走 LLM 路由时才需要
 
 ## 4. 导入 Neo4j 后端（主路径）
 
-> 目标：在一个 Neo4j 2026.06.0 实例的 `neo4j` 库里建出 0811 数据层 + 我方工具目录。
+> 目标：在一个 Neo4j 2026.06.0 实例的 `neo4j` 库里建出 0812 图。工具目录不进图。
 > 这一步会**清空目标库**，只对确认过的本地实例执行。
 
 ### 4.1 准备 conf
@@ -108,34 +108,26 @@ NEO4J_HOME=/path/to/neo4j NEO4J_CONF=/path/to/neo4j/conf \
 CALL db.info() YIELD id RETURN id;
 ```
 
-### 4.4 生成样本级 specimen 旁路表
-
-0811 的 sample 表不带 `specimen_types`，而 tumor/normal 判据依赖它。这张表**不写进图**，
-只在 matcher 启动时加载成内存映射。若你手上有改造前的逻辑备份就用它生成；
-没有的话跳过这步，配对分析会退化为不可用。
-
-```bash
-python3 scripts/python/build_sample_specimen_backfill.py \
-  --backup docs/backups/pre_0811/pre_0811_full_*.jsonl.gz
-```
-
-### 4.5 导入数据层 + 重建工具目录
+### 4.4 导入
 
 ```bash
 export NEO4J_PW='replace-me'
-python3 scripts/python/import_0811.py --project-root . \
+python3 scripts/python/import_0812.py --project-root . \
   --neo4j-import-dir /path/to/neo4j/import \
   --uri bolt://127.0.0.1:7687 --user neo4j --password-env NEO4J_PW \
   --database neo4j --expected-database-id <4.3 拿到的 id> --confirm-clear
-
 ```
 
-导入器会自己把 CSV 同步进 `import/` 目录、批量清库、建约束和索引、跑 0811 的
+导入器会自己把 CSV 同步进 `import/` 目录、批量清库、建约束和索引、跑 0812 的
 `01`–`04`，最后打印节点与关系计数。期望值：
 
 ```
-80,295 节点 / 352,245 关系   （与 config/senior_0811_reference_counts.json 逐项一致）
+80,293 节点 / 352,252 关系   （与 config/senior_0812_reference_counts.json 逐项一致）
 ```
+
+> 0811 时代这里还有一步「生成样本级 specimen 旁路表」：那版 sample 表没有
+> tumor/normal，只能从更早的备份里捞出来在内存里补。0812 的 sample 表自带
+> `tissue_type`（9,700 个样本有值），旁路表和它的生成脚本已经删掉。
 
 图里就只有这些，没有目录同步步骤：我方的 slot 模型不进图，运行时由
 `tool_catalog_source.py` 从 `data/csv/catalog/` 合并。
@@ -162,7 +154,7 @@ NEO4J_DATABASE=neo4j               # 4.5 导入的目标库
 # —— 运行模式 ——
 DATA_MATCHER_MODE=neo4j            # 走 Neo4j，不用 CSV
 DATAGRAPH_SCHEMA_MODE=auto         # 自动识别 managed / legacy 两种 schema
-DATAGRAPH_SNAPSHOT_ID=             # 0811 后端没有 managed 快照，留空
+DATAGRAPH_SNAPSHOT_ID=             # 0812 后端没有 managed 快照，留空
 
 # —— LLM（可选，不填则规则路由）——
 # LLM_API_KEY=sk-...
@@ -314,7 +306,7 @@ print(call({"jsonrpc":"2.0","id":2,"method":"tools/call",
 
 ## 9. 备选：连接远程服务器（生产路径）
 
-不想本机装 Neo4j 就直接连组内共享的那台，它在 2026-08-12 已刷成 0811 图：
+不想本机装 Neo4j 就直接连组内共享的那台，它在 2026-08-12 已刷成 0812 图：
 
 ```ini
 # .env.local
@@ -329,32 +321,26 @@ DATAGRAPH_SCHEMA_MODE=auto         # ★ 自动识别大小写标签(Project/pro
 浏览器 `http://192.168.130.24:7480`。注意端口是 7690/7480，不是默认的 7687/7474；
 要先接进能路由到 `192.168.130.0/24` 的网络（不在同一网段时 ping 都不通）。
 
-**这台服务器和本机自建有一处不同**：它的 `sample` 节点额外带 `specimen_types`、
-`sample_role`（tumor/normal）和 `specimen_source` 三个属性，本机自建的图没有。
-0811 交付丢了样本级的肿瘤/正常标注，运行时一直是从 `data/0811_supplement/` 的旁路
-CSV 在内存里补，图本身保持交付原样；服务器是共享的，直接写进去别人裸查 Cypher 也
-能分辨肿瘤和正常，所以那 8,353 行落了盘。角色没有沿用旁路表的 `tissue_type` 列名，
-因为 0811 的 `sample` 表已经用 `tissue_type` 存材料（Blood），同名会让一个属性背两个
-含义。MCP 运行时不读这三个属性，两边跑出来的结果一致。
+这台服务器与本机自建**逐项一致**，都是 0812 交付本身，没有任何我方新增的标签、
+节点或属性。0811 时期服务器上曾额外写过 `sample_role`，因为那版交付没有肿瘤/正常
+标注；0812 自带 `tissue_type`，那处偏离已经撤掉。
 
 ### 9.1 重刷这台服务器
 
-`import_0811.py` 要求 CSV 躺在服务器的 `import/` 目录里，远程没有文件系统权限，
-所以另有一份 `scripts/python/import_0811_remote.py`：它把交付 Cypher 里的
+`import_0812.py` 要求 CSV 躺在服务器的 `import/` 目录里，远程没有文件系统权限，
+所以另有一份 `scripts/python/import_0812_remote.py`：它把交付 Cypher 里的
 `LOAD CSV FROM 'file:///…'` 改写成 `UNWIND $rows`，从本地 CSV 分批推过去，
 MERGE/SET 主体、约束和索引都还是交付原文，因此产出与本机导入同源。
 
 ```bash
 export NEO4J_REMOTE_PW='<口令>'
-python3 scripts/python/import_0811_remote.py \
+python3 scripts/python/import_0812_remote.py \
   --uri bolt://192.168.130.24:7690 --user neo4j --password-env NEO4J_REMOTE_PW \
-  --confirm-clear \
-  --write-specimen data/0811_supplement/sample_specimen_backfill.csv
+  --confirm-clear
 ```
 
 约 1 分钟（43.3 万行）。**会先清空整库**，跑完自动比对
-`config/senior_0811_reference_counts.json`，逐项一致才返回 0。
-去掉 `--write-specimen` 就得到与本机完全一致的纯交付图。
+`config/senior_0812_reference_counts.json`，逐项一致才返回 0。
 
 > `DATAGRAPH_SCHEMA_MODE=auto` 已做过大小写标签自适配和计数容差：无论她的库是大写标签
 > (`Project/Study/…`) 还是小写标签 (`project/study/…`)、节点数是否与契约完全一致，MCP 都能

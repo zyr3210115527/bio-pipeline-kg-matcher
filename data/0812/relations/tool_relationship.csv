@@ -1,7 +1,7 @@
 tool_id,next_tool_id,kind
 T001,T002,data
 T001,T005,data
-T001,T006,order
+T001,T006,data
 T001,T013,order
 T002,T004,order
 T002,T013,order

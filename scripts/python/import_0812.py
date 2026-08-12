@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Rebuild the Neo4j graph from the 0811 data delivery.
+"""Rebuild the Neo4j graph from the 0812 data delivery.
 
-The delivery in ``cypher/import0811/`` is used verbatim for the reference,
+The delivery in ``cypher/import0812/`` is used verbatim for the reference,
 entity, ontology and workflow statements. Only two things are handled here
 instead of in Cypher:
 
@@ -11,7 +11,7 @@ instead of in Cypher:
 * oversized ``LOAD CSV`` statements are retried inside ``CALL { } IN
   TRANSACTIONS`` when the server rejects them for memory.
 
-The result is the 0811 delivery and nothing else: no extra labels, no extra
+The result is the 0812 delivery and nothing else: no extra labels, no extra
 properties. Our slot model and execution bindings are not written into the
 graph at all -- they are merged in at runtime by ``tool_catalog_source``.
 """
@@ -143,8 +143,8 @@ def report_counts(driver: Any, database: str) -> Dict[str, Any]:
 def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-root", default=".")
-    parser.add_argument("--csv-source", default="data/0811")
-    parser.add_argument("--cypher-dir", default="cypher/import0811")
+    parser.add_argument("--csv-source", default="data/0812")
+    parser.add_argument("--cypher-dir", default="cypher/import0812")
     parser.add_argument("--neo4j-import-dir", required=True)
     parser.add_argument("--uri", required=True)
     parser.add_argument("--user", required=True)

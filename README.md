@@ -1,12 +1,12 @@
 # Bio Pipeline KG Matcher（生信流程与知识图谱匹配器）
 
-面向自然语言的生信工作流规划器。运行时工具真源是真实 Neo4j 实例：0811 图谱登记 51 个 tool。运行时目录把 multiqc 排除在原子层之外，实际可编排 50 个：11 个 atomic tool、38 个 pipeline tool 和 1 个 task pipeline。公共推荐只使用 atomic tool；pipeline-level 节点仅供目录查询。
+面向自然语言的生信工作流规划器。运行时工具真源是真实 Neo4j 实例：0812 图谱登记 51 个 tool。运行时目录把 multiqc 排除在原子层之外，实际可编排 50 个：11 个 atomic tool、38 个 pipeline tool 和 1 个 task pipeline。公共推荐只使用 atomic tool；pipeline-level 节点仅供目录查询。
 
-数据层是 2026-08-11 交付的 0811 知识图谱（7,050 individual / 10,178 sample / 26,089 T1 / 36,759 T2），与数据提供方本人的实例逐项一致；落地过程与所有偏离项记录在 [`docs/图谱变更说明_0811_落地记录.md`](docs/图谱变更说明_0811_落地记录.md)。
+数据层是 2026-08-12 交付的 0812 知识图谱（7,050 individual / 10,178 sample / 26,089 T1 / 36,759 T2），与数据提供方本人的实例逐项一致；落地过程与所有偏离项记录在 [`docs/图谱变更说明_0812_落地记录.md`](docs/图谱变更说明_0812_落地记录.md)。
 
 > **agent 端同门快速开始（clone 即可跑，基于 Neo4j）：**
 > clone 本仓库后，按 [`docs/MCP连接与运行指南.md`](docs/MCP连接与运行指南.md) 一步步做即可 ——
-> 导入 `data/0811` → 配 `.env.local`（`DATA_MATCHER_MODE=neo4j`）→
+> 导入 `data/0812` → 配 `.env.local`（`DATA_MATCHER_MODE=neo4j`）→
 > `python3 server.py` 起 MCP → `health_check` 自检 → 接入你的 agent 客户端。
 
 ## Top-3 编排
@@ -19,7 +19,7 @@
 
 ## 数据与 KG 后端
 
-**Neo4j 里只有 0811 交付本身**，80,295 节点 / 352,245 关系，与数据提供方自带的实例逐项一致：
+**Neo4j 里只有 0812 交付本身**，80,295 节点 / 352,245 关系，与数据提供方自带的实例逐项一致：
 `project`/`study`/`individual`/`sample`/`T1`/`T2`、字典 `format`/`function`/`modal`/`datalevel`、
 51 个 `tool` 节点，关系全小写。没有任何我方新增的标签、节点或属性。
 
@@ -31,7 +31,7 @@ tumor/normal 四槽）是**执行端合同而不是知识图谱事实**，留在
 重建整张图（不需要任何目录同步步骤）：
 
 ```bash
-python3 scripts/python/import_0811.py --project-root . \
+python3 scripts/python/import_0812.py --project-root . \
   --neo4j-import-dir <neo4j-home>/import --uri "$NEO4J_URI" --user "$NEO4J_USER" \
   --password-env NEO4J_PW --database "$NEO4J_DATABASE" \
   --expected-database-id <db-id> --confirm-clear
@@ -115,10 +115,11 @@ RUN_REAL_INTEGRATION=1 python3 -m unittest discover -s tests -p 'test_runtime_in
 
 ## 相关文档
 
-- `docs/0811图谱修改建议清单.md`：**发给图谱维护方的对外文档，6 条修改建议，含证据、改哪个文件哪一行、不改的后果**；
-- `docs/后端与0811交付的差异定位.md`：后端与 0811 交付的完整 diff，8 个疑点的取证结论；
+- `docs/0812图谱修改建议清单.md`：**发给图谱维护方的对外文档，0812 仍待修的问题，含证据与不改的后果**；
+- `docs/0811图谱修改建议清单.md`：上一轮的 8 条建议，0812 已修 7 条，留档备查；
+- `docs/后端与0811交付的差异定位.md`：后端与 0812 交付的完整 diff，8 个疑点的取证结论；
 - `docs/她的图与我方实现的差异清单.md`：零差异核对口径、我方 5 处偏离与执行端命名标准对齐；
-- `docs/图谱变更说明_0811_落地记录.md`：0811 图谱落地记录与验证结果；
+- `docs/图谱变更说明_0811_落地记录.md`：0812 图谱落地记录与验证结果；
 - `docs/图谱变更说明_旧版vs新版_20260811.md`：数据提供方给出的 0723 vs 0811 变更说明；
 - `docs/catalog_0811_extension_review.md`：27 个新工具的 slot 建模评审单与 atomic 提升候选；
 - `项目说明.md`：原系统设计与 benchmark 说明；

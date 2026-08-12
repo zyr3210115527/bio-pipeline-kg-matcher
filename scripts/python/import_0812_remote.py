@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Rebuild the 0811 graph on a remote Neo4j reachable only over bolt.
+"""Rebuild the 0812 graph on a remote Neo4j reachable only over bolt.
 
-``import_0811.py`` needs the CSVs sitting in the server's ``import/`` directory
+``import_0812.py`` needs the CSVs sitting in the server's ``import/`` directory
 because the delivery is written as ``LOAD CSV FROM 'file:///…'``. For a remote
 server we have no filesystem access, so each ``LOAD CSV … AS row`` clause is
 rewritten to ``UNWIND $rows AS row`` and the rows are streamed from the local
@@ -17,9 +17,10 @@ Two details keep the emulation faithful to ``LOAD CSV``:
 * the BOM is stripped on read, so the delivery's ``coalesce(row.x, row['\\ufeffx'])``
   fallbacks resolve through the first branch.
 
-``--write-specimen`` is the one deliberate deviation and is off by default. See
-``_write_specimen`` for what it writes and why the property names differ from
-the sidecar's.
+The result is the delivery and nothing else. 0811 needed a deviation here -- the
+tumor/normal split had to be written onto the sample nodes from a sidecar,
+because that delivery dropped it. 0812 carries ``tissue_type`` and
+``specimen_type`` itself, so there is nothing left to add.
 """
 
 from __future__ import annotations
@@ -182,66 +183,17 @@ def compare_to_reference(counts: Dict[str, Any], reference: Dict[str, Any]) -> L
     return problems
 
 
-def _write_specimen(driver: Any, database: str, path: Path, batch_rows: int) -> Dict[str, int]:
-    """Put the recovered tumor/normal split onto the server's sample nodes.
-
-    The runtime never reads this: the matcher loads the same CSV as an in-memory
-    sidecar. It exists so anyone querying this server directly can tell tumor
-    from normal, which the 0811 delivery on its own cannot express.
-
-    The sidecar's own column names are not reused. Its ``tissue_type`` holds
-    Tumor/Normal, while the 0811 ``sample`` table already uses ``tissue_type``
-    for the material (Blood) on 557 rows. Writing ours under the same name would
-    leave one property carrying two meanings, so the role goes to ``sample_role``
-    and only ``specimen_types`` -- which the delivery does not set at all --
-    keeps its name.
-    """
-    rows = []
-    for row in load_rows(path):
-        role = str(row.get("tissue_type") or "").strip().lower()
-        rows.append(
-            {
-                "sample_accession": row.get("sample_accession"),
-                "specimen_types": row.get("specimen_types"),
-                "sample_role": role if role in {"tumor", "normal"} else None,
-            }
-        )
-    statement = """
-    UNWIND $rows AS row
-    MATCH (s:sample {sample_accession: row.sample_accession})
-    SET s.specimen_types = row.specimen_types,
-        s.sample_role = row.sample_role,
-        s.specimen_source = 'pre-0811-backfill'
-    """
-    matched = 0
-    with driver.session(database=database) as session:
-        for chunk in chunked(rows, batch_rows):
-            summary = session.run(statement, rows=chunk).consume()
-            matched += summary.counters.properties_set
-        covered = int(
-            session.run(
-                "MATCH (s:sample) WHERE s.sample_role IS NOT NULL RETURN count(s) AS c"
-            ).single()["c"]
-        )
-    return {"csv_rows": len(rows), "properties_set": matched, "samples_with_role": covered}
-
-
 def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-root", default=".")
-    parser.add_argument("--csv-source", default="data/0811")
-    parser.add_argument("--cypher-dir", default="cypher/import0811")
+    parser.add_argument("--csv-source", default="data/0812")
+    parser.add_argument("--cypher-dir", default="cypher/import0812")
     parser.add_argument("--uri", required=True)
     parser.add_argument("--user", required=True)
     parser.add_argument("--password-env", required=True)
     parser.add_argument("--database", default="neo4j")
     parser.add_argument("--batch-rows", type=int, default=5000)
-    parser.add_argument("--reference", default="config/senior_0811_reference_counts.json")
-    parser.add_argument(
-        "--write-specimen",
-        default="",
-        help="路径给定时，导入后把 tumor/normal 写回 sample 节点（偏离 0811 原样）",
-    )
+    parser.add_argument("--reference", default="config/senior_0812_reference_counts.json")
     parser.add_argument("--confirm-clear", action="store_true")
     args = parser.parse_args(argv)
     if not args.confirm_clear:
@@ -294,13 +246,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         reference = json.loads((root / args.reference).read_text(encoding="utf-8"))
         problems = compare_to_reference(counts, reference)
 
-        specimen = None
-        if args.write_specimen:
-            print("[specimen] 写回 tumor/normal", flush=True)
-            specimen = _write_specimen(
-                driver, args.database, root / args.write_specimen, args.batch_rows
-            )
-            print(f"    {specimen}\n", flush=True)
     finally:
         driver.close()
 
@@ -313,15 +258,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print(f"  {label:<14} {count:>7,}")
     for rel_type, count in counts["relationships"].items():
         print(f"  [{rel_type:<16}] {count:>7,}")
-    if specimen:
-        print(f"  sample_role 覆盖 {specimen['samples_with_role']:,} 个 sample")
     print("=" * 52)
     if problems:
-        print("与师姐 0811 权威计数不一致:")
+        print("与师姐 0812 权威计数不一致:")
         for problem in problems:
             print(f"  - {problem}")
         return 1
-    print(f"与师姐 0811 权威计数逐项一致（{args.reference}）")
+    print(f"与师姐 0812 权威计数逐项一致（{args.reference}）")
     return 0
 
 

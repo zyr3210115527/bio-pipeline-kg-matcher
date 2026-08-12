@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-import csv
 import json
 import os
 import sys
-from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional
 
 from neo4j import GraphDatabase, READ_ACCESS, NotificationDisabledCategory
@@ -174,11 +172,7 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
         self.sample = self._load_source_entities(session, "sample")
         self.individual = self._load_source_entities(session, "individual")
         self.t2 = self._load_source_entities(session, "t2")
-        self.sample_specimen_types = {
-            row.get("sample_accession"): row.get("specimen_types") or row.get("specimen_type") or ""
-            for row in self.sample
-            if row.get("sample_accession")
-        }
+        self._index_sample_attributes()
         self.t1 = []
         result = session.run(
             "MATCH (n:t1) "
@@ -273,14 +267,7 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
         self.study = self._load_legacy_nodes(session, labels["Study"])
         self.sample = self._load_legacy_nodes(session, labels["Sample"])
         self.individual = self._load_legacy_nodes(session, labels["Individual"])
-        self.sample_specimen_types = {
-            str(row.get("sample_accession") or ""): str(
-                row.get("specimen_types") or row.get("specimen_type") or ""
-            )
-            for row in self.sample
-            if row.get("sample_accession")
-        }
-        self._apply_specimen_sidecar()
+        self._index_sample_attributes()
         self.t2 = []
         for row in self._load_legacy_nodes(session, labels["T2"]):
             t2_id = str(row.get("T2_id") or row.get("t2_id") or "")
@@ -332,44 +319,37 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
             })
             self.t1.append(self._adapt_t1(row))
 
-    def _apply_specimen_sidecar(self) -> None:
-        """Fill sample specimen types the 0811 delivery does not carry.
+    def _index_sample_attributes(self) -> None:
+        """Index the per-sample fields the role resolver needs.
 
-        0811's sample table is run-level and only ships `specimen_type` for the
-        557 healthy rows, but `pipeline_router.STUDY_ROLE_RULES` resolves
-        tumor/normal from `specimen_types`. Rather than writing the recovered
-        values back into her graph, they are loaded here from a sidecar CSV so
-        the graph stays byte-identical to what she delivered. Values already
-        present in the graph always win.
+        Both live on the sample node in 0812: `tissue_type` is Tumor/Normal for
+        9,143 samples and drives the role, `specimen_type` is the material and
+        is only consulted for the studies `STUDY_ROLE_OVERRIDES` covers. T1 rows
+        carry neither, so they are joined on `sample_accession` here rather than
+        re-queried per file.
+
+        0811 shipped both columns nearly empty and needed a sidecar CSV to
+        recover the split; 0812 carries it, so the sidecar is gone.
         """
-        path = Path(
-            os.environ.get("SPECIMEN_SIDECAR_PATH")
-            or Path(__file__).resolve().parents[1]
-            / "data" / "0811_supplement" / "sample_specimen_backfill.csv"
-        )
-        self.specimen_sidecar = {"path": str(path), "applied": 0, "available": 0}
-        if not path.is_file():
-            return
-        try:
-            with path.open(encoding="utf-8-sig", newline="") as handle:
-                rows = list(csv.DictReader(handle))
-        except OSError as exc:
-            self._warn(f"specimen sidecar unreadable: {exc}")
-            return
-        applied = 0
-        for row in rows:
-            accession = str(row.get("sample_accession") or "").strip()
-            value = str(row.get("specimen_types") or "").strip()
-            if not accession or not value:
+        self.sample_attributes = {}
+        for row in self.sample:
+            accession = str(row.get("sample_accession") or "")
+            if not accession:
                 continue
-            if self.sample_specimen_types.get(accession):
-                continue
-            self.sample_specimen_types[accession] = value
-            applied += 1
-        self.specimen_sidecar.update({"applied": applied, "available": len(rows)})
+            self.sample_attributes[accession] = {
+                "specimen_type": str(
+                    row.get("specimen_type") or row.get("specimen_types") or ""
+                ),
+                "tissue_type": str(row.get("tissue_type") or ""),
+            }
+        self.sample_specimen_types = {
+            accession: values["specimen_type"]
+            for accession, values in self.sample_attributes.items()
+        }
 
     def _adapt_t1(self, row: Mapping[str, Any]) -> Dict[str, Any]:
         sample_accession = str(row.get("sample_accession") or "")
+        attributes = self.sample_attributes.get(sample_accession, {})
         file_id = str(row.get("files") or row.get("T1_id") or "")
         file_name = str(row.get("file_name") or file_id)
         return {
@@ -391,7 +371,9 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
             "individual_accession": str(row.get("individual_accession") or ""),
             "individual_name": str(row.get("individual_name") or ""),
             "sample_name": str(row.get("sample_name") or ""),
-            "specimen_types": self.sample_specimen_types.get(sample_accession, ""),
+            "specimen_type": attributes.get("specimen_type", ""),
+            "specimen_types": attributes.get("specimen_type", ""),
+            "tissue_type": attributes.get("tissue_type", ""),
             "gender": str(row.get("gender") or ""),
         }
 
