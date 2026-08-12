@@ -423,6 +423,7 @@ class WorkflowComposer:
 - paired-end FASTQ 的 FastQC 当前只有单一泛化 raw_fastq_read 槽，无法忠实表达 R1/R2 两个独立输入；禁止创建 fastqc_r1/fastqc_r2 两个并行根，也禁止只取一个 mate 冒充双端质控。若用户只要求双端 FastQC/质控且不允许修剪，candidates 为空。
 - 当前 Knowledge Card 合同尚不能把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递。仅当用户明确要求过滤 VCF、标准化 VCF 或功能注释 VCF（即路径必须经过 GATK -> BCFtools 或 GATK -> BCFtools -> SnpEff）时才命中本条，此时 candidates 必须为空，即使 Neo4j 目录显示这些 NEXT 也不能生成这些步骤。反过来，只要终点是 GATK 直接产出的变异 VCF（包括 tumor-normal 配对的体细胞突变检测/somatic variant calling），就不属于本条边界，必须照常生成到 GATK 为止的完整链，不得以"后续还要过滤"为由清空 candidates。
 - 单样本 GATK 的 sorted_dedup_bam 目录槽虽存在，但当前外部 Knowledge Card 只支持 tumor-normal 四槽形式；单样本 GATK candidates 为空。
+- 仅针对"从配对 tumor-normal FASTQ 做体细胞变异检测"这一种需求：它由业务流程 wes_somatic_pair 以整卡形式交付，一次提交四个 FASTQ 加 interval_list，内部完成质控、比对、Mutect2、过滤、注释和 QC 汇总。这类需求只给出 wes_somatic_pair 的 recommendation，candidates 为空，不要再拆成 fastp/bwa/samtools/gatk 的原子链。本条不影响其他任何流程：CNV、表达、富集、生存、单细胞等业务流程照常按第 0 条推荐，不要因为输入是 BAM 或没写明 tumor/normal 就拒绝推荐它们。
 - 多样本 QC 汇总（MultiQC）不属于原子链的表达范围，目录里也没有它。任何 candidate 都不得输出 tool_id 为 multiqc 的步骤，也不得让任何步骤 depends_on 或 from 引用 multiqc。用户即使逐字点名 MultiQC 或“QC 汇总报告”，也只是把这一步从链中略去、其余步骤照常完整生成；绝不能因为无法表达 MultiQC 就令 candidates 为空，本条不受第 8 条最终产物门禁约束。各步骤自身的 QC 报告仍由执行端产出。
 - FastQC 输出的是 quality_control_report，不是 reads。`FastQC -> STAR` 没有 NEXT 且数据类型不相容，绝对禁止；若需要先做 FastQC 再做 STAR，中间必须使用目录允许的 fastp 或 trim_galore，并由其 clean_fastq_read 连接 STAR。任何 depends_on 也必须逐项出现在 source 的 order_next/data_next 中，不能用“仅表示顺序”为理由越过 NEXT。
 
@@ -868,10 +869,19 @@ Neo4j atomic 方法目录：
                 # carry knowledge-card defaults and are not user data — never map
                 # nor report them as missing (师兄 rule 4).
                 continue
+            # A whole-card pipeline can declare several slots of the same role
+            # that differ only by sample_role (wes_somatic_pair's tumor_r1 vs
+            # normal_r1). Round-robin over role alone would assign them by list
+            # order, i.e. by luck; honour the declared dimension instead.
+            dimension = str(slot.get("dimension") or "")
+            dimension_value = str(slot.get("dimension_value") or "").lower()
             candidates = []
             for asset in assets:
                 if self._execution_asset_role(asset) != role:
                     continue
+                if dimension == "sample_role" and dimension_value:
+                    if str(asset.get("sample_role") or "").lower() != dimension_value:
+                        continue
                 path = self._real_execution_path(asset)
                 if path:
                     candidates.append((asset, path))
@@ -888,11 +898,12 @@ Neo4j atomic 方法目录：
             candidates.sort(
                 key=lambda ap: 0 if str(ap[0].get("format") or "").strip().startswith(".") else 1
             )
-            index = usage.get(role, 0)
+            usage_key = f"{role}:{dimension_value}" if dimension_value else role
+            index = usage.get(usage_key, 0)
             if index >= len(candidates):
                 index = len(candidates) - 1
             params[builder_param] = candidates[index][1]
-            usage[role] = index + 1
+            usage[usage_key] = index + 1
         return params, missing
 
     def _partial_recommendation_assets(

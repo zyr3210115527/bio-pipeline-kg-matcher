@@ -71,8 +71,11 @@ CASES: List[Dict[str, Any]] = [
     # ---- C. WES / WGS ----
     case("C1", "C", "我有双端 WES FASTQ，想做比对并得到排序去重后的 BAM。",
          status={"ready"}, candidates="some"),
+    # 配对 WES 走整卡：不拆原子链，而是给出 wes_somatic_pair 的推荐，
+    # 并把四个 FASTQ 直接绑定到 tumor_r1/tumor_r2/normal_r1/normal_r2。
     case("C2", "C", "我有 tumor-normal 配对的 WES 双端 FASTQ，想做体细胞突变检测。",
-         status={"ready"}, candidates="some"),
+         candidates="none", recommendations="some",
+         execution_params={"tumor_r1", "tumor_r2", "normal_r1", "normal_r2"}),
     # 目录边界：单样本 GATK 只支持 tumor-normal 四槽形式
     case("C3", "C", "我只有一个样本的 WES 数据，想直接用 GATK call 变异。",
          status=NO_CHAIN, candidates="none", reason=True),
@@ -150,6 +153,17 @@ def check(result: Dict[str, Any], expect: Dict[str, Any]) -> List[str]:
             "期望无业务流程推荐，实际有 "
             + ", ".join(str(item.get("pipeline_id")) for item in recommendations)
         )
+    if expect.get("execution_params"):
+        bound = set((recommendations[0] or {}).get("execution_params") or {}) if recommendations else set()
+        gap = expect["execution_params"] - bound
+        if gap:
+            problems.append(f"整卡缺少可直接提交的参数绑定: {sorted(gap)}")
+        stranded = (recommendations[0] or {}).get("execution_params_missing") if recommendations else None
+        if stranded:
+            problems.append(
+                "整卡存在未解析参数: "
+                + ", ".join(str(item.get("param")) for item in stranded)
+            )
     if expect.get("reason") and not (
         result.get("unsupported_reason")
         or extensions.get("atomic_candidate_unavailable_reason")
