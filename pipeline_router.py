@@ -387,8 +387,11 @@ def _role_satisfies(required: str, present: str) -> bool:
     return False
 
 
-_FASTQ_R1_PATTERN = re.compile(r"(_r?1|_f1|read1)")
-_FASTQ_R2_PATTERN = re.compile(r"(_r?2|_f2|read2)")
+# `[.-]r1` covers dot/dash separated mates (10125714.R1.fastq.gz) that the
+# underscore-only form missed. The `r` stays mandatory there so plain `.1`/`-1`
+# chunks in single-end names are not mistaken for a mate.
+_FASTQ_R1_PATTERN = re.compile(r"(_r?1|[.-]r1|_f1|read1)")
+_FASTQ_R2_PATTERN = re.compile(r"(_r?2|[.-]r2|_f2|read2)")
 
 
 def _fastq_pair_key(item: Dict[str, Any]) -> str:
@@ -769,9 +772,9 @@ class CsvKGDataMatcher:
 
     def _guess_read_pair(self, name: str) -> str:
         n = name.lower()
-        if re.search(r"(_r?1|_f1|read1)", n):
+        if _FASTQ_R1_PATTERN.search(n):
             return "R1"
-        if re.search(r"(_r?2|_r2|read2)", n):
+        if _FASTQ_R2_PATTERN.search(n):
             return "R2"
         return ""
 

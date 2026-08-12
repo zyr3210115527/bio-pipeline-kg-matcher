@@ -1,27 +1,27 @@
 tool_id,语义输出格式
-T01,Clean FASTQ
-T02,Quality Control Report
-T03,Aligned SAM/BAM
-T04,Sorted/Dedup BAM
-T05,Sorted/Dedup BAM
-T05,Unfiltered VCF
-T06,Filtered (PASS) VCF
-T07,Annotated VCF
-T08,Clean FASTQ
-T09,Clean FASTQ
-T09,Aligned SAM/BAM
-T09,Transcriptome BAM
-T10,TPM / FPKM
-T11,Raw Counts
-T12,Quality Control Report
-T13,DE Result
-T14,DE Result
-T15,Processed Object
-T16,Processed Object
-T17,Processed Object
-T18,uBAM (Unmapped)
-T19,Processed Object
-T20,Processed Object
-T21,Processed Object
-T22,Public Somatic MAF
-T23,Processed Object
+T001,Clean FASTQ
+T002,Quality Control Report
+T006,Aligned SAM/BAM
+T007,Sorted/Dedup BAM
+T008,Sorted/Dedup BAM
+T008,Unfiltered VCF
+T009,Filtered (PASS) VCF
+T010,Annotated VCF
+T004,Clean FASTQ
+T005,Clean FASTQ
+T005,Aligned SAM/BAM
+T005,Transcriptome BAM
+T011,TPM / FPKM
+T012,Raw Counts
+T013,Quality Control Report
+T029,DE Result
+T030,DE Result
+T031,Processed Object
+T032,Processed Object
+T033,Processed Object
+T034,uBAM (Unmapped)
+T035,Processed Object
+T036,Processed Object
+T037,Processed Object
+T038,Public Somatic MAF
+T039,Processed Object

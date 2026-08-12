@@ -1,13 +1,9 @@
 //问题描述
-//STAR 的输入输出是什么？
-//GATK 接受什么格式，输出什么格式？
-//DESeq2 的输入是什么？
-//说明
-//这对工具说明和智能体回答都很有用。
+//某个工具的完整输入输出签名是什么？
 
-MATCH (t:Tool {toolName:'STAR'})
-OPTIONAL MATCH (t)-[:INPUT]->(i:Format)
-OPTIONAL MATCH (t)-[:OUTPUT]->(o:Format)
-RETURN t.toolName,
-       collect(DISTINCT i.name) AS inputs,
-       collect(DISTINCT o.name) AS outputs;
+MATCH (t:tool {tool_id: $tool_id})
+OPTIONAL MATCH (t)-[:input]->(fi:format)
+OPTIONAL MATCH (t)-[:output]->(fo:format)
+RETURN t.tool_id, t.tool_name,
+       collect(DISTINCT fi.format) AS inputs,
+       collect(DISTINCT fo.format) AS outputs;

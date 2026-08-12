@@ -225,8 +225,16 @@ class WorkflowComposerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Neo4j-backed"):
             PipelineRouter(None)
 
-    def test_03_atomic_catalog_has_twelve_tools(self):
-        self.assertEqual(len(self.composer.registered_methods.methods), 12)
+    def test_03_atomic_catalog_holds_the_registered_atomic_tools(self):
+        # 0811 registers 12 atomic tools; multiqc is deliberately excluded from
+        # the atomic layer, so the runtime menu is the remaining 11.
+        self.assertEqual(
+            set(self.composer.registered_methods.methods),
+            {
+                "bcftools", "bwa", "fastp", "fastqc", "featurecounts", "gatk",
+                "rsem", "samtools", "snpeff", "star", "trim_galore",
+            },
+        )
 
     def test_04_pipeline_nodes_are_not_in_atomic_menu(self):
         ids = {line.split(" | ", 1)[0][2:] for line in self.composer._method_menu_lines()}
@@ -339,13 +347,17 @@ class WorkflowComposerTests(unittest.TestCase):
             result["extensions"]["atomic_candidate_unavailable_reason"],
         )
 
-    def test_16_empty_model_output_surfaces_recommendation(self):
-        # Empty model output produces no atomic candidate, but the reviewed
-        # business pipeline still surfaces as `information` (recommendations
-        # feature, cf. test_47/test_48). candidate_count stays 0.
+    def test_16_empty_model_output_falls_back_to_reviewed_rnaseq_chain(self):
+        # The query is the paired RNA-seq upstream case, so an empty model
+        # output hands over to the deterministic chain built from the Neo4j
+        # registry. The business recommendation still surfaces beside it
+        # (recommendations feature, cf. test_47/test_48).
         result = self.top3(None)
-        self.assertEqual(result["selection_status"], "information")
-        self.assertEqual(result["candidate_count"], 0)
+        self.assertEqual(result["selection_status"], "ready")
+        self.assertEqual(
+            result["planner_metadata"]["deterministic_fallback"],
+            "rnaseq_upstream_from_neo4j_contract",
+        )
         self.assertGreaterEqual(result["recommendation_count"], 1)
 
     def test_17_unknown_tool_candidate_is_rejected(self):
@@ -355,25 +367,33 @@ class WorkflowComposerTests(unittest.TestCase):
             "inputs": {},
         }])
         result = self.top3(payload)
-        self.assertEqual(result["candidate_count"], 0)
         self.assertEqual(result["extensions"]["rejected_candidates"][0]["stage"], "validation")
-        self.assertIn(
-            "未通过 validation",
-            result["extensions"]["atomic_candidate_unavailable_reason"],
-        )
+        accepted_tools = {
+            tool_id
+            for candidate in result["candidates"]
+            for tool_id in candidate["extensions"]["internal_tool_ids"]
+        }
+        self.assertNotIn("invented_tool", accepted_tools)
 
     def test_18_invalid_next_edge_is_rejected(self):
+        # fastqc -> star has no NEXT edge in the 0811 graph and the data types
+        # are incompatible (FastQC emits a QC report, not reads).
         steps = [
             {
-                "step_id": "trim",
-                "tool_id": "trim_galore",
+                "step_id": "qc",
+                "tool_id": "fastqc",
                 "inputs": {"raw_fastq_read": {"asset_role": "fastq_r1"}},
             },
             {
-                "step_id": "report",
-                "tool_id": "multiqc",
-                "inputs": {},
-                "depends_on": ["trim"],
+                "step_id": "align",
+                "tool_id": "star",
+                "inputs": {
+                    "clean_fastq_read": {
+                        "from": {"step_id": "qc", "output": "quality_control_report"}
+                    },
+                    "genome_annotation": {"asset_role": "reference_file"},
+                },
+                "depends_on": ["qc"],
             },
         ]
         _methods, validation = self.composer._validate_custom_steps(steps)

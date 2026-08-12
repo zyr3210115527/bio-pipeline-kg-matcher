@@ -1,10 +1,12 @@
 # Bio Pipeline KG Matcher（生信流程与知识图谱匹配器）
 
-面向自然语言的生信工作流规划器。运行时工具唯一真源是真实 Neo4j 实例：当前登记 24 个 tool，包括 12 个 atomic tool、11 个完整 pipeline tool 和 1 个 task pipeline。公共推荐只使用 12 个 atomic tool；pipeline-level 节点仅供目录查询。
+面向自然语言的生信工作流规划器。运行时工具真源是真实 Neo4j 实例：0811 图谱登记 51 个 tool。运行时目录把 multiqc 排除在原子层之外，实际可编排 50 个：11 个 atomic tool、38 个 pipeline tool 和 1 个 task pipeline。公共推荐只使用 atomic tool；pipeline-level 节点仅供目录查询。
+
+数据层是 2026-08-11 交付的 0811 知识图谱（7,050 individual / 10,178 sample / 26,089 T1 / 36,759 T2），与数据提供方本人的实例逐项一致；落地过程与所有偏离项记录在 [`docs/图谱变更说明_0811_落地记录.md`](docs/图谱变更说明_0811_落地记录.md)。
 
 > **agent 端同门快速开始（clone 即可跑，基于 Neo4j）：**
 > clone 本仓库后，按 [`docs/MCP连接与运行指南.md`](docs/MCP连接与运行指南.md) 一步步做即可 ——
-> 恢复自带的 `datagraph-staging.dump` → 配 `.env.local`（`DATA_MATCHER_MODE=neo4j`）→
+> 导入 `data/0811` → 配 `.env.local`（`DATA_MATCHER_MODE=neo4j`）→
 > `python3 server.py` 起 MCP → `health_check` 自检 → 接入你的 agent 客户端。
 
 ## Top-3 编排
@@ -17,15 +19,28 @@
 
 ## 数据与 KG 后端
 
-`data/csv/` 同时保留两层数据：
+**Neo4j 里只有 0811 交付本身**，80,295 节点 / 352,245 关系，与数据提供方自带的实例逐项一致：
+`project`/`study`/`individual`/`sample`/`T1`/`T2`、字典 `format`/`function`/`modal`/`datalevel`、
+51 个 `tool` 节点，关系全小写。没有任何我方新增的标签、节点或属性。
 
-- `entities/`、`reference/`、`relations/`：2026-07-17 规范化 KG schema，供离线 matcher 和 Neo4j 共用；
-- 旧版平铺 CSV：作为物理文件路径兼容镜像。matcher 以规范化实体为准，只从旧 T1 表补齐 `file_path` 等新实体未携带的字段。
+我方的 slot 模型（槽位名、`builder_param`/`wdl_target` 等 WDL 绑定、输入变体、GATK
+tumor/normal 四槽）是**执行端合同而不是知识图谱事实**，留在 `data/csv/catalog/`，
+由 `tool_catalog_source.py` 在运行时与图合并。两边不一致的地方进 `tool_catalog()` 的
+`divergence` 字段，不做静默处理。
 
-Neo4j 是 pipeline/tool/slot/format/`NEXT`/`HAS_STEP` 的唯一运行时真源，同时提供 Demo 证据展示。Neo4j 不可用时不会退回到 WDL 工具。本地 WDL 只保留用于历史审查，公共 API 和 MCP 不从中解析工具。
+重建整张图（不需要任何目录同步步骤）：
 
-同步前先验证 CSV，再将审核后的 NEXT 写入真实实例。默认 `--apply`
-只修改 `source='curated-next-csv'` 的 NEXT，不修改工具定义、slot 或其他关系：
+```bash
+python3 scripts/python/import_0811.py --project-root . \
+  --neo4j-import-dir <neo4j-home>/import --uri "$NEO4J_URI" --user "$NEO4J_USER" \
+  --password-env NEO4J_PW --database "$NEO4J_DATABASE" \
+  --expected-database-id <db-id> --confirm-clear
+```
+
+图负责"有哪些工具、怎么连"，本地目录负责"每个槽位怎么绑到执行端"。Neo4j 不可用时不会退回到 WDL 工具。本地 WDL 只保留用于历史审查，公共 API 和 MCP 不从中解析工具。
+
+改动 `data/csv/catalog/` 后先验证 CSV 一致性；它不写图，所以不需要同步步骤，
+重启进程即生效：
 
 ```bash
 python3 scripts/python/validate_csv.py --project-root .
@@ -35,7 +50,7 @@ python3 scripts/python/validate_csv.py --project-root .
 
 ```bash
 python3 -m pip install -r requirements-neo4j.txt
-python3 scripts/python/sync_neo4j_tool_catalog.py --apply
+cp .env.local.example .env.local
 ```
 
 ## 运行模式
@@ -75,8 +90,8 @@ FORCE_RULE=1 python3 app.py    # 完全离线
 | 工具 | 功能 |
 |------|------|
 | `route_pipeline_request` | 一次 LLM 生成业务 pipeline 推荐与原子候选，返回 Neo4j 工具/数据证据及严格校验后的 atomic Top-3 |
-| `list_pipeline_capabilities` | 列出 Neo4j 中 12 个 pipeline/task-pipeline tool、slot 及锁定步骤 |
-| `list_workflow_methods` | 列出 12 个 Neo4j atomic tool、24 个完整目录实体及拆解状态 |
+| `list_pipeline_capabilities` | 列出 39 个 pipeline/task-pipeline tool、slot 及锁定步骤 |
+| `list_workflow_methods` | 列出 11 个可编排 atomic tool、50 个运行时目录实体及拆解状态 |
 | `validate_tool_chain` | 校验调用方提供的原子链 |
 | `query_data_availability` | 查询 pipeline 或原子链的数据可用性 |
 | `health_check` | 验证统一图和只读连接状态 |
@@ -86,6 +101,7 @@ FORCE_RULE=1 python3 app.py    # 完全离线
 
 ```bash
 python3 -m unittest discover -s tests -v
+python3 scripts/probe_30_prompts.py            # 30 条自拟提问的契约探针
 python3 -m py_compile server.py app.py intent.py pipeline_router.py workflow_composer.py runtime_config.py neo4j_observability.py
 RUN_REAL_INTEGRATION=1 python3 -m unittest discover -s tests -p 'test_runtime_integrations.py' -v  # 需要 .env.local 凭证
 ```
@@ -99,6 +115,9 @@ RUN_REAL_INTEGRATION=1 python3 -m unittest discover -s tests -p 'test_runtime_in
 
 ## 相关文档
 
+- `docs/图谱变更说明_0811_落地记录.md`：**0811 图谱落地记录，逐条说明哪些按数据提供方的来、哪些按我方来及原因**；
+- `docs/图谱变更说明_旧版vs新版_20260811.md`：数据提供方给出的 0723 vs 0811 变更说明；
+- `docs/catalog_0811_extension_review.md`：27 个新工具的 slot 建模评审单与 atomic 提升候选；
 - `项目说明.md`：原系统设计与 benchmark 说明；
 - `docs/MCP连接与运行指南.md`：**agent 端 clone-and-run 全流程（基于 Neo4j，恢复 dump→起 MCP→接入客户端）**；
 - `MCP连接文档.md`：MCP 接入说明；

@@ -11,6 +11,33 @@ from typing import Any, Dict, Optional
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_EXPECTATIONS_PATH = REPO_ROOT / "config" / "unified_graph_expectations.json"
 
+# The data provider has shipped the same logical entities under capitalized
+# labels (update728) and lowercase ones (0811). The contract is written against
+# the logical name; the reader resolves whichever alias the database actually
+# has. Uppercase is tried first so an older backend keeps its exact behavior.
+LEGACY_LABEL_ALIASES: Dict[str, tuple[str, ...]] = {
+    "Project": ("Project", "project"),
+    "Study": ("Study", "study"),
+    "Sample": ("Sample", "sample"),
+    "Individual": ("Individual", "individual"),
+    "T1": ("T1", "t1"),
+    "T2": ("T2", "t2"),
+    "Modal": ("Modal", "modal"),
+}
+
+
+def resolve_legacy_labels(
+    present: Any, logical_names: Optional[Any] = None
+) -> Dict[str, Optional[str]]:
+    """Map logical label names onto the aliases actually present in a database."""
+    available = set(present)
+    wanted = list(logical_names) if logical_names is not None else list(LEGACY_LABEL_ALIASES)
+    resolved: Dict[str, Optional[str]] = {}
+    for logical in wanted:
+        aliases = LEGACY_LABEL_ALIASES.get(logical, (logical,))
+        resolved[logical] = next((name for name in aliases if name in available), None)
+    return resolved
+
 
 def expectations_path(path: Optional[str | Path] = None) -> Path:
     configured = path or os.environ.get("DATAGRAPH_EXPECTATIONS_PATH")

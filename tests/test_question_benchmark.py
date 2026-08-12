@@ -35,18 +35,16 @@ class QuestionBenchmarkTests(unittest.TestCase):
                     case["expected_data"],
                 )
 
-    def test_missing_catalog_pipelines_are_explicit(self):
-        missing = {"cellranger_workflow", "wes_somatic_pair"}
+    def test_every_benchmark_pipeline_is_registered_in_neo4j(self):
+        # cellranger_workflow (T003) and wes_somatic_pair (T064) were the last two
+        # gaps; the 0811 tool table registers both, so no benchmark case may fall
+        # back to missing_from_neo4j any more.
         for case in load_question_benchmark()["cases"]:
             result = self.composer.plan(case["query"])
             recommendation = result["recommendations"][0]
-            status = recommendation["tool"]["catalog_status"]
-            expected = (
-                "missing_from_neo4j"
-                if case["expected_pipeline_id"] in missing
-                else "registered"
+            self.assertEqual(
+                recommendation["tool"]["catalog_status"], "registered", case["case_id"]
             )
-            self.assertEqual(status, expected, case["case_id"])
 
     def test_available_assets_never_mix_studies(self):
         for case in load_question_benchmark()["cases"]:

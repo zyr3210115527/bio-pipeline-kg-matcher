@@ -143,7 +143,7 @@ def main() -> int:
     format_path = CATALOG / "format.csv"
     format_fields, formats = read(format_path)
     upsert(formats, lambda item: item.get("identity"), {
-        "identity": "format:interval_list", "labels": "Format|format",
+        "identity": "catalog_format:interval_list", "labels": "CatalogFormat|catalog_format",
         "format": "interval_list", "description": "GATK interval list",
     })
     write(format_path, format_fields, formats)
@@ -181,19 +181,19 @@ def main() -> int:
             else []
         )
         for fmt in allowed_formats:
-            add_rel("ALLOW_FORMAT", slot_identity, f"format:{fmt}")
-            add_rel("MANIFEST_AS", f"artifact_type:{row['artifact']}", f"format:{fmt}")
+            add_rel("ALLOW_FORMAT", slot_identity, f"catalog_format:{fmt}")
+            add_rel("MANIFEST_AS", f"artifact_type:{row['artifact']}", f"catalog_format:{fmt}")
     write(relationship_path, rel_fields, relationships)
 
     next_path = RELATIONS / "tool_relationship.csv"
     next_fields, next_rows = read(next_path)
     for row in (
-        {"tool_id": "T01", "next_tool_id": "T03", "kind": "data", "output": "clean_fastq_read_r1", "input": "clean_fastq_read_r1"},
-        {"tool_id": "T01", "next_tool_id": "T03", "kind": "data", "output": "clean_fastq_read_r2", "input": "clean_fastq_read_r2"},
-        {"tool_id": "T04", "next_tool_id": "T05", "kind": "data", "output": "sorted_dedup_bam", "input": "tumor_bam"},
-        {"tool_id": "T04", "next_tool_id": "T05", "kind": "data", "output": "bai", "input": "tumor_bai"},
-        {"tool_id": "T04", "next_tool_id": "T05", "kind": "data", "output": "sorted_dedup_bam", "input": "normal_bam"},
-        {"tool_id": "T04", "next_tool_id": "T05", "kind": "data", "output": "bai", "input": "normal_bai"},
+        {"tool_id": "T001", "next_tool_id": "T006", "kind": "data", "output": "clean_fastq_read_r1", "input": "clean_fastq_read_r1"},
+        {"tool_id": "T001", "next_tool_id": "T006", "kind": "data", "output": "clean_fastq_read_r2", "input": "clean_fastq_read_r2"},
+        {"tool_id": "T007", "next_tool_id": "T008", "kind": "data", "output": "sorted_dedup_bam", "input": "tumor_bam"},
+        {"tool_id": "T007", "next_tool_id": "T008", "kind": "data", "output": "bai", "input": "tumor_bai"},
+        {"tool_id": "T007", "next_tool_id": "T008", "kind": "data", "output": "sorted_dedup_bam", "input": "normal_bam"},
+        {"tool_id": "T007", "next_tool_id": "T008", "kind": "data", "output": "bai", "input": "normal_bai"},
     ):
         upsert(
             next_rows,

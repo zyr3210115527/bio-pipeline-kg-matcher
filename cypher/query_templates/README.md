@@ -1,132 +1,60 @@
-# Query Templates
+# 查询模板
 
-## 1. Purpose
+针对 0811 图谱重写。每条模板都用 `EXPLAIN` 对真实实例校验过，标签、关系类型和属性名
+与当前图一致。
 
-This directory contains reusable Cypher query templates for the current biomedical data-tool knowledge graph prototype.
+上一版模板写的是更早的原型模型（`Data` / `Cohort` / `ToolType` 节点，
+`BELONG_TO` / `DERIVED_FROM` / `IS_TOOL_TYPE` 关系，`toolId` / `toolName` 属性），
+这些标签在改造前的图里就已经不存在，无法机械改名迁移，因此整体重写。
+师姐的变更说明 §10.7 也点了这一项。
 
-The templates are designed to support:
+## 图里就是 0811 交付本身
 
-- tool retrieval
-- workflow retrieval
-- data lineage tracing
-- downstream tool recommendation
-- combined filtering queries
-- workflow path exploration
+**数据层（0811，师姐交付）**
 
-These templates are intended as the first query layer for future agent-oriented access.
+| 节点 | 主键 |
+|---|---|
+| `project` / `study` / `individual` / `sample` | `*_accession` |
+| `T1` / `T2` | `T1_id` / `T2_id` |
+| `tool` | `tool_id`（T001–T066） |
+| `format` / `function` / `modal` / `datalevel` | `format` / `function` / `modal` / `level` |
 
----
+关系全部小写：`in_project`、`in_study`、`in_individual`、`in_sample`、`in_format`、
+`in_level`、`in_modal`、`generated_from`、`has_function`、`input`、`output`、
+`next_tool`、`suitable_for`。
 
-## 2. Query Categories
+**图里只有这一层。** 我方的 slot 模型（槽位名、WDL 绑定、输入变体、GATK 四槽）
+不在 Neo4j 里，它们留在 `data/csv/catalog/`，由 `tool_catalog_source.py` 在运行时
+与这张图合并。所以这里的模板只针对她的标签写，不会出现 `tool_id` / `io_slot`。
 
-### 2.1 Basic retrieval
-Basic retrieval templates answer direct lookup questions such as:
-- which tools accept a given input format
-- which tools produce a given output format
-- which workflows exist
-- which tools are used by a workflow
+## 模板清单
 
-### 2.2 Recommendation-oriented queries
-Recommendation queries support:
-- next possible tools for a current format
-- candidate workflows from a current format
-- possible downstream outputs from a current state
+| 文件 | 回答的问题 | 参数 |
+|---|---|---|
+| `find_tools_by_function.cypher` | 哪些工具承担某个功能 | `$keyword` |
+| `find_tools_by_input_format.cypher` | 哪些工具能吃某个语义格式 | `$format` |
+| `find_tools_by_output_format.cypher` | 哪些工具能产出某个语义格式 | `$format` |
+| `find_tool_input_output.cypher` | 某个工具的完整 IO 签名 | `$tool_id` |
+| `find_tools_by_modal.cypher` | 某个组学模态适用哪些工具 | `$modal` |
+| `recommend_next_tools_via_output_match.cypher` | 某工具之后能接什么（按格式相接） | `$tool_id` |
+| `trace_next_tool_chain.cypher` | 沿 `next_tool` 走出的工具链 | `$tool_id` |
+| `trace_paths_from_input_format_to_output_format.cypher` | 从输入格式能否到达目标输出格式 | `$input_format`、`$output_format` |
+| `find_t1_by_study_and_format.cypher` | 某研究下某语义格式的一级数据 | `$study_accession`、`$format` |
+| `find_t1_by_modal.cypher` | 某模态的一级数据在各研究的分布 | `$modal` |
+| `trace_data_lineage.cypher` | 某个二级结果由哪些一级数据产生 | `$t2_id` |
+| `trace_sample_hierarchy.cypher` | 一级数据往上追到样本、个体、研究、项目 | `$t1_id` |
+| `find_paired_tumor_normal_samples.cypher` | 某研究里哪些个体同时有 tumor 和 normal | `$study_accession` |
+| `count_data_by_study.cypher` | 每个研究的 T1/T2 计数，核对导入完整性 | 无 |
+| `count_by_semantic_format.cypher` | T1/T2 的语义格式分布 | 无 |
 
-### 2.3 Combined filtering queries
-Combined queries allow filtering by multiple conditions, such as:
-- function + format
-- multiomics + platform
-- workflow + output format
-- cohort + format + stage
+## 用这些模板时要知道的数据缺口
 
-### 2.4 Workflow path queries
-Workflow path queries support:
-- tracing ordered tool chains
-- inspecting next-tool relations
-- finding start or end tools in workflow-like chains
-
----
-
-## 3. Current Graph Assumptions
-
-The current templates are based on the following graph implementation rules:
-
-- Workflow is represented as a `Tool`
-- Workflow type is indicated by:
-  - `(Tool)-[:IS_TOOL_TYPE]->(ToolType {name:'workflow'})`
-- `INPUT` and `OUTPUT` point to shared `Format` nodes
-- `NEXT_TOOL` is currently represented globally between Tool nodes
-- `USES_TOOL` represents workflow membership
-- `DERIVED_FROM` represents data lineage
-- `SUBCLASS_OF` is used for cohort hierarchy
-
----
-
-## 4. Template Index
-
-| File | Category | Main Question |
-|------|----------|---------------|
-| `find_tools_by_input_format.cypher` | Basic | Which tools accept a given input format? |
-| `find_tools_by_output_format.cypher` | Basic | Which tools produce a given output format? |
-| `list_workflows.cypher` | Basic | What workflows exist in the graph? |
-| `find_workflows_by_input_format.cypher` | Basic | Which workflows accept a given input format? |
-| `find_tools_used_by_workflow.cypher` | Basic | Which tools are used by a given workflow? |
-| `trace_next_tool_chain.cypher` | Workflow | What tool order relations exist? |
-| `find_tool_input_output.cypher` | Basic | What are the input and output formats of a tool? |
-| `recommend_tools_by_current_format.cypher` | Recommendation | What tools can be used next for a given format? |
-| `find_data_format_stage.cypher` | Basic | What is the format and stage of a data instance? |
-| `trace_data_lineage.cypher` | Basic | What is the upstream lineage of a data instance? |
-| `find_data_by_cohort.cypher` | Basic | What data belong to a given cohort? |
-| `trace_cohort_hierarchy.cypher` | Basic | What is the hierarchy of a cohort? |
-| `find_tools_by_function.cypher` | Basic | Which tools support a given function? |
-| `find_tools_by_multiomics.cypher` | Basic | Which tools apply to a given multiomics domain? |
-| `find_tools_by_platform.cypher` | Basic | Which tools support a given platform? |
-
-### Second batch
-| File | Category | Main Question |
-|------|----------|---------------|
-| `recommend_workflows_by_current_format.cypher` | Recommendation | Which workflows are candidates for a current format? |
-| `recommend_next_tools_via_output_match.cypher` | Recommendation | Which tools can follow a tool based on output-input format match? |
-| `find_tools_by_function_and_input.cypher` | Combined | Which tools satisfy both function and input format? |
-| `find_tools_by_multiomics_and_platform.cypher` | Combined | Which tools satisfy both multiomics and platform? |
-| `find_workflows_by_input_and_output.cypher` | Combined | Which workflows match a required input and output format? |
-| `find_data_by_cohort_format_stage.cypher` | Combined | Which data match a cohort, format, and processing stage? |
-| `find_workflow_start_tools.cypher` | Workflow | Which tools are likely workflow starts? |
-| `find_workflow_end_tools.cypher` | Workflow | Which tools are likely workflow ends? |
-| `trace_paths_from_input_format_to_output_format.cypher` | Workflow | What tool paths connect one format to another? |
-
----
-
-## 5. Usage Notes
-
-### 5.1 Replace hard-coded values
-Most templates use hard-coded example values such as:
-- `FASTQ`
-- `BAM`
-- `RNASeq_DE_Analysis_Workflow`
-- `variant_analysis`
-
-These should be replaced dynamically when used by applications or agents.
-
-### 5.2 Current prototype limitation
-Since `NEXT_TOOL` is currently global and not workflow-scoped:
-- path-related queries reflect current known tool order relations in the graph
-- they do not yet guarantee workflow-local ordering semantics
-
-### 5.3 Recommendation usage
-Recommendation templates should currently be interpreted as:
-- graph-based candidate suggestion
-- not strict execution planning
-- not yet full provenance-aware workflow composition
-
----
-
-## 6. Suggested Next Layer
-
-These templates can later be wrapped into:
-
-- Python query functions
-- API endpoints
-- NL2Cypher prompt templates
-- GraphRAG retrieval units
-- agent tool functions
+- T1 有 6,848 行没有 `sample_accession`，这些行不会有 `in_sample` 边，
+  `trace_sample_hierarchy` 对它们只能追到 study。
+- T2 有 3,878 行没有 `run_accession`，不参与 `generated_from` 溯源。
+- `function` 是整句中文描述而不是短标签，所以 `find_tools_by_function` 用 `CONTAINS`
+  而不是等值匹配。
+- `next_tool` 只有 22 条且集中在 T001–T013，`trace_next_tool_chain` 对新增工具走不出链。
+- `sample.specimen_types` 不是 0811 自带的，由
+  `cypher/import0811/06_backfill_sample_specimen.cypher` 从改造前的图回填 8,353 行，
+  覆盖不到 0811 新增的 1,825 个样本。

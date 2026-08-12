@@ -15,7 +15,7 @@ _PROCESS_DATA_MATCHER_MODE_EXPLICIT = "DATA_MATCHER_MODE" in os.environ
 initialize_runtime()
 
 from data_matcher.factory import build_data_matcher  # noqa: E402
-from data_matcher.expectations import load_expectations  # noqa: E402
+from data_matcher.expectations import load_expectations, resolve_legacy_labels  # noqa: E402
 from neo4j_observability import Neo4jClient  # noqa: E402
 from pipeline_router import (  # noqa: E402
     PipelineRouter,
@@ -442,6 +442,7 @@ def _health() -> Dict[str, Any]:
         "backend_schema": None,
         "verification_level": None,
         "legacy_label_counts": {},
+        "legacy_labels_resolved": {},
         "expected_legacy_label_counts": legacy_expected["label_counts"],
         "backend_snapshot": None,
         "warnings": [],
@@ -456,7 +457,7 @@ def _health() -> Dict[str, Any]:
             row = session.run(
                 "MATCH (n) WHERE n.datagraph_managed = true "
                 "WITH collect(DISTINCT n.snapshot_id) AS snapshots,count(n) AS data_count "
-                "OPTIONAL MATCH (t:tool_id) "
+                "OPTIONAL MATCH (t:tool) "
                 "RETURN snapshots,data_count,count(t) AS tool_count"
             ).single()
         snapshots = list(row["snapshots"] or [])
@@ -473,26 +474,37 @@ def _health() -> Dict[str, Any]:
             )
         else:
             with driver.session(database=client.database, default_access_mode=client._read_access) as session:
-                legacy_rows = list(session.run(
-                    "MATCH (n) WHERE any(label IN labels(n) WHERE label IN $labels) "
-                    "UNWIND labels(n) AS label WITH label,count(n) AS count "
-                    "WHERE label IN $labels RETURN label,count ORDER BY label",
-                    labels=list(legacy_expected["label_counts"]),
-                ))
+                # The contract is keyed by logical label; 0811 ships them
+                # lowercase, so count whichever alias this database actually has
+                # instead of reading zeros for every entity.
+                present = {
+                    str(item["label"])
+                    for item in session.run("CALL db.labels() YIELD label RETURN label")
+                }
+                resolved_labels = resolve_legacy_labels(
+                    present, legacy_expected["label_counts"]
+                )
+                legacy_counts = {}
+                for logical, actual in resolved_labels.items():
+                    if not actual:
+                        legacy_counts[logical] = 0
+                        continue
+                    legacy_counts[logical] = int(
+                        session.run(f"MATCH (n:`{actual}`) RETURN count(n) AS count").single()["count"]
+                    )
                 snapshot_row = session.run(
                     "MATCH (s:BackendSnapshot) RETURN properties(s) AS snapshot "
                     "ORDER BY s.imported_at DESC LIMIT 1"
                 ).single()
-            legacy_counts = {
-                str(item["label"]): int(item["count"])
-                for item in legacy_rows
-            }
-            for label in legacy_expected["label_counts"]:
-                legacy_counts.setdefault(label, 0)
+            health["legacy_labels_resolved"] = resolved_labels
             backend_snapshot = dict(snapshot_row["snapshot"]) if snapshot_row else None
             health["backend_schema"] = "legacy-update728"
+            health["backend_contract_version"] = legacy_expected["schema_version"]
             health["legacy_label_counts"] = legacy_counts
             health["datagraph_node_count"] = sum(legacy_counts.values())
+            # The legacy branch only counts the six core entity labels, so compare
+            # against the core contract rather than the whole data-layer total.
+            health["expected_datagraph_node_count"] = legacy_expected["core_node_count"]
             health["backend_snapshot"] = backend_snapshot
             health["snapshot_id"] = (
                 str(backend_snapshot.get("snapshot_id") or "")

@@ -1,0 +1,608 @@
+{
+  "repeat": 1,
+  "force_rule": false,
+  "records": [
+    {
+      "run": 1,
+      "case_id": "A1",
+      "group": "A",
+      "prompt": "你们能做什么？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A2",
+      "group": "A",
+      "prompt": "有哪些原子工具？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A3",
+      "group": "A",
+      "prompt": "有哪些流程可以处理 MAF 文件？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A4",
+      "group": "A",
+      "prompt": "有哪些流程支持单细胞数据？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A5",
+      "group": "A",
+      "prompt": "目录里有哪些工具能输出 BAM？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "B1",
+      "group": "B",
+      "prompt": "双端 RNA-seq FASTQ 做完整上游分析。",
+      "elapsed_s": 52.8,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 2,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ],
+        [
+          "trim_galore",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
+      ],
+      "recommendations": [
+        "rnaseq_singletask"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "B2",
+      "group": "B",
+      "prompt": "我有 paired-end RNA-seq 数据，想得到基因表达计数矩阵。",
+      "elapsed_s": 54.7,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
+      ],
+      "recommendations": [
+        "rnaseq_singletask"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "B3",
+      "group": "B",
+      "prompt": "RNA-seq 原始数据怎么做质控、比对和表达定量？",
+      "elapsed_s": 54.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
+      ],
+      "recommendations": [
+        "rnaseq_singletask"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": "rnaseq_upstream_from_neo4j_contract",
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "B4",
+      "group": "B",
+      "prompt": "从双端 RNA-seq FASTQ 出发做 STAR 比对，再用 featureCounts 计数。",
+      "elapsed_s": 42.4,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 2,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ],
+        [
+          "trim_galore",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
+      ],
+      "recommendations": [
+        "rnaseq_singletask"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "B5",
+      "group": "B",
+      "prompt": "完整双端 RNA-seq 上游流程，但去掉 RSEM，只保留 featureCounts 计数。",
+      "elapsed_s": 63.9,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 2,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "fastqc",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ],
+        [
+          "trim_galore",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
+      ],
+      "recommendations": [
+        "rnaseq_singletask"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "C1",
+      "group": "C",
+      "prompt": "我有双端 WES FASTQ，想做比对并得到排序去重后的 BAM。",
+      "elapsed_s": 52.3,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 2,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "samtools_alignment_processing"
+        ],
+        [
+          "bwa_mem_paired",
+          "samtools_alignment_processing"
+        ]
+      ],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "C2",
+      "group": "C",
+      "prompt": "我有 tumor-normal 配对的 WES 双端 FASTQ，想做体细胞突变检测。",
+      "elapsed_s": 61.7,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "samtools_alignment_processing",
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "samtools_alignment_processing",
+          "gatk_wes_somatic"
+        ]
+      ],
+      "recommendations": [
+        "wes_somatic_pair"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "C3",
+      "group": "C",
+      "prompt": "我只有一个样本的 WES 数据，想直接用 GATK call 变异。",
+      "elapsed_s": 8.2,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "单样本 GATK 变异检测当前外部 Knowledge Card 只支持 tumor-normal 四槽形式，无法表达单样本 sorted_dedup_bam 输入，candidates 为空。"
+    },
+    {
+      "run": 1,
+      "case_id": "C4",
+      "group": "C",
+      "prompt": "从 WES FASTQ 一路做到过滤并注释后的 VCF，路径要经过 GATK、BCFtools 和 SnpEff。",
+      "elapsed_s": 34.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "wes_somatic_pair"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "当前 Knowledge Card 合同不能把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递，因此 GATK -> BCFtools -> SnpEff 的过滤注释链无法原子化，candidates 为空。"
+    },
+    {
+      "run": 1,
+      "case_id": "C5",
+      "group": "C",
+      "prompt": "WGS 双端 FASTQ 做 BWA 比对。",
+      "elapsed_s": 23.1,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "bwa_mem_paired"
+        ]
+      ],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "D1",
+      "group": "D",
+      "prompt": "我有肝癌 MAF，先做突变景观，再做 TMB 生存分析。",
+      "elapsed_s": 29.9,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "突变景观与 TMB 生存分析未在 Neo4j atomic 目录中原子化，且没有同时覆盖这两个终点的 registered 业务流程。"
+    },
+    {
+      "run": 1,
+      "case_id": "D2",
+      "group": "D",
+      "prompt": "用基因表达矩阵和临床表做 WGCNA 共表达网络分析。",
+      "elapsed_s": 12.6,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "wgcna",
+        "wgcna_hub",
+        "wgcna_module_trait"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "WGCNA 共表达网络分析在当前原子工具目录中尚未原子化，暂不支持生成可执行原子候选链。"
+    },
+    {
+      "run": 1,
+      "case_id": "D3",
+      "group": "D",
+      "prompt": "表达矩阵做差异表达分析，然后做 GO 富集。",
+      "elapsed_s": 10.7,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "diff_expr_go"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "差异表达分析和 GO 富集分析尚未原子化，原子工具目录中没有对应方法，暂不支持生成可执行候选链。"
+    },
+    {
+      "run": 1,
+      "case_id": "D4",
+      "group": "D",
+      "prompt": "用临床随访数据画 Kaplan-Meier 生存曲线。",
+      "elapsed_s": 17.6,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "Kaplan-Meier 生存曲线分析尚未在 Neo4j 原子工具目录中原子化，且用户仅提供临床随访数据，与现有需表达矩阵或突变数据的业务流程均不完整匹配。"
+    },
+    {
+      "run": 1,
+      "case_id": "D5",
+      "group": "D",
+      "prompt": "单细胞数据做细胞间通讯分析。",
+      "elapsed_s": 13.4,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "scrna_cell_communication"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "当前 atomic 目录只有 bulk RNA-seq 和 WES 工具，未收录 CellChat/CellPhoneDB/NicheNet 等单细胞通讯分析方法，该分析尚未原子化，暂不支持生成候选链"
+    },
+    {
+      "run": 1,
+      "case_id": "D6",
+      "group": "D",
+      "prompt": "把原始测序 FASTQ 整理成 GATK 后续分析可用的 uBAM 文件。",
+      "elapsed_s": 3.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": "LLM 未返回可评估的原子工具候选链。"
+    },
+    {
+      "run": 1,
+      "case_id": "E1",
+      "group": "E",
+      "prompt": "我只有 MAF 文件，想用 STAR 做基因组比对。",
+      "elapsed_s": 5.2,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "输入冲突：STAR 要求 RNA-seq 的 clean_fastq_read 和 genome_annotation，而 MAF 是变异注释文件，不具备可比对的测序 reads，无法生成任何合法候选链。"
+    },
+    {
+      "run": 1,
+      "case_id": "E2",
+      "group": "E",
+      "prompt": "我有 RNA-seq 表达矩阵，想跑 DNA 体细胞变异检测流程。",
+      "elapsed_s": 6.1,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "RNA-seq 表达矩阵与 DNA 体细胞变异检测的输入要求冲突：缺失原始测序 FASTQ/BAM 文件及 tumor/normal 样本角色，无法从表达矩阵倒推执行 bwa/gatk 等变异检测链。"
+    },
+    {
+      "run": 1,
+      "case_id": "E3",
+      "group": "E",
+      "prompt": "我手上只有临床信息表，想做基因组比对拿到 BAM。",
+      "elapsed_s": 6.1,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "输入冲突：仅有临床信息表，没有 FASTQ/reads 数据，无法执行基因组比对生成 BAM"
+    },
+    {
+      "run": 1,
+      "case_id": "E4",
+      "group": "E",
+      "prompt": "用已有的 VCF 文件做 FastQC 测序质量评估。",
+      "elapsed_s": 8.4,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "输入冲突：FastQC 仅支持 FASTQ 测序数据，无法以已有 VCF 文件作为输入进行测序质量评估。"
+    },
+    {
+      "run": 1,
+      "case_id": "F1",
+      "group": "F",
+      "prompt": "HRA000021 这个研究的数据可以做哪些分析？",
+      "elapsed_s": 28.1,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "未提供 HRA000021 的数据类型、样本布局和分析目标，无法从目录匹配业务 pipeline 或构造 atomic candidate。"
+    },
+    {
+      "run": 1,
+      "case_id": "F2",
+      "group": "F",
+      "prompt": "我有 10x 单细胞测序的 FASTQ 文件，想生成细胞-基因表达矩阵。",
+      "elapsed_s": 15.9,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "cellranger_workflow"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "目录中尚未原子化 CellRanger 等可处理 10x 单细胞 FASTQ（barcode/UMI）并产出细胞-基因表达矩阵的工具，故无法生成可执行原子链。"
+    },
+    {
+      "run": 1,
+      "case_id": "F3",
+      "group": "F",
+      "prompt": "有没有 WES 的 tumor/normal 配对数据可以做体细胞突变分析？",
+      "elapsed_s": 44.3,
+      "passed": true,
+      "problems": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "bwa_mem_paired",
+          "samtools_alignment_processing",
+          "samtools_alignment_processing",
+          "gatk_wes_somatic"
+        ]
+      ],
+      "recommendations": [
+        "wes_somatic_pair"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "F4",
+      "group": "F",
+      "prompt": "用 bulk RNA-seq 表达矩阵和临床表做免疫浸润分析。",
+      "elapsed_s": 11.2,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "immune_infiltration_iobr"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "免疫浸润分析尚未原子化，目录中不存在 CIBERSORT 或免疫去卷积的 atomic tool，无法生成可执行原子链。"
+    },
+    {
+      "run": 1,
+      "case_id": "F5",
+      "group": "F",
+      "prompt": "我有比对好的 BAM 和临床数据，想做 CNV 分析。",
+      "elapsed_s": 15.8,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        "cnvkit_cnv_clinical"
+      ],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "CNV 分析所需的 CNVkit 尚未原子化为 Neo4j 候选工具，当前 atomic 目录无法构造 CNV 分割候选链。"
+    }
+  ]
+}
