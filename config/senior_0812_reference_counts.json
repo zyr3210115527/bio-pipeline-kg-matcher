@@ -38,9 +38,10 @@
   "notes": [
     "0812 第二版相对第一版：T2 +49（HRA005191 单细胞分析结果产物：目录、jpeg、csv/tsv、rds），",
     "四条 T2 关系各 +49；这 49 个没有 generated_from 边，不挂 T1。另有 3 行旧 T2 的 size 修正。",
-    "她的新 individual.csv 删掉了 22 个 adjuvant_treatment_* 列（2,108 + 1,076 + …个值），",
-    "但她的实盘图里这些属性仍在且计数与旧 CSV 完全一致——她是增量加的 49 个 T2，没按新 CSV 重建。",
-    "我方 data/0812/entities/individual.csv 因此保留旧版 111 列，以复现她的实盘图。",
-    "相对 0811：formats 删掉两个拼错的重复项，subclass_of 4 条为新增。"
+    "第二版还修对了 351 个 tumor/normal（HRA016026 的 350 个 *_Tumor 从 Normal 改成 Tumor，",
+    "HRA001748 一例），但同时清空了 HRA000073 的 325 个 tissue_type、删掉 individual 的 22 个",
+    "adjuvant_treatment_* 列。她的实盘图这三处都还是旧值——她只增量插了 49 个 T2，没重跑实体导入。",
+    "我方 data/0812 由 scripts/python/reconcile_delivery_csv.py 生成：改值取新版、删值回填旧版。",
+    "因此节点与关系计数和她的实盘图逐项一致，属性上比她的图多 351 处修正、不少任何一格。"
   ]
 }

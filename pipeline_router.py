@@ -274,13 +274,13 @@ ROLE_LABELS = {
 #   ("name_suffix",    {后缀: 角色})
 #   ("study_constant", 角色)
 STUDY_ROLE_OVERRIDES: Dict[str, Tuple[str, Any]] = {
-    # 700 个样本被整体标成 Normal，其中 350 个名字就叫 L0240_Tumor。按名字来。
-    "HRA016026": ("name_suffix", {"_Tumor": "tumor", "_Normal": "normal"}),
     # 胶质瘤研究：286 个 T_ 开头的组织标 Tumor 没问题，286 个 B_ 开头的血样里
     # 却有 104 个标成 Tumor、182 个标成 Normal。同前缀同 specimen 分成两派，
     # 血样在这里是配对的对照，按 specimen 统一判。
     "HRA000071": ("specimen_type", {"Blood": "normal",
                                      "Patient Solid Tissue": "tumor"}),
+    # HRA016026 曾经整体标成 Normal，0812 第二版已按样本名改对（350/350），
+    # 对应的 name_suffix 兜底已撤除。
 }
 
 _ROLE_BY_TISSUE_TYPE = {"tumor": "tumor", "normal": "normal"}

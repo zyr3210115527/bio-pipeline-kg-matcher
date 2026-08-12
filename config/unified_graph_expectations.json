@@ -8,12 +8,12 @@
     "graph_fingerprint": "",
     "schema_version": "senior-0812/v1",
     "snapshot_id": "",
-    "source_csv_sha256": "ecfdcecfc79dcebf30573de3a2a05ab06238296869f7c402c25abe176cad98b9",
+    "source_csv_sha256": "c3f8d361a3aa7853f3db84fa1b50ff1e2f0ddd29fdb3ea77f4c678bd702bf7c4",
     "comment": "Neo4j 里只有 0812 交付本身，没有任何我方新增的标签、节点或属性。逐项计数见 config/senior_0812_reference_counts.json。"
   },
   "legacy_backend": {
     "schema_version": "senior-0812/v1",
-    "source_sha256": "ecfdcecfc79dcebf30573de3a2a05ab06238296869f7c402c25abe176cad98b9",
+    "source_sha256": "c3f8d361a3aa7853f3db84fa1b50ff1e2f0ddd29fdb3ea77f4c678bd702bf7c4",
     "core_node_count": 80163,
     "label_counts": {
       "Project": 18,
