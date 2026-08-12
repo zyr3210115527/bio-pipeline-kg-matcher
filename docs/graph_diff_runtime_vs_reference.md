@@ -1,7 +1,7 @@
 # 数据图 Diff：运行图 vs 参考数据集
 
 > 审计日期：2026-07-29
-> 运行图：当前 Neo4j 活图（MCP 后端查询用，= `docs/mcp_delivery/neo4j/datagraph-staging.dump`）
+> 运行图：审计当时的 Neo4j 活图（对应已删除的 datagraph-staging dump，即 0811 改造前的图）
 > 参考数据集：上游交付的全量 CSV（entities + reference + relations）
 > 说明：本报告为一次结构性核对，供后续对齐讨论参考；不涉及悬空 sample 议题（那是源 CSV 内部的引用断链，另行处理）。
 

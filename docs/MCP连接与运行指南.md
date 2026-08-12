@@ -3,12 +3,14 @@
 > 本文面向 **agent 端同门**：从 GitHub clone 本仓库后，如何在本机跑起一个**基于 Neo4j** 的完整
 > MCP 服务，并把它接入你的 agent 客户端。全流程走 Neo4j 后端，不使用 CSV 兜底模式。
 >
-> **2026-08-12 起数据后端换成 0811 图谱。** `docs/mcp_delivery/neo4j/datagraph-staging.dump`
-> 是改造前的旧图，照它恢复会拿到旧数据；现在的主路径是从 `data/0811/` 直接导入，见第 4 节。
+> **2026-08-12 起数据后端换成 0811 图谱，且不再随包提供 dump。**
+> 图由 `data/0811/` 的 30 个 CSV 经 `scripts/python/import_0811.py` 重建，约 17 秒，
+> 结果与数据提供方自带实例逐项一致。dump 是同一份数据的第二个副本，必然漂移
+> （旧的那份就停在 7 月 30 日），且新图 352,245 条关系导出后有 134 MiB，
+> 超过 GitHub 单文件 100 MiB 上限，因此已删除。见第 4 节。
 > 落地细节与偏离项见 [`docs/图谱变更说明_0811_落地记录.md`](图谱变更说明_0811_落地记录.md)。
 >
 > 配套文档：
-> - 恢复细节（旧 dump 路径，仅历史参考）：[`docs/mcp_delivery/datagraph_restore_guide.md`](mcp_delivery/datagraph_restore_guide.md)
 > - 返回值契约（tool-chain/v2）：[`docs/mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md`](mcp_delivery/MCP_AGENT_INTEGRATION_ZH.md)
 
 ---

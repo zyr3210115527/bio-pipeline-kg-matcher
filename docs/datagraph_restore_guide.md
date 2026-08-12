@@ -1,5 +1,13 @@
 # 数据图恢复手册
 
+> **已作废（2026-08-12）。** 交付不再提供 Neo4j dump，本手册描述的
+> `docs/mcp_delivery/neo4j/datagraph-staging.dump` 已删除。
+> 现在的建图方式是从 `data/0811/` 的 CSV 直接导入，见
+> [`docs/MCP连接与运行指南.md`](MCP连接与运行指南.md) 第 4 节；
+> 一条命令 `scripts/python/import_0811.py`，约 17 秒，产出与数据提供方
+> 自带实例逐项一致的图。
+> 本文保留用于理解历史交付方式。
+
 > **当前交付更新（2026-07-30）**：MCP 交付应使用
 > `docs/mcp_delivery/neo4j/datagraph-staging.dump`，SHA-256
 > `32349f2e3cf7087180e72a84f422cc24108186b12eb624abfd9e8e96c45e1a26`。

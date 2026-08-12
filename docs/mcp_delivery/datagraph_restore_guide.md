@@ -1,5 +1,10 @@
 # Unified Graph Restore Guide
 
+> **已作废（2026-08-12）。** 交付不再提供 Neo4j dump，本文引用的
+> `mcp_delivery/neo4j/` 目录已删除。现在从 `data/0811/` 的 CSV 直接导入建图，
+> 见仓库根目录的 `docs/MCP连接与运行指南.md` 第 4 节。本文保留作历史参考。
+
+
 ## 前置条件
 
 - Neo4j Community 2026.06.0（交付 dump 的创建版本）
