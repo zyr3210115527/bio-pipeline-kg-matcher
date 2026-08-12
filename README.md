@@ -115,7 +115,8 @@ RUN_REAL_INTEGRATION=1 python3 -m unittest discover -s tests -p 'test_runtime_in
 
 ## 相关文档
 
-- `docs/图谱变更说明_0811_落地记录.md`：**0811 图谱落地记录，逐条说明哪些按数据提供方的来、哪些按我方来及原因**；
+- `docs/她的图与我方实现的差异清单.md`：**图与她交付的零差异核对，我方 5 处偏离，以及她数据里 4 类不一致的确认清单**；
+- `docs/图谱变更说明_0811_落地记录.md`：0811 图谱落地记录与验证结果；
 - `docs/图谱变更说明_旧版vs新版_20260811.md`：数据提供方给出的 0723 vs 0811 变更说明；
 - `docs/catalog_0811_extension_review.md`：27 个新工具的 slot 建模评审单与 atomic 提升候选；
 - `项目说明.md`：原系统设计与 benchmark 说明；
