@@ -278,6 +278,11 @@ STUDY_ROLE_RULES: Dict[str, Tuple[str, Any]] = {
     "HRA001272": ("specimen_types", {"Patient Solid Tissue": "tumor",
                                       "Peritumoral": "normal"}),
     "HRA006499": ("name_suffix", {"_T": "tumor", "_N": "normal"}),
+    # 0811 自带的判据，不依赖旁路补的 specimen_types：
+    # HRA003107 的 sample_name 是 BDESCC2-1N / BDESCC2-1T，155 对全部成对；
+    # HRA016026 是 L0240_Normal / L0240_Tumor，350 对全部成对。
+    "HRA003107": ("name_suffix", {"T": "tumor", "N": "normal"}),
+    "HRA016026": ("name_suffix", {"_Tumor": "tumor", "_Normal": "normal"}),
     "HRA001748": ("study_constant", "tumor"),
     "HRA001749": ("study_constant", "normal"),
 }
@@ -295,11 +300,13 @@ def _sample_role(record: Dict[str, Any]) -> Optional[str]:
     if kind == "specimen_types":
         return mapping.get(_norm(record.get("specimen_types")))
     if kind == "name_suffix":
-        name = _norm(record.get("sample_name"))
-        if name.endswith("_T") or name.endswith("_t"):
-            return mapping.get("_T")
-        if name.endswith("_N") or name.endswith("_n"):
-            return mapping.get("_N")
+        # The suffixes come from the rule itself, because each study names its
+        # samples differently: BDESCC2-1N/T has no separator, L0240_Tumor spells
+        # the word out. Longest suffix first so "_Normal" wins over a bare "N".
+        name = _norm(record.get("sample_name")).lower()
+        for suffix in sorted(mapping, key=len, reverse=True):
+            if name.endswith(str(suffix).lower()):
+                return mapping[suffix]
         return None
     return None
 
