@@ -256,3 +256,47 @@ Clinical 和 MetaInfo 缺失可进入 `missing_assets`。GTF、参考基因组�
 - 内部 fastp/GATK variant 仍负责配对安全；输出边界将合法双端 fastp 转为 `fastp_paired_end.read1/read2`，将配对 GATK 转为 `gatk_wes_somatic`。Knowledge Card 不支持的单端 fastp 或单样本 GATK 会失败关闭。
 
 `query_data_availability` 接受且只接受 `pipeline_ids` 或 `steps` 之一。`steps` 会先经过与 `validate_tool_chain` 相同的闭集校验，再从正式 input 槽推导资产角色；非法 chain 返回参数错误，合法但无数据返回 `not_available`。
+
+## recommendations[].data.alternatives（数据集选择）
+
+每条业务推荐除了选中的那组数据，还会给出其他可用的数据集，供前端做选择器。
+第一条 `selected=true`，与 `data.assets` 是同一组，所以只读旧字段的调用方不受影响。
+
+```jsonc
+"alternatives": [
+  {
+    "study_accession": "HRA000021",
+    "study_title": "ESCC WGS study",
+    "tumor_type": "esophageal cancer",
+    "individual_accession": "HRI035286",   // 配对分析才有；同一 study 会有多个病人
+    "label": "HRA000021 · esophageal cancer · 个体 HRI035286",
+    "selected": true,
+    "assets": [ /* 与 data.assets 同构 */ ],
+    "matched_count": 4,
+    "study_accessions": ["HRA000021"],
+    "sample_roles": {"tumor": 818, "normal": 812, "unresolved": 2},
+    "role_resolved": true,                 // tumor 和 normal 都判得出，配对/分组分析可做
+    "execution_params": {                  // 直接可提交，键是真实 WDL 参数名
+      "tumor_r1": "/hpcdisk1/.../HRR067348_1.fastq.gz",
+      "tumor_r2": "/hpcdisk1/.../HRR067348_2.fastq.gz",
+      "normal_r1": "/hpcdisk1/.../HRR067347_1.fastq.gz",
+      "normal_r2": "/hpcdisk1/.../HRR067347_2.fastq.gz"
+    },
+    "execution_params_missing": [],
+    "submittable": true                    // execution_params 齐全且无缺项
+  }
+]
+```
+
+用于渲染选择器的三个字段：
+
+- `label` —— 直接可显示的一行文字，不要显示裸文件路径。
+- `submittable` —— 参数是否齐全。为 false 时可以列出但应置灰，
+  `execution_params_missing` 里是缺哪个参数。
+- `role_resolved` —— 该 study 能否判出 tumor/normal。差异表达要分组、
+  配对分析要角色时，为 false 的数据集选了也做不了。
+
+切换数据集不需要再请求一次：每组都自带 `execution_params`，直接换用即可。
+
+数量上限 10 组。配对分析的多组是**同一 study 的不同病人**（`individual_accession`
+不同），非配对分析的多组通常是**不同 study**。

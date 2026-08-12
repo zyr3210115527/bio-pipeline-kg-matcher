@@ -16,6 +16,7 @@ from pipeline_router import (
     _force_rule,
     _lazy_call_llm,
     _role_satisfies,
+    _sample_role,
 )
 from knowledge_card_execution import KnowledgeCardExecutionRegistry
 from neo4j_observability import Neo4jClient
@@ -683,6 +684,14 @@ Neo4j atomic 方法目录：
                 sort_keys=True,
             )
             execution_params, execution_params_missing = self._execution_params(method, data)
+            # Resolve params for every offered data set too, so switching the
+            # selection in the UI does not need another round trip and the
+            # picker can grey out the ones that cannot actually be submitted.
+            for alternative in data.get("alternatives") or []:
+                alt_params, alt_missing = self._execution_params(method, alternative)
+                alternative["execution_params"] = alt_params
+                alternative["execution_params_missing"] = alt_missing
+                alternative["submittable"] = bool(alt_params) and not alt_missing
             recommendations.append({
                 "rank": value["rank"],
                 "match_id": "recommendation-" + hashlib.sha256(
@@ -791,7 +800,87 @@ Neo4j atomic 方法目录：
             "expected_count": len(assets),
             "missing_asset_names": [],
             "study_accessions": studies,
+            "alternatives": self._dataset_alternatives(evidence_matcher, combinations),
         }
+
+    def _study_role_counts(self, matcher: Any) -> Dict[str, Dict[str, int]]:
+        """Per study, how many T1 files resolve to a tumor / normal sample role.
+
+        Cached on the matcher: the caller may ask for several pipelines in one
+        request and this walks every T1 row.
+        """
+        cached = getattr(matcher, "_study_role_counts_cache", None)
+        if cached is not None:
+            return cached
+        counts: Dict[str, Dict[str, int]] = {}
+        for row in getattr(matcher, "t1", []) or []:
+            study = str(row.get("study_accession") or "")
+            if not study:
+                continue
+            role = _sample_role(row)
+            bucket = counts.setdefault(study, {"tumor": 0, "normal": 0, "unresolved": 0})
+            bucket[role if role in {"tumor", "normal"} else "unresolved"] += 1
+        try:
+            matcher._study_role_counts_cache = counts
+        except Exception:  # noqa: BLE001 - a matcher that rejects attributes still works
+            pass
+        return counts
+
+    def _dataset_alternatives(
+        self,
+        matcher: Any,
+        combinations: Sequence[Dict[str, Any]],
+        limit: int = 10,
+    ) -> List[Dict[str, Any]]:
+        """Expose the other data sets this recommendation could have run on.
+
+        The matcher already ranks every complete combination; only the first was
+        ever returned, so the caller had no way to offer a different study. Each
+        entry carries what a picker needs: study identity for display, the files
+        themselves, and whether tumor/normal roles can be resolved for that study
+        (which decides if a paired or grouped analysis is actually runnable).
+        """
+        role_counts = self._study_role_counts(matcher)
+        study_by_id = getattr(matcher, "study_by_id", {}) or {}
+        alternatives: List[Dict[str, Any]] = []
+        for index, combination in enumerate(combinations[:limit]):
+            files = combination.get("files") or []
+            if not files:
+                continue
+            studies = sorted({
+                str(item.get("study_accession"))
+                for item in files if item.get("study_accession")
+            })
+            study = studies[0] if len(studies) == 1 else ""
+            meta = study_by_id.get(study) or {}
+            roles = role_counts.get(study) or {"tumor": 0, "normal": 0, "unresolved": 0}
+            # Paired analyses yield several combinations inside one study, one
+            # per patient, so the study alone would render as N identical rows.
+            individual = str(combination.get("individual_accession") or "")
+            label = " · ".join(
+                part for part in (
+                    study or "unknown",
+                    str(meta.get("tumor_type") or ""),
+                    f"个体 {individual}" if individual else "",
+                ) if part
+            )
+            alternatives.append({
+                "study_accession": study,
+                "study_title": str(meta.get("title") or ""),
+                "tumor_type": str(meta.get("tumor_type") or ""),
+                "individual_accession": individual,
+                "label": label,
+                "selected": index == 0,
+                "assets": [
+                    {"name": item.get("files"), "graph_status": "available", **item}
+                    for item in files
+                ],
+                "matched_count": len(files),
+                "study_accessions": studies,
+                "sample_roles": dict(roles),
+                "role_resolved": roles["tumor"] > 0 and roles["normal"] > 0,
+            })
+        return alternatives
 
     @staticmethod
     def _real_execution_path(asset: Dict[str, Any]) -> str:

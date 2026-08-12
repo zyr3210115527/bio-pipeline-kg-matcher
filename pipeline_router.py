@@ -1314,6 +1314,12 @@ class CsvKGDataMatcher:
         return cases
 
     def _build_combinations(self, pipeline_ids: Sequence[str], files: Sequence[Dict[str, Any]], limit: int) -> List[Dict[str, Any]]:
+        """Collect one runnable combination per qualifying study, not just the first.
+
+        The first entry stays the same as before, so callers that read
+        ``combos[0]`` keep their existing selection; the rest are what lets a
+        caller offer the user a different data set.
+        """
         combos: List[Dict[str, Any]] = []
         by_study: Dict[str, List[Dict[str, Any]]] = {}
         for f in files:
@@ -1346,7 +1352,8 @@ class CsvKGDataMatcher:
                         selected = [pairs[0]["r1"][0], pairs[0]["r2"][0]]
                         if len(selected) >= self._required_file_count(pid):
                             combos.append({"pipeline_id": pid, "study_accession": st, "kind": "paired_fastq", "files": selected, "match_reason": "找到同源 R1/R2 FASTQ 输入组合"})
-                            break
+                            if len(combos) >= limit:
+                                break
             elif pid in {"diff_expr_go", "diff_expr_kegg", "rnaseq_unsupervised_cluster", "wgcna", "immune_infiltration_iobr", "her2_pfs_survival"}:
                 for st, group in by_study.items():
                     required_roles = self._allowed_file_roles(pid)
@@ -1367,7 +1374,8 @@ class CsvKGDataMatcher:
                         if pid in {"wgcna", "immune_infiltration_iobr", "her2_pfs_survival"}:
                             selected += clinical[:1] + metainfo[:1]
                         combos.append({"pipeline_id": pid, "study_accession": st, "kind": "expression_bundle", "files": selected, "match_reason": "找到表达矩阵候选"})
-                        break
+                        if len(combos) >= limit:
+                            break
             else:
                 for st, group in by_study.items():
                     maf = [f for f in group if "maf" in _lower(f.get("format")) or "somaticsnv" in _lower(f.get("files"))]
@@ -1380,7 +1388,8 @@ class CsvKGDataMatcher:
                         kind = "mutation_only" if pid == "wes_somatic_maf_landscape" else "mutation_bundle"
                         reason = "找到 MAF 候选" if pid == "wes_somatic_maf_landscape" else "找到 MAF/临床候选"
                         combos.append({"pipeline_id": pid, "study_accession": st, "kind": kind, "files": selected, "match_reason": reason})
-                        break
+                        if len(combos) >= limit:
+                            break
         return combos[:limit]
 
 
