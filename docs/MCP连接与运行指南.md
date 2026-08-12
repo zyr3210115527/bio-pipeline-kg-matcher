@@ -122,7 +122,7 @@ python3 scripts/python/import_0812.py --project-root . \
 `01`–`04`，最后打印节点与关系计数。期望值：
 
 ```
-80,293 节点 / 352,252 关系   （与 config/senior_0812_reference_counts.json 逐项一致）
+80,342 节点 / 352,448 关系   （与 config/senior_0812_reference_counts.json 逐项一致）
 ```
 
 > 0811 时代这里还有一步「生成样本级 specimen 旁路表」：那版 sample 表没有
