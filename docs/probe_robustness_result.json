@@ -1,0 +1,613 @@
+{
+  "repeat": 1,
+  "case_count": 12,
+  "passed": 11,
+  "total": 12,
+  "records": [
+    {
+      "run": 1,
+      "case_id": "F01",
+      "group": "F",
+      "prompt": "胰腺癌的表达矩阵能做免疫浸润分析吗？",
+      "prompt_len": 18,
+      "expect": {
+        "no_bound_cohort": true
+      },
+      "elapsed_s": 2.5,
+      "passed": true,
+      "problems": [],
+      "selection_status": "no_candidate",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "intent_disease": null,
+      "intent_disease_unresolved": "胰腺癌",
+      "llm_used": false,
+      "reason": "图谱里没有登记「胰腺癌」的队列，不能用其它癌种的数据代替，因此没有可提交的链路。"
+    },
+    {
+      "run": 1,
+      "case_id": "F02",
+      "group": "F",
+      "prompt": "宫颈癌的 MAF 想画个突变景观图",
+      "prompt_len": 17,
+      "expect": {
+        "no_bound_cohort": true
+      },
+      "elapsed_s": 6.3,
+      "passed": true,
+      "problems": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "intent_disease": null,
+      "intent_disease_unresolved": "宫颈癌",
+      "llm_used": true,
+      "reason": "图谱里没有登记「宫颈癌」的队列，不能用其它癌种的数据代替，因此没有可提交的链路。"
+    },
+    {
+      "run": 1,
+      "case_id": "F03",
+      "group": "F",
+      "prompt": "Can I run WGCNA on a pancreatic cancer count matrix with clinical traits?",
+      "prompt_len": 73,
+      "expect": {
+        "no_bound_cohort": true
+      },
+      "elapsed_s": 12.9,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "wgcna",
+          "data_status": "missing_from_graph",
+          "studies": [],
+          "assets": [],
+          "execution_params": {},
+          "execution_params_missing": [
+            "clinical_xls",
+            "counts_tsv",
+            "metainfo_xlsx"
+          ],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        },
+        {
+          "pipeline_id": "wgcna_module_trait",
+          "data_status": "missing_from_graph",
+          "studies": [],
+          "assets": [],
+          "execution_params": {},
+          "execution_params_missing": [],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        },
+        {
+          "pipeline_id": "wgcna_hub",
+          "data_status": "missing_from_graph",
+          "studies": [],
+          "assets": [],
+          "execution_params": {},
+          "execution_params_missing": [],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": null,
+      "intent_disease_unresolved": "pancreatic cancer",
+      "llm_used": true,
+      "reason": "图谱里没有登记「pancreatic cancer」的队列，不能用其它癌种的数据代替，因此没有可提交的链路。"
+    },
+    {
+      "run": 1,
+      "case_id": "F04",
+      "group": "F",
+      "prompt": "我这边有一对肿瘤和正常配对的 WES 双端 FASTQ，想跑体细胞突变检测",
+      "prompt_len": 37,
+      "expect": {
+        "recommendations": "some",
+        "data_status": [
+          "available"
+        ],
+        "sample_roles": "tumor_normal_pair"
+      },
+      "elapsed_s": 6.2,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "wes_somatic_pair",
+          "data_status": "available",
+          "studies": [
+            "HRA000021"
+          ],
+          "assets": [
+            {
+              "name": "HRR067348_1.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "tumor"
+            },
+            {
+              "name": "HRR067348_2.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "tumor"
+            },
+            {
+              "name": "HRR067347_1.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "normal"
+            },
+            {
+              "name": "HRR067347_2.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "normal"
+            }
+          ],
+          "execution_params": {
+            "normal_r1": "/hpcdisk1/cbb_group/data/HRA000021/fq/HRR067347_1.fastq.gz",
+            "normal_r2": "/hpcdisk1/cbb_group/data/HRA000021/fq/HRR067347_2.fastq.gz",
+            "tumor_r1": "/hpcdisk1/cbb_group/data/HRA000021/fq/HRR067348_1.fastq.gz",
+            "tumor_r2": "/hpcdisk1/cbb_group/data/HRA000021/fq/HRR067348_2.fastq.gz"
+          },
+          "execution_params_missing": [],
+          "unvalidated_parameters": [],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": null,
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "该需求由业务流程 wes_somatic_pair 以整卡形式交付，不拆分为原子工具链，故 candidates 为空"
+    },
+    {
+      "run": 1,
+      "case_id": "F05",
+      "group": "F",
+      "prompt": "肝癌病人的肿瘤组织和癌旁组织都做了全外显子，想找体细胞突变",
+      "prompt_len": 29,
+      "expect": {
+        "recommendations": "some",
+        "cohort_disease": "肝癌"
+      },
+      "elapsed_s": 8.4,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "wes_somatic_pair",
+          "data_status": "available",
+          "studies": [
+            "HRA001272"
+          ],
+          "assets": [
+            {
+              "name": "HRR1402664_f1.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "tumor"
+            },
+            {
+              "name": "HRR1402664_r2.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "tumor"
+            },
+            {
+              "name": "HRR1402655_f1.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "normal"
+            },
+            {
+              "name": "HRR1402655_r2.fastq.gz",
+              "graph_status": "available",
+              "sample_role": "normal"
+            }
+          ],
+          "execution_params": {
+            "normal_r1": "/hpcdisk1/cbb_group/data/HRA001272/WES/HRR1402655/HRR1402655_f1.fastq.gz",
+            "normal_r2": "/hpcdisk1/cbb_group/data/HRA001272/WES/HRR1402655/HRR1402655_r2.fastq.gz",
+            "tumor_r1": "/hpcdisk1/cbb_group/data/HRA001272/WES/HRR1402664/HRR1402664_f1.fastq.gz",
+            "tumor_r2": "/hpcdisk1/cbb_group/data/HRA001272/WES/HRR1402664/HRR1402664_r2.fastq.gz"
+          },
+          "execution_params_missing": [],
+          "unvalidated_parameters": [],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": "肝癌",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "配对 tumor-normal WES 体细胞变异检测由 wes_somatic_pair 整卡交付，不拆分为原子工具链，因此 candidates 为空。"
+    },
+    {
+      "run": 1,
+      "case_id": "F06",
+      "group": "F",
+      "prompt": "黑色素瘤的 MAF 配上临床表，做 TMB 高低分层的生存分析",
+      "prompt_len": 31,
+      "expect": {
+        "recommendations": "some",
+        "data_status": [
+          "available"
+        ],
+        "cohort_disease": "黑色素瘤"
+      },
+      "elapsed_s": 12.4,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "tmb_survival_analysis",
+          "data_status": "available",
+          "studies": [
+            "HRA007169"
+          ],
+          "assets": [
+            {
+              "name": "HRA007169-SomaticSNV-1.0.maf",
+              "graph_status": "available",
+              "sample_role": null
+            },
+            {
+              "name": "HRA007169-Clinical-1.0.xlsx",
+              "graph_status": "available",
+              "sample_role": null
+            },
+            {
+              "name": "HRA007169-MetaInfo-1.0.xlsx",
+              "graph_status": "available",
+              "sample_role": null
+            }
+          ],
+          "execution_params": {
+            "clinical_file": "/hpcdisk1/cbb_group/data/HRA007169/HRA007169-Clinical-1.0.xlsx",
+            "maf_file": "/hpcdisk1/cbb_group/data/analysis/HRA007169/HRA007169-SomaticSNV-1.0.maf",
+            "metainfo_file": "/hpcdisk1/cbb_group/data/HRA007169/HRA007169-MetaInfo-1.0.xlsx"
+          },
+          "execution_params_missing": [],
+          "unvalidated_parameters": [],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": "黑色素瘤",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "TMB 计算与生存分析尚未原子化，且现有 atomic 目录无法从 MAF 生成该产物。"
+    },
+    {
+      "run": 1,
+      "case_id": "F07",
+      "group": "F",
+      "prompt": "食管癌的 SomaticSNV MAF 能不能画突变景观？",
+      "prompt_len": 29,
+      "expect": {
+        "recommendations": "some",
+        "cohort_disease": "食管癌"
+      },
+      "elapsed_s": 16.1,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "wes_somatic_maf_landscape",
+          "data_status": "available",
+          "studies": [
+            "HRA000021"
+          ],
+          "assets": [
+            {
+              "name": "SomaticSNV-VCF-files",
+              "graph_status": "available",
+              "sample_role": null
+            }
+          ],
+          "execution_params": {},
+          "execution_params_missing": [
+            "maf_file"
+          ],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": "食管癌",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "MAF 突变景观（Oncoplot 等）可视化尚未在 atomic 目录中原子化，暂不支持生成可执行候选链"
+    },
+    {
+      "run": 1,
+      "case_id": "F08",
+      "group": "F",
+      "prompt": "肝癌和胶质瘤的表达矩阵能不能放在一起做差异分析？",
+      "prompt_len": 24,
+      "expect": {
+        "no_bound_cohort": true
+      },
+      "elapsed_s": 32.8,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "diff_expr_go",
+          "data_status": "missing_from_graph",
+          "studies": [],
+          "assets": [],
+          "execution_params": {},
+          "execution_params_missing": [
+            "expression_matrix"
+          ],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        },
+        {
+          "pipeline_id": "diff_expr_kegg",
+          "data_status": "missing_from_graph",
+          "studies": [],
+          "assets": [],
+          "execution_params": {},
+          "execution_params_missing": [
+            "expression_matrix"
+          ],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        },
+        {
+          "pipeline_id": "deg_enrichment",
+          "data_status": "missing_from_graph",
+          "studies": [],
+          "assets": [],
+          "execution_params": {},
+          "execution_params_missing": [],
+          "unvalidated_parameters": [],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": "胶质瘤",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "问题同时点了胶质瘤、肝癌，本服务不会把不同癌种的队列拼成一份数据，请分开提问。"
+    },
+    {
+      "run": 1,
+      "case_id": "G01",
+      "group": "G",
+      "prompt": "肝癌的体细胞突变 MAF 做突变景观图",
+      "prompt_len": 19,
+      "expect": {
+        "recommendations": "some",
+        "data_status": [
+          "available"
+        ],
+        "cohort_disease": "肝癌",
+        "sample_roles": "aggregate_none"
+      },
+      "elapsed_s": 18.0,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "wes_somatic_maf_landscape",
+          "data_status": "available",
+          "studies": [
+            "HRA001272"
+          ],
+          "assets": [
+            {
+              "name": "HRA001272-SomaticSNV-1.0.maf",
+              "graph_status": "available",
+              "sample_role": null
+            }
+          ],
+          "execution_params": {
+            "maf_file": "/hpcdisk1/cbb_group/data/analysis/HRA001272/HRA001272-SomaticSNV-1.0.maf"
+          },
+          "execution_params_missing": [],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": "肝癌",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "突变景观/Oncoplot 绘制尚未在 atomic 目录中原子化，MAF 与可视化工具间无登记链条，暂不支持生成原子候选链"
+    },
+    {
+      "run": 1,
+      "case_id": "G02",
+      "group": "G",
+      "prompt": "胶质瘤的 TPM 矩阵加上临床表，做 HER2 表达高低的生存分析",
+      "prompt_len": 33,
+      "expect": {
+        "recommendations": "some",
+        "data_status": [
+          "available"
+        ],
+        "cohort_disease": "胶质瘤",
+        "sample_roles": "aggregate_none"
+      },
+      "elapsed_s": 22.8,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "data_status": "available",
+          "studies": [
+            "HRA000073"
+          ],
+          "assets": [
+            {
+              "name": "HRA000073-Genes-TPM-1.0.tsv",
+              "graph_status": "available",
+              "sample_role": null
+            },
+            {
+              "name": "HRA000073-Clinical-1.0.xlsx",
+              "graph_status": "available",
+              "sample_role": null
+            },
+            {
+              "name": "HRA000073-MetaInfo-1.0.xlsx",
+              "graph_status": "available",
+              "sample_role": null
+            }
+          ],
+          "execution_params": {
+            "clinical_xls": "/hpcdisk1/cbb_group/data/HRA000073/HRA000073-Clinical-1.0.xlsx",
+            "tpm_matrix": "/hpcdisk1/cbb_group/data/analysis/HRA000073/HRA000073-Genes-TPM-1.0.tsv",
+            "metainfo_xlsx": "/hpcdisk1/cbb_group/data/HRA000073/HRA000073-MetaInfo-1.0.xlsx"
+          },
+          "execution_params_missing": [],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": "HER2"
+            }
+          ],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": "胶质瘤",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "TPM 矩阵+临床表的 HER2 分层生存分析尚未在 Neo4j atomic 目录中原子化，无法构造 atomic candidate 链"
+    },
+    {
+      "run": 1,
+      "case_id": "G03",
+      "group": "G",
+      "prompt": "结直肠癌的 MAF 和临床表，做驱动基因的男女差异比较",
+      "prompt_len": 27,
+      "expect": {
+        "recommendations": "some",
+        "data_status": [
+          "available"
+        ],
+        "cohort_disease": "结直肠癌",
+        "sample_roles": "aggregate_none"
+      },
+      "elapsed_s": 8.6,
+      "passed": false,
+      "problems": [
+        "期望有业务流程推荐，实际为空",
+        "期望检查 data.status，但没有推荐"
+      ],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "intent_disease": "结直肠癌",
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "驱动基因性别分层统计分析尚未原子化，暂不支持生成可执行原子链"
+    },
+    {
+      "run": 1,
+      "case_id": "G04",
+      "group": "G",
+      "prompt": "10x 单细胞的 FASTQ 想出一个细胞-基因表达矩阵",
+      "prompt_len": 28,
+      "expect": {
+        "recommendations": "some"
+      },
+      "elapsed_s": 11.8,
+      "passed": true,
+      "problems": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [
+        {
+          "pipeline_id": "cellranger_workflow",
+          "data_status": "available",
+          "studies": [
+            "HRA000087"
+          ],
+          "assets": [
+            {
+              "name": "HRR028306_f1.fq.gz",
+              "graph_status": "available",
+              "sample_role": "tumor"
+            },
+            {
+              "name": "HRR028306_r2.fq.gz",
+              "graph_status": "available",
+              "sample_role": "tumor"
+            }
+          ],
+          "execution_params": {},
+          "execution_params_missing": [],
+          "unvalidated_parameters": [
+            {
+              "parameter": "gene",
+              "value_from_question": null
+            }
+          ],
+          "cohort_rejection_reason": null
+        }
+      ],
+      "intent_disease": null,
+      "intent_disease_unresolved": null,
+      "llm_used": true,
+      "reason": "cellranger 流程尚未原子化，atomic 目录中无对应工具，无法构造原子候选链"
+    }
+  ]
+}

@@ -36,16 +36,6 @@ CSV_DIR = Path(
     os.environ.get("DATA_CSV_DIR", str(PROJECT_ROOT / "data" / "csv"))
 ).expanduser()
 
-DISEASE_ALIASES = {
-    "胶质瘤": ["胶质瘤", "glioma", "CGGA"],
-    "黑色素瘤": ["黑色素瘤", "melanoma"],
-    "食管癌": ["食管癌", "食管鳞癌", "esophageal", "ESCC"],
-    "肝癌": ["肝癌", "肝细胞癌", "liver", "HCC"],
-    "肺癌": ["肺癌", "lung"],
-    "结直肠癌": ["结直肠癌", "肠癌", "colorectal", "colon", "rectal"],
-    "乳腺癌": ["乳腺癌", "breast"],
-    "胃癌": ["胃癌", "gastric", "stomach"],
-}
 
 DATA_PROFILE_TEMPLATES = {
     "paired_fastq": {
@@ -284,6 +274,12 @@ STUDY_ROLE_OVERRIDES: Dict[str, Tuple[str, Any]] = {
 }
 
 _ROLE_BY_TISSUE_TYPE = {"tumor": "tumor", "normal": "normal"}
+
+# 给界面直接显示用。tumor/normal 是分析语义，实验组/对照组是用户语言。
+_SAMPLE_ROLE_LABELS = {
+    "tumor": "肿瘤样本（实验组）",
+    "normal": "正常样本（对照组）",
+}
 
 
 def _sample_role(record: Dict[str, Any]) -> Optional[str]:
@@ -665,6 +661,9 @@ def _contains_any(text: str, terms: Iterable[str]) -> List[str]:
     return hits
 
 
+# 泛指词，不是具体癌种。「一对肿瘤和正常配对」说的是样本角色而不是病种。
+
+
 def _read_csv(path: Path) -> List[Dict[str, str]]:
     if not path.exists():
         return []
@@ -796,8 +795,46 @@ class CsvKGDataMatcher:
             return "R2"
         return ""
 
+    def _no_cohort_result(self, intent: Dict[str, Any]) -> Dict[str, Any]:
+        """An empty match for a cancer this graph cannot place.
+
+        Returning the usual unfiltered result here is what let a 胰腺癌 question
+        come back bound to a glioma cohort: with no disease to filter on, every
+        cohort scores on strategy alone and the first one wins. Refusing at the
+        matcher covers both consumers -- the atomic chain and the pipeline
+        recommendation -- instead of only the one that happens to check.
+        """
+        return {
+            "data_schema": self.data_schema,
+            "cohort_candidates": [],
+            "file_candidates": [],
+            "backup_file_candidates": [],
+            "data_combinations": [],
+            "query_constraints": {
+                "disease": intent.get("disease_term"),
+                "disease_status": intent.get("disease_status"),
+                "omics_type": intent.get("omics_type"),
+                "formats": [],
+                "strategies": [],
+                "file_terms": [],
+                "study_accessions": [],
+            },
+        }
+
     def match(self, intent: Dict[str, Any], pipelines: Sequence[Dict[str, Any]], limit: int = 10) -> Dict[str, Any]:
-        disease = intent.get("disease")
+        # 癌种由规划器解析（见 WorkflowComposer._llm_disease），到这里只剩三种状态：
+        #   not_available 用户点了名但图里没有 -> 一个队列都不给
+        #   matched       已经落到具体队列编号 -> 只在这些队列里找
+        #   unspecified   没提癌种           -> 不施加队列过滤
+        # 没有 disease_status 的调用方（老测试、直接调 matcher）视为 unspecified。
+        disease_status = intent.get("disease_status")
+        if disease_status == "not_available":
+            return self._no_cohort_result(intent)
+        allowed_studies: Optional[Set[str]] = None
+        if disease_status == "matched":
+            allowed_studies = {
+                str(value).upper() for value in intent.get("disease_studies") or [] if value
+            } or None
         omics = intent.get("omics_type")
         fmt = intent.get("input_hint")
         pipeline_ids = [p.get("pipeline_id") for p in pipelines]
@@ -808,7 +845,7 @@ class CsvKGDataMatcher:
         requested_studies = {
             str(value).upper() for value in intent.get("study_accessions") or [] if value
         }
-        cohorts = self._match_cohorts(disease, omics, strategy_hints, limit=limit)
+        cohorts = self._match_cohorts(allowed_studies, omics, strategy_hints, limit=limit)
         if requested_studies:
             cohorts = [
                 item for item in cohorts
@@ -817,7 +854,7 @@ class CsvKGDataMatcher:
         primary_pid = pipeline_ids[0] if pipeline_ids else None
         # 组合/可行性判断需要在全部候选文件上做，不能在截断后的列表上做；
         # 截断只影响展示给用户的 file_candidates。
-        files = self._match_files(disease, strategy_hints, format_hints, file_terms, pipeline_ids, limit=None, intent=intent)
+        files = self._match_files(allowed_studies, strategy_hints, format_hints, file_terms, pipeline_ids, limit=None, intent=intent)
         combos = self._build_combinations(pipeline_ids, files, limit=limit)
         display_files = self._primary_display_files(primary_pid, combos, files)
         return {
@@ -827,7 +864,9 @@ class CsvKGDataMatcher:
             "backup_file_candidates": (self._filter_files_for_pipeline(primary_pid, files) or files)[:limit],
             "data_combinations": combos[:limit],
             "query_constraints": {
-                "disease": disease,
+                "disease": intent.get("disease_term"),
+                "disease_status": disease_status,
+                "disease_studies": sorted(allowed_studies) if allowed_studies else [],
                 "omics_type": omics,
                 "formats": sorted(format_hints),
                 "strategies": sorted(strategy_hints),
@@ -843,6 +882,8 @@ class CsvKGDataMatcher:
         limit: int = 10,
     ) -> Dict[str, Any]:
         """Match data for a validated custom chain without inventing a pipeline ID."""
+        if intent.get("disease_status") == "not_available":
+            return self._no_cohort_result(intent)
         data_roles = custom_data_roles(required_roles)
         strategy_hints: Set[str] = set()
         format_hints: Set[str] = set()
@@ -881,8 +922,12 @@ class CsvKGDataMatcher:
         requested_studies = {
             str(value).upper() for value in intent.get("study_accessions") or [] if value
         }
+        allowed_studies = (
+            {str(v).upper() for v in intent.get("disease_studies") or [] if v} or None
+            if intent.get("disease_status") == "matched" else None
+        )
         cohorts = self._match_cohorts(
-            intent.get("disease"), intent.get("omics_type"), strategy_hints, limit
+            allowed_studies, intent.get("omics_type"), strategy_hints, limit
         )
         if requested_studies:
             cohorts = [
@@ -890,7 +935,7 @@ class CsvKGDataMatcher:
                 if str(item.get("study_accession") or "").upper() in requested_studies
             ]
         candidates = self._match_files(
-            intent.get("disease"),
+            allowed_studies,
             strategy_hints,
             format_hints,
             terms,
@@ -1031,6 +1076,11 @@ class CsvKGDataMatcher:
             "specimen_type": row.get("specimen_type") or row.get("specimen_types"),
             "specimen_types": row.get("specimen_types"),
             "tissue_type": row.get("tissue_type"),
+            # 每个交给调用方的文件都要说清它是肿瘤样本还是对照，否则界面上四个
+            # FASTQ 长得一模一样，用户没法判断配对分组对不对。推不出就留 None，
+            # 不猜：聚合类文件（MAF、表达矩阵、临床表）本来就没有单样本角色。
+            "sample_role": _sample_role(row),
+            "sample_role_label": _SAMPLE_ROLE_LABELS.get(_sample_role(row) or ""),
             "read_pair": row.get("read_pair") or row.get("Read Pair"),
             "file_path": row.get("file_path"),
             "match_reason": match_reason,
@@ -1072,10 +1122,6 @@ class CsvKGDataMatcher:
                 terms.update({"HRR365660", "HRR365661"})
         return strategies, formats, terms
 
-    def _disease_terms(self, disease: Optional[str]) -> List[str]:
-        if not disease:
-            return []
-        return DISEASE_ALIASES.get(disease, [disease])
 
     def _required_file_count(self, pipeline_id: Optional[str]) -> int:
         if pipeline_id == "wes_somatic_pair":
@@ -1097,22 +1143,21 @@ class CsvKGDataMatcher:
             parts.extend(str(v or "") for v in self.project_by_study[st].values())
         return " ".join(parts)
 
-    def _match_cohorts(self, disease: Optional[str], omics: Optional[str], strategies: Set[str], limit: int) -> List[Dict[str, Any]]:
-        disease_terms = self._disease_terms(disease)
+    def _match_cohorts(self, allowed_studies: Optional[Set[str]], omics: Optional[str], strategies: Set[str], limit: int) -> List[Dict[str, Any]]:
         scored = []
         for row in self.study:
             text = self._row_text(row)
             text_l = text.lower()
             score = 0
             reasons = []
-            hits = _contains_any(text, disease_terms)
-            if hits:
+            # 癌种是硬约束，且已由规划器解析成具体队列编号。按编号过滤，不再拿
+            # 别名去撞 study 全文：`liver` 会撞上 liver cirrhosis，缩写和繁体又
+            # 一个都撞不上。
+            if allowed_studies is not None:
+                if str(row.get("study_accession") or "").upper() not in allowed_studies:
+                    continue
                 score += 5
-                reasons.append("癌种/队列匹配: " + ", ".join(hits[:3]))
-            elif disease_terms:
-                # Explicit disease is a hard constraint. Omics similarity alone
-                # must never introduce a cohort from another disease.
-                continue
+                reasons.append("癌种匹配（规划器判定）")
             if omics and omics.lower().replace("bulk ", "") in text_l:
                 score += 1
                 reasons.append("组学描述匹配")
@@ -1120,7 +1165,7 @@ class CsvKGDataMatcher:
                 if st.lower() in text_l:
                     score += 2
                     reasons.append(f"strategy 匹配 {st}")
-            if not disease_terms and strategies:
+            if allowed_studies is None and strategies:
                 score += 1
             if score <= 0:
                 continue
@@ -1143,8 +1188,7 @@ class CsvKGDataMatcher:
             )
         return [x[2] for x in sorted(scored)[:limit]]
 
-    def _match_files(self, disease: Optional[str], strategies: Set[str], formats: Set[str], terms: Set[str], pipeline_ids: Sequence[str], limit: int, intent: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
-        disease_terms = self._disease_terms(disease)
+    def _match_files(self, allowed_studies: Optional[Set[str]], strategies: Set[str], formats: Set[str], terms: Set[str], pipeline_ids: Sequence[str], limit: int, intent: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
         primary_pid = pipeline_ids[0] if pipeline_ids else None
         query_text = str((intent or {}).get("query_text") or "")
         requested_studies = {
@@ -1176,14 +1220,12 @@ class CsvKGDataMatcher:
             score = 0
             reasons = []
             disease_matched = False
-            if disease_terms:
-                hits = _contains_any(text, disease_terms)
-                if hits:
-                    disease_matched = True
-                    score += 5
-                    reasons.append("癌种/队列匹配")
-                else:
+            if allowed_studies is not None:
+                if str(row.get("study_accession") or "").upper() not in allowed_studies:
                     continue
+                disease_matched = True
+                score += 5
+                reasons.append("癌种匹配（规划器判定）")
             fmt = row.get("format") or row.get("file_type") or ""
             if formats and any(f.lower() == fmt.lower() or f.lower() in text_l for f in formats):
                 score += 4
@@ -1209,7 +1251,7 @@ class CsvKGDataMatcher:
             if (role_rule_bonus or query_implies_paired) and _sample_role(row) in {"tumor", "normal"}:
                 score += 2
                 reasons.append("样本角色可识别")
-            if not disease_terms and (formats or strategies) and score > 0:
+            if allowed_studies is None and (formats or strategies) and score > 0:
                 score += 1
             if score <= 0:
                 continue
@@ -1319,10 +1361,9 @@ class CsvKGDataMatcher:
             ]
             for sf in selected:
                 sf["individual_accession"] = ind
-            selected[0]["sample_role"] = "tumor"
-            selected[1]["sample_role"] = "tumor"
-            selected[2]["sample_role"] = "normal"
-            selected[3]["sample_role"] = "normal"
+            for index, role in enumerate(("tumor", "tumor", "normal", "normal")):
+                selected[index]["sample_role"] = role
+                selected[index]["sample_role_label"] = _SAMPLE_ROLE_LABELS[role]
             cases.append({"individual_accession": ind, "files": selected})
         return cases
 
@@ -1423,11 +1464,9 @@ class PipelineRouter:
         return self.catalog.capabilities()
 
     def _rule_intent(self, text: str) -> Dict[str, Any]:
-        disease = None
-        for name, aliases in DISEASE_ALIASES.items():
-            if _contains_any(text, aliases):
-                disease = name
-                break
+        # 癌种识别整体交给规划器（WorkflowComposer._llm_disease）。这里曾经用
+        # 关键词表做匹配，但零宽字符、缩写、繁体、错别字和
+        # 「肝硬化不是肝癌」这类区分，靠词表永远补不齐，补丁之间还会互相打架。
         omics = None
         for terms, value in OMICS_HINTS:
             if _contains_any(text, terms):
@@ -1461,7 +1500,9 @@ class PipelineRouter:
         return {
             "query_text": text,
             "analysis_goal": ", ".join(dict.fromkeys(goals)) if goals else None,
-            "disease": disease,
+            "disease": None,
+            # 用户点了名、但别名表接不住的癌种。留空会让队列过滤整个失效，一个
+            # 胰腺癌的问题会拿到胶质瘤队列，所以单独记下来交给推荐层拦截。
             "omics_type": omics,
             "input_hint": fmt,
             "quant_hint": quant_hint,

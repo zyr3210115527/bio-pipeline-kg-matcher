@@ -389,6 +389,11 @@ class WorkflowComposer:
   "recommendations": [
     {"rank": 1, "pipeline_id": "业务流程 id", "match_note": "为何匹配用户目标"}
   ],
+  "disease": {
+    "status": "matched | not_available | unspecified",
+    "term": "用户原话里指的癌种，没提就 null",
+    "study_accessions": ["匹配到的队列编号，只能来自下方队列清单"]
+  },
   "candidates": [
     {"rank": 1, "match_note": "推荐理由和侧重", "steps": [
       {
@@ -407,6 +412,7 @@ class WorkflowComposer:
 }
 
 候选规则：
+0a. **`disease` 字段必须输出，任何情况下都不能省略、不能为 null。**它决定后续能不能绑队列：漏掉这个字段，系统就不知道该用哪个癌种的数据，只能什么都不给。三种取值见下方"癌种判定"。即使用户没提癌种，也要显式输出 `{"status": "unspecified", "term": null, "study_accessions": []}`。
 0. recommendations 是业务流程推荐，pipeline_id 只能来自下方“业务 pipeline 目录”；按匹配度给 1 到 3 条，不得用 atomic tool 代替。candidates 是可执行 atomic 链，两者含义不同。业务流程必须同时匹配用户明确给出的输入类型、样本布局和最终目标；只覆盖部分目标、只消费同类数据、或会执行用户明确排除步骤的流程不能推荐。若没有完整匹配项，recommendations 必须为空。即使完整匹配的业务流程尚未原子化，也应保留正确 recommendation，同时令 candidates 为空。
 1. rank 必须唯一，1 最贴合；第一条必须是覆盖完整目标的首选链，其余必须是覆盖同一完整目标的不同工具组合、终点侧重或数据资产组合。用户未指定单一终点时，若存在合法替代方案必须保留 rank 2/3；不要为了凑数复制、截短或给出明显不完整的链。
 2. 每个 input 名、from.output 名、tool_id 必须逐字匹配目录。tool_id 只能取每行开头 `-` 后、第一根 `|` 前的小写名称（如 fastp、star、samtools）；T001/T002 之类编号不是 tool_id，绝对不能输出。from 只能引用前序 step；每条 from 和 depends_on 都必须存在对应 NEXT 边，数据连接还必须匹配目录中的 output->input 数据边。
@@ -441,6 +447,18 @@ class WorkflowComposer:
 - candidates 非空时 unsupported_reason 必须为 null。
 - candidates 为空时必须用一句具体原因填写 unsupported_reason；不能只写“无法生成”，应指出是输入冲突、样本角色不足、未原子化、槽位缺失或执行合同缺口。recommendations 非空也不能省略该原因，因为业务流程信息不等于原子候选可执行。
 
+癌种判定（disease 字段，必填）：
+- 举例：`肝癌 HER2 表达和 PFS` → `{"status":"matched","term":"肝癌","study_accessions":["HRA001272","HRA001748","HRA001749","HRA006499"]}`；`NSCLC 的 TPM 做免疫浸润` → `{"status":"matched","term":"NSCLC","study_accessions":["HRA005191"]}`；`肝硬化患者的免疫浸润` → `{"status":"not_available","term":"肝硬化","study_accessions":[]}`；`双端 RNA-seq FASTQ 做上游分析` → `{"status":"unspecified","term":null,"study_accessions":[]}`。
+- 这一层只做语义识别，不要用关键词去猜。零宽字符、全角半角、繁体、错别字、中英混写、缩写（NSCLC=非小细胞肺癌、HCC=肝细胞癌、ESCC=食管鳞癌、AML=急性髓系白血病、GBM=胶质母细胞瘤、NPC=鼻咽癌、CRC=结直肠癌）都要能认出来。
+- `study_accessions` 只能从下方“可用队列清单”里选，一个字都不能编。同一癌种对应多个队列时全部列出。
+- 用户说的癌种在清单里没有（如胰腺癌、前列腺癌、卵巢癌、乳腺癌、胃癌）→ `not_available`，`study_accessions` 为空数组。
+- 用户说的根本不是癌种（肝硬化、糖尿病、健康人群）→ 同样 `not_available`，别硬往器官相近的癌种上靠。肝硬化不是肝癌。
+- 一句话里出现多个癌种时，以用户真正要分析的那个为准。例如“前列腺癌能不能参考肝癌那套流程”问的是前列腺癌，应判 not_available，不能给肝癌队列。
+- 用户完全没提癌种 → `unspecified`，`study_accessions` 为空数组；这不是错误，只是不施加队列过滤。
+
+可用队列清单（癌种判定的唯一合法取值范围）：
+''' + "\n".join(self._cohort_menu_lines()) + '''
+
 Neo4j atomic 方法目录：
 ''' + "\n".join(self._method_menu_lines()) + '''
 
@@ -471,6 +489,21 @@ Neo4j atomic 方法目录：
         top_k: int,
     ) -> Dict[str, Any]:
         intent = self.router._rule_intent(text)
+        # 癌种以规划器的语义判定为准，关键词表退居降级路径。规则法认不出零宽字符、
+        # 缩写、繁体和错别字，也分不清「肝硬化」和「肝癌」，每补一种写法就要加一张
+        # 表；这一层本来就在调 LLM，判定跟着同一次调用回来，不额外多一个往返。
+        disease = self._llm_disease(decision) or {
+            # 规划器没跑或没给出可解析的判定时，只能说"不知道"，不能退回关键词猜测。
+            "status": "unspecified", "term": None,
+            "study_accessions": [], "source": "unavailable",
+        }
+        intent = {
+            **intent,
+            "disease_status": disease["status"],
+            "disease_studies": disease["study_accessions"],
+            "disease_term": disease["term"],
+            "disease_source": disease["source"],
+        }
         raw_candidates = (decision or {}).get("candidates") or []
         raw_candidates = self._strip_multiqc_from_candidates(raw_candidates)
         normalized = self._normalize_ranked_candidates(raw_candidates)
@@ -558,6 +591,18 @@ Neo4j atomic 方法目录：
                 f"LLM 生成的原子候选未通过 {rejected_stages}；"
                 "业务流程推荐仅作为信息展示。"
             )
+        # 癌种对不上时，用户要听到的是"没有这个癌种的队列"，而不是"没有完整的
+        # 数据组合"——后者会让人以为再补一句输入格式就能跑起来。
+        unavailable_disease = (
+            intent.get("disease_term") if intent.get("disease_status") == "not_available" else None
+        )
+        if not accepted and unavailable_disease:
+            atomic_unavailable_reason = (
+                f"图谱里没有登记「{unavailable_disease}」的队列，"
+                "不能用其它癌种的数据代替，因此没有可提交的链路。"
+            )
+            if selection_status != "information":
+                unsupported_reason = atomic_unavailable_reason
 
         result = {
             "schema_version": "tool-chain/v2",
@@ -618,6 +663,53 @@ Neo4j atomic 方法目录：
             else:
                 lines.append(f"- {pipeline_id} | missing_from_neo4j")
         return lines
+
+    def _cohort_menu_lines(self) -> List[str]:
+        """The closed set of cohorts the planner may bind a disease to.
+
+        Handing the model the actual cohorts, rather than asking it for a free
+        text disease name, is what makes the answer checkable: anything outside
+        this list is a hallucination and gets dropped in `_llm_disease`.
+        """
+        study_by_id = getattr(self.router.matcher, "study_by_id", {}) or {}
+        lines: List[str] = []
+        for accession in sorted(study_by_id):
+            row = study_by_id[accession] or {}
+            tumor_type = str(row.get("tumor_type") or "").strip() or "未标注"
+            title = str(row.get("title") or "").strip()
+            lines.append(f"- {accession} | {tumor_type}" + (f" | {title[:40]}" if title else ""))
+        return lines
+
+    def _llm_disease(self, decision: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        """Validate the planner's disease call against the cohorts that exist.
+
+        The model is good at reading `NSCLC`, 繁体, a typo or a zero-width space
+        as a disease; it is not authoritative about which cohorts we hold. So
+        the semantic half is taken from the model and the factual half is
+        re-checked here: an accession that is not in the graph is dropped, and
+        a `matched` verdict with nothing left standing degrades to
+        `not_available` rather than silently binding whatever the retriever
+        finds next.
+        """
+        raw = (decision or {}).get("disease")
+        if not isinstance(raw, dict):
+            return None
+        status = str(raw.get("status") or "").strip().lower()
+        if status not in {"matched", "not_available", "unspecified"}:
+            return None
+        study_by_id = getattr(self.router.matcher, "study_by_id", {}) or {}
+        requested = [str(item).strip() for item in (raw.get("study_accessions") or []) if item]
+        studies = [item for item in requested if item in study_by_id]
+        hallucinated = sorted(set(requested) - set(studies))
+        if status == "matched" and not studies:
+            status = "not_available"
+        return {
+            "status": status,
+            "term": str(raw.get("term") or "").strip() or None,
+            "study_accessions": studies,
+            "hallucinated_study_accessions": hallucinated,
+            "source": "llm",
+        }
 
     def _normalize_recommendation_values(self, values: Any) -> List[Dict[str, Any]]:
         if not isinstance(values, list):
@@ -812,6 +904,75 @@ Neo4j atomic 方法目录：
             "source": "neo4j",
         }
 
+    def _reject_disease_mismatch(
+        self,
+        intent: Dict[str, Any],
+        data: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Refuse a cohort that is not the cancer the user asked about.
+
+        Retrieval already filters cohorts by disease, but two paths get around
+        it. A benchmark hit resolves its files by name and never goes through
+        the filter at all. And a disease the alias table cannot map leaves the
+        filter with nothing to match on, so every cohort passes -- that is how
+        a question about 胰腺癌 came back bound to a glioma cohort, with all
+        three parameters filled and ready to submit.
+
+        A wrong cohort is worse than no cohort: the run succeeds and produces
+        numbers about the wrong disease. So the binding is dropped rather than
+        flagged, and the reason says which cohort was rejected and why.
+        """
+        studies = [str(item) for item in data.get("study_accessions") or [] if item]
+        if not studies:
+            return data
+        matcher = self.router.matcher
+
+        # 规划器判定优先：它认得缩写、繁体、错别字和零宽字符，也认得
+        # 「肝硬化不是肝癌」。这里只核对它给的队列真实存在（已在 _llm_disease
+        # 做过），并按判定决定绑不绑。
+        status = intent.get("disease_status")
+        if status:
+            if status == "unspecified":
+                return data
+            allowed = set(intent.get("disease_studies") or [])
+            mismatched = [study for study in studies if study not in allowed]
+            if status == "matched" and not mismatched:
+                return data
+            study_by_id = getattr(matcher, "study_by_id", {}) or {}
+            named = ", ".join(
+                f"{study}（{study_by_id.get(study, {}).get('tumor_type') or '癌种未标注'}）"
+                for study in (mismatched or studies)
+            )
+            term = intent.get("disease_term") or "该疾病"
+            if status == "not_available":
+                reason = (
+                    f"问题问的是{term}，图谱里没有这个癌种的队列，"
+                    f"不能拿 {named} 顶替。"
+                )
+            else:
+                reason = f"问题问的是{term}，但匹配到的队列是 {named}，不予绑定。"
+            return self._no_cohort_result_from(data, studies, reason)
+
+        return data
+
+    @staticmethod
+    def _no_cohort_result_from(
+        data: Dict[str, Any],
+        rejected: Sequence[str],
+        reason: str,
+    ) -> Dict[str, Any]:
+        """Strip the cohort binding but keep why it was stripped."""
+        return {
+            **data,
+            "status": "cohort_disease_mismatch",
+            "assets": [],
+            "matched_count": 0,
+            "alternatives": [],
+            "rejected_study_accessions": list(rejected),
+            "study_accessions": [],
+            "cohort_rejection_reason": reason,
+        }
+
     def _recommendation_data(
         self,
         intent: Dict[str, Any],
@@ -822,11 +983,11 @@ Neo4j atomic 方法目录：
             resolved = self.router.matcher.lookup_files(
                 reference.get("expected_data") or []
             )
-            return {
+            return self._reject_disease_mismatch(intent, {
                 **resolved,
                 "source": "neo4j",
                 "reference_asset_names": list(reference.get("expected_data") or []),
-            }
+            })
 
         evidence_matcher = getattr(
             self.router.matcher, "neo4j_matcher", self.router.matcher
@@ -855,7 +1016,7 @@ Neo4j atomic 方法目录：
             for item in files
         ]
         studies = sorted({str(item.get("study_accession")) for item in files if item.get("study_accession")})
-        return {
+        return self._reject_disease_mismatch(intent, {
             "status": "available",
             "source": "neo4j",
             "assets": assets,
@@ -864,7 +1025,7 @@ Neo4j atomic 方法目录：
             "missing_asset_names": [],
             "study_accessions": studies,
             "alternatives": self._dataset_alternatives(evidence_matcher, combinations),
-        }
+        })
 
     def _study_role_counts(self, matcher: Any) -> Dict[str, Dict[str, int]]:
         """Per study, how many T1 files resolve to a tumor / normal sample role.
@@ -1264,6 +1425,7 @@ Neo4j atomic 方法目录：
                 "run_accession": item.get("run_accession"),
                 "individual_accession": item.get("individual_accession"),
                 "sample_role": item.get("sample_role"),
+                "sample_role_label": item.get("sample_role_label"),
                 "match_reason": item.get("match_reason"),
             })
         return {
@@ -1298,10 +1460,19 @@ Neo4j atomic 方法目录：
             )
         combinations = matched_data.get("data_combinations") or []
         if not combinations:
+            constraints = matched_data.get("query_constraints") or {}
+            unavailable = (
+                constraints.get("disease")
+                if constraints.get("disease_status") == "not_available" else None
+            )
+            cohort_error = (
+                f"图谱里没有登记「{unavailable}」的队列，不能拿其它癌种的数据顶上"
+                if unavailable else ""
+            )
             return None, {
                 "rank": rank,
-                "stage": "data_matching",
-                "errors": ["没有完整的数据组合"],
+                "stage": "cohort_disease_mismatch" if cohort_error else "data_matching",
+                "errors": [cohort_error or "没有完整的数据组合"],
                 "required_asset_roles": required_roles,
                 "paired_wes_matcher": paired,
             }
@@ -2194,6 +2365,7 @@ Neo4j atomic 方法目录：
                 "run_accession": detail.get("run_accession"),
                 "individual_accession": detail.get("individual_accession"),
                 "sample_role": detail.get("sample_role"),
+                "sample_role_label": detail.get("sample_role_label"),
                 "mate": (
                     read_pair if read_pair in {"r1", "r2"}
                     else "r1" if role == "fastq_r1"
