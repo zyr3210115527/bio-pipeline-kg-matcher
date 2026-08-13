@@ -1,0 +1,239 @@
+{
+  "note": "28 条待并入 config/question_tool_data_benchmark.json 的候选。已逐条校验：文件名在图里真实存在、单队列、癌种与队列一致。尚未并入，因为并入前应先跑一轮确认逐字命中稳定复现。",
+  "source": "Fresh robustness probe worker, 2026-08-13",
+  "case_count": 28,
+  "cases": [
+    {
+      "query": "肝癌研究 HRA006499 的体细胞突变 MAF，能不能画一张突变景观图？",
+      "expected_data": [
+        "HRA006499-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "query": "肝癌病人的肿瘤突变负荷高低跟总生存期有没有关系？",
+      "expected_data": [
+        "HRA001272-SomaticSNV-1.0.maf",
+        "HRA001272-Clinical-1.0.xlsx",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "query": "肝癌的 counts 表达矩阵配上临床性状表，怎么构建加权基因共表达网络并筛出 hub 基因？",
+      "expected_data": [
+        "HRA001272-Genes-counts-1.0.tsv",
+        "HRA001272-Clinical-1.0.xlsx",
+        "HRA001272-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "query": "结直肠癌的体细胞突变 MAF 想画突变景观图，看看高频突变基因是哪些",
+      "expected_data": [
+        "HRA000873-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "query": "结直肠癌的突变数据结合临床和样本信息，比较男女患者的驱动基因差异",
+      "expected_data": [
+        "HRA000873-SomaticSNV-1.0.maf",
+        "HRA000873-Clinical-1.0.xlsx",
+        "HRA000873-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "driver_gene_gender_analysis"
+    },
+    {
+      "query": "结直肠癌队列按肿瘤突变负荷分成高低两组，做一次生存分析",
+      "expected_data": [
+        "HRA000873-SomaticSNV-1.0.maf",
+        "HRA000873-Clinical-1.0.xlsx",
+        "HRA000873-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "query": "结直肠癌的 MAF 和临床随访表，能不能按突变状态分层画生存曲线？",
+      "expected_data": [
+        "HRA000873-SomaticSNV-1.0.maf",
+        "HRA000873-Clinical-1.0.xlsx",
+        "HRA000873-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    },
+    {
+      "query": "肺癌的体细胞突变 MAF 怎么出 oncoplot 突变全景图？",
+      "expected_data": [
+        "HRA016026-SomaticSNV-1.0.maf"
+      ],
+      "expected_pipeline_id": "wes_somatic_maf_landscape"
+    },
+    {
+      "query": "肺癌突变数据里男性和女性的驱动基因谱有没有系统性差别？",
+      "expected_data": [
+        "HRA016026-SomaticSNV-1.0.maf",
+        "HRA016026-Clinical-1.0.xlsx",
+        "HRA016026-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "driver_gene_gender_analysis"
+    },
+    {
+      "query": "肺癌病人的 TMB 高低和预后有没有关联？",
+      "expected_data": [
+        "HRA016026-SomaticSNV-1.0.maf",
+        "HRA016026-Clinical-1.0.xlsx",
+        "HRA016026-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "query": "急性T淋巴细胞白血病的 counts 表达矩阵怎么做无监督聚类分型？",
+      "expected_data": [
+        "HRA000122-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "query": "急性T淋巴细胞白血病的 FPKM 矩阵做差异表达，再做 GO 功能富集",
+      "expected_data": [
+        "HRA000122-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "query": "急性髓系白血病 HRA002693 的 counts 矩阵做无监督聚类，看能不能分出亚型",
+      "expected_data": [
+        "HRA002693-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "query": "急性髓系白血病 HRA002693 的 TPM 表达矩阵结合临床信息做免疫细胞浸润分析",
+      "expected_data": [
+        "HRA002693-Genes-TPM-1.0.tsv",
+        "HRA002693-Clinical-1.0.xlsx",
+        "HRA002693-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "query": "急性髓系白血病 HRA006117 的 counts 矩阵和临床表做 WGCNA 共表达模块分析",
+      "expected_data": [
+        "HRA006117-Genes-counts-1.0.tsv",
+        "HRA006117-Clinical-1.0.xlsx",
+        "HRA006117-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "query": "急性髓系白血病 HRA006117 的 FPKM 表达矩阵做差异表达并跑 KEGG 通路富集",
+      "expected_data": [
+        "HRA006117-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_kegg"
+    },
+    {
+      "query": "急性髓系白血病 HRA007413 的 counts 数据做聚类分型",
+      "expected_data": [
+        "HRA007413-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "query": "急性髓系白血病 HRA007413 的 TPM 矩阵能不能做免疫浸润打分？",
+      "expected_data": [
+        "HRA007413-Genes-TPM-1.0.tsv",
+        "HRA007413-Clinical-1.0.xlsx",
+        "HRA007413-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "query": "食管癌的 counts 矩阵配上临床表做 WGCNA，找和分期相关的共表达模块",
+      "expected_data": [
+        "HRA003107-Genes-counts-1.0.tsv",
+        "HRA003107-Clinical-1.0.xlsx",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "query": "食管癌里 HER2 表达高低跟无进展生存期有没有关系？",
+      "expected_data": [
+        "HRA003107-Genes-TPM-1.0.tsv",
+        "HRA003107-Clinical-1.0.xlsx",
+        "HRA003107-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "her2_pfs_survival"
+    },
+    {
+      "query": "黑色素瘤的 counts 表达矩阵和临床信息能不能做 WGCNA 找 hub 基因？",
+      "expected_data": [
+        "HRA007167-Genes-counts-1.0.tsv",
+        "HRA007167-Clinical-1.0.xlsx",
+        "HRA007167-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "query": "黑色素瘤的突变数据能不能比较男女患者的驱动基因分布差异？",
+      "expected_data": [
+        "HRA007169-SomaticSNV-1.0.maf",
+        "HRA007169-Clinical-1.0.xlsx",
+        "HRA007169-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "driver_gene_gender_analysis"
+    },
+    {
+      "query": "胶质瘤研究 HRA000073 的 counts 矩阵做无监督聚类分型",
+      "expected_data": [
+        "HRA000073-Genes-counts-1.0.tsv"
+      ],
+      "expected_pipeline_id": "rnaseq_unsupervised_cluster"
+    },
+    {
+      "query": "胶质瘤研究 HRA000073 的 TPM 矩阵结合临床信息做免疫浸润分析",
+      "expected_data": [
+        "HRA000073-Genes-TPM-1.0.tsv",
+        "HRA000073-Clinical-1.0.xlsx",
+        "HRA000073-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "immune_infiltration_iobr"
+    },
+    {
+      "query": "胶质瘤研究 HRA000073 的 counts 矩阵和临床表做 WGCNA 共表达网络",
+      "expected_data": [
+        "HRA000073-Genes-counts-1.0.tsv",
+        "HRA000073-Clinical-1.0.xlsx",
+        "HRA000073-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "wgcna"
+    },
+    {
+      "query": "胶质瘤研究 HRA000073 的 FPKM 矩阵做差异表达和 GO 富集",
+      "expected_data": [
+        "HRA000073-Genes-FPKM-1.0.tsv"
+      ],
+      "expected_pipeline_id": "diff_expr_go"
+    },
+    {
+      "query": "胶质瘤的体细胞突变负荷和生存时间有没有关系？",
+      "expected_data": [
+        "HRA000071-SomaticSNV-1.0.maf",
+        "HRA000071-Clinical-1.0.xlsx",
+        "HRA000071-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "tmb_survival_analysis"
+    },
+    {
+      "query": "胶质瘤的突变数据加上临床随访，做突变状态分层的生存分析",
+      "expected_data": [
+        "HRA000071-SomaticSNV-1.0.maf",
+        "HRA000071-Clinical-1.0.xlsx",
+        "HRA000071-MetaInfo-1.0.xlsx"
+      ],
+      "expected_pipeline_id": "survival_analysis"
+    }
+  ]
+}
