@@ -412,6 +412,7 @@ class WorkflowComposer:
 }
 
 候选规则：
+0b. **"拆不出原子链"永远不是清空 recommendations 的理由。**这两个字段各管各的：recommendations 回答"目录里有没有能做这件事的业务流程"，candidates 回答"能不能拆成可执行的原子步骤"。目录里登记了匹配的流程，就必须写进 recommendations，哪怕 candidates 只能为空、哪怕 unsupported_reason 写的是"尚未原子化"。WGCNA、无监督聚类、免疫浸润、驱动基因性别分层、突变景观这些都属于这种情况：整卡是现成的，原子层没有对应工具，正确输出是 recommendations 非空 + candidates 为空。用户换个说法、用繁体、写错别字、或者只描述目的而不点工具名（如"挖和分级挂钩的模块与枢纽基因"就是 WGCNA），都不改变这一点。
 0a. **`disease` 字段必须输出，任何情况下都不能省略、不能为 null。**它决定后续能不能绑队列：漏掉这个字段，系统就不知道该用哪个癌种的数据，只能什么都不给。三种取值见下方"癌种判定"。即使用户没提癌种，也要显式输出 `{"status": "unspecified", "term": null, "study_accessions": []}`。
 0. recommendations 是业务流程推荐，pipeline_id 只能来自下方“业务 pipeline 目录”；按匹配度给 1 到 3 条，不得用 atomic tool 代替。candidates 是可执行 atomic 链，两者含义不同。业务流程必须同时匹配用户明确给出的输入类型、样本布局和最终目标；只覆盖部分目标、只消费同类数据、或会执行用户明确排除步骤的流程不能推荐。若没有完整匹配项，recommendations 必须为空。即使完整匹配的业务流程尚未原子化，也应保留正确 recommendation，同时令 candidates 为空。
 1. rank 必须唯一，1 最贴合；第一条必须是覆盖完整目标的首选链，其余必须是覆盖同一完整目标的不同工具组合、终点侧重或数据资产组合。用户未指定单一终点时，若存在合法替代方案必须保留 rank 2/3；不要为了凑数复制、截短或给出明显不完整的链。
@@ -815,7 +816,17 @@ Neo4j atomic 方法目录：
         "CSV", "XLS", "XLSX", "PDF", "PNG", "GO", "KEGG", "GSEA", "WGCNA",
         "IOBR", "STAR", "RSEM", "GATK", "BWA", "ID", "AI", "UI", "API",
     })
-    _GENE_TOKEN_RE = re.compile(r"\b([A-Z][A-Z0-9]{1,9})\b")
+    # 长度放到 24：HGNC 符号最长十几个字符，而用户手打的目标基因未必是合法符号
+    # （`FAKEGENE404` 就有 11 位）。这里的作用是把用户写了什么原样带出来交给下游
+    # 校验，不是判断它是否合法，所以宁可宽一点也不要漏。
+    _GENE_TOKEN_RE = re.compile(r"\b([A-Z][A-Z0-9-]{1,23})\b")
+    # 真正接受"用户指定某个基因"的流程，描述里都会明说是特定/指定/目标基因。
+    # 只搜"基因"会把 25 个流程全捞进来——基因表达矩阵、差异基因、hub 基因、
+    # 突变基因 Oncoplot 说的都是分析内容，不是可传参数。
+    _GENE_PARAM_RE = re.compile(
+        r"(特定|指定|目标|某个|自选)基因|基因（默认|按基因|target\s+gene|gene\s+of\s+interest",
+        re.I,
+    )
 
     def _unvalidated_parameters(
         self,
@@ -838,7 +849,7 @@ Neo4j atomic 方法目录：
         if not method:
             return []
         description = f"{method.description or ''} {method.name or ''}"
-        if "基因" not in description and "gene" not in description.lower():
+        if not self._GENE_PARAM_RE.search(description):
             return []
         declared = {
             str(slot.get("builder_param") or slot.get("name") or "")
