@@ -321,17 +321,63 @@ class RealNeo4jIntegrationTests(unittest.TestCase):
         catalog = client.tool_catalog()
         self.assertTrue(catalog["connected"], catalog)
         # Read the sizes from the contract rather than hard-coding them, so the
-        # catalog can grow without the integration test going stale.
-        expected_catalog = load_expectations()["raw"]["tool_catalog"]
+        # catalog can grow without the integration test going stale. These are
+        # the runtime numbers, which are not the graph's: `tool_catalog.tools`
+        # counts `:tool` nodes, while `tool_catalog()` returns what the composer
+        # can actually use, and that excludes multiqc.
+        expected_catalog = load_expectations()["raw"]["tool_catalog"]["runtime_catalog"]
         self.assertEqual(len(catalog["tools"]), expected_catalog["tools"])
-        self.assertEqual(len(catalog["next_edges"]), expected_catalog["next"])
+        self.assertEqual(len(catalog["next_edges"]), expected_catalog["next_edges"])
         rnaseq_steps = [
             step for step in catalog["pipeline_steps"]
             if step["pipeline_id"] == "rnaseq_singletask"
         ]
-        self.assertEqual(len(rnaseq_steps), 7)
+        # 7 步是 multiqc 被排除之前的数字，同样从契约里读。
+        self.assertEqual(len(rnaseq_steps), expected_catalog["pipeline_steps"])
+        self.assertNotIn("multiqc", {step["tool_id"] for step in rnaseq_steps})
         self.assertTrue(all(step["source"] == "sister-task-pipeline" for step in rnaseq_steps))
         client.close()
+
+    def test_every_benchmark_asset_name_exists_in_the_graph(self):
+        """A reference file the graph does not have degrades silently.
+
+        The 96-case benchmark names the exact files each case should resolve
+        to. When a name drifts from the delivery -- five of them said `.xls`
+        while every clinical table in the graph is `.xlsx` -- the recommendation
+        still comes back, just with that input reported missing, so the caller
+        gets an unsubmittable plan and no error anywhere. Fail loudly instead.
+        """
+        import re
+
+        from neo4j import GraphDatabase
+
+        benchmark = (ROOT / "config" / "question_tool_data_benchmark.json").read_text(
+            encoding="utf-8"
+        )
+        referenced = set(
+            re.findall(r'"([A-Za-z0-9_.\-]+\.(?:xls|xlsx|tsv|csv|maf|txt))"', benchmark)
+        )
+        self.assertTrue(referenced, "benchmark should reference data files")
+
+        driver = GraphDatabase.driver(
+            os.environ["NEO4J_URI"],
+            auth=(os.environ.get("NEO4J_USER", "neo4j"), os.environ["NEO4J_PASSWORD"]),
+        )
+        try:
+            with driver.session(database=os.environ.get("NEO4J_DATABASE") or "neo4j") as session:
+                in_graph = {
+                    record["file_name"]
+                    for record in session.run(
+                        "MATCH (n) WHERE n:T1 OR n:T2 "
+                        "RETURN DISTINCT n.file_name AS file_name"
+                    )
+                    if record["file_name"]
+                }
+        finally:
+            driver.close()
+
+        missing = sorted(referenced - in_graph)
+        self.assertEqual(missing, [], f"benchmark references files the graph lacks: {missing}")
 
 
 @unittest.skipUnless(

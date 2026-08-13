@@ -1,0 +1,395 @@
+[
+  {
+    "group": "failing",
+    "prompt": "肝癌 TPM 表达矩阵能做免疫浸润分析吗？",
+    "report_expected": "immune_infiltration_iobr",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "immune_infiltration_iobr",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "failing",
+    "prompt": "食管癌 counts 数据怎么做无监督聚类？",
+    "report_expected": "rnaseq_unsupervised_cluster",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "rnaseq_unsupervised_cluster",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": false
+    },
+    "error": null
+  },
+  {
+    "group": "failing",
+    "prompt": "肝癌 MAF 文件怎么画突变景观图？",
+    "report_expected": "wes_somatic_maf_landscape",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "wes_somatic_maf_landscape",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "failing",
+    "prompt": "RNA-seq FASTQ 原始数据怎么做完整上游分析？",
+    "report_expected": "rnaseq_singletask",
+    "result": {
+      "status": "ready",
+      "recommendations": [
+        {
+          "pipeline_id": "rnaseq_singletask",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 2,
+      "candidate_chains": [
+        "fastp_paired_end->star_rrna_and_genome_alignment->rsem_quantification->samtools_alignment_processing->featurecounts_gene_counting",
+        "trim_galore->star_rrna_and_genome_alignment->rsem_quantification->samtools_alignment_processing->featurecounts_gene_counting"
+      ],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "failing",
+    "prompt": "胶质瘤 counts 矩阵怎么做 WGCNA？",
+    "report_expected": "wgcna",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "wgcna",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": false
+    },
+    "error": null
+  },
+  {
+    "group": "passing",
+    "prompt": "黑色素瘤患者的 TMB 高低和生存预后有没有关系？",
+    "report_expected": "tmb_survival_analysis",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "tmb_survival_analysis",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": false
+    },
+    "error": null
+  },
+  {
+    "group": "passing",
+    "prompt": "肝癌 EGFR 突变和 PFS 有关系吗？",
+    "report_expected": "survival_analysis",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "survival_analysis",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "passing",
+    "prompt": "肝癌突变数据能不能比较男女患者的驱动基因差异？",
+    "report_expected": "driver_gene_gender_analysis",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "driver_gene_gender_analysis",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "passing",
+    "prompt": "胶质瘤能做 HER2 表达和 PFS 的生存分析吗？",
+    "report_expected": "her2_pfs_survival",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "study": null,
+          "note": "命中已审核的 96 例问题-数据-工具基准。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "fakegene",
+    "prompt": "肝癌 XXX6 表达高低和 PFS 有关系吗？",
+    "report_expected": "应拒绝或说明基因未知",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "study": null,
+          "note": "该流程基于 TPM 表达矩阵和临床随访信息，按指定基因（如 XXX6）表达水平分层并分析 PFS 关联，直接匹配用户目标",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "fakegene",
+    "prompt": "肺癌 XXX6 表达高低和 PFS 有关系吗？",
+    "report_expected": "应拒绝或说明基因未知",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "study": null,
+          "note": "该流程分析指定基因（默认 HER2，可替换为 XXX6）表达水平与 PFS 的关联，输入 TPM 矩阵和临床信息，输出 KM 曲线与统计量，",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "fakegene",
+    "prompt": "食管癌 XXX6 表达高低和 PFS 有关系吗？",
+    "report_expected": "应拒绝或说明基因未知",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "study": null,
+          "note": "专门针对特定基因表达水平与PFS关联，基于TPM表达矩阵与临床随访数据，输出KM曲线和Logrank统计，最匹配表达高低与PFS问题",
+          "feasibility": null
+        },
+        {
+          "pipeline_id": "km_survival",
+          "study": null,
+          "note": "通用生存分析流程，支持按基因表达分组进行KM和Cox分析，可作为替代方案",
+          "feasibility": null
+        },
+        {
+          "pipeline_id": "cox_model",
+          "study": null,
+          "note": "以Cox回归和KM曲线整合表达与临床数据，输出风险比，适合检验表达水平与PFS的定量关联",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "nonsense",
+    "prompt": "苹果的红色程度和 PFS 有关系吗？",
+    "report_expected": "应明确不支持",
+    "result": {
+      "status": "no_candidate",
+      "recommendations": [],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "LLM 未返回可评估的原子工具候选链。",
+      "llm_used": false
+    },
+    "error": null
+  },
+  {
+    "group": "nonsense",
+    "prompt": "胃癌患者的身高体重和总生存期有关系吗？",
+    "report_expected": "应明确不支持",
+    "result": {
+      "status": "unsupported",
+      "recommendations": [],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "基于身高体重等临床表型与总生存期关系的生存分析尚未原子化，现有生存分析流程均需基因表达矩阵或MAF文件作为输入，无法直接处理身高体重数据。",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "nonsense",
+    "prompt": "今天天气怎么样？",
+    "report_expected": "应明确不支持",
+    "result": {
+      "status": "no_candidate",
+      "recommendations": [],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "LLM 未返回可评估的原子工具候选链。",
+      "llm_used": false
+    },
+    "error": null
+  },
+  {
+    "group": "metadata",
+    "prompt": "服务器上有哪些可用的队列数据？",
+    "report_expected": "能力/元数据问答",
+    "result": {
+      "status": "unsupported",
+      "recommendations": [],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "当前目录只登记了分析 pipeline，没有可查询的‘队列数据’目录；该请求不属于可执行工作流。",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "metadata",
+    "prompt": "HRA001272 队列里有多少个样本？",
+    "report_expected": "能力/元数据问答",
+    "result": {
+      "status": "unsupported",
+      "recommendations": [],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "该需求为 HRA001272 队列样本数查询，属于元数据获取而非可编排分析流程，目录中无对应原子工具或业务流程，暂不支持。",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "metadata",
+    "prompt": "帮我看看 HRA001272 的临床数据里都有哪些字段",
+    "report_expected": "能力/元数据问答",
+    "result": {
+      "status": "unsupported",
+      "recommendations": [],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "HRA001272 临床字段查看属于数据检索与字典展示，当前目录尚无对应业务 pipeline 或 atomic tool，暂不支持。",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "english",
+    "prompt": "Can you analyze whether high ERBB2 expression relates to PFS in liver cancer?",
+    "report_expected": "her2_pfs_survival",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "study": null,
+          "note": "该流程专门基于 TPM 表达矩阵评估 ERBB2/HER2 表达水平与 PFS 的关联，符合肝癌场景。",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  },
+  {
+    "group": "english",
+    "prompt": "黑色素瘤 HER2 表达和 PFS",
+    "report_expected": "her2_pfs_survival",
+    "result": {
+      "status": "information",
+      "recommendations": [
+        {
+          "pipeline_id": "her2_pfs_survival",
+          "study": null,
+          "note": "该业务流程专门分析黑色素瘤中 HER2 表达水平与 PFS 的关联，输入 TPM 表达矩阵和临床随访数据，输出 KM 曲线与 Logrank",
+          "feasibility": null
+        }
+      ],
+      "candidate_count": 0,
+      "candidate_chains": [],
+      "unsupported_reason": "",
+      "llm_used": true
+    },
+    "error": null
+  }
+]

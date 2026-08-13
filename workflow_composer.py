@@ -418,6 +418,7 @@ class WorkflowComposer:
 6a. 用户不需要写出每一步工具名。若用户只描述 assay、输入数据和最终目标（例如“完整 bulk RNA-seq 分析并得到表达矩阵”），必须根据 Neo4j 的 tool、slot、artifact 和 NEXT/data 边反推出完整合法链；不能因为没有出现 STAR、SAMtools 等字样就拒绝或只返回空流程。只有在存在多个终点或方法分支时，才按用户明确约束和候选匹配度排序。
 7. 不得从“一对双端 FASTQ”推断 tumor/normal。只有用户明确说明 tumor-normal 配对，或明确给出两个样本及其 tumor/normal 角色时，才能推荐 wes_somatic_pair 或生成四 FASTQ 配对链；缺少角色时应说明样本布局不足，不能自行补角色。
 8. 最终产物是完整性门禁：若用户要求的最后产物需要未登记工具或当前合同无法到达，整条 candidates 必须为空，不能返回只做到上游中间产物的前缀链。pipeline recommendation 只是业务信息，不等于 atomic candidate 可执行。唯一例外是 MultiQC/QC 汇总，见下方边界条目。
+9. 图谱只到文件级，没有基因、位点、通路这类内容维度，因此无法判断用户提到的基因或靶点是否真实存在、是否出现在表达矩阵里。match_note 里不得出现“可将目标基因替换为 XXX”“支持该基因”这类断言，也不得默认用户写出的符号就是合法基因名。需要提到时只能陈述流程本身按指定基因分层，不对该符号的有效性表态。
 
 当前目录/执行合同的已知边界：
 - 这些边界是 candidates 生成前的强制短路条件，优先级高于目录中显示的 NEXT。命中后必须直接输出 `"candidates": []`，不得先尝试构造步骤、不得输出“理论可行但会被校验器拒绝”的候选。
@@ -540,10 +541,14 @@ Neo4j atomic 方法目录：
             selection_status = "unsupported"
         else:
             selection_status = "no_candidate"
+            # 这句会原样显示给终端用户，所以说的是"这个需求怎么了"，而不是内部哪个
+            # 环节没产出。规划器空转对用户没有意义，他要知道的是该改问法还是换需求。
             unsupported_reason = (
-                "候选链未同时通过目录校验和完整用户样本数据匹配。"
+                "已有工具能覆盖这个需求的一部分，但拼不出一条从你的输入到目标结果的完整链路，"
+                "请补充输入数据类型或缩小分析目标。"
                 if normalized else
-                "LLM 未返回可评估的原子工具候选链。"
+                "没能把这个需求对应到任何已登记的分析能力；如果确实是生信分析需求，"
+                "请说明输入数据类型（如 FASTQ / BAM / 表达矩阵 / MAF）和想要的结果。"
             )
         if not accepted and not atomic_unavailable_reason and rejected:
             rejected_stages = ", ".join(sorted({
@@ -703,10 +708,68 @@ Neo4j atomic 方法目录：
                 "data": data,
                 "execution_params": execution_params,
                 "execution_params_missing": execution_params_missing,
+                "unvalidated_parameters": self._unvalidated_parameters(text, method),
                 "source": recommendation_source,
                 "reference_case_id": reference.get("case_id") if reference else None,
             })
         return recommendations
+
+    # 一眼看去像基因符号、但其实是检测方法或指标的词。图谱里没有基因维度，
+    # 只能靠这份排除表把明显不是基因的词滤掉，剩下的一律按"未校验"申报。
+    _NON_GENE_TOKENS = frozenset({
+        "PFS", "OS", "DFS", "EFS", "TMB", "MSI", "CNV", "SNV", "SV", "QC",
+        "RNA", "DNA", "MRNA", "CDNA", "WES", "WGS", "WXS", "MAF", "BAM", "SAM",
+        "VCF", "TPM", "FPKM", "RPKM", "FASTQ", "FQ", "KM", "HR", "CI", "TSV",
+        "CSV", "XLS", "XLSX", "PDF", "PNG", "GO", "KEGG", "GSEA", "WGCNA",
+        "IOBR", "STAR", "RSEM", "GATK", "BWA", "ID", "AI", "UI", "API",
+    })
+    _GENE_TOKEN_RE = re.compile(r"\b([A-Z][A-Z0-9]{1,9})\b")
+
+    def _unvalidated_parameters(
+        self,
+        text: str,
+        method: Optional[RegisteredMethod],
+    ) -> List[Dict[str, Any]]:
+        """Declare the parameters this backend cannot check.
+
+        Several pipelines take a target gene and stratify samples by its
+        expression. The graph stops at the file level -- there are no gene,
+        locus or pathway nodes, and nothing here opens a TPM matrix -- so
+        whether `XXX6` is a real gene, and whether it appears in the matrix
+        the pipeline will read, is simply not knowable from this side.
+
+        Silence would let a made-up symbol travel all the way into a
+        submission looking exactly like a verified one. Instead the gap is
+        stated in the payload, so whoever builds the submission has to either
+        check it or show the user that nobody did.
+        """
+        if not method:
+            return []
+        description = f"{method.description or ''} {method.name or ''}"
+        if "基因" not in description and "gene" not in description.lower():
+            return []
+        declared = {
+            str(slot.get("builder_param") or slot.get("name") or "")
+            for slot in (method.inputs or [])
+        }
+        if "gene" in declared:
+            return []  # 真按槽位声明了就不用这条旁路
+        symbols = [
+            token for token in self._GENE_TOKEN_RE.findall(str(text or ""))
+            if token not in self._NON_GENE_TOKENS
+            and not token.startswith("HRA")
+            and not token.startswith("HRS")
+        ]
+        return [{
+            "parameter": "gene",
+            "value_from_question": symbols[0] if symbols else None,
+            "validated": False,
+            "reason": (
+                "图谱只到文件级，没有基因维度，本服务无法确认该符号是真实基因、"
+                "也无法确认它出现在流程要读取的表达矩阵里。"
+            ),
+            "action": "提交前请由执行端或调用方校验；未校验就执行可能得到空结果或报错。",
+        }]
 
     @staticmethod
     def _deterministic_pipeline_recommendation(

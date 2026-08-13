@@ -227,7 +227,7 @@
       "query": "肝癌突变数据能不能比较男女患者的驱动基因差异？",
       "expected_data": [
         "HRA001272-SomaticSNV-1.0.maf",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "driver_gene_gender_analysis"
@@ -237,7 +237,7 @@
       "query": "我想看肝癌男性和女性患者中，哪些癌症驱动基因的突变频率不一样。",
       "expected_data": [
         "HRA001272-SomaticSNV-1.0.maf",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "driver_gene_gender_analysis"
@@ -247,7 +247,7 @@
       "query": "结合肝癌患者的 WES 体细胞突变 MAF 文件、临床性别信息和样本映射表，如何进行驱动基因突变频率的性别分层比较，并输出统计结果和可视化图？",
       "expected_data": [
         "HRA001272-SomaticSNV-1.0.maf",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "driver_gene_gender_analysis"
@@ -257,7 +257,7 @@
       "query": "肝癌 HER2 表达高低和 PFS 有关系吗？",
       "expected_data": [
         "HRA001272-Genes-TPM-1.0.tsv",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -267,7 +267,7 @@
       "query": "我想把肝癌患者按 ERBB2 表达量分成高低组，然后画无进展生存曲线。",
       "expected_data": [
         "HRA001272-Genes-TPM-1.0.tsv",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -277,7 +277,7 @@
       "query": "如何结合肝癌患者的 TPM 表达矩阵、临床随访资料和样本映射信息，评估 HER2/ERBB2 表达水平与无进展生存期之间的关系？",
       "expected_data": [
         "HRA001272-Genes-TPM-1.0.tsv",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -287,7 +287,7 @@
       "query": "胶质瘤能做 HER2 表达和 PFS 的生存分析吗？",
       "expected_data": [
         "HRA000074-Genes-TPM-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -297,7 +297,7 @@
       "query": "我想知道胶质瘤患者中 ERBB2 高表达组和低表达组的无进展生存有没有差别。",
       "expected_data": [
         "HRA000074-Genes-TPM-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -307,7 +307,7 @@
       "query": "基于胶质瘤队列的 TPM 表达矩阵和临床随访信息，如何评估 HER2/ERBB2 表达分层是否具有预后提示价值，并生成 Kaplan-Meier 曲线和统计结果？",
       "expected_data": [
         "HRA000074-Genes-TPM-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -317,7 +317,7 @@
       "query": "黑色素瘤 HER2 表达和 PFS 怎么分析？",
       "expected_data": [
         "HRA007167-Genes-TPM-1.0.tsv",
-        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-Clinical-1.0.xlsx",
         "HRA007167-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -327,7 +327,7 @@
       "query": "我有黑色素瘤的 TPM 表达数据和随访信息，想看 ERBB2 表达高低是否影响无进展生存。",
       "expected_data": [
         "HRA007167-Genes-TPM-1.0.tsv",
-        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-Clinical-1.0.xlsx",
         "HRA007167-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -337,7 +337,7 @@
       "query": "如何利用黑色素瘤队列的转录组表达矩阵和临床生存资料，比较 HER2/ERBB2 高低表达患者的 PFS 差异，并输出生存分析结果？",
       "expected_data": [
         "HRA007167-Genes-TPM-1.0.tsv",
-        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-Clinical-1.0.xlsx",
         "HRA007167-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "her2_pfs_survival"
@@ -347,7 +347,7 @@
       "query": "肝癌 TPM 表达矩阵能做免疫浸润分析吗？",
       "expected_data": [
         "HRA001272-Genes-TPM-1.0.tsv",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -357,7 +357,7 @@
       "query": "我想看肝癌样本里的免疫细胞组成，比如 T 细胞、B 细胞和巨噬细胞比例。",
       "expected_data": [
         "HRA001272-Genes-TPM-1.0.tsv",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -367,7 +367,7 @@
       "query": "基于肝癌 bulk RNA-seq TPM 表达数据和临床样本信息，如何使用 CIBERSORT 方法估计肿瘤微环境中的免疫细胞浸润状态？",
       "expected_data": [
         "HRA001272-Genes-TPM-1.0.tsv",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -377,7 +377,7 @@
       "query": "胶质瘤样本能不能做免疫浸润分析？",
       "expected_data": [
         "HRA000074-Genes-TPM-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -387,7 +387,7 @@
       "query": "我有胶质瘤 TPM 表达矩阵，想估计不同免疫细胞在样本中的比例。",
       "expected_data": [
         "HRA000074-Genes-TPM-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -397,7 +397,7 @@
       "query": "如何基于胶质瘤转录组表达数据推断肿瘤免疫微环境，并生成免疫细胞比例表、热图和相关性图？",
       "expected_data": [
         "HRA000074-Genes-TPM-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -407,7 +407,7 @@
       "query": "黑色素瘤 RNA-seq 数据能分析免疫细胞浸润吗？",
       "expected_data": [
         "HRA007167-Genes-TPM-1.0.tsv",
-        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-Clinical-1.0.xlsx",
         "HRA007167-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -417,7 +417,7 @@
       "query": "我想比较黑色素瘤样本中不同免疫细胞的比例，有没有合适流程？",
       "expected_data": [
         "HRA007167-Genes-TPM-1.0.tsv",
-        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-Clinical-1.0.xlsx",
         "HRA007167-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -427,7 +427,7 @@
       "query": "结合黑色素瘤队列的 TPM 表达矩阵和临床样本信息，如何进行 IOBR-CIBERSORT 免疫浸润分析并输出堆叠图、箱线图和热图？",
       "expected_data": [
         "HRA007167-Genes-TPM-1.0.tsv",
-        "HRA007167-Clinical-1.0.xls",
+        "HRA007167-Clinical-1.0.xlsx",
         "HRA007167-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -437,7 +437,7 @@
       "query": "食管癌 TPM 矩阵可以推断免疫浸润吗？",
       "expected_data": [
         "HRA003107-Genes-TPM-1.0.tsv",
-        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-Clinical-1.0.xlsx",
         "HRA003107-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -447,7 +447,7 @@
       "query": "我想用食管癌 bulk RNA-seq 数据估计样本中的免疫细胞组成。",
       "expected_data": [
         "HRA003107-Genes-TPM-1.0.tsv",
-        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-Clinical-1.0.xlsx",
         "HRA003107-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -457,7 +457,7 @@
       "query": "基于食管癌队列的转录组 TPM 表达数据，如何获得可靠样本的免疫细胞比例，并进一步展示免疫微环境特征？",
       "expected_data": [
         "HRA003107-Genes-TPM-1.0.tsv",
-        "HRA003107-Clinical-1.0.xls",
+        "HRA003107-Clinical-1.0.xlsx",
         "HRA003107-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "immune_infiltration_iobr"
@@ -617,7 +617,7 @@
       "query": "肝癌 EGFR 突变和 PFS 有关系吗？",
       "expected_data": [
         "HRA001272-SomaticSNV-1.0.maf",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "survival_analysis"
@@ -627,7 +627,7 @@
       "query": "我有肝癌 WES 突变数据和随访资料，想按 EGFR 突变状态画生存曲线。",
       "expected_data": [
         "HRA001272-SomaticSNV-1.0.maf",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "survival_analysis"
@@ -637,7 +637,7 @@
       "query": "结合肝癌患者的全外显子测序体细胞突变数据、临床随访资料和样本映射表，如何评估 EGFR 突变状态与无进展生存期之间的关系？",
       "expected_data": [
         "HRA001272-SomaticSNV-1.0.maf",
-        "HRA001272-Clinical-1.0.xls",
+        "HRA001272-Clinical-1.0.xlsx",
         "HRA001272-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "survival_analysis"
@@ -647,7 +647,7 @@
       "query": "黑色素瘤 EGFR 突变会影响 PFS 吗？",
       "expected_data": [
         "HRA007169-SomaticSNV-1.0.maf",
-        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-Clinical-1.0.xlsx",
         "HRA007169-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "survival_analysis"
@@ -657,7 +657,7 @@
       "query": "我想用黑色素瘤体细胞突变数据和临床信息做 EGFR 生存分析。",
       "expected_data": [
         "HRA007169-SomaticSNV-1.0.maf",
-        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-Clinical-1.0.xlsx",
         "HRA007169-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "survival_analysis"
@@ -667,7 +667,7 @@
       "query": "基于黑色素瘤患者的 MAF 文件、临床随访数据和样本映射信息，如何比较 EGFR 突变组与野生型组的无进展生存差异？",
       "expected_data": [
         "HRA007169-SomaticSNV-1.0.maf",
-        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-Clinical-1.0.xlsx",
         "HRA007169-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "survival_analysis"
@@ -677,7 +677,7 @@
       "query": "黑色素瘤患者的 TMB 高低和生存预后有没有关系？",
       "expected_data": [
         "HRA007169-SomaticSNV-1.0.maf",
-        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-Clinical-1.0.xlsx",
         "HRA007169-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "tmb_survival_analysis"
@@ -687,7 +687,7 @@
       "query": "我手里有黑色素瘤的 WES 突变数据和临床随访信息，想计算每个病人的 TMB，并按高低分组画 Kaplan-Meier 曲线。",
       "expected_data": [
         "HRA007169-SomaticSNV-1.0.maf",
-        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-Clinical-1.0.xlsx",
         "HRA007169-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "tmb_survival_analysis"
@@ -697,7 +697,7 @@
       "query": "结合黑色素瘤患者的 WES 体细胞突变数据、临床随访资料和样本映射信息，如何计算病人级 TMB，并分析 TMB 高低分组与生存结局之间的关系？",
       "expected_data": [
         "HRA007169-SomaticSNV-1.0.maf",
-        "HRA007169-Clinical-1.0.xls",
+        "HRA007169-Clinical-1.0.xlsx",
         "HRA007169-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "tmb_survival_analysis"
@@ -836,7 +836,7 @@
       "query": "胶质瘤 counts 矩阵怎么做 WGCNA？",
       "expected_data": [
         "HRA000074-Genes-counts-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "wgcna"
@@ -846,7 +846,7 @@
       "query": "我想找胶质瘤中和肿瘤分级或性别相关的共表达模块和 hub 基因。",
       "expected_data": [
         "HRA000074-Genes-counts-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "wgcna"
@@ -856,7 +856,7 @@
       "query": "结合胶质瘤 RNA-seq counts 矩阵、临床性状信息和样本映射表，如何构建加权基因共表达网络，并进一步筛选稳定模块、hub genes 以及相关功能通路？",
       "expected_data": [
         "HRA000074-Genes-counts-1.0.tsv",
-        "HRA000074-Clinical-1.0.xls",
+        "HRA000074-Clinical-1.0.xlsx",
         "HRA000074-MetaInfo-1.0.xlsx"
       ],
       "expected_pipeline_id": "wgcna"
