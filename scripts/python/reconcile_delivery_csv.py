@@ -12,13 +12,21 @@ disagreed with each other.
 One rule decides every cell, so the result is reproducible rather than
 hand-picked:
 
-    a value that was non-empty and became empty is restored from the previous
-    drop; everything else takes the new drop, including value changes.
+    a *real* value that disappeared is restored from the previous drop;
+    everything else takes the new drop, including value changes.
+
+"Real" excludes placeholders -- `-999`, `Not Applicable`, `Not_Applicable`.
+Clearing those is normalisation, not loss: 0813 blanked 14,032 cells in
+`individual.csv` and every last one of them was one of those three, so
+restoring them would just undo her cleanup. The same drop also blanked 325
+genuine `Tumor` labels, which is loss and does get restored -- the distinction
+is the whole point of the rule.
 
 Deletions are the only thing treated as suspect. A changed value is her
 correcting something and is always accepted -- that is how the 350 `*_Tumor`
-samples in HRA016026 got fixed. A dropped column that still had values is the
-column-level form of the same rule.
+samples in HRA016026 got fixed. A dropped column that still holds real values
+is the column-level form of the same rule; a column holding nothing but
+placeholders is allowed to go.
 
 Every restored cell is printed. If the report is ever empty the delivery is
 clean and this script can go away.
@@ -33,6 +41,20 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
+
+# 表示"这里没有数据"的占位符。把它们清成空是规范化，不是数据丢失，所以不回填。
+# 0813 一次清掉 14,032 格，全部是这三种；把它们当成丢失去回填，等于把对方的
+# 清理工作原样撤销。
+PLACEHOLDER_VALUES = frozenset({
+    "-999", "Not Applicable", "Not_Applicable", "not applicable",
+    "NA", "N/A", "na", "n/a", "--", "不适用", "Unknown", "unknown", "NULL", "null",
+})
+
+
+def _is_real(value: Optional[str]) -> bool:
+    text = (value or "").strip()
+    return bool(text) and text not in PLACEHOLDER_VALUES
+
 
 # 主键，用来把新旧两版的行对上；没列在这里的文件整份取新版。
 PRIMARY_KEYS = {
@@ -76,7 +98,7 @@ def reconcile_file(
         column
         for column in previous_columns
         if column not in incoming_columns
-        and any((row.get(column) or "").strip() for row in previous_rows)
+        and any(_is_real(row.get(column)) for row in previous_rows)
     ]
     columns = list(incoming_columns) + restored_columns
 
@@ -90,12 +112,11 @@ def reconcile_file(
             for column in columns:
                 if (merged.get(column) or "").strip():
                     continue
-                value = (earlier.get(column) or "").strip()
-                if not value:
+                if not _is_real(earlier.get(column)):
                     continue
                 merged[column] = earlier[column]
                 restored_cells[column] += 1
-                examples.setdefault(column, (row.get(key, ""), value))
+                examples.setdefault(column, (row.get(key, ""), earlier[column].strip()))
         rows.append({column: merged.get(column, "") for column in columns})
 
     report = {

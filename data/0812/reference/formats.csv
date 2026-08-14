@@ -25,5 +25,11 @@ MUTATION_ANNOTATION_FORMAT_MAF,MAF 格式变异注释文件（旧 T2 对 *.maf �
 QC_STATS_REPORT,质控统计报告（如 FastQC、fastp、MultiQC 报告）。
 REFERENCE_GENOME_FASTA,参考基因组 FASTA 序列及索引文件。
 SCRNA_OBJECT_RDS,单细胞数据对象（Seurat RDS 等）。
+T1_meta,T1 数据元数据表（T1.csv，T1 级元数据文件）。
+T2_meta,T2 数据元数据表（T2.csv，T1 级元数据文件）。
 TARGET_INTERVAL_LIST,靶向捕获区间列表（interval list/BED）。
 VISUALIZATION_RESULT,可视化结果文件（图/表）。
+individual_meta,个体信息元数据表（individual.csv，T1 级元数据文件）。
+project_meta,项目信息元数据表（project.csv，T1 级元数据文件）。
+sample_meta,样本信息元数据表（sample.csv，T1 级元数据文件）。
+study_meta,研究信息元数据表（study.csv，T1 级元数据文件）。

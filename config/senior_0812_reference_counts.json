@@ -1,32 +1,32 @@
 {
-  "schema_version": "senior-0812-reference/v1",
-  "source": "neo4j-community-2026.08122.zip 内自带的 data/databases/neo4j，师姐本人导入后的权威结果（0812 第二版，比第一版多 49 个 T2）",
-  "read_via": "临时只读实例 bolt://127.0.0.1:7692",
+  "schema_version": "senior-0813-reference/v1",
+  "source": "neo4j-community-2026.0813.zip 的 import CSV（zip 尾部截断，随包数据库未能解出，本次计数取自我方按同一批 CSV 导入的结果）",
+  "read_via": "本机导入后统计，未与她的实盘图比对",
   "totals": {
-    "nodes": 80342,
-    "relationships": 352448
+    "nodes": 81494,
+    "relationships": 356332
   },
   "labels": {
     "T2": 36808,
-    "T1": 26089,
-    "sample": 10178,
-    "individual": 7050,
+    "T1": 26783,
+    "sample": 10465,
+    "individual": 7215,
     "function": 90,
     "tool": 51,
-    "format": 28,
+    "format": 34,
     "study": 20,
     "project": 18,
     "modal": 6,
     "datalevel": 4
   },
   "relationships": {
-    "in_study": 70106,
-    "generated_from": 64545,
-    "in_level": 62897,
-    "in_format": 62890,
-    "in_modal": 62171,
-    "in_sample": 19241,
-    "in_individual": 10178,
+    "in_study": 70965,
+    "generated_from": 64747,
+    "in_level": 63591,
+    "in_format": 63584,
+    "in_modal": 62745,
+    "in_sample": 19815,
+    "in_individual": 10465,
     "output": 122,
     "input": 116,
     "suitable_for": 85,
@@ -36,12 +36,11 @@
     "subclass_of": 4
   },
   "notes": [
-    "0812 第二版相对第一版：T2 +49（HRA005191 单细胞分析结果产物：目录、jpeg、csv/tsv、rds），",
-    "四条 T2 关系各 +49；这 49 个没有 generated_from 边，不挂 T1。另有 3 行旧 T2 的 size 修正。",
-    "第二版还修对了 351 个 tumor/normal（HRA016026 的 350 个 *_Tumor 从 Normal 改成 Tumor，",
-    "HRA001748 一例），但同时清空了 HRA000073 的 325 个 tissue_type、删掉 individual 的 22 个",
-    "adjuvant_treatment_* 列。她的实盘图这三处都还是旧值——她只增量插了 49 个 T2，没重跑实体导入。",
-    "我方 data/0812 由 scripts/python/reconcile_delivery_csv.py 生成：改值取新版、删值回填旧版。",
-    "因此节点与关系计数和她的实盘图逐项一致，属性上比她的图多 351 处修正、不少任何一格。"
+    "0813 相对 0812 第二版：HRA000122（急性 T 细胞白血病）补齐 T1 580 条、sample 287、individual 165，该 study 此前没有任何文件数据。",
+    "新增 6 类元数据语义格式（study_meta/project_meta/individual_meta/sample_meta/T1_meta/T2_meta），20 个 study 各一套共 120 条 T1，即会上说的「6 张大表格、120 个小表格」。",
+    "她这版把 15,481 格占位符（Not Applicable / Not_Applicable / -999）清成空，这是规范化，我方跟随；",
+    "但同时又删掉 individual 的 22 个 adjuvant_treatment_* 列（含 1,715 格真实化疗方案数据）、清空 HRA000073 的 325 个 tissue_type，这两处由 reconcile_delivery_csv.py 回填。",
+    "individual 7,215 = CSV 7,374 行经 MERGE 去重。",
+    "本次未能与她的实盘图逐项比对：zip 下载中断，只从截断文件里抢救出 31 个 import CSV，随包数据库缺失。"
   ]
 }
