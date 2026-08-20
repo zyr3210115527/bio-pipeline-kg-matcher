@@ -15,13 +15,13 @@
 | 节点 | 主键 |
 |---|---|
 | `project` / `study` / `individual` / `sample` | `*_accession` |
-| `T1` / `T2` | `T1_id` / `T2_id` |
-| `tool` | `tool_id`（T001–T066） |
+| `T1` / `T2` | `t1_id` / `t2_id`（**0819 起小写**，0812 时写作 `T1_id`/`T2_id`；模板已改，照抄旧写法会一行都查不到） |
+| `tool` | `tool_id`（T001–T066，实有 51 个，编号不连续） |
 | `format` / `function` / `modal` / `datalevel` | `format` / `function` / `modal` / `level` |
 
 关系全部小写：`in_project`、`in_study`、`in_individual`、`in_sample`、`in_format`、
 `in_level`、`in_modal`、`generated_from`、`has_function`、`input`、`output`、
-`next_tool`、`suitable_for`。
+`next_tool`、`suitable_for`、`subclass_of`（0819 新增）。
 
 **图里只有这一层。** 我方的 slot 模型（槽位名、WDL 绑定、输入变体、GATK 四槽）
 不在 Neo4j 里，它们留在 `data/csv/catalog/`，由 `tool_catalog_source.py` 在运行时
@@ -47,14 +47,22 @@
 | `count_data_by_study.cypher` | 每个研究的 T1/T2 计数，核对导入完整性 | 无 |
 | `count_by_semantic_format.cypher` | T1/T2 的语义格式分布 | 无 |
 
-## 用这些模板时要知道的数据缺口
+## 用这些模板时要知道的数据缺口（数字为 0819 图上实测）
 
-- T1 有 6,848 行没有 `sample_accession`，这些行不会有 `in_sample` 边，
-  `trace_sample_hierarchy` 对它们只能追到 study。
-- T2 有 3,878 行没有 `run_accession`，不参与 `generated_from` 溯源。
+- **run→sample 映射不全，这是最影响下游的一条**：`sample` 节点每个只记录**一个**
+  `run_accession`，而文件侧共有 13,063 个 run，**3,758 个 run（29%，牵连 7,516 个 T1 文件）在图里没有对应
+  sample 节点**。表现为 T1 有 6,969 行没有 `sample_accession`、拿不到 `in_sample` 边，
+  `trace_sample_hierarchy` 对它们只能追到 study。按 run 组织的 fastq 出现
+  `sample_accession = null` 属于这一类，**不是"聚合文件本来就没有样本"**，
+  也**不能**用 `run_accession` 回连（实测命中 0）。缺口最大的队列：
+  HRA000087 1492/1553、HRA016026 684/1384、HRA001272 482/1180、HRA003107 266/576、
+  HRA005191 242/485、HRA006499 240/763、HRA000122 23/310。
+- **数样本不要走文件路径**：用 `MATCH (sp:sample) WHERE sp.study_accession = $s`
+  （等价于 `study<-individual<-sample`），不要用 `(T1)-[:in_sample]->(sample)`
+  ——后者只能看到挂了文件的样本。HRA006117 实有 835 个样本，走文件路径只剩 570。
+- T2 有 3,855 行没有 `run_accession`，不参与 `generated_from` 溯源。
 - `function` 是整句中文描述而不是短标签，所以 `find_tools_by_function` 用 `CONTAINS`
   而不是等值匹配。
 - `next_tool` 只有 22 条且集中在 T001–T013，`trace_next_tool_chain` 对新增工具走不出链。
-- `sample.specimen_types` 不是 0812 自带的，由
-  `cypher/import0812/06_backfill_sample_specimen.cypher` 从改造前的图回填 8,353 行，
-  覆盖不到 0812 新增的 1,825 个样本。
+- `sample.specimen_type` 仍有 899 个样本为空，`tissue_type` 有 803 个为空
+  （HRA006117 一家就占 265 个），这些样本判不出 tumor/normal 角色。
