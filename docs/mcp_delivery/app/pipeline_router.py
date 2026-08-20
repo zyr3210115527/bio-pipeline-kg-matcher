@@ -293,7 +293,8 @@ def _sample_role(record: Dict[str, Any]) -> Optional[str]:
     if kind == "study_constant":
         return str(mapping)
     if kind == "specimen_types":
-        return mapping.get(_norm(record.get("specimen_types")))
+        # 0819 图谱清洗把空格规范成下划线（Patient_Solid_Tissue），归一化后新旧取值都能命中
+        return mapping.get(_norm(record.get("specimen_types")).replace("_", " "))
     if kind == "name_suffix":
         name = _norm(record.get("sample_name"))
         if name.endswith("_T") or name.endswith("_t"):
