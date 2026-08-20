@@ -291,8 +291,11 @@ def _sample_role(record: Dict[str, Any]) -> Optional[str]:
         if kind == "study_constant":
             return str(mapping)
         if kind == "specimen_type":
-            return mapping.get(_norm(record.get("specimen_type"))
-                               or _norm(record.get("specimen_types")))
+            # 0819 图谱清洗把 specimen 取值的空格规范成下划线（Patient_Solid_Tissue），
+            # 查表前归一化回空格，新旧两版取值都能命中映射键。
+            specimen = (_norm(record.get("specimen_type"))
+                        or _norm(record.get("specimen_types"))).replace("_", " ")
+            return mapping.get(specimen)
         if kind == "name_suffix":
             # 后缀写在规则里，因为每个 study 的命名习惯不同：BDESCC2-1N/T 没有
             # 分隔符，L0240_Tumor 把词拼全。长后缀优先，"_Normal" 才不会被 "N" 抢走。
