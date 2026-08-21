@@ -251,6 +251,165 @@ def load_relations():
         print(f"    {os.path.basename(rel):<34} -{rt}-> {total}")
 
 
+# ── 归一化：修 CSV 带进来的三类数据质量问题 ──────────────────────────────
+# 全部幂等（只动还没修过的），既在 --go 末尾自动跑，也能 --normalize-only 单独对
+# 已经灌好的库补跑。
+
+# 【1】内容是数字、却被当字符串存的属性。CSV 每个格子都是字符串，MERGE...SET n += r
+# 原样写进去就全成了 STRING，而 Cypher 的字符串比较是字典序——'9' > '60'、'995' > '7061'。
+# 这不会报错，只会静默给错答案，0821 实测：
+#   生存 > 365 天：字符串比 2110 人，实际 2465 人（漏 355）
+#   TMB > 10    ：字符串比  885 人，实际  102 人（多报 783，8.7 倍）
+#   生存天数最大值：字符串说 995，实际 7061
+#   data_level = 1 ：0 行（存的是 '1'），data_level = '1' 才有 28228 行
+#   study 按 sample_count 排序：字符串把 '81' 排在 '698'/'2030' 前面，最大的两个队列
+#                              （HRA000873 2030、HRA000021 1016）被挤出 top5
+# 而 13_*（生存）、11_tmb/11_msi_score 正是 SKILL 里指名做生存/TMB 分析要用的字段，
+# study.sample_count 是选队列要用的字段，data_level 是 SKILL 正文里直接写了 `data_level=1`
+# 的字段——错的全在主路径上。
+# 列表是扫出来的（≥95% 取值匹配 ^-?\d+(\.\d+)?$ 且类型为 STRING），不是猜的；
+# 用 --scan 可以重扫一遍确认没有新增漏网的。整数/浮点由运行时按有没有小数点自动判。
+NUMERIC_PROPS = [
+    ("individual", "01_age"),
+    ("individual", "04_hemoglobin_concentration_g_l"),
+    ("individual", "04_platelet_count_109_l"),
+    ("individual", "04_white_blood_cell_count_109_l"),
+    ("individual", "10_tumor_average_diameter_cm"),
+    ("individual", "11_msi_score"),
+    ("individual", "11_proportion_of_bone_marrow_blast_cells"),
+    ("individual", "11_tmb"),
+    ("individual", "12_hsct"),
+    ("individual", "12_number_of_adjuvant_treatments"),
+    ("individual", "13_dfs_time"),
+    ("individual", "13_efs_time"),
+    ("individual", "13_pfs_time"),
+    ("individual", "13_survival_days"),
+    ("study",      "sample_count"),
+    ("study",      "individual_count"),
+    ("project",    "individual_count"),
+    ("datalevel",  "level"),
+    ("T1",         "data_level"),
+    ("T1",         "size"),
+    ("T2",         "data_level"),
+    ("T2",         "size"),
+]
+NUM_RE = r"^-?[0-9]+(\\.[0-9]+)?$"
+
+
+def normalize_numeric():
+    for lab, prop in NUMERIC_PROPS:
+        # 先看还剩多少个 STRING 的（幂等：修过的已经是 INTEGER/FLOAT，不会再被选中）
+        left = run(f"MATCH (n:`{lab}`) WHERE n.`{prop}` IS NOT NULL AND "
+                   f"valueType(n.`{prop}`) STARTS WITH 'STRING' RETURN count(n)")[0][0]
+        if not left:
+            print(f"    {lab}.{prop:<42} 已是数值型，跳过")
+            continue
+        # 有小数点就转 FLOAT，否则 INTEGER。别一律 toFloat：data_level/size/天数
+        # 变成 1.0 这种在输出里很难看，也会让 = 1 之外的等值比较变别扭。
+        frac = run(f"MATCH (n:`{lab}`) WHERE n.`{prop}` IS NOT NULL AND "
+                   f"toString(n.`{prop}`) CONTAINS '.' RETURN count(n)")[0][0]
+        fn = "toFloat" if frac else "toInteger"
+        # 非数字的值原样留着（比如 'unknown'）——宁可留一个字符串，也不要 toInteger
+        # 静默变成 null 把数据抹掉。
+        skipped = run(f"MATCH (n:`{lab}`) WHERE n.`{prop}` IS NOT NULL AND "
+                      f"valueType(n.`{prop}`) STARTS WITH 'STRING' AND "
+                      f"NOT n.`{prop}` =~ '{NUM_RE}' RETURN count(n)")[0][0]
+        done = 0
+        while True:
+            got = run(f"MATCH (n:`{lab}`) WHERE n.`{prop}` IS NOT NULL AND "
+                      f"valueType(n.`{prop}`) STARTS WITH 'STRING' AND n.`{prop}` =~ '{NUM_RE}' "
+                      f"WITH n LIMIT 20000 SET n.`{prop}` = {fn}(n.`{prop}`) RETURN count(n)")
+            c = got[0][0] if got else 0
+            done += c
+            if c == 0:
+                break
+        note = f"，{skipped} 个非数字值原样保留" if skipped else ""
+        print(f"    {lab}.{prop:<42} {done} 个 → {fn[2:].upper()}{note}")
+
+
+# 【2】format 大小写撞车。0821 的 formats.csv 新增了 Clinical/T1_meta/... 这批小写变体，
+# 而数据侧引用的一直是 CLINICAL/T1_META 那批大写的。Neo4j 的 MERGE 大小写敏感，于是
+# 每对撞车都建成两个节点，小写那个零引用。留着的害处是：模型按小写去查会查到 0 个文件，
+# 从而误判"这个队列没有临床数据"。只删「存在大写同名 且 自己零引用」的，
+# DIRECTORY_UNCLASSIFIED / UNMAPPEDBAM 不是撞车（只是暂时没数据引用），保留。
+def normalize_format_case():
+    dead = run("MATCH (f:format) WHERE NOT (f)--() "
+               "AND EXISTS { MATCH (g:format) WHERE g.format = toUpper(f.format) AND g <> f } "
+               "RETURN f.format ORDER BY f.format")
+    names = [r[0] for r in dead]
+    if not names:
+        print("    无大小写撞车孤儿，跳过")
+        return
+    run("UNWIND $n AS x MATCH (f:format {format: x}) DELETE f", {"n": names})
+    print(f"    删除大小写撞车孤儿 {len(names)} 个: {names}")
+
+
+# 【3】individual 上那三个记账列。它们是 CSV 里跟着个体走的冗余快照，真正的归属靠
+# in_study / in_individual 边，所以现在没有任何查询读它们——但值是错的：
+#   a) 159 个个体在 individual.csv 里有两行（同一病人跨两个 study，如 HRA001748 sc-RNA
+#      + HRA001749 WES）。按 accession MERGE 之后只剩一个节点，这三列被后写的那行覆盖，
+#      另一半信息丢了。
+#   b) 更糟的是 HRA016026 那 349 行整体错位一行：individual.csv 说 HRI1703186 的样本是
+#      HRS2218012/13，而 sample.csv 和 T1.csv 都说这两个样本属于 HRI1703187。两个独立
+#      来源 700/700 互相印证，说明错的是 individual.csv 这一列。
+# 图上的边跟的是 sample.csv（对的那一边），所以拓扑没问题。这里把这三个属性按边重建，
+# 免得以后有人图省事直接读属性去做配对——那正好会在 HRA016026 这个配对队列上全错。
+def _join(var):
+    """把列表拼成 'a;b;c'；空列表给 null（图里"空"就是不建属性，跟 rows() 的口径一致）。"""
+    return (f"CASE WHEN size({var}) = 0 THEN null ELSE "
+            f"reduce(a = '', x IN {var} | CASE WHEN a = '' THEN x ELSE a + ';' + x END) END")
+
+
+def normalize_individual_cols():
+    n = run(f"""
+        MATCH (i:individual)
+        OPTIONAL MATCH (i)-[:in_study]->(s:study)
+        WITH i, s.study_accession AS sa ORDER BY sa
+        WITH i, collect(DISTINCT sa) AS sts
+        OPTIONAL MATCH (sp:sample)-[:in_individual]->(i)
+        WITH i, sts, sp.sample_accession AS pa ORDER BY pa
+        WITH i, sts, collect(DISTINCT pa) AS sps
+        SET i.`00_study_accession`  = {_join('sts')},
+            i.`00_sample_accession` = {_join('sps')}
+        RETURN count(i)""")
+    print(f"    按 in_study / in_individual 边重建 00_study_accession / "
+          f"00_sample_accession：{n[0][0]} 个个体")
+    # 00_strategy 没有对应的边可以重建（strategy 记在 T1/T2 上），改成从文件侧汇总
+    n2 = run(f"""
+        MATCH (sp:sample)-[:in_individual]->(i:individual)
+        MATCH (f:T1)-[:in_sample]->(sp) WHERE f.strategy IS NOT NULL
+        WITH i, f.strategy AS st ORDER BY st
+        WITH i, collect(DISTINCT st) AS ss
+        SET i.`00_strategy` = {_join('ss')}
+        RETURN count(i)""")
+    print(f"    按 T1.strategy 汇总重建 00_strategy：{n2[0][0]} 个个体")
+
+
+def normalize():
+    print("  [1] 数值属性类型")
+    normalize_numeric()
+    print("  [2] format 大小写撞车")
+    normalize_format_case()
+    print("  [3] individual 冗余记账列")
+    normalize_individual_cols()
+
+
+def scan_numeric():
+    """重扫一遍：哪些属性内容是数字却存成了 STRING。用来确认 NUMERIC_PROPS 没漏。"""
+    for lab in ["individual", "sample", "study", "project", "T1", "T2", "tool",
+                "format", "function", "modal", "datalevel"]:
+        props = [p[0] for p in run(f"MATCH (n:`{lab}`) UNWIND keys(n) AS k "
+                                   f"RETURN DISTINCT k ORDER BY k")]
+        hit = []
+        for p in props:
+            r = run(f"MATCH (n:`{lab}`) WHERE n.`{p}` IS NOT NULL "
+                    f"RETURN count(*), sum(CASE WHEN toString(n.`{p}`) =~ '{NUM_RE}' THEN 1 ELSE 0 END), "
+                    f"head(collect(valueType(n.`{p}`)))")[0]
+            if r[0] and r[1] / r[0] >= 0.95 and "STRING" in str(r[2]):
+                hit.append(p)
+        print(f"    {lab:<12} 仍是 STRING 的数值属性: {hit or '无'}")
+
+
 def validate():
     print("\n  节点:", run("MATCH (n) UNWIND labels(n) AS l RETURN l, count(*) ORDER BY l"))
     print("  关系:", run("MATCH ()-[r]->() RETURN type(r), count(*) ORDER BY type(r)"))
@@ -288,27 +447,41 @@ def main():
     ap.add_argument("--go", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--backup-only", action="store_true")
+    ap.add_argument("--normalize-only", action="store_true",
+                    help="不重灌，只对现有库跑归一化（幂等，可重复执行）")
+    ap.add_argument("--scan", action="store_true",
+                    help="只扫描：哪些属性内容是数字却存成了 STRING")
     ap.add_argument("--backup", default="/tmp/neo4j_backup_before_0821.jsonl")
     a = ap.parse_args()
     if not PWD:
         sys.exit("需要 NEO4J_PASSWORD")
     print(f"目标: {URL}\n数据: {DATA}\n")
+    if a.scan:
+        scan_numeric()
+        return
+    if a.normalize_only:
+        print("归一化（不动拓扑，只改属性类型/删撞车孤儿/重建冗余列）")
+        normalize()
+        return
     ok = preflight()
     if a.dry_run:
         return
     if not ok:
         sys.exit("预检未过，拒绝写库")
-    print("\n[1/5] 备份现网")
+    print("\n[1/6] 备份现网")
     backup(a.backup)
     if a.backup_only:
         return
     if not a.go:
         sys.exit("\n未加 --go，到此为止（已备份，未改动任何数据）")
     t0 = time.time()
-    print("\n[2/5] 清库"); clear()
-    print("\n[3/5] 建约束/索引"); schema()
-    print("\n[4/5] 灌数据"); load_reference(); load_entities(); load_relations()
-    print(f"\n[5/5] 校验（重建用时 {time.time()-t0:.0f}s）"); validate()
+    print("\n[2/6] 清库"); clear()
+    print("\n[3/6] 建约束/索引"); schema()
+    print("\n[4/6] 灌数据"); load_reference(); load_entities(); load_relations()
+    # 归一化必须在灌完之后：CSV 每个格子都是字符串，不修的话生存/TMB/data_level/
+    # sample_count 这些字段一律按字典序比较，静默给错答案。别把它当可选步骤。
+    print("\n[5/6] 归一化"); normalize()
+    print(f"\n[6/6] 校验（重建用时 {time.time()-t0:.0f}s）"); validate()
 
 
 if __name__ == "__main__":
