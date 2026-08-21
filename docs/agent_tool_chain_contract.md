@@ -69,6 +69,30 @@
 | `role` | 是 | 文件用途，例如 `count_matrix`、`clinical_file`。 |
 | `path` | 是 | 执行端可以访问的文件路径。 |
 | `format` | 否 | 文件格式，例如 `tsv`、`xlsx`、`maf`。 |
+| `sample_attribution` | 是 | 样本级字段（`sample_id`/`sample_name`/`sample_role`/`read_pair` 等）为空时的**原因**，取值见下。 |
+| `sample_attribution_note` | 是 | 同上，给人看的一句话解释；`per_sample` 时为空串。 |
+
+### 4.1 样本级字段为空，先看 `sample_attribution` 再下结论
+
+同样一片 null，含义可能完全相反，**不要一律当成「数据缺失」**：
+
+| 取值 | 含义 | 该怎么办 |
+| --- | --- | --- |
+| `per_sample` | 样本归属已解析，样本级字段有值 | 正常使用 |
+| `cohort_aggregate` | 队列级聚合文件（表达矩阵、MAF、临床表、sc-RNA 队列产物），**不属于任何单个样本** | 空值属正常，照常提交；别去补样本号 |
+| `attribution_missing` | 文件名带 `HRI*`/`HRS*` 样本号，本该定位到样本，但图内缺 `generated_from`/`in_sample` 边 | **这是真缺口**，如实报给用户，不要猜样本归属 |
+
+来历：0821 师兄看富集分析的 plan 时问「数据有的是 null」。查证后富集用的
+`HRA001272-Genes-TPM-1.0.tsv` 在图里确实没有 `generated_from`、没有 `in_sample`、
+`run_accession` 也是 null——**那是队列级矩阵的本质，不是漏查**。但当时输出里没有
+任何东西能说明这点，而隔壁 WES 的逐样本 VCF 也是一片 null，原因却是图里缺边。
+
+0821 实测 35,572 个 T2 的分布：31,313 有血缘；3,676 无血缘但文件名带样本号
+（`HRI147472.svaba.somatic.indel.vcf` 这类，属 `attribution_missing`）；179 文件名里
+没有任何样本号（属 `cohort_aggregate`）。判据用**文件名里有没有样本号**，不用
+`run_accession` 是否为空——后者会把那 3,676 个逐样本文件一起划进「本来就没有」，
+等于把真缺口盖成正常现象。全量交叉验证：判成 `cohort_aggregate` 的 179 个在图里
+确实全都没有血缘，零误报。
 
 ## 5. `tool_chain`
 

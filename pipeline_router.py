@@ -307,6 +307,42 @@ def _sample_role(record: Dict[str, Any]) -> Optional[str]:
     return _ROLE_BY_TISSUE_TYPE.get(_norm(record.get("tissue_type")).lower())
 
 
+_SAMPLE_TOKEN_PATTERN = re.compile(r"HR[ISR]\d+")
+
+
+def _sample_attribution(record: Dict[str, Any], file_name: Any) -> Dict[str, str]:
+    """说明这个文件的样本级字段为什么是空的。
+
+    师兄 0821 看富集分析的 plan 时问「数据有的是 null」。查下来富集用的那个表达
+    矩阵（HRA001272-Genes-TPM-1.0.tsv）确实全是空：图里它没有 generated_from、
+    没有 in_sample，run_accession 也是 null。**那不是漏查，是队列级矩阵本来就
+    不属于任何单个样本。**
+
+    但同样一片 null，隔壁的 WES VCF 是另一回事。0821 实测 35,572 个 T2 里：
+      31,313  有 generated_from  → 样本归属查得到
+       3,676  无 generated_from，但文件名里带 HRI*/HRS* 样本号
+              （HRI147472.svaba.somatic.indel.vcf 这类）→ **本该有，图里缺边**
+        ~179  无 generated_from，文件名里也没有任何样本号
+              （<队列号>-Genes-TPM.tsv 表达矩阵、Cell_Type.tsv / UMAP_*.jpeg
+              这类 sc-RNA 队列级产物）→ 本来就没有
+
+    这两类在 JSON 里长得一模一样，调用方（和师兄）分不出来，于是只能理解成
+    「数据缺失」。所以这里把判断结果显式写进资产。
+
+    判据用文件名里有没有样本/个体号，不用 run_accession 是否为空——后者会把那
+    3,676 个逐样本 VCF 一起划进「本来就没有」，等于把真缺口盖成正常现象。
+    """
+    if _norm(record.get("sample_accession")) or _norm(record.get("sample_name")):
+        return {"status": "per_sample", "note": ""}
+    if _SAMPLE_TOKEN_PATTERN.search(str(file_name or "")):
+        return {"status": "attribution_missing",
+                "note": "文件名带样本/个体号，本应能定位到样本，但图内缺少 "
+                        "generated_from/in_sample 边——样本级字段为空是缺口，不是常态"}
+    return {"status": "cohort_aggregate",
+            "note": "队列级聚合文件（表达矩阵/MAF/临床表等），不属于任何单个样本，"
+                    "样本级字段为空属正常，不代表数据缺失"}
+
+
 def _assess_wes_somatic_cases(fastqs: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """轻量版可行性判断：只统计是否存在合格的同个体 tumor/normal 配对。"""
     by_individual: Dict[str, Dict[str, List[Dict[str, Any]]]] = {}
@@ -1061,6 +1097,7 @@ class CsvKGDataMatcher:
 
         file_name = _bare(row.get("file_name") or row.get("files") or row.get("file") or row.get("t2_id"))
         file_id = _bare(row.get("file_id") or row.get("files") or row.get("t2_id"))
+        attribution = _sample_attribution(row, file_name)
         return {
             "source": source,
             "t2_id": row.get("t2_id") if source == "T2" else None,
@@ -1086,6 +1123,10 @@ class CsvKGDataMatcher:
             "sample_role_label": _SAMPLE_ROLE_LABELS.get(_sample_role(row) or ""),
             "read_pair": row.get("read_pair") or row.get("Read Pair"),
             "file_path": row.get("file_path"),
+            # 上面那批样本字段为空时，必须说清是"本来就没有"还是"应该有但没查到"——
+            # 两者在 JSON 里长得一模一样，调用方分不出来。见 _sample_attribution。
+            "sample_attribution": attribution["status"],
+            "sample_attribution_note": attribution["note"],
             "match_reason": match_reason,
         }
 
