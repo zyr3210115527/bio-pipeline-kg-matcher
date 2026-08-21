@@ -33,3 +33,11 @@ individual_meta,个体信息元数据表（individual.csv，T1 级元数据文�
 project_meta,项目信息元数据表（project.csv，T1 级元数据文件）。
 sample_meta,样本信息元数据表（sample.csv，T1 级元数据文件）。
 study_meta,研究信息元数据表（study.csv，T1 级元数据文件）。
+Clinical,临床数据文件（Clinical TSV/XLSX）。
+INDIVIDUAL_META,个体信息元数据表（individual.csv，大写规范）。
+PROJECT_META,项目信息元数据表（project.csv，大写规范）。
+SAMPLE_META,样本信息元数据表（sample.csv，大写规范）。
+STUDY_META,研究信息元数据表（study.csv，大写规范）。
+T1_META,T1 数据元数据表（T1.csv，大写规范）。
+T2_META,T2 数据元数据表（T2.csv，大写规范）。
+CLINICAL,临床数据文件（Clinical TSV/XLSX，大写规范）。
