@@ -696,6 +696,13 @@ def _read_csv(path: Path) -> List[Dict[str, str]]:
 
 
 class CsvKGDataMatcher:
+    # 类属性而不只是实例属性：Neo4jKGDataMatcher 继承本类却**不调** super().__init__()，
+    # 于是 0822 图谱一接上，143 条单测里 114 条齐刷刷炸在
+    # AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'。
+    # 也就是说 neo4j 模式——生产模式——凡是要返回 T2 资产的查询全都挂。放到类上，
+    # 将来父类再添懒加载哨兵，忘了同步的子类也不至于整条路径崩掉。
+    _attribution_index: Optional[Dict[str, Any]] = None
+
     def __init__(self, csv_dir: Optional[Path] = None):
         self.csv_dir = Path(csv_dir or os.environ.get("DATA_CSV_DIR", str(CSV_DIR))).expanduser()
         self.entity_dir = self.csv_dir / "entities" if (self.csv_dir / "entities").is_dir() else self.csv_dir
@@ -746,6 +753,18 @@ class CsvKGDataMatcher:
         # 而只有返回 T2 资产时才用得上。延迟到第一次解析时再建。
         self._attribution_index: Optional[Dict[str, Any]] = None
 
+    def _attribution_relation_rows(self, name: str) -> List[Dict[str, str]]:
+        """归属索引依赖的两张关系表。
+
+        这是唯一一处后端接缝：CSV 后端读文件，Neo4j 后端覆写成 Cypher。0822 之前
+        `_attribution_indexes()` 直接写死 `_read_csv(self.relation_dir / ...)`，
+        而 `Neo4jKGDataMatcher` 根本没有 `relation_dir`——它连 `super().__init__()`
+        都不调。于是生产模式（neo4j）凡是要给出 T2 资产的查询全都崩在归属这一步。
+        更坏的一种"修法"是让它默默去读磁盘上的 CSV：那样不崩了，但血缘来自
+        0812 的旧文件、资产来自图谱，两个数据源对不上还看不出来。所以做成方法。
+        """
+        return _read_csv(self.relation_dir / f"{name}.csv")
+
     def _attribution_indexes(self) -> Dict[str, Any]:
         """建立"文件 → 样本/个体/队列"的反查索引。
 
@@ -780,13 +799,13 @@ class CsvKGDataMatcher:
         # 真血缘：T2 -generated_from-> T1 -in_sample-> sample。这张关系表同时带
         # run_accession 和 t1_id 两列，两条都用上——0821 实测两者结论零冲突。
         t1_samples: Dict[str, List[str]] = {}
-        for row in _read_csv(self.relation_dir / "T1_in_sample.csv"):
+        for row in self._attribution_relation_rows("T1_in_sample"):
             t1_id = _norm(row.get("t1_id"))
             accession = _norm(row.get("sample_accession"))
             if t1_id and accession:
                 t1_samples.setdefault(t1_id, []).append(accession)
         lineage: Dict[str, List[str]] = {}
-        for row in _read_csv(self.relation_dir / "T2_generated_from_T1.csv"):
+        for row in self._attribution_relation_rows("T2_generated_from_T1"):
             t2_id = _norm(row.get("t2_id"))
             if not t2_id:
                 continue
@@ -1251,10 +1270,18 @@ class CsvKGDataMatcher:
                 assets.append({"name": name, "graph_status": "missing_from_graph"})
                 continue
             item = self._with_input_role(matches[0])
+            # candidates[].assets 用 asset_id/role/path，这里用 file_id/input_role/file_path，
+            # 同一个响应里两套形状。schema 对本字段是自由对象，所以这不算违约，但消费方
+            # 按 candidates 的写法读 path 会读到 None，且不会报错——又是一个"安静的空值"。
+            # 因此加性补三个规范键，既有键一个不动，老调用方不受影响。
+            # 只在 available 分支补：missing 的资产没有路径，写个 "" 反而像是个能打开的路径。
             assets.append({
                 "name": name,
                 "graph_status": "available",
                 **item,
+                "asset_id": item.get("file_id") or name,
+                "role": item.get("input_role") or "",
+                "path": item.get("file_path") or "",
             })
         studies = sorted({
             str(item.get("study_accession"))

@@ -28,6 +28,10 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
         "IN_STUDY": ("IN_STUDY", "in_study"),
         "IN_PROJECT": ("IN_PROJECT", "in_project"),
         "IN_MODAL": ("IN_MODAL", "in_modal"),
+        # 归属索引（T2 -generated_from-> T1 -in_sample-> sample）走的两条边。
+        # 0822 之前这两条只在 CSV 侧存在，neo4j 侧压根没接。
+        "IN_SAMPLE": ("IN_SAMPLE", "in_sample"),
+        "GENERATED_FROM": ("GENERATED_FROM", "generated_from"),
     }
     # 0811 stores the read mate in the semantic format rather than a read_pair
     # column. This is authoritative for every paired FASTQ row, unlike filename
@@ -409,6 +413,97 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
             for row in self.study
             if row.get("study_accession")
         }
+
+    # 归属索引要的两张关系表在图里长什么样：(起点逻辑标签, 逻辑边, 终点逻辑标签, 返回列)。
+    # 列名必须和 CSV 表头逐字对齐——`_attribution_indexes()` 是按 t1_id /
+    # sample_accession / t2_id / run_accession 这几个键取值的，拼错不会报错，
+    # 只会得到一张全是空串的索引。
+    _ATTRIBUTION_QUERIES = {
+        "T1_in_sample": (
+            "T1", "IN_SAMPLE", "Sample",
+            "a.t1_id AS t1_id,b.sample_accession AS sample_accession",
+        ),
+        "T2_generated_from_T1": (
+            "T2", "GENERATED_FROM", "T1",
+            "a.t2_id AS t2_id,b.t1_id AS t1_id,b.run_accession AS run_accession",
+        ),
+    }
+    _MANAGED_ATTRIBUTION_LABELS = {"T1": "t1", "T2": "t2", "Sample": "sample"}
+
+    def _attribution_rel_type(self, session: Any, logical: str) -> Optional[str]:
+        """图里实际叫什么。查不到返回 None——不许拿逻辑名硬拼出一条空查询。"""
+        present = getattr(self, "_present_rel_types", None)
+        if present is None:
+            present = {
+                str(record["relationshipType"])
+                for record in session.run(
+                    "CALL db.relationshipTypes() YIELD relationshipType "
+                    "RETURN relationshipType"
+                )
+            }
+            self._present_rel_types = present
+        return next(
+            (name for name in self._LEGACY_REL_ALIASES.get(logical, ()) if name in present),
+            None,
+        )
+
+    def _attribution_relation_rows(self, name: str) -> List[Dict[str, str]]:
+        """父类的 CSV 读盘换成 Cypher。
+
+        父类那两行 `_read_csv(self.relation_dir / ...)` 在 neo4j 模式下要么崩在
+        没有的 `relation_dir`，要么（更坏）读到 0812 的旧 CSV，让血缘和资产来自
+        两个数据源还看不出来。这里从当前连着的这张图取，和资产同源。
+
+        边不存在、或存在但一行都取不到，都必须出声：归属表为空的表现是每个 T2
+        资产悄悄失去样本归属，回包依旧完整——正是那种"错得像对的"形状。
+        """
+        head, logical_rel, tail, projection = self._ATTRIBUTION_QUERIES[name]
+        if getattr(self, "_driver", None) is None:
+            raise RuntimeError(
+                "neo4j driver is closed; cannot build the attribution index"
+            )
+        with self._driver.session(
+            database=self.database,
+            default_access_mode=READ_ACCESS,
+        ) as session:
+            rel_type = self._attribution_rel_type(session, logical_rel)
+            if rel_type is None:
+                self._warn(
+                    f"graph has no `{logical_rel}` relationship type; "
+                    f"sample attribution for {name} is unavailable — "
+                    "T2 assets will be returned without sample/individual/study lineage"
+                )
+                return []
+            if self.backend_schema == "managed-v1":
+                head_label = self._MANAGED_ATTRIBUTION_LABELS[head]
+                tail_label = self._MANAGED_ATTRIBUTION_LABELS[tail]
+                guard = (
+                    "WHERE a.datagraph_managed = true AND b.datagraph_managed = true "
+                    "AND a.snapshot_id = $snapshot_id "
+                )
+                params: Dict[str, Any] = {"snapshot_id": self.snapshot_id}
+            else:
+                head_label = self.legacy_labels.get(head) or head
+                tail_label = self.legacy_labels.get(tail) or tail
+                guard = ""
+                params = {}
+            query = (
+                f"MATCH (a:`{head_label}`)-[:`{rel_type}`]->(b:`{tail_label}`) "
+                f"{guard}RETURN {projection}"
+            )
+            rows = [
+                {
+                    str(key): "" if value is None else str(value)
+                    for key, value in dict(record).items()
+                }
+                for record in session.run(query, **params)
+            ]
+        if not rows:
+            self._warn(
+                f"{name}: `{head_label}`-[:{rel_type}]->`{tail_label}` matched 0 rows; "
+                "sample attribution will be empty for every asset on this path"
+            )
+        return rows
 
     def close(self) -> None:
         if getattr(self, "_owns_driver", False) and getattr(self, "_driver", None) is not None:
