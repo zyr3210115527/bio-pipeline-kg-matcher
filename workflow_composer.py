@@ -40,6 +40,37 @@ METHOD_CATALOG_STATUS = {
 
 EXECUTION_MANAGED_ASSET_ROLES = {"reference_file"}
 
+
+def _evidence_asset(
+    item: Dict[str, Any],
+    role_of: Optional[Any] = None,
+) -> Dict[str, Any]:
+    """把图谱证据文件包成 recommendations[].data.assets[] 的一项。
+
+    v2 里 candidates[].assets 用 asset_id / role / path，而这条证据链一直用内部
+    形状 file_id / input_role / file_path。schema 对本字段是自由对象，所以两套并存
+    不算违约——但消费方照着 candidates 的写法去读 path，拿到的是 None 而不是报错，
+    又是一个"安静的空值"。这里加性补齐三个规范键，既有键一个都不动。
+
+    role_of 是 matcher._file_role：组合匹配那条路不走 _with_input_role，item 里没有
+    input_role。补个空字符串等于把"没解析出角色"和"角色是空"混成一样，所以宁可现算。
+    """
+    role = str(item.get("input_role") or "")
+    if not role and role_of is not None:
+        try:
+            role = str(role_of(item) or "")
+        except Exception:
+            role = ""
+    return {
+        "name": item.get("files"),
+        "graph_status": "available",
+        **item,
+        "asset_id": item.get("file_id") or item.get("files") or "",
+        "role": role,
+        "path": item.get("file_path") or "",
+    }
+
+
 CAPABILITY_DATA_FILTERS: Dict[str, Dict[str, Any]] = {
     "maf": {
         "aliases": ("maf", "突变文件", "体细胞突变数据"),
@@ -242,6 +273,27 @@ class RegisteredMethodCatalog:
         source = self.all_methods if include_pipelines else self.methods
         return [source[key].as_dict() for key in sorted(source)]
 
+    def unavailable_state(self, atomic_only: bool = False) -> Optional[str]:
+        """目录为空时返回一句"空成什么样"的描述；非空返回 None。
+
+        目录只从图谱来，所以目录一空，**所有**关于工具的判断都失去前提：既不能说
+        某个 tool_id 未知（我们什么都不认识），也不能说某类分析"尚未原子化"（我们
+        不知道有没有）。三处调用点都从这里取词，免得日后各改各的又飘回去。
+
+        atomic_only=True 只看可编排的原子工具——原子层为空时，"拆不成原子链"这种
+        结论同样没有依据，哪怕 pipeline 节点还在。
+        """
+        source = self.methods if atomic_only else self.all_methods
+        if source:
+            return None
+        if not self.connected:
+            state = "图谱未连接"
+        elif atomic_only and self.all_methods:
+            state = "图谱已连接但未返回可编排的原子工具"
+        else:
+            state = "图谱已连接但未返回工具"
+        return f"{state}（{self.error or 'unknown'}）"
+
 
 class Neo4jPipelineCatalog:
     """PipelineRouter-compatible catalog built only from Neo4j tool contracts."""
@@ -408,7 +460,8 @@ class WorkflowComposer:
       }
     ]}
   ],
-  "unsupported_reason": null
+  "unsupported_reason": null,
+  "unsupported_kind": null
 }
 
 候选规则：
@@ -423,6 +476,7 @@ class WorkflowComposer:
 5. reference/index/annotation 等执行端管理资产使用 reference_file。用户样本数据必须明确 asset_role；不要把运行参数当资产。
 6. 用户写出的“只要、不要、不做、不能修改、已有、只有”都是硬约束。不得增加被排除步骤，不得用其他 assay 的流程兜底，也不得把已有结果倒推成原始输入。若输入与方法冲突（例如 MAF 做 STAR、RNA-seq 用 DNA 体细胞流程），recommendations 和 candidates 都必须为空并说明冲突。
 6a. 用户不需要写出每一步工具名。若用户只描述 assay、输入数据和最终目标（例如“完整 bulk RNA-seq 分析并得到表达矩阵”），必须根据 Neo4j 的 tool、slot、artifact 和 NEXT/data 边反推出完整合法链；不能因为没有出现 STAR、SAMtools 等字样就拒绝或只返回空流程。只有在存在多个终点或方法分支时，才按用户明确约束和候选匹配度排序。
+6b. **用户逐字点名的工具，目录里没有，就不许拿目录里的同类工具顶替。**点名的形式不限于第 6 条那几个词：“把 A 换成 B”“用 B 代替 A”“比对改用 B”“用 B 做定量”都是点名，一样是硬约束。这类需求正确的输出是 candidates 为空 + unsupported_kind=`not_atomized`，unsupported_reason 里写清点名的是哪个工具、目录里没有它。绝对禁止的做法是照常生成一条标准链、还把用户要求换掉的那个工具留在链里，然后标 ready——用户要 Salmon 拿到 RSEM、要 HISAT2 拿到 STAR，链本身合法、终产物也对得上，光看回包发现不了，这是最难查的一类错。注意两处不适用：其一，用户点的工具目录里**有**（如 fastp 换 trim_galore），照常按新工具生成链；其二，MultiQC 见下方边界条目，那条要求略去该步、其余照常，优先级高于本条。本条也不跟 6a 冲突——6a 管的是用户**没**点工具名的情形。另外，这种情况下 recommendations 同样要看第 6 条：如果目录里唯一匹配的业务流程内部就是用被点名要换掉的那个工具跑的（如 rnaseq_singletask 内置 STAR/RSEM），它并不满足用户的要求，不能作为推荐端出去，recommendations 也应为空。这一点不与 0b 冲突——0b 说的是业务流程**确实能做**这件事、只是没原子化；这里是业务流程根本做的就是用户排除掉的那套。
 7. 不得从“一对双端 FASTQ”推断 tumor/normal。只有用户明确说明 tumor-normal 配对，或明确给出两个样本及其 tumor/normal 角色时，才能推荐 wes_somatic_pair 或生成四 FASTQ 配对链；缺少角色时应说明样本布局不足，不能自行补角色。
 8. 最终产物是完整性门禁：若用户要求的最后产物需要未登记工具或当前合同无法到达，整条 candidates 必须为空，不能返回只做到上游中间产物的前缀链。pipeline recommendation 只是业务信息，不等于 atomic candidate 可执行。唯一例外是 MultiQC/QC 汇总，见下方边界条目。
 9. 图谱只到文件级，没有基因、位点、通路这类内容维度，因此无法判断用户提到的基因或靶点是否真实存在、是否出现在表达矩阵里。match_note 里不得出现“可将目标基因替换为 XXX”“支持该基因”这类断言，也不得默认用户写出的符号就是合法基因名。需要提到时只能陈述流程本身按指定基因分层，不对该符号的有效性表态。
@@ -447,6 +501,13 @@ class WorkflowComposer:
 - 若目录槽位或 NEXT 边无法忠实表达目标，也返回空 candidates 和具体 unsupported_reason；禁止编造工具、槽位、边或内部步骤。
 - candidates 非空时 unsupported_reason 必须为 null。
 - candidates 为空时必须用一句具体原因填写 unsupported_reason；不能只写“无法生成”，应指出是输入冲突、样本角色不足、未原子化、槽位缺失或执行合同缺口。recommendations 非空也不能省略该原因，因为业务流程信息不等于原子候选可执行。
+- 同时必须填 unsupported_kind，只能取下面五个值之一。它区分的是"这个结论要不要看工具目录才成立"，服务端据此决定目录不可用时能不能沿用你这句话：
+  - `out_of_scope`：不看目录也成立。请求根本不是可编排的生信分析——闲聊、常识问答、写代码、医疗诊断建议，或者要查病人个体的年龄/性别/病史/联系方式这类隐私信息（本服务只做流程编排，不提供个体层面的临床数据查询）。
+  - `no_data`：不看目录也成立。图谱里没有用户点名的队列/癌种/样本。
+  - `input_conflict`：不看目录也成立。用户给的输入和想要的产物自相矛盾（如只有 MAF 却要做比对）。
+  - `not_atomized`：**要看目录**。目录里没有能覆盖这个需求的 atomic tool。
+  - `contract_gap`：**要看目录**。目录里有工具，但槽位或 NEXT 边表达不了这条链。
+- candidates 非空时 unsupported_kind 必须为 null。
 
 癌种判定（disease 字段，必填）：
 - 举例：`肝癌 HER2 表达和 PFS` → `{"status":"matched","term":"肝癌","study_accessions":["HRA001272","HRA001748","HRA001749","HRA006499"]}`；`NSCLC 的 TPM 做免疫浸润` → `{"status":"matched","term":"NSCLC","study_accessions":["HRA005191"]}`；`肝硬化患者的免疫浸润` → `{"status":"not_available","term":"肝硬化","study_accessions":[]}`；`双端 RNA-seq FASTQ 做上游分析` → `{"status":"unspecified","term":null,"study_accessions":[]}`。
@@ -543,7 +604,22 @@ Neo4j atomic 方法目录：
         # which chain the model happened to emit. The chain is still built from
         # the Neo4j atomic registry and passes the same data/contract gates as
         # an LLM-produced candidate, so this cannot admit an invalid chain.
-        if not accepted and self._eligible_rnaseq_fallback(text, intent, recommendations):
+        #
+        # 但"合法"不等于"是这道题的答案"。0822 实测：问「用 HISAT2 代替 STAR 做比对」，
+        # 规划器完全判对了——analysis.checks 原话是"用户逐字点名 HISAT2，目录无该工具，
+        # 按硬约束清空 candidates"，candidates 交的就是空。然后这段回退凭关键词
+        # （命中 rna-seq、没命中 maf/vcf/wes）把标准链塞了回去，链里赫然还是 star，
+        # 整个回包标 ready、unsupported_reason 为 null。用户要 HISAT2 拿到 STAR，
+        # 要 Salmon 拿到 RSEM，链合法、终产物也对得上，光看回包发现不了。
+        #
+        # 所以判据不是"规划器交没交链"，而是"规划器有没有**主动**拒答"：它给了拒答
+        # 理由（unsupported_reason / unsupported_kind），就是看着这道题做的决定，必须
+        # 原样透出去；它什么都没产出（decision 为 None、解析失败、API 挂了），才是这段
+        # 回退要兜的"空输出"——test_16 锁的正是后者（self.top3(None)），test_15 锁的是
+        # 前者。两条测试早就把意图分清了，缺的只是一个能区分它们的判据。
+        if not accepted and not self._planner_declined(decision) and self._eligible_rnaseq_fallback(
+            text, intent, recommendations
+        ):
             fallback = {
                 "rank": 1,
                 "match_note": "确定性回退：双端 RNA-seq FASTQ 的质控、比对、表达定量和计数流程。",
@@ -564,6 +640,12 @@ Neo4j atomic 方法目录：
         unsupported_reason = str(
             (decision or {}).get("unsupported_reason") or ""
         ).strip() or None
+        # 规划器给的拒答理由分两类：一类不看工具目录也成立（隐私查询、非生信、
+        # 图里没这个队列、输入自相矛盾），一类必须看目录才成立（未原子化、槽位
+        # 表达不了）。目录为空时只有后者会被污染，前者照说不误。
+        unsupported_kind = str(
+            (decision or {}).get("unsupported_kind") or ""
+        ).strip().lower()
         atomic_unavailable_reason = unsupported_reason
         if accepted:
             selection_status = "ready"
@@ -605,6 +687,30 @@ Neo4j atomic 方法目录：
             if selection_status != "information":
                 unsupported_reason = atomic_unavailable_reason
 
+        # 原子目录空的时候，"当前原子目录中没有对应工具"这类话一句都不能算数。
+        # 0822 实测："HRA001272 的 RNA-seq 做 GO/KEGG 富集"拿到的回答是「差异表达与
+        # GO/KEGG 通路富集这类分析尚未原子化，当前原子目录中没有对应工具」——具体、
+        # 笃定、听着完全在理，但那会儿 registered_method_count=0，它根本不知道富集
+        # 有没有原子化。用户会照这句话得出"产品不支持富集"的结论，比报错还糟。
+        #
+        # 但也不能一律改口。问"HRA001272 里病人的年龄分别是多少"该答的是"本服务不
+        # 提供个体隐私数据"，改成"图谱没连上，恢复后重试"等于暗示连上就给查——那是
+        # 拿一个错误答案换另一个错误答案。所以只覆盖依赖目录的那两类结论。
+        CATALOG_DEPENDENT_KINDS = {"", "not_atomized", "contract_gap"}
+        atomic_catalog_state = self.registered_methods.unavailable_state(atomic_only=True)
+        if (
+            not accepted
+            and atomic_catalog_state
+            and unsupported_kind in CATALOG_DEPENDENT_KINDS
+        ):
+            atomic_unavailable_reason = (
+                f"原子工具目录为空（{atomic_catalog_state}），"
+                "无法判断这个需求能否拆成原子链——这不是需求本身不受支持，"
+                "请先恢复 Neo4j 图谱连接后重试。"
+            )
+            if selection_status in ("unsupported", "no_candidate"):
+                unsupported_reason = atomic_unavailable_reason
+
         result = {
             "schema_version": "tool-chain/v2",
             "selection_status": selection_status,
@@ -623,12 +729,17 @@ Neo4j atomic 方法目录：
             "analysis": (decision or {}).get("analysis"),
             "extensions": {
                 "rejected_candidates": rejected,
+                "unsupported_kind": unsupported_kind or None,
                 "atomic_candidate_unavailable_reason": (
                     atomic_unavailable_reason if not accepted else None
                 ),
                 "method_catalog_status": {
                     **METHOD_CATALOG_STATUS,
                     "registered_method_count": len(self.registered_methods.methods),
+                    # 给调用方一个可判定的标志，别让人去正则匹配上面那句中文。
+                    "catalog_unavailable": not self.registered_methods.methods,
+                    "graph_connected": self.registered_methods.connected,
+                    "graph_error": self.registered_methods.error,
                 },
             },
         }
@@ -654,13 +765,27 @@ Neo4j atomic 方法目录：
 
     def _business_pipeline_menu_lines(self) -> List[str]:
         known = self.registered_methods.pipeline_methods
+        # 目录整个不可用时，"这条 pipeline 没在 Neo4j 里"对**任何**一条都不成立——
+        # 我们不是查过之后没找到，是压根没查成。可 pipeline_id 本身来自本地
+        # benchmark，不依赖图谱，所以清单照发，只是把注册状态标成"无从判断"。
+        # 0822 实测这处标注会直接改变答案：目录空时"我有比对好的 BAM 和临床数据，
+        # 想做 CNV 分析"连着三次拿到 rec=[]，而 cnvkit_cnv_clinical 就明晃晃在单子上。
+        # 满屏 missing_from_neo4j 被模型读成了"这些都用不了"。
+        catalog_state = self.registered_methods.unavailable_state()
         lines: List[str] = []
+        if catalog_state:
+            lines.append(
+                f"（注意：{catalog_state}，下列流程的注册状态一律无从判断，"
+                "不代表它们不可用。请照常按需求推荐，只是都当作信息推荐、不要进 candidates。）"
+            )
         for pipeline_id in self._allowed_pipeline_ids():
             method = known.get(pipeline_id)
             if method:
                 lines.append(
                     f"- {pipeline_id} | registered | {method.name} | {method.description}"
                 )
+            elif catalog_state:
+                lines.append(f"- {pipeline_id} | 注册状态未知(目录不可用)")
             else:
                 lines.append(f"- {pipeline_id} | missing_from_neo4j")
         return lines
@@ -739,6 +864,26 @@ Neo4j atomic 方法目录：
             item["rank"] = rank
         return prepared
 
+    @staticmethod
+    def _planner_declined(decision: Optional[Dict[str, Any]]) -> bool:
+        """规划器是不是**主动**拒的答。
+
+        两处确定性回退（原子链回退、业务推荐回退）都拿它当闸门，区分的是同一件事：
+        规划器交空，是"它看着这道题决定不给"，还是"它根本没产出"。前者必须照原样
+        透出去，后者才轮到确定性规则兜底。
+
+        判据是它有没有留下拒答理由。提示词里写死了"candidates 为空时必须用一句具体
+        原因填写 unsupported_reason"并同时要求填 unsupported_kind，所以有理由 = 它
+        做过判断；decision 整个是 None（解析失败、API 挂了）时两个字段都取不到，
+        自然为 False。
+        """
+        if not decision:
+            return False
+        return bool(
+            str(decision.get("unsupported_reason") or "").strip()
+            or str(decision.get("unsupported_kind") or "").strip()
+        )
+
     def _build_recommendations(
         self,
         text: str,
@@ -759,14 +904,27 @@ Neo4j atomic 方法目录：
             values = self._normalize_recommendation_values(
                 decision.get("recommendations") or []
             )
-            if not values and self._deterministic_pipeline_recommendation(text, intent):
+            # 规划器主动给了拒答理由，就是它**看着**这道题决定不推荐的（点名了目录里
+            # 没有的工具、输入自相矛盾、癌种不在库里）。这种时候按关键词补一条
+            # rnaseq_singletask，等于把它排除掉的东西又端回来：0822 实测问「用 HISAT2
+            # 代替 STAR」，规划器 recommendations 和 candidates 都交了空、理由写的是
+            # "现有 RNA-seq 上游流程均依赖 STAR，会执行用户排除的步骤"，这条规则却
+            # 补上了 rnaseq_singletask——正是那条依赖 STAR 的流程。附带把顶层
+            # selection_status 从 unsupported 顶成了 information，"做不了"变成"给你推荐"。
+            #
+            # 规划器什么都没说就交空（漏填、解析失败、API 挂了），才是这条确定性规则
+            # 要兜的；它明确说了为什么不推荐，就得听它的。
+            if (
+                not values
+                and not self._planner_declined(decision)
+                and self._deterministic_pipeline_recommendation(text, intent)
+            ):
                 values = [{
                     "rank": 1,
                     "pipeline_id": "rnaseq_singletask",
                     "match_note": "确定性规则识别为双端 bulk RNA-seq 上游质控和表达定量。",
                 }]
                 recommendation_source = "deterministic_rule+neo4j"
-
         recommendations: List[Dict[str, Any]] = []
         for value in values[:top_k]:
             pipeline_id = value["pipeline_id"]
@@ -1022,10 +1180,7 @@ Neo4j atomic 方法目录：
                 "study_accessions": studies,
             }
         files = combinations[0].get("files") or []
-        assets = [
-            {"name": item.get("files"), "graph_status": "available", **item}
-            for item in files
-        ]
+        assets = [_evidence_asset(item, evidence_matcher._file_role) for item in files]
         studies = sorted({str(item.get("study_accession")) for item in files if item.get("study_accession")})
         return self._reject_disease_mismatch(intent, {
             "status": "available",
@@ -1106,10 +1261,7 @@ Neo4j atomic 方法目录：
                 "individual_accession": individual,
                 "label": label,
                 "selected": index == 0,
-                "assets": [
-                    {"name": item.get("files"), "graph_status": "available", **item}
-                    for item in files
-                ],
+                "assets": [_evidence_asset(item, matcher._file_role) for item in files],
                 "matched_count": len(files),
                 "study_accessions": studies,
                 "sample_roles": dict(roles),
@@ -1177,6 +1329,23 @@ Neo4j atomic 方法目录：
         params: Dict[str, Any] = {}
         missing: List[Dict[str, Any]] = []
         if method is None:
+            # 返回空 params + **空** missing 等于说"这张卡零个参数、且一个都不缺"，
+            # 消费方按 `not missing` 判可提交就会当成能提交。而 method 只从图谱目录
+            # 来，目录一空每张卡都长这样。0822 probe C2（tumor-normal WES 体细胞突变）
+            # 报的"整卡缺少参数绑定 tumor_r1/normal_r1..."就是这么来的：不是绑不上，
+            # 是根本不知道有哪些槽位。缺什么说不出来，至少要说"说不出来"。
+            missing.append({
+                "param": None,
+                "slot": None,
+                "role": None,
+                "reason": (
+                    "method_not_in_catalog"
+                    if self.registered_methods.all_methods
+                    else "catalog_unavailable"
+                ),
+                "detail": self.registered_methods.unavailable_state()
+                or "该 pipeline 未在 Neo4j 目录中注册，无法得知其输入槽位",
+            })
             return params, missing
         assets = list((data or {}).get("assets") or [])
         usage: Dict[str, int] = {}
@@ -1267,10 +1436,7 @@ Neo4j atomic 方法目录：
                 selected.append(match)
         if required_roles == ["fastq"] or set(required_roles) == {"fastq"}:
             selected = matcher._dedupe_files(files)[: matcher._required_file_count(pipeline_id)]
-        assets = [
-            {"name": item.get("files"), "graph_status": "available", **item}
-            for item in selected
-        ]
+        assets = [_evidence_asset(item, matcher._file_role) for item in selected]
         missing_roles = [role for role in required_roles if role not in covered]
         return assets, ([] if study == "unknown" else [study]), missing_roles
 
@@ -2025,6 +2191,24 @@ Neo4j atomic 方法目录：
         raw_steps: Sequence[Dict[str, Any]],
     ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
         errors: List[str] = []
+        # 图谱没连上时目录是空的，于是**每一个** tool_id 都会被判成"未知"——调用方
+        # 送来一条完全合法的链，却被告知工具名非法，去查自己那边。0822 排查测试时
+        # 就是被这句话带偏的：满屏"未知 tool_id: star"，看着像目录坏了，实际是
+        # bolt 连不上。工具目录只从图谱来（见 RegisteredMethodCatalog），所以这里
+        # 必须先把"我不认识"和"我什么都不认识"分开说。
+        catalog_state = self.registered_methods.unavailable_state()
+        if catalog_state:
+            return [], {
+                "ok": False,
+                "errors": [
+                    f"工具目录为空，无法校验任何 tool_id：{catalog_state}。"
+                    "这不是 steps 的问题，请先恢复图谱连接。"
+                ],
+                "warnings": [],
+                "required_external_inputs": [],
+                "catalog_unavailable": True,
+                "catalog_error": self.registered_methods.error or "unknown",
+            }
         normalized_steps, normalized_ids = self._normalize_custom_step_ids(raw_steps)
         warnings: List[str] = [
             f"已规范化 step_id: {old} -> {new}"
