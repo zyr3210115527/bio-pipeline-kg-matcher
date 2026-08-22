@@ -53,6 +53,38 @@ python3 -m pip install -r requirements-neo4j.txt
 cp .env.local.example .env.local
 ```
 
+### 数据目录有两代，别混用
+
+| 目录 | 代次 | T1 / T2 行数 | T1 schema |
+| --- | --- | ---: | --- |
+| `data/0812` | **当前，默认** | 28,229 / 35,572 | snake_case，`file_path` 等内联 |
+| `data/csv` | 换代前的小样本 | 13,772 / 86 | camelCase，物理路径另存 `T11.csv` |
+
+`strategy` 词表两代不通用，而且 `data/csv` **自己内部就有两套**：
+
+| | T1 / sample | T2 |
+| --- | --- | --- |
+| `data/0812` | `bulk_RNA` `WES` `WGS` `sc-RNA`（+`Clinical` `Meta`） | 同左（4 类） |
+| `data/csv` | `WES` `RNA-Seq` `scRNA-Seq` `WGS`，还有 `WES,RNA-Seq` 这种逗号拼接 | `genomic` `transcriptomic` `single-cell transcriptomic` `clinical` |
+
+`data/csv/entities/T2.csv` 里还有 6 行把 study 号（`HRA001748` 等）错填进了 `strategy` 列。
+
+`CSV_DIR` 默认指向 `data/0812`，用 `DATA_CSV_DIR` 覆盖。**指错目录不会报错**——它会安静地
+选错矩阵，并往 `agent_input` 里写一个图谱中根本不存在的 strategy 值（比如把 `bulk_RNA`
+写成 `RNA-Seq`）。T1 加载按**列名**（不是目录名）分派两代 schema；走错分支同样不抛异常，
+只会把每行字段读成空串，表面症状仅仅是 `matched_count=0`。这两条都有回归锁着，见
+`tests/test_t1_loader_schema.py`。
+
+### `docs/mcp_delivery/` 和 `outputs/update728_*` 是冻结的交付快照
+
+它们各自内嵌了一份 `pipeline_router.py` 和 `data/csv`，**不随主干更新，也不要去同步**。
+当前 `docs/mcp_delivery/app/pipeline_router.py` 停在 `790d9ec`，与主干差 412 增 / 97 删，且只
+打包了 `data/csv`（上表里那个 86 行的旧代），所以它不能简单跟着把默认目录切到 `data/0812`
+——包里没有那批数据。
+
+要跑当前行为，请用仓库根目录的 `pipeline_router.py`。这些快照只用于复现当时提交给后端的
+那一版，做历史审查时才看。
+
 ## 运行模式
 
 默认调用 OpenAI 兼容 LLM。分析请求必须由一次 LLM 调用生成候选；模型不可用时返回 `no_candidate`，不会回退到标准流程或编造方法链。目录浏览仍是确定性只读请求。

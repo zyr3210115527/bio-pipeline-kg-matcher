@@ -1,8 +1,8 @@
 {
   "repeat": 1,
   "force_rule": false,
-  "catalog_unavailable": "图谱未连接（connection_timeout）",
-  "skipped_case_runs": 9,
+  "catalog_unavailable": null,
+  "skipped_case_runs": 0,
   "records": [
     {
       "run": 1,
@@ -94,143 +94,180 @@
       "case_id": "B1",
       "group": "B",
       "prompt": "双端 RNA-seq FASTQ 做完整上游分析。",
-      "elapsed_s": 19.6,
-      "passed": null,
+      "elapsed_s": 96.4,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=information 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 2,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "fastqc",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ],
+        [
+          "trim_galore",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
       ],
-      "selection_status": "information",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [
         "rnaseq_singletask"
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "B2",
       "group": "B",
       "prompt": "我有 paired-end RNA-seq 数据，想得到基因表达计数矩阵。",
-      "elapsed_s": 8.9,
-      "passed": null,
+      "elapsed_s": 86.2,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=information 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 2,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ],
+        [
+          "trim_galore",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
       ],
-      "selection_status": "information",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [
         "rnaseq_singletask"
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "B3",
       "group": "B",
       "prompt": "RNA-seq 原始数据怎么做质控、比对和表达定量？",
-      "elapsed_s": 21.1,
-      "passed": null,
+      "elapsed_s": 64.0,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=information 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
       ],
-      "selection_status": "information",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [
         "rnaseq_singletask"
       ],
       "llm_used": true,
-      "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "deterministic_fallback": "rnaseq_upstream_from_neo4j_contract",
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "B4",
       "group": "B",
       "prompt": "从双端 RNA-seq FASTQ 出发做 STAR 比对，再用 featureCounts 计数。",
-      "elapsed_s": 25.8,
-      "passed": null,
+      "elapsed_s": 34.4,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=information 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "rsem_quantification",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
       ],
-      "selection_status": "information",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [
         "rnaseq_singletask"
       ],
       "llm_used": true,
-      "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "deterministic_fallback": "rnaseq_upstream_from_neo4j_contract",
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "B5",
       "group": "B",
       "prompt": "完整双端 RNA-seq 上游流程，但去掉 RSEM，只保留 featureCounts 计数。",
-      "elapsed_s": 12.3,
-      "passed": null,
+      "elapsed_s": 57.0,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=information 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "star_rrna_and_genome_alignment",
+          "samtools_alignment_processing",
+          "featurecounts_gene_counting"
+        ]
       ],
-      "selection_status": "information",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [
         "rnaseq_singletask"
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "C1",
       "group": "C",
       "prompt": "我有双端 WES FASTQ，想做比对并得到排序去重后的 BAM。",
-      "elapsed_s": 64.6,
-      "passed": null,
+      "elapsed_s": 40.9,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=unsupported 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "bwa_mem_paired",
+          "samtools_alignment_processing"
+        ]
       ],
-      "selection_status": "unsupported",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "C2",
       "group": "C",
       "prompt": "我有 tumor-normal 配对的 WES 双端 FASTQ，想做体细胞突变检测。",
-      "elapsed_s": 15.9,
-      "passed": null,
+      "elapsed_s": 15.3,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "整卡缺少可直接提交的参数绑定: ['normal_r1', 'normal_r2', 'tumor_r1', 'tumor_r2']",
-        "整卡存在未解析参数: None"
-      ],
+      "unverifiable_without_catalog": [],
       "selection_status": "information",
       "candidate_count": 0,
       "chains": [],
@@ -239,14 +276,14 @@
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "配对 tumor-normal FASTQ 的体细胞变异检测由 wes_somatic_pair 业务流程以整卡形式交付，内部完成质控、比对、Mutect2、过滤、注释和 QC 汇总，不做原子链拆分。"
     },
     {
       "run": 1,
       "case_id": "C3",
       "group": "C",
       "prompt": "我只有一个样本的 WES 数据，想直接用 GATK call 变异。",
-      "elapsed_s": 9.9,
+      "elapsed_s": 71.9,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -256,14 +293,14 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "单样本 GATK 变异检测所需的 sorted_dedup_bam 输入槽虽在目录中存在，但当前外部 Knowledge Card 合同仅支持 tumor-normal 四槽形式，无法生成合法的单样本 GATK 候选链；wes_somatic_pair 流程要求配对 tumor-normal 数据，与单样本布局不符。"
     },
     {
       "run": 1,
       "case_id": "C4",
       "group": "C",
       "prompt": "从 WES FASTQ 一路做到过滤并注释后的 VCF，路径要经过 GATK、BCFtools 和 SnpEff。",
-      "elapsed_s": 35.9,
+      "elapsed_s": 28.4,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -273,34 +310,36 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "用户要求的路径必须经过 GATK->BCFtools->SnpEff，当前 Knowledge Card 合同无法把 GATK 的 VCF 及 index 按 BCFtools 所需槽位传递；且未说明 tumor-normal 配对，无法推荐 wes_somatic_pair 整卡流程。"
     },
     {
       "run": 1,
       "case_id": "C5",
       "group": "C",
       "prompt": "WGS 双端 FASTQ 做 BWA 比对。",
-      "elapsed_s": 35.4,
-      "passed": null,
+      "elapsed_s": 52.7,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "status=unsupported 不在期望 ['ready']",
-        "期望有原子候选链，实际为空"
+      "unverifiable_without_catalog": [],
+      "selection_status": "ready",
+      "candidate_count": 1,
+      "chains": [
+        [
+          "fastp_paired_end",
+          "bwa_mem_paired"
+        ]
       ],
-      "selection_status": "unsupported",
-      "candidate_count": 0,
-      "chains": [],
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": null
     },
     {
       "run": 1,
       "case_id": "D1",
       "group": "D",
       "prompt": "我有肝癌 MAF，先做突变景观，再做 TMB 生存分析。",
-      "elapsed_s": 10.6,
+      "elapsed_s": 14.2,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -313,14 +352,14 @@
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "MAF 突变景观与 TMB 生存分析这两类分析尚未原子化，Neo4j 目录中没有对应 atomic tool，暂不支持拆成原子链"
     },
     {
       "run": 1,
       "case_id": "D2",
       "group": "D",
       "prompt": "用基因表达矩阵和临床表做 WGCNA 共表达网络分析。",
-      "elapsed_s": 9.4,
+      "elapsed_s": 156.8,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -328,18 +367,20 @@
       "candidate_count": 0,
       "chains": [],
       "recommendations": [
-        "wgcna"
+        "wgcna",
+        "wgcna_hub",
+        "wgcna_module_trait"
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "WGCNA 共表达网络分析在业务流程层已注册，但当前 atomic 目录中尚无对应工具，这类分析尚未原子化，暂不支持拆成可执行原子链"
     },
     {
       "run": 1,
       "case_id": "D3",
       "group": "D",
       "prompt": "表达矩阵做差异表达分析，然后做 GO 富集。",
-      "elapsed_s": 8.2,
+      "elapsed_s": 20.4,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -347,18 +388,19 @@
       "candidate_count": 0,
       "chains": [],
       "recommendations": [
-        "diff_expr_go"
+        "diff_expr_go",
+        "deg_enrichment"
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "差异表达分析和 GO 功能富集尚未原子化，当前 atomic 目录中没有对应工具，暂不支持拆成可执行原子链"
     },
     {
       "run": 1,
       "case_id": "D4",
       "group": "D",
       "prompt": "用临床随访数据画 Kaplan-Meier 生存曲线。",
-      "elapsed_s": 13.4,
+      "elapsed_s": 18.0,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -368,31 +410,34 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "目录中的生存分析流程（km_survival、cox_model、survival_analysis、her2_pfs_survival、tmb_survival_analysis）均要求基因表达矩阵或 MAF 突变数据作为输入，没有仅凭临床随访数据绘制 Kaplan-Meier 曲线的流程或原子工具，暂不支持。"
     },
     {
       "run": 1,
       "case_id": "D5",
       "group": "D",
       "prompt": "单细胞数据做细胞间通讯分析。",
-      "elapsed_s": 11.3,
+      "elapsed_s": 18.2,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
-      "selection_status": "unsupported",
+      "selection_status": "information",
       "candidate_count": 0,
       "chains": [],
-      "recommendations": [],
+      "recommendations": [
+        "scrna_cell_communication",
+        "immunotherapy_cellchat"
+      ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "细胞间通讯分析（CellChat/CellPhoneDB/NicheNet）尚未原子化，目录中没有对应 atomic tool，只能以整卡业务流程交付"
     },
     {
       "run": 1,
       "case_id": "D6",
       "group": "D",
       "prompt": "把原始测序 FASTQ 整理成 GATK 后续分析可用的 uBAM 文件。",
-      "elapsed_s": 20.5,
+      "elapsed_s": 11.1,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -404,14 +449,14 @@
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "FASTQ 转 uBAM 这一步尚未原子化，目录中没有对应的 atomic tool，无法拆成可执行原子链"
     },
     {
       "run": 1,
       "case_id": "E1",
       "group": "E",
       "prompt": "我只有 MAF 文件，想用 STAR 做基因组比对。",
-      "elapsed_s": 13.1,
+      "elapsed_s": 9.5,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -421,14 +466,14 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "MAF 是已注释的体细胞突变文件，不含原始测序 reads，无法作为 STAR 比对输入；如需比对必须有 FASTQ 或 uBAM 等原始测序数据"
+      "reason": "用户仅有 MAF 突变注释文件，而 STAR 比对需要原始测序 FASTQ reads，输入数据与比对目标自相矛盾，无法执行"
     },
     {
       "run": 1,
       "case_id": "E2",
       "group": "E",
       "prompt": "我有 RNA-seq 表达矩阵，想跑 DNA 体细胞变异检测流程。",
-      "elapsed_s": 6.1,
+      "elapsed_s": 9.2,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -438,14 +483,14 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "用户输入是 RNA-seq 表达矩阵，而 DNA 体细胞变异检测需要原始测序 reads（FASTQ）或比对后的 BAM，两类数据不可互换，属于输入与目标方法冲突。"
+      "reason": "RNA-seq 表达矩阵不是 DNA 测序数据（如 WES/WGS 的 FASTQ 或 BAM），无法作为体细胞变异检测（如 Mutect2）的输入，两者输入类型冲突。"
     },
     {
       "run": 1,
       "case_id": "E3",
       "group": "E",
       "prompt": "我手上只有临床信息表，想做基因组比对拿到 BAM。",
-      "elapsed_s": 14.4,
+      "elapsed_s": 8.2,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -455,14 +500,14 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "基因组比对必须以原始测序数据（FASTQ 或 uBAM）为输入，用户只有临床信息表，没有任何序列数据，输入与目标 BAM 产物自相矛盾"
+      "reason": "用户只有临床信息表而没有原始测序数据（FASTQ/BAM），基因组比对必须有测序 reads 作为输入，输入与目标产物 BAM 自相矛盾。"
     },
     {
       "run": 1,
       "case_id": "E4",
       "group": "E",
       "prompt": "用已有的 VCF 文件做 FastQC 测序质量评估。",
-      "elapsed_s": 11.3,
+      "elapsed_s": 8.8,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -472,14 +517,14 @@
       "recommendations": [],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "FastQC 只能对原始 FASTQ reads 做测序质量评估，已有 VCF 是变异检测结果文件，二者输入类型不兼容"
+      "reason": "用户持有的 VCF 是变异调用结果，而 FastQC 只能对 FASTQ 原始测序 reads 做质量评估，两者输入类型冲突，无法编排该分析。"
     },
     {
       "run": 1,
       "case_id": "F1",
       "group": "F",
       "prompt": "HRA000021 这个研究的数据可以做哪些分析？",
-      "elapsed_s": 67.6,
+      "elapsed_s": 40.7,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -487,20 +532,20 @@
       "candidate_count": 0,
       "chains": [],
       "recommendations": [
+        "cnvkit_cnv_clinical",
         "wes_somatic_pair",
-        "wes_somatic_maf_landscape",
-        "tmb_survival_analysis"
+        "wes_somatic_maf_landscape"
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "用户仅询问该研究数据可做哪些分析，未指定具体输入数据、样本布局和分析终点，属于能力咨询而非可编排的具体分析请求，无法生成原子执行链"
+      "reason": "用户仅询问该队列可做哪些分析，未指定具体输入形态、样本布局和最终产物，无法编排出有确定终点的原子链，请明确目标后（如配对 BAM 做 CNV、FASTQ 做体细胞变异检测或 MAF 做突变景观）再生成候选"
     },
     {
       "run": 1,
       "case_id": "F2",
       "group": "F",
       "prompt": "我有 10x 单细胞测序的 FASTQ 文件，想生成细胞-基因表达矩阵。",
-      "elapsed_s": 18.2,
+      "elapsed_s": 13.2,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -512,14 +557,14 @@
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "10x 单细胞上游分析（CellRanger）尚未原子化，当前原子工具目录中没有任何可承载该需求的工具，无法拆出可执行链"
     },
     {
       "run": 1,
       "case_id": "F3",
       "group": "F",
       "prompt": "有没有 WES 的 tumor/normal 配对数据可以做体细胞突变分析？",
-      "elapsed_s": 18.4,
+      "elapsed_s": 17.6,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -531,14 +576,14 @@
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "本次请求是询问数据可用性而非提供输入编排分析，且用户未指定癌种或队列，图谱无法按样本层面确认肿瘤/正常配对 WES 数据是否存在；如已有配对 FASTQ 可另行提交以使用 wes_somatic_pair"
+      "reason": "配对 tumor-normal FASTQ 的体细胞变异检测由业务流程 wes_somatic_pair 以整卡形式交付，尚未拆分为原子工具链，故不生成 atomic 候选。"
     },
     {
       "run": 1,
       "case_id": "F4",
       "group": "F",
       "prompt": "用 bulk RNA-seq 表达矩阵和临床表做免疫浸润分析。",
-      "elapsed_s": 16.0,
+      "elapsed_s": 11.2,
       "passed": true,
       "problems": [],
       "unverifiable_without_catalog": [],
@@ -550,26 +595,26 @@
       ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "免疫浸润分析尚未原子化，当前 atomic 目录中没有对应工具，暂不支持拆成可执行链"
     },
     {
       "run": 1,
       "case_id": "F5",
       "group": "F",
       "prompt": "我有比对好的 BAM 和临床数据，想做 CNV 分析。",
-      "elapsed_s": 9.8,
-      "passed": null,
+      "elapsed_s": 20.3,
+      "passed": true,
       "problems": [],
-      "unverifiable_without_catalog": [
-        "期望有业务流程推荐，实际为空"
-      ],
-      "selection_status": "unsupported",
+      "unverifiable_without_catalog": [],
+      "selection_status": "information",
       "candidate_count": 0,
       "chains": [],
-      "recommendations": [],
+      "recommendations": [
+        "cnvkit_cnv_clinical"
+      ],
       "llm_used": true,
       "deterministic_fallback": null,
-      "reason": "原子工具目录为空（图谱未连接（connection_timeout）），无法判断这个需求能否拆成原子链——这不是需求本身不受支持，请先恢复 Neo4j 图谱连接后重试。"
+      "reason": "CNV 分析（CNVkit）在原子工具目录中尚未拆出对应 atomic tool，无法生成可执行原子链"
     }
   ]
 }

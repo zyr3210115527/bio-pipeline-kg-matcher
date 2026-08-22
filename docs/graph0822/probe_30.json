@@ -1,0 +1,423 @@
+{
+  "repeat": 1,
+  "force_rule": false,
+  "catalog_unavailable": null,
+  "skipped_case_runs": 0,
+  "records": [
+    {
+      "run": 1,
+      "case_id": "A1",
+      "group": "A",
+      "prompt": "你们能做什么？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A2",
+      "group": "A",
+      "prompt": "有哪些原子工具？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A3",
+      "group": "A",
+      "prompt": "有哪些流程可以处理 MAF 文件？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A4",
+      "group": "A",
+      "prompt": "有哪些流程支持单细胞数据？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "A5",
+      "group": "A",
+      "prompt": "目录里有哪些工具能输出 BAM？",
+      "elapsed_s": 0.0,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "information",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": false,
+      "deterministic_fallback": null,
+      "reason": null
+    },
+    {
+      "run": 1,
+      "case_id": "B1",
+      "group": "B",
+      "prompt": "双端 RNA-seq FASTQ 做完整上游分析。",
+      "elapsed_s": 24.7,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "B2",
+      "group": "B",
+      "prompt": "我有 paired-end RNA-seq 数据，想得到基因表达计数矩阵。",
+      "elapsed_s": 50.9,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "B3",
+      "group": "B",
+      "prompt": "RNA-seq 原始数据怎么做质控、比对和表达定量？",
+      "elapsed_s": 21.1,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "B4",
+      "group": "B",
+      "prompt": "从双端 RNA-seq FASTQ 出发做 STAR 比对，再用 featureCounts 计数。",
+      "elapsed_s": 22.3,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "B5",
+      "group": "B",
+      "prompt": "完整双端 RNA-seq 上游流程，但去掉 RSEM，只保留 featureCounts 计数。",
+      "elapsed_s": 31.0,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "C1",
+      "group": "C",
+      "prompt": "我有双端 WES FASTQ，想做比对并得到排序去重后的 BAM。",
+      "elapsed_s": 35.8,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "C2",
+      "group": "C",
+      "prompt": "我有 tumor-normal 配对的 WES 双端 FASTQ，想做体细胞突变检测。",
+      "elapsed_s": 6.5,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "C3",
+      "group": "C",
+      "prompt": "我只有一个样本的 WES 数据，想直接用 GATK call 变异。",
+      "elapsed_s": 22.5,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "单样本 GATK 变异检测在当前执行合同中仅支持 tumor-normal 四槽形式，sorted_dedup_bam 单样本槽位无法通过 Knowledge Card 回验，且目录中没有覆盖单样本变异检测的业务流程"
+    },
+    {
+      "run": 1,
+      "case_id": "C4",
+      "group": "C",
+      "prompt": "从 WES FASTQ 一路做到过滤并注释后的 VCF，路径要经过 GATK、BCFtools 和 SnpEff。",
+      "elapsed_s": 15.7,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "C5",
+      "group": "C",
+      "prompt": "WGS 双端 FASTQ 做 BWA 比对。",
+      "elapsed_s": 31.4,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "D1",
+      "group": "D",
+      "prompt": "我有肝癌 MAF，先做突变景观，再做 TMB 生存分析。",
+      "elapsed_s": 20.4,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "D2",
+      "group": "D",
+      "prompt": "用基因表达矩阵和临床表做 WGCNA 共表达网络分析。",
+      "elapsed_s": 8.6,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "D3",
+      "group": "D",
+      "prompt": "表达矩阵做差异表达分析，然后做 GO 富集。",
+      "elapsed_s": 9.0,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "D4",
+      "group": "D",
+      "prompt": "用临床随访数据画 Kaplan-Meier 生存曲线。",
+      "elapsed_s": 24.3,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "D5",
+      "group": "D",
+      "prompt": "单细胞数据做细胞间通讯分析。",
+      "elapsed_s": 12.0,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "D6",
+      "group": "D",
+      "prompt": "把原始测序 FASTQ 整理成 GATK 后续分析可用的 uBAM 文件。",
+      "elapsed_s": 7.8,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "E1",
+      "group": "E",
+      "prompt": "我只有 MAF 文件，想用 STAR 做基因组比对。",
+      "elapsed_s": 6.7,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "MAF 文件是已生成的体细胞突变结果，不包含测序 reads，无法作为 STAR（或 BWA）比对所需的 FASTQ 输入，属于输入与目标方法自相矛盾的请求"
+    },
+    {
+      "run": 1,
+      "case_id": "E2",
+      "group": "E",
+      "prompt": "我有 RNA-seq 表达矩阵，想跑 DNA 体细胞变异检测流程。",
+      "elapsed_s": 6.2,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "RNA-seq 表达矩阵是定量结果而非原始测序 reads，无法用于需要 FASTQ/BAM 输入的 DNA 体细胞变异检测（如 Mutect2/GATK）流程，输入与目标方法自相矛盾。"
+    },
+    {
+      "run": 1,
+      "case_id": "E3",
+      "group": "E",
+      "prompt": "我手上只有临床信息表，想做基因组比对拿到 BAM。",
+      "elapsed_s": 6.0,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "只有临床信息表而无 FASTQ 或 BAM 等测序数据，基因组比对需要原始测序 reads 作为输入，输入数据与目标 BAM 产物自相矛盾。"
+    },
+    {
+      "run": 1,
+      "case_id": "E4",
+      "group": "E",
+      "prompt": "用已有的 VCF 文件做 FastQC 测序质量评估。",
+      "elapsed_s": 8.1,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "VCF 是变异检测结果文件，FastQC 只能评估 FASTQ 原始测序 reads 的质量，输入类型与目标方法自相矛盾，且不存在将 VCF 还原为 FASTQ 的途径。"
+    },
+    {
+      "run": 1,
+      "case_id": "F1",
+      "group": "F",
+      "prompt": "HRA000021 这个研究的数据可以做哪些分析？",
+      "elapsed_s": 20.7,
+      "passed": true,
+      "problems": [],
+      "unverifiable_without_catalog": [],
+      "selection_status": "unsupported",
+      "candidate_count": 0,
+      "chains": [],
+      "recommendations": [],
+      "llm_used": true,
+      "deterministic_fallback": null,
+      "reason": "用户只是询问该队列可做哪些分析，未给出具体输入数据、样本布局和最终分析目标，无法确定唯一或候选的分析流程；请明确想做的分析（如差异表达、突变景观、生存分析等）后再来编排。"
+    },
+    {
+      "run": 1,
+      "case_id": "F2",
+      "group": "F",
+      "prompt": "我有 10x 单细胞测序的 FASTQ 文件，想生成细胞-基因表达矩阵。",
+      "elapsed_s": 7.7,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "F3",
+      "group": "F",
+      "prompt": "有没有 WES 的 tumor/normal 配对数据可以做体细胞突变分析？",
+      "elapsed_s": 15.9,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "F4",
+      "group": "F",
+      "prompt": "用 bulk RNA-seq 表达矩阵和临床表做免疫浸润分析。",
+      "elapsed_s": 9.3,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    },
+    {
+      "run": 1,
+      "case_id": "F5",
+      "group": "F",
+      "prompt": "我有比对好的 BAM 和临床数据，想做 CNV 分析。",
+      "elapsed_s": 31.2,
+      "passed": false,
+      "problems": [
+        "抛出异常 AttributeError: 'Neo4jKGDataMatcher' object has no attribute '_attribution_index'"
+      ],
+      "unverifiable_without_catalog": []
+    }
+  ]
+}

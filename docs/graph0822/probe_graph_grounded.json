@@ -1,0 +1,602 @@
+[
+  {
+    "run": 1,
+    "case_id": "G01",
+    "group": "G",
+    "prompt": "用 HRA001272 的基因表达矩阵做差异表达分析",
+    "expect": {
+      "study": "HRA001272",
+      "data_available": true,
+      "attribution": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 3,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "deg_enrichment",
+        "data_status": "available",
+        "assets": [
+          "HRA001272-SomaticSNV-1.0.maf",
+          "HRA001272-Clinical-1.0.xlsx",
+          "HRA001272-MetaInfo-1.0.xlsx"
+        ]
+      },
+      {
+        "pipeline_id": "de_enrichment",
+        "data_status": "available",
+        "assets": [
+          "HRA001272-SomaticSNV-1.0.maf",
+          "HRA001272-Clinical-1.0.xlsx",
+          "HRA001272-MetaInfo-1.0.xlsx"
+        ]
+      },
+      {
+        "pipeline_id": "deg_trend",
+        "data_status": "available",
+        "assets": [
+          "HRA001272-SomaticSNV-1.0.maf",
+          "HRA001272-Clinical-1.0.xlsx",
+          "HRA001272-MetaInfo-1.0.xlsx"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G02",
+    "group": "G",
+    "prompt": "HRA003107 的表达矩阵做无监督聚类分型",
+    "expect": {
+      "study": "HRA003107",
+      "data_available": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 2,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "rnaseq_unsupervised_cluster",
+        "data_status": "available",
+        "assets": [
+          "HRA003107-Genes-counts-1.0.tsv"
+        ]
+      },
+      {
+        "pipeline_id": "hvg_pca_gmm",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G03",
+    "group": "G",
+    "prompt": "拿 HRA000873 的 MAF 文件做突变景观分析",
+    "expect": {
+      "study": "HRA000873",
+      "data_available": true,
+      "attribution": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "wes_somatic_maf_landscape",
+        "data_status": "available",
+        "assets": [
+          "HRA000873-SomaticSNV-1.0.maf"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G04",
+    "group": "G",
+    "prompt": "HRA001748 的单细胞表达矩阵做细胞类型注释",
+    "expect": {
+      "study": "HRA001748",
+      "slot_unsatisfied": [
+        "breast_cellchat",
+        "celltype_case_control_de",
+        "dataset_downstream",
+        "dataset_matrix_annotation",
+        "immunotherapy_cellchat",
+        "ipf_trajectory_regulon",
+        "lung_tme_annotation_cnv",
+        "scrna_cell_communication",
+        "tcell_intervention"
+      ],
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 2,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "dataset_matrix_annotation",
+        "data_status": "missing_from_graph",
+        "assets": []
+      },
+      {
+        "pipeline_id": "dataset_downstream",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G05",
+    "group": "G",
+    "prompt": "用 HRA005191 的单细胞数据做降维聚类",
+    "expect": {
+      "study": "HRA005191",
+      "slot_unsatisfied": [
+        "breast_cellchat",
+        "celltype_case_control_de",
+        "dataset_downstream",
+        "dataset_matrix_annotation",
+        "immunotherapy_cellchat",
+        "ipf_trajectory_regulon",
+        "lung_tme_annotation_cnv",
+        "scrna_cell_communication",
+        "tcell_intervention"
+      ],
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 3,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "umap",
+        "data_status": "missing_from_graph",
+        "assets": []
+      },
+      {
+        "pipeline_id": "hvg_pca_gmm",
+        "data_status": "missing_from_graph",
+        "assets": []
+      },
+      {
+        "pipeline_id": "rnaseq_unsupervised_cluster",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G06",
+    "group": "G",
+    "prompt": "HRA000021 的 BAM 文件做拷贝数变异检测",
+    "expect": {
+      "study": "HRA000021",
+      "slot_unsatisfied": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "cnvkit_cnv_clinical",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G07",
+    "group": "G",
+    "prompt": "用 HRA006499 的 VCF 做变异注释",
+    "expect": {
+      "study": "HRA006499",
+      "slot_unsatisfied": true,
+      "no_cross_study": true
+    },
+    "status": "ready",
+    "recommendation_count": 0,
+    "candidate_count": 1,
+    "recommendations": [],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "G08",
+    "group": "G",
+    "prompt": "HRA002693 的表达矩阵做免疫浸润分析",
+    "expect": {
+      "study": "HRA002693",
+      "data_available": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "immune_infiltration_iobr",
+        "data_status": "available",
+        "assets": [
+          "HRA002693-Genes-TPM-1.0.tsv",
+          "HRA002693-Clinical-1.0.xlsx",
+          "HRA002693-MetaInfo-1.0.xlsx"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N01",
+    "group": "N",
+    "prompt": "HRA000021 的基因表达矩阵做差异表达分析",
+    "expect": {
+      "study": "HRA000021",
+      "modality_absent": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 3,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "deg_enrichment",
+        "data_status": "missing_from_graph",
+        "assets": []
+      },
+      {
+        "pipeline_id": "de_enrichment",
+        "data_status": "missing_from_graph",
+        "assets": []
+      },
+      {
+        "pipeline_id": "diff_expr_go",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N02",
+    "group": "N",
+    "prompt": "用 HRA000001 的表达矩阵做 WGCNA 共表达网络",
+    "expect": {
+      "study": "HRA000001",
+      "modality_absent": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 3,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "wgcna",
+        "data_status": "missing_from_graph",
+        "assets": [
+          "HRA000001-Clinical-1.0.0.tsv"
+        ]
+      },
+      {
+        "pipeline_id": "wgcna_module_trait",
+        "data_status": "missing_from_graph",
+        "assets": []
+      },
+      {
+        "pipeline_id": "wgcna_hub",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N03",
+    "group": "N",
+    "prompt": "用 HRA000073 的 MAF 文件做 TMB 计算",
+    "expect": {
+      "study": "HRA000073",
+      "modality_absent": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "tmb_survival_analysis",
+        "data_status": "missing_from_graph",
+        "assets": [
+          "HRA000073-Clinical-1.0.xlsx",
+          "HRA000073-MetaInfo-1.0.xlsx"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N04",
+    "group": "N",
+    "prompt": "HRA002693 的全外显子数据做体细胞突变检测",
+    "expect": {
+      "study": "HRA002693",
+      "modality_absent": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "wes_somatic_pair",
+        "data_status": "missing_from_graph",
+        "assets": [
+          "HRA002693-Genes-FPKM-1.0.tsv",
+          "HRA002693-Genes-TPM-1.0.tsv",
+          "HRA002693-Genes-counts-1.0.tsv",
+          "HRR718970Aligned.sortedByCoord.out.bam"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N05",
+    "group": "N",
+    "prompt": "用 HRA000874 的单细胞数据做细胞通讯分析",
+    "expect": {
+      "modality_absent": true
+    },
+    "status": "unsupported",
+    "recommendation_count": 0,
+    "candidate_count": 0,
+    "recommendations": [],
+    "unsupported_reason": "用户点名的队列 HRA000874 不在图谱可用队列清单中（细胞通讯流程 scrna_cell_communication 目前仅支持 HRA000087），无数据可执行该分析",
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N06",
+    "group": "N",
+    "prompt": "HRA006117 的单细胞矩阵做细胞类型注释",
+    "expect": {
+      "study": "HRA006117",
+      "modality_absent": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "dataset_matrix_annotation",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N07",
+    "group": "N",
+    "prompt": "用 HRA888888 的 RNA-seq 数据做差异表达分析",
+    "expect": {
+      "refuse": true,
+      "modality_absent": true
+    },
+    "status": "unsupported",
+    "recommendation_count": 0,
+    "candidate_count": 0,
+    "recommendations": [],
+    "unsupported_reason": "用户指定的队列 HRA888888 不在可用队列清单中，图谱内没有该队列的 RNA-seq 数据，无法进行差异表达分析。",
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "N08",
+    "group": "N",
+    "prompt": "HRA000021 的单细胞数据做拟时序分析",
+    "expect": {
+      "study": "HRA000021",
+      "modality_absent": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "ipf_trajectory_regulon",
+        "data_status": "missing_from_graph",
+        "assets": []
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "X01",
+    "group": "X",
+    "prompt": "只用 HRA001749 这个队列的 BAM 做变异检测，不要别的队列的数据",
+    "expect": {
+      "study": "HRA001749",
+      "no_cross_study": true
+    },
+    "status": "unsupported",
+    "recommendation_count": 0,
+    "candidate_count": 0,
+    "recommendations": [],
+    "unsupported_reason": "目录中没有以 BAM 为输入的变异检测业务流程（wes_somatic_pair 只接受配对 tumor-normal FASTQ），且用户未说明 BAM 的肿瘤/正常角色，原子层 GATK 单样本合同亦不支持，故无法生成变异检测链。",
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "X02",
+    "group": "X",
+    "prompt": "HRA007169 的 VCF 做过滤和注释",
+    "expect": {
+      "study": "HRA007169",
+      "no_cross_study": true
+    },
+    "status": "no_candidate",
+    "recommendation_count": 0,
+    "candidate_count": 0,
+    "recommendations": [],
+    "unsupported_reason": "已有工具能覆盖这个需求的一部分，但拼不出一条从你的输入到目标结果的完整链路，请补充输入数据类型或缩小分析目标。",
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "X03",
+    "group": "X",
+    "prompt": "用 HRA016026 的 MAF 做驱动基因分析",
+    "expect": {
+      "study": "HRA016026",
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 2,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "driver_gene_gender_analysis",
+        "data_status": "available",
+        "assets": [
+          "HRA016026-SomaticSNV-1.0.maf",
+          "HRA016026-Clinical-1.0.xlsx",
+          "HRA016026-MetaInfo-1.0.xlsx"
+        ]
+      },
+      {
+        "pipeline_id": "wes_somatic_maf_landscape",
+        "data_status": "available",
+        "assets": [
+          "HRA016026-SomaticSNV-1.0.maf"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "X04",
+    "group": "X",
+    "prompt": "HRA000071 的 BAM 做结构变异检测",
+    "expect": {
+      "study": "HRA000071",
+      "no_cross_study": true
+    },
+    "status": "unsupported",
+    "recommendation_count": 0,
+    "candidate_count": 0,
+    "recommendations": [],
+    "unsupported_reason": "目录中没有结构变异检测对应的 atomic tool，GATK 仅覆盖 SNV/Indel 类变异检测，无法产出结构变异结果",
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "L01",
+    "group": "L",
+    "prompt": "使用 HRA001272 的 RNA-seq 数据做差异表达和 GO 富集分析",
+    "expect": {
+      "study": "HRA001272",
+      "data_available": true,
+      "attribution": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "diff_expr_go",
+        "data_status": "available",
+        "assets": [
+          "HRA001272-Genes-FPKM-1.0.tsv"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "L02",
+    "group": "L",
+    "prompt": "HRA000873 的比对结果做体细胞突变 calling",
+    "expect": {
+      "study": "HRA000873",
+      "attribution": true,
+      "no_cross_study": true
+    },
+    "status": "unsupported",
+    "recommendation_count": 0,
+    "candidate_count": 0,
+    "recommendations": [],
+    "unsupported_reason": "用户输入为已比对的 BAM 且未给出 tumor-normal 配对角色；目录中唯一以原始数据为起点的 wes_somatic_pair 消费 FASTQ 而非 BAM，而原子层单样本 GATK 的 sorted_dedup_bam 槽当前执行合同不支持、四槽变体又缺少明确的 tumor/normal 角色，故无法生成合法候选链",
+    "problems": []
+  },
+  {
+    "run": 1,
+    "case_id": "L03",
+    "group": "L",
+    "prompt": "用 HRA006499 的 BAM 做拷贝数分析，我要知道每个文件对应哪个样本",
+    "expect": {
+      "study": "HRA006499",
+      "attribution": true,
+      "no_cross_study": true
+    },
+    "status": "information",
+    "recommendation_count": 1,
+    "candidate_count": 0,
+    "recommendations": [
+      {
+        "pipeline_id": "cnvkit_cnv_clinical",
+        "data_status": "available",
+        "assets": [
+          "HRA006499-SomaticSNV-1.0.maf",
+          "HRA006499-Clinical-1.0.xlsx",
+          "HRA006499-MetaInfo-1.0.xlsx"
+        ]
+      }
+    ],
+    "unsupported_reason": null,
+    "problems": []
+  }
+]
