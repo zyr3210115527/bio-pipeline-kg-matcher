@@ -3,6 +3,7 @@ import unittest
 
 from question_benchmark import load_question_benchmark
 from workflow_composer import WorkflowComposer
+from tests.graph_gate import require_graph_catalog
 
 
 class QuestionBenchmarkTests(unittest.TestCase):
@@ -10,6 +11,7 @@ class QuestionBenchmarkTests(unittest.TestCase):
     def setUpClass(cls):
         cls.previous_force_rule = os.environ.get("FORCE_RULE")
         os.environ["FORCE_RULE"] = "1"
+        require_graph_catalog()
         cls.composer = WorkflowComposer()
 
     @classmethod

@@ -25,7 +25,7 @@ import os
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Sequence
+from typing import Any, Dict, List, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -130,6 +130,42 @@ CASES: List[Dict[str, Any]] = [
 ]
 
 
+# 哪些违反项在"工具目录为空"时根本无从判定。
+#
+# 0822 这套探针在图谱断线时报了 21/30，9 条 FAIL 看着像九个产品缺陷，实际一个都不是：
+# ready 要有通过校验的原子候选链，原子链只从 Neo4j 目录来；execution_params 要读
+# method.inputs 的槽位，也只从目录来；连"期望有业务流程推荐"都得看目录——本地
+# benchmark 只有 14 条 pipeline，cnvkit_cnv_clinical 这类 0811 之后加的只存在于图谱里，
+# 目录一空菜单上就没有 CNV 这项，F5 自然推荐不出来（连跑三次都是 rec=[]，稳定地
+# "错"在一个不该判的地方）。
+#
+# 反过来这几类**不**依赖目录，目录空时照样算数，一条都不许放行：凭空多出候选链、
+# 该拒答却给了推荐、拒答不给理由、以及候选链自身的契约不变量。那才是真信号。
+CATALOG_DEPENDENT_PREFIXES = (
+    "期望有原子候选链",
+    "期望有业务流程推荐",
+    "整卡缺少可直接提交的参数绑定",
+    "整卡存在未解析参数",
+)
+
+
+def split_by_catalog(problems: List[str]) -> Tuple[List[str], List[str]]:
+    """把违反项拆成"确凿"和"目录不可用导致无从判定"两摞。"""
+    real: List[str] = []
+    unverifiable: List[str] = []
+    for problem in problems:
+        if problem.startswith(CATALOG_DEPENDENT_PREFIXES):
+            unverifiable.append(problem)
+        elif problem.startswith("status=") and "'ready'" in problem:
+            # 期望里含 ready 却没给到。ready 蕴含"有通过校验的原子链"，目录空时
+            # 不可能成立。注意 'ready' 带引号——它只会出现在 sorted(expect) 那半边，
+            # 所以"实际就是 ready"（真给出了候选链，与目录无关）不会落进这个分支。
+            unverifiable.append(problem)
+        else:
+            real.append(problem)
+    return real, unverifiable
+
+
 def check(result: Dict[str, Any], expect: Dict[str, Any]) -> List[str]:
     problems: List[str] = []
     status = result.get("selection_status")
@@ -220,12 +256,23 @@ def main(argv: Sequence[str] | None = None) -> int:
     from workflow_composer import WorkflowComposer
 
     composer = WorkflowComposer()
+    # 目录为空时，下面一整类断言都失去前提。仍旧跑、仍旧打印，但计分时单列一栏，
+    # 免得把"没法判"读成"判错了"——0822 就是这么把 9 条无从判定读成 9 个缺陷的。
+    catalog_state = composer.registered_methods.unavailable_state()
+    if catalog_state:
+        print(
+            f"!! 工具目录不可用：{catalog_state}\n"
+            f"   依赖目录的断言（ready / 原子候选链 / 业务流程推荐 / 参数绑定）本轮无从判定，\n"
+            f"   将单独计入「无从判定」而不计入失败。目录恢复后请重跑本探针。\n"
+        )
     records: List[Dict[str, Any]] = []
     verdicts: Dict[str, List[bool]] = collections.defaultdict(list)
+    skipped_counts: Dict[str, int] = collections.defaultdict(int)
 
     for run in range(1, args.repeat + 1):
         for item in cases:
             started = time.time()
+            unverifiable: List[str] = []
             try:
                 result = composer.plan(item["prompt"])
                 problems = check(result, item["expect"])
@@ -233,27 +280,38 @@ def main(argv: Sequence[str] | None = None) -> int:
             except Exception as exc:  # noqa: BLE001 - a crash is itself a finding
                 problems = [f"抛出异常 {type(exc).__name__}: {exc}"]
                 detail = {}
-            verdicts[item["case_id"]].append(not problems)
+            if catalog_state:
+                problems, unverifiable = split_by_catalog(problems)
+            # 只剩无从判定项的用例既不算过也不算挂。记 None 而不是 True——把跳过
+            # 计成通过就是把前面那个错误反过来犯一遍：满屏 5/5 看着全绿，其实一条
+            # 都没验过。计分只在真正判过的用例上做。
+            skipped = bool(unverifiable) and not problems
+            if skipped:
+                skipped_counts[item["group"]] += 1
+            verdicts[item["case_id"]].append(None if skipped else not problems)
             records.append({
                 "run": run,
                 "case_id": item["case_id"],
                 "group": item["group"],
                 "prompt": item["prompt"],
                 "elapsed_s": round(time.time() - started, 1),
-                "passed": not problems,
+                "passed": None if skipped else not problems,
                 "problems": problems,
+                "unverifiable_without_catalog": unverifiable,
                 **detail,
             })
-            mark = "PASS" if not problems else "FAIL"
+            mark = "SKIP" if skipped else ("PASS" if not problems else "FAIL")
             print(f"[{run}] {mark} {item['case_id']} {item['prompt'][:34]}")
             for problem in problems:
                 print(f"        - {problem}")
+            for problem in unverifiable:
+                print(f"        ~ (目录不可用，无从判定) {problem}")
 
     by_group: Dict[str, List[int]] = collections.defaultdict(lambda: [0, 0])
     for item in cases:
-        results = verdicts[item["case_id"]]
-        by_group[item["group"]][1] += len(results)
-        by_group[item["group"]][0] += sum(results)
+        judged = [value for value in verdicts[item["case_id"]] if value is not None]
+        by_group[item["group"]][1] += len(judged)
+        by_group[item["group"]][0] += sum(judged)
 
     print("\n" + "=" * 62)
     labels = {
@@ -265,10 +323,23 @@ def main(argv: Sequence[str] | None = None) -> int:
         passed, total = by_group[group]
         total_pass += passed
         total_all += total
-        print(f"  {group} {labels.get(group, ''):14} {passed}/{total}")
-    print(f"  合计 {total_pass}/{total_all}")
+        note = ""
+        if skipped_counts.get(group):
+            note = f"  + {skipped_counts[group]} 条无从判定(未计分)"
+        shown = f"{passed}/{total}" if total else "—/—"
+        print(f"  {group} {labels.get(group, ''):14} {shown}{note}")
+    print(f"  合计 {total_pass}/{total_all} 已判定")
+    skipped_total = sum(skipped_counts.values())
+    if skipped_total:
+        print(
+            f"  另有 {skipped_total} 条因工具目录不可用无从判定，未计入上面任何一个数字。\n"
+            f"  这不是通过——目录恢复后必须重跑才知道这几条对不对。"
+        )
 
-    flaky = [cid for cid, values in verdicts.items() if 0 < sum(values) < len(values)]
+    flaky = [
+        cid for cid, values in verdicts.items()
+        if 0 < sum(1 for v in values if v) < sum(1 for v in values if v is not None)
+    ]
     if flaky:
         print(f"  不稳定用例: {', '.join(sorted(flaky))}")
 
@@ -276,14 +347,24 @@ def main(argv: Sequence[str] | None = None) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
         json.dumps(
-            {"repeat": args.repeat, "force_rule": args.force_rule, "records": records},
+            {
+                "repeat": args.repeat,
+                "force_rule": args.force_rule,
+                "catalog_unavailable": catalog_state,
+                "skipped_case_runs": skipped_total,
+                "records": records,
+            },
             ensure_ascii=False,
             indent=2,
         ),
         encoding="utf-8",
     )
     print(f"  明细 -> {output}")
-    return 0 if total_pass == total_all else 1
+    if total_pass != total_all:
+        return 1
+    # 全绿但有没验到的：0 会被读成"这轮全过了"。单给一个 2，让脚本和人都能
+    # 一眼分清"通过"和"没判"。
+    return 2 if skipped_total else 0
 
 
 if __name__ == "__main__":

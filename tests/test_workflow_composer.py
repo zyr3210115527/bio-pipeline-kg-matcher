@@ -15,6 +15,7 @@ from app import _shape_case
 from pipeline_router import PipelineRouter, render_pipeline_answer
 from server import TOOL_CHAIN_OUTPUT_SCHEMA
 from workflow_composer import WorkflowComposer, list_workflow_methods
+from tests.graph_gate import require_graph_catalog
 
 
 def fastqc_steps():
@@ -191,6 +192,7 @@ class WorkflowComposerTests(unittest.TestCase):
     def setUpClass(cls):
         cls.previous_force_rule = os.environ.get("FORCE_RULE")
         os.environ["FORCE_RULE"] = "1"
+        require_graph_catalog()
         cls.composer = WorkflowComposer()
 
     @classmethod

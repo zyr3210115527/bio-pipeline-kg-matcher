@@ -1,6 +1,7 @@
 import unittest
 
 import server
+from tests.graph_gate import require_graph_catalog
 
 
 WES_SIX_STEPS = [
@@ -69,7 +70,14 @@ def call_availability(arguments):
 
 
 class CustomDataAvailabilityTests(unittest.TestCase):
+    # 闸门按条加，不加在 setUp 上：下面 test_unknown_tool_is_an_invalid_parameter_error
+    # 断言的是"未注册的工具会被拒"，目录为空时结论照样成立，没有理由跳过它。
+    # 过度 skip 和误导性失败是同一个毛病的两面。
+
     def test_valid_wes_chain_derives_fastq_and_finds_datasets(self):
+        # 用的是 Neo4j 内部 tool_id（fastp/bwa/samtools/gatk/bcftools/snpeff），
+        # 图谱一断全被判成未知，报错看着像 steps 写错了。
+        require_graph_catalog()
         response = call_availability({
             "intent": {
                 "query_text": "WES FASTQ 做体细胞变异检测并注释",
@@ -102,6 +110,7 @@ class CustomDataAvailabilityTests(unittest.TestCase):
         self.assertIn("未知 tool_id", response["error"]["message"])
 
     def test_valid_chain_without_matching_data_is_not_available(self):
+        require_graph_catalog()
         response = call_availability({
             "intent": {
                 "query_text": "no matching cohort",
@@ -117,6 +126,7 @@ class CustomDataAvailabilityTests(unittest.TestCase):
         self.assertFalse(value["feasibility"]["ok"])
 
     def test_registered_pipeline_path_remains_compatible(self):
+        require_graph_catalog()
         response = call_availability({
             "intent": {
                 "query_text": "paired RNA-seq FASTQ",

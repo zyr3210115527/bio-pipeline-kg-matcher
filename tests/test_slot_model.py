@@ -4,6 +4,7 @@ import os
 import unittest
 
 from workflow_composer import WorkflowComposer
+from tests.graph_gate import require_graph_catalog
 
 
 def paired_steps():
@@ -131,6 +132,7 @@ class SlotModelTests(unittest.TestCase):
     def setUp(self):
         self.previous_force_rule = os.environ.get("FORCE_RULE")
         os.environ["FORCE_RULE"] = "1"
+        require_graph_catalog()
         self.composer = WorkflowComposer()
 
     def tearDown(self):
