@@ -69,30 +69,52 @@
 | `role` | 是 | 文件用途，例如 `count_matrix`、`clinical_file`。 |
 | `path` | 是 | 执行端可以访问的文件路径。 |
 | `format` | 否 | 文件格式，例如 `tsv`、`xlsx`、`maf`。 |
-| `sample_attribution` | 是 | 样本级字段（`sample_id`/`sample_name`/`sample_role`/`read_pair` 等）为空时的**原因**，取值见下。 |
-| `sample_attribution_note` | 是 | 同上，给人看的一句话解释；`per_sample` 时为空串。 |
+| `sample_attribution` | 是 | 这个文件**归属到哪一层**：`sample` / `individual` / `study_cohort`。取值见 4.1。 |
+| `sample_attribution_via` | 是 | 归属是**怎么查到的**：`lineage_edge` / `filename_run` / `filename_sample` / `filename_individual` / `study_membership` / `record_field`。 |
+| `sample_attribution_note` | 是 | 同上，给人看的一句话解释；`sample` 级为空串。 |
+| `cohort_samples` | 是 | `individual` / `study_cohort` 级文件的成员样本号数组；`sample` 级为空数组。 |
+| `cohort_sample_count` | 是 | `cohort_samples` 的长度；`sample` 级为 0。 |
 
-### 4.1 样本级字段为空，先看 `sample_attribution` 再下结论
+### 4.1 样本级字段为空 ≠ 查不到
 
-同样一片 null，含义可能完全相反，**不要一律当成「数据缺失」**：
+**先明确一点：没有任何一个文件是查不到归属的。** 0821 全量 35,572 个 T2 逐个解析，
+`unresolved` 为 0。样本级字段（`sample_id`/`run_accession`/`individual_accession`）
+为空，只说明这个文件的归属**不在样本那一层**，不代表数据缺失。
 
-| 取值 | 含义 | 该怎么办 |
+| 取值 | 含义 | 该怎么用 |
 | --- | --- | --- |
-| `per_sample` | 样本归属已解析，样本级字段有值 | 正常使用 |
-| `cohort_aggregate` | 队列级聚合文件（表达矩阵、MAF、临床表、sc-RNA 队列产物），**不属于任何单个样本** | 空值属正常，照常提交；别去补样本号 |
-| `attribution_missing` | 文件名带 `HRI*`/`HRS*` 样本号，本该定位到样本，但图内缺 `generated_from`/`in_sample` 边 | **这是真缺口**，如实报给用户，不要猜样本归属 |
+| `sample` | 归属到唯一样本，`sample_id`/`run_accession`/`individual_accession` **已回填** | 直接用 |
+| `individual` | 个体级产物（体细胞突变等按 tumor/normal 配对出的结果），归属到个体 | `individual_accession` 可用；样本号看 `cohort_samples` |
+| `study_cohort` | 队列级文件（表达矩阵/MAF/临床表），一个文件覆盖整个队列 | 要 run/sample 编号就取 `cohort_samples`，**已按 strategy 过滤** |
 
-来历：0821 师兄看富集分析的 plan 时问「数据有的是 null」。查证后富集用的
-`HRA001272-Genes-TPM-1.0.tsv` 在图里确实没有 `generated_from`、没有 `in_sample`、
-`run_accession` 也是 null——**那是队列级矩阵的本质，不是漏查**。但当时输出里没有
-任何东西能说明这点，而隔壁 WES 的逐样本 VCF 也是一片 null，原因却是图里缺边。
+0821 全量分布（每个数字都在现网图谱上交叉验证过）：
 
-0821 实测 35,572 个 T2 的分布：31,313 有血缘；3,676 无血缘但文件名带样本号
-（`HRI147472.svaba.somatic.indel.vcf` 这类，属 `attribution_missing`）；179 文件名里
-没有任何样本号（属 `cohort_aggregate`）。判据用**文件名里有没有样本号**，不用
-`run_accession` 是否为空——后者会把那 3,676 个逐样本文件一起划进「本来就没有」，
-等于把真缺口盖成正常现象。全量交叉验证：判成 `cohort_aggregate` 的 179 个在图里
-确实全都没有血缘，零误报。
+| 层级 | 数量 | 占比 | 途径 |
+| --- | ---: | ---: | --- |
+| `sample` | 31,313 | 88.03% | `lineage_edge`：`T2 -generated_from-> T1 -in_sample-> sample` |
+| `sample` | 2,372 | 6.67% | `filename_sample`：文件名里的 `HRS*` 号 |
+| `sample` | 404 | 1.14% | `filename_run`：文件名里的 `HRR*` 号 |
+| `individual` | 1,136 | 3.19% | `filename_individual`：文件名里的 `HRI*` 号 |
+| `study_cohort` | 347 | 0.98% | `study_membership`：`study → individual → sample → run` |
+
+**来历与一次纠错。** 0821 师兄看富集分析的 plan 时问「数据有的是 null」。第一版把
+`HRA001272-Genes-TPM-1.0.tsv` 判成"队列级矩阵本来就不属于任何样本，空着正常"，
+并把另一批 no-lineage 文件标成"真缺口、不要猜样本归属"。**两个结论都错。** 师兄
+指出：图谱里是有 sample 的，这个文件对应的是 study 数据，要 run 和 sample 编号就
+从 study 下面对应到 individual 再对应到 sample-run。照这条路查完，原先被判成"真
+缺口"的 3,676 个里有 3,912 个（含此前漏算的）实际查得到，剩下的走 study 路也能给
+出队列成员——`unresolved` 归零。
+
+**两条实现上不能动的约束：**
+
+1. **队列成员必须按 `strategy` 过滤。** `HRA001272` 底下 374 个 `bulk_RNA` 和 324 个
+   `WES` 混在一起，不过滤就会把 WES 样本挂到 RNA 表达矩阵上——比不给还糟，因为它
+   看起来是对的。
+2. **血缘边优先于文件名。** 前者是图谱声明的事实，后者是命名约定的推断。两者在
+   24,318 个重叠案例上零冲突，但顺序写死，真出现分歧时以血缘边为准。
+
+多样本归属（`individual`/`study_cohort`）时 `sample_id` 保持 `null`，不会挑第一个
+充数——调用方看到 `sample_id` 有值就会当成单样本用。
 
 ## 5. `tool_chain`
 

@@ -32,8 +32,13 @@ def _lazy_call_llm(system: str, user: str) -> Optional[Dict[str, Any]]:
 HERE = Path(__file__).resolve().parent
 # The packaged router is self-contained; keep all catalog paths inside it.
 PROJECT_ROOT = HERE
+# 默认必须指向 0812 那批数据，别改回 data/csv。data/csv 是换代前留下的小样本：
+# T2 只有 86 行（现网 35,572），strategy 还是旧词表 transcriptomic/genomic，而图里
+# 早已是 WES/WGS/bulk_RNA/sc-RNA。用旧目录跑不会报错——它会安静地选错矩阵，并往
+# agent_input 里写一个图谱中根本不存在的 strategy 值。0821 排查富集分析时就是被
+# 这个默认值坑了一轮。
 CSV_DIR = Path(
-    os.environ.get("DATA_CSV_DIR", str(PROJECT_ROOT / "data" / "csv"))
+    os.environ.get("DATA_CSV_DIR", str(PROJECT_ROOT / "data" / "0812"))
 ).expanduser()
 
 
@@ -309,38 +314,18 @@ def _sample_role(record: Dict[str, Any]) -> Optional[str]:
 
 _SAMPLE_TOKEN_PATTERN = re.compile(r"HR[ISR]\d+")
 
-
-def _sample_attribution(record: Dict[str, Any], file_name: Any) -> Dict[str, str]:
-    """说明这个文件的样本级字段为什么是空的。
-
-    师兄 0821 看富集分析的 plan 时问「数据有的是 null」。查下来富集用的那个表达
-    矩阵（HRA001272-Genes-TPM-1.0.tsv）确实全是空：图里它没有 generated_from、
-    没有 in_sample，run_accession 也是 null。**那不是漏查，是队列级矩阵本来就
-    不属于任何单个样本。**
-
-    但同样一片 null，隔壁的 WES VCF 是另一回事。0821 实测 35,572 个 T2 里：
-      31,313  有 generated_from  → 样本归属查得到
-       3,676  无 generated_from，但文件名里带 HRI*/HRS* 样本号
-              （HRI147472.svaba.somatic.indel.vcf 这类）→ **本该有，图里缺边**
-        ~179  无 generated_from，文件名里也没有任何样本号
-              （<队列号>-Genes-TPM.tsv 表达矩阵、Cell_Type.tsv / UMAP_*.jpeg
-              这类 sc-RNA 队列级产物）→ 本来就没有
-
-    这两类在 JSON 里长得一模一样，调用方（和师兄）分不出来，于是只能理解成
-    「数据缺失」。所以这里把判断结果显式写进资产。
-
-    判据用文件名里有没有样本/个体号，不用 run_accession 是否为空——后者会把那
-    3,676 个逐样本 VCF 一起划进「本来就没有」，等于把真缺口盖成正常现象。
-    """
-    if _norm(record.get("sample_accession")) or _norm(record.get("sample_name")):
-        return {"status": "per_sample", "note": ""}
-    if _SAMPLE_TOKEN_PATTERN.search(str(file_name or "")):
-        return {"status": "attribution_missing",
-                "note": "文件名带样本/个体号，本应能定位到样本，但图内缺少 "
-                        "generated_from/in_sample 边——样本级字段为空是缺口，不是常态"}
-    return {"status": "cohort_aggregate",
-            "note": "队列级聚合文件（表达矩阵/MAF/临床表等），不属于任何单个样本，"
-                    "样本级字段为空属正常，不代表数据缺失"}
+# 归属层级。名字直接对应"这个文件属于谁"，不再描述"为什么是空的"——因为 0821 查完
+# 发现没有真正查不到的文件，只有"归属在哪一层"的区别。
+ATTRIBUTION_NOTES = {
+    "sample": "",
+    "individual": "个体级产物（体细胞突变等按 tumor/normal 配对出的结果），归属到"
+               "个体而非单个样本；下面列出的是该个体的样本，不是文件被切分的单位",
+    "study_cohort": "队列级文件（表达矩阵/MAF/临床表等），一个文件覆盖整个队列。"
+                    "它自身没有单样本归属，但队列成员查得到：study → individual → "
+                    "sample → run，见 cohort_samples",
+    "unresolved": "该文件在本地 CSV 里既无血缘边、文件名也不含可识别的编号，"
+                  "且其 study 下查不到任何样本——这是真缺口，请如实报告，不要猜",
+}
 
 
 def _assess_wes_somatic_cases(fastqs: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -757,6 +742,148 @@ class CsvKGDataMatcher:
             for row in self.study
             if row.get("study_accession")
         }
+        # 归属索引要读 T2_generated_from_T1（6 万行）和 T1_in_sample，构建有成本，
+        # 而只有返回 T2 资产时才用得上。延迟到第一次解析时再建。
+        self._attribution_index: Optional[Dict[str, Any]] = None
+
+    def _attribution_indexes(self) -> Dict[str, Any]:
+        """建立"文件 → 样本/个体/队列"的反查索引。
+
+        0821 师兄指出：队列级文件虽然自身没有样本字段，但**样本在图里是有的**，
+        要 run 和 sample 编号就沿 study → individual → sample → run 去取。这个方法
+        把那条路，连同另外三条更精确的路，一次性索引出来。
+        """
+        if self._attribution_index is not None:
+            return self._attribution_index
+
+        by_run: Dict[str, Dict[str, str]] = {}
+        by_sample: Dict[str, Dict[str, str]] = {}
+        by_individual: Dict[str, List[str]] = {}
+        by_study: Dict[str, List[Dict[str, str]]] = {}
+        for row in self.sample:
+            accession = _norm(row.get("sample_accession"))
+            # run_accession 可能是分号分隔的多值（0821 全库 326 行如此）。按位置切开，
+            # 不能整串当键，否则这些样本永远反查不到。
+            for one in str(row.get("run_accession") or "").split(";"):
+                one = one.strip()
+                if one:
+                    by_run.setdefault(one, row)
+            if accession:
+                by_sample.setdefault(accession, row)
+                individual = _norm(row.get("individual_accession"))
+                if individual:
+                    by_individual.setdefault(individual, []).append(accession)
+            study = _norm(row.get("study_accession"))
+            if study:
+                by_study.setdefault(study, []).append(row)
+
+        # 真血缘：T2 -generated_from-> T1 -in_sample-> sample。这张关系表同时带
+        # run_accession 和 t1_id 两列，两条都用上——0821 实测两者结论零冲突。
+        t1_samples: Dict[str, List[str]] = {}
+        for row in _read_csv(self.relation_dir / "T1_in_sample.csv"):
+            t1_id = _norm(row.get("t1_id"))
+            accession = _norm(row.get("sample_accession"))
+            if t1_id and accession:
+                t1_samples.setdefault(t1_id, []).append(accession)
+        lineage: Dict[str, List[str]] = {}
+        for row in _read_csv(self.relation_dir / "T2_generated_from_T1.csv"):
+            t2_id = _norm(row.get("t2_id"))
+            if not t2_id:
+                continue
+            found = list(t1_samples.get(_norm(row.get("t1_id")), ()))
+            run = _norm(row.get("run_accession"))
+            if run and run in by_run:
+                found.append(_norm(by_run[run].get("sample_accession")))
+            for accession in found:
+                if accession and accession not in lineage.setdefault(t2_id, []):
+                    lineage[t2_id].append(accession)
+
+        self._attribution_index = {
+            "by_run": by_run,
+            "by_sample": by_sample,
+            "by_individual": by_individual,
+            "by_study": by_study,
+            "lineage": lineage,
+        }
+        return self._attribution_index
+
+    def _resolve_attribution(
+        self, row: Dict[str, Any], file_name: Any
+    ) -> Dict[str, Any]:
+        """按精度从高到低解析这个文件属于谁，解析到就把编号填回去。
+
+        起因：0821 师兄看富集分析的 plan 时问「数据有的是 null」。当时我判成"队列级
+        矩阵本来就不属于任何样本，空着是正常的"，并把另一批 no-lineage 文件标成
+        "真缺口、不要猜"。**两个结论都不对。** 师兄的原话是：图谱里是有 sample 的，
+        这个文件对应的是 study 数据，要 run 和 sample 编号就从 study 下面对应到
+        individual 再对应到 sample-run。照这条路查完，0821 全量 35,572 个 T2：
+
+            31,313 (88.03%)  sample 级 · 血缘边 T2→T1→sample
+             2,776 ( 7.80%)  sample 级 · 文件名里的 run/sample 号
+             1,136 ( 3.19%)  individual 级 · 文件名里的个体号（配对体细胞产物）
+               347 ( 0.98%)  study 级 · 只能给队列成员，即师兄说的那条路
+                 0           彻底查不到
+
+        **没有一个文件是查不到归属的**，只有归属在哪一层的区别。所以这里不再是"解释
+        null 为什么空"，而是真的把编号解析出来填进去。
+
+        四层的先后顺序不能调：血缘边是图谱声明的事实，文件名是命名约定的推断。两者
+        在 24,318 个重叠案例上零冲突，但真出现分歧时必须以血缘边为准。
+        """
+        indexes = self._attribution_indexes()
+        result: Dict[str, Any] = {
+            "level": "unresolved", "via": "", "samples": [],
+            "individual": _norm(row.get("individual_accession")) or None,
+            "run": _norm(row.get("run_accession")) or None,
+        }
+
+        def _finish(level: str, via: str, samples: Sequence[str]) -> Dict[str, Any]:
+            result["level"], result["via"] = level, via
+            result["samples"] = [s for s in dict.fromkeys(samples) if s]
+            if len(result["samples"]) == 1:
+                only = indexes["by_sample"].get(result["samples"][0], {})
+                result["individual"] = result["individual"] or _norm(only.get("individual_accession")) or None
+                result["run"] = result["run"] or _norm(only.get("run_accession")) or None
+            return result
+
+        # 0 层：行里本来就带样本号（T1 都是这样），不必反查。
+        existing = _norm(row.get("sample_accession"))
+        if existing:
+            return _finish("sample", "record_field", [existing])
+
+        # 1 层：血缘边。
+        hit = indexes["lineage"].get(_norm(row.get("t2_id")))
+        if hit:
+            return _finish("sample", "lineage_edge", hit)
+
+        # 2 层：文件名里的编号。HRR=run，HRS=sample，HRI=individual。
+        tokens = _SAMPLE_TOKEN_PATTERN.findall(str(file_name or ""))
+        for token in tokens:
+            if token.startswith("HRR") and token in indexes["by_run"]:
+                return _finish("sample", "filename_run",
+                               [_norm(indexes["by_run"][token].get("sample_accession"))])
+            if token.startswith("HRS") and token in indexes["by_sample"]:
+                return _finish("sample", "filename_sample", [token])
+        # 3 层：个体级。体细胞突变是按 tumor/normal 配对出的，本就归属个体而非单样本，
+        # 所以这里返回的多个样本是"该个体的样本"，不是"文件被切分成了多份"。
+        for token in tokens:
+            if token.startswith("HRI") and token in indexes["by_individual"]:
+                result["individual"] = token
+                return _finish("individual", "filename_individual",
+                               indexes["by_individual"][token])
+
+        # 4 层：师兄的那条路。队列成员按 strategy 过滤——0821 实测 HRA001272 底下
+        # 374 个 bulk_RNA 和 324 个 WES 混在一起，不过滤就会把 WES 样本挂到 RNA
+        # 表达矩阵上。
+        cohort = indexes["by_study"].get(_norm(row.get("study_accession")) or "", [])
+        if cohort:
+            strategy = _norm(row.get("strategy") or row.get("data_type"))
+            same = [r for r in cohort if _norm(r.get("strategy")) == strategy] if strategy else []
+            picked = same or cohort
+            result["cohort_strategy_filtered"] = bool(same)
+            return _finish("study_cohort", "study_membership",
+                           [_norm(r.get("sample_accession")) for r in picked])
+        return result
 
     def _load_normalized_t1(
         self,
@@ -768,7 +895,22 @@ class CsvKGDataMatcher:
         T1 v2 intentionally stores graph identity and biological metadata only.
         The legacy export remains the local physical-location mirror, so join it
         by file name instead of discarding paths required by agent_input.
+
+        0821 起有两代不兼容的 T1 导出，必须在这里分派：
+
+          data/csv   camelCase（dataName / studyAccession / runAccession），物理路径
+                     另存在同级 T11.csv 里，靠文件名 join 回来。
+          data/0812  snake_case（file_name / study_accession / run_accession），且
+                     file_path、semantic_format、data_level 全部内联，没有 T11.csv。
+
+        分派判据是列名而不是目录名——目录可以由 DATA_CSV_DIR 指到任何地方。走错分支
+        不会抛异常，只会让每一行的字段都取成空串，然后 FASTQ 一个都匹配不上、
+        matched_count 变 0。0821 把默认目录切到 data/0812 时就踩了这个：T2 是原样
+        读取的所以照常工作，唯独 T1 静默清空，测试只表现为"配对用例找不到数据"。
         """
+        if normalized_rows and "dataName" not in normalized_rows[0]:
+            return self._load_inline_t1(normalized_rows)
+
         legacy_by_name = {
             self._clean_data_name(row.get("files") or ""): row
             for row in legacy_rows
@@ -811,6 +953,48 @@ class CsvKGDataMatcher:
                 "specimen_types": attributes.get("specimen_type", ""),
                 "tissue_type": attributes.get("tissue_type", ""),
                 "gender": row.get("gender") or "",
+            })
+        return adapted
+
+    def _load_inline_t1(
+        self, rows: Sequence[Dict[str, str]]
+    ) -> List[Dict[str, str]]:
+        """0812 那代 T1：字段已是 snake_case，路径和格式都内联，不需要 legacy join。
+
+        输出的键必须和 _load_normalized_t1 完全一致——下游 _file_record、_sample_role、
+        配对逻辑都按那套键读，少一个就是一处静默的空值。
+        """
+        adapted: List[Dict[str, str]] = []
+        for row in rows:
+            file_name = self._clean_data_name(row.get("file_name") or "")
+            attributes = self.sample_attributes.get(row.get("sample_accession") or "", {})
+            strategy = row.get("strategy") or ""
+            adapted.append({
+                "study_accession": row.get("study_accession") or "",
+                "sample_accession": row.get("sample_accession") or "",
+                "run_accession": row.get("run_accession") or "",
+                "data_type": strategy,
+                # 这代导出没有 Read Pair 列，端序只能从文件名推。_guess_read_pair 推
+                # 不出时返回空，配对逻辑会据此拒绝，不会瞎配。
+                "Read Pair": self._guess_read_pair(file_name),
+                "files": file_name,
+                "file_id": file_name,
+                "file_name": file_name,
+                "format": row.get("semantic_format") or row.get("file_format")
+                          or self._infer_format(file_name),
+                "file_path": row.get("file_path") or file_name,
+                "file_description": "",
+                "Experiment": row.get("experiment_accession") or "",
+                "Platform": row.get("platform") or "",
+                "data_level": row.get("data_level") or "1",
+                "strategy": strategy,
+                "individual_accession": row.get("individual_accession") or "",
+                "individual_name": row.get("individual_name") or "",
+                "sample_name": row.get("sample_name") or "",
+                "specimen_type": attributes.get("specimen_type", ""),
+                "specimen_types": attributes.get("specimen_type", ""),
+                "tissue_type": attributes.get("tissue_type", ""),
+                "gender": "",
             })
         return adapted
 
@@ -1097,7 +1281,12 @@ class CsvKGDataMatcher:
 
         file_name = _bare(row.get("file_name") or row.get("files") or row.get("file") or row.get("t2_id"))
         file_id = _bare(row.get("file_id") or row.get("files") or row.get("t2_id"))
-        attribution = _sample_attribution(row, file_name)
+        attribution = self._resolve_attribution(row, file_name)
+        # 只有唯一确定一个样本时才回填 sample_id。个体级和队列级解析出的是一组样本，
+        # 挑第一个填进去等于伪造精度——那组要让调用方自己看 cohort_samples。
+        resolved_sample = (
+            attribution["samples"][0] if len(attribution["samples"]) == 1 else None
+        )
         return {
             "source": source,
             "t2_id": row.get("t2_id") if source == "T2" else None,
@@ -1108,9 +1297,9 @@ class CsvKGDataMatcher:
             "strategy": row.get("strategy") or row.get("data_type") or row.get("Experiment") or "",
             "data_level": row.get("data_level"),
             "study_accession": row.get("study_accession"),
-            "sample_id": row.get("sample_accession"),
-            "run_accession": row.get("run_accession"),
-            "individual_accession": row.get("individual_accession"),
+            "sample_id": row.get("sample_accession") or resolved_sample,
+            "run_accession": row.get("run_accession") or attribution["run"],
+            "individual_accession": row.get("individual_accession") or attribution["individual"],
             "individual_name": row.get("individual_name"),
             "sample_name": row.get("sample_name"),
             "specimen_type": row.get("specimen_type") or row.get("specimen_types"),
@@ -1123,10 +1312,20 @@ class CsvKGDataMatcher:
             "sample_role_label": _SAMPLE_ROLE_LABELS.get(_sample_role(row) or ""),
             "read_pair": row.get("read_pair") or row.get("Read Pair"),
             "file_path": row.get("file_path"),
-            # 上面那批样本字段为空时，必须说清是"本来就没有"还是"应该有但没查到"——
-            # 两者在 JSON 里长得一模一样，调用方分不出来。见 _sample_attribution。
-            "sample_attribution": attribution["status"],
-            "sample_attribution_note": attribution["note"],
+            # 样本字段为空不等于查不到。0821 全量实测没有一个文件是彻底无归属的，
+            # 只有归属在 sample / individual / study 哪一层的区别——下面三个字段
+            # 说清是哪一层、怎么查到的、队列成员有哪些。见 _resolve_attribution。
+            "sample_attribution": attribution["level"],
+            "sample_attribution_via": attribution["via"],
+            "sample_attribution_note": ATTRIBUTION_NOTES.get(attribution["level"], ""),
+            # 队列级和个体级文件在这里给出成员样本，供调用方按师兄那条路取 run/sample
+            # 编号。sample 级只有一个成员且已回填到 sample_id，就不重复挂了。
+            "cohort_samples": (
+                attribution["samples"] if attribution["level"] != "sample" else []
+            ),
+            "cohort_sample_count": (
+                len(attribution["samples"]) if attribution["level"] != "sample" else 0
+            ),
             "match_reason": match_reason,
         }
 
