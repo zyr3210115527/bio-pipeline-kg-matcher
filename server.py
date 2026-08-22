@@ -258,6 +258,24 @@ def _execution_required_asset_roles(
     return roles
 
 
+def _catalog_unavailable_note(composer: WorkflowComposer) -> str:
+    """图谱侧工具目录为空时返回一句该说的话；正常时返回空串。
+
+    Neo4j 内部 tool_id 只从图谱来。图谱一断，internal_ids 就是空集，于是所有内部
+    链路的 tool_id 全被判成"未知"，调用方会以为是自己写错了工具名。执行合同那 12
+    个 ID 来自本地 JSON，离线照常可用——所以不能一律说"目录没了"，只在内部目录确实
+    为空时补这句。
+    """
+    methods = composer.registered_methods
+    state = methods.unavailable_state()
+    if not state:
+        return ""
+    return (
+        f"（注意：Neo4j 工具目录为空——{state}，"
+        f"所有内部 tool_id 都会被判成未知。这可能不是 steps 的问题，请先确认图谱连接。）"
+    )
+
+
 def _chain_id_mode(composer: WorkflowComposer, steps: list[Dict[str, Any]]) -> str:
     """Classify a chain while handling IDs shared by internal and public contracts."""
     execution_ids = set(composer.execution_registry.by_execution_id)
@@ -728,6 +746,10 @@ def handle(
                         }
                 elif chain_mode == "unknown" or unknown_steps:
                     validation = {"ok": False, "errors": [f"未知 tool_id: {tool_id}" for tool_id in unknown_steps], "warnings": []}
+                    _note = _catalog_unavailable_note(composer)
+                    if _note:
+                        validation["errors"].append(_note)
+                        validation["catalog_unavailable"] = True
                     value = {
                         "schema_version": "tool-chain-validation/v1",
                         "mode": "neo4j_internal",
@@ -775,7 +797,10 @@ def handle(
                     if chain_mode == "mixed":
                         raise ValueError("steps 不能混用执行端 tool_id 和 Neo4j 内部 tool_id")
                     if unknown:
-                        raise ValueError("steps 包含未知 tool_id: " + ", ".join(unknown))
+                        raise ValueError(
+                            "steps 包含未知 tool_id: " + ", ".join(unknown)
+                            + _catalog_unavailable_note(composer)
+                        )
                     if public_mode:
                         assets = args.get("assets")
                         if not isinstance(assets, list):
