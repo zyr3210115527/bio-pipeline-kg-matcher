@@ -100,5 +100,70 @@ class SlotNotBoundIsReportedTests(unittest.TestCase):
         self.assertEqual(by_slot.get("somatic_maf"), "no_confirmed_path")
 
 
+class ArrayAndIndexSlotTests(unittest.TestCase):
+    """0823 第三轮：槽表按 WDL 对齐之后新出现的两个静默失败面。"""
+
+    def setUp(self):
+        self.composer = object.__new__(WorkflowComposer)
+
+    def _run(self, inputs, assets):
+        return self.composer._execution_params(_method(inputs), {"assets": list(assets)})
+
+    def test_array_slot_returns_all_paths_not_just_one(self):
+        """`Array[File]` 参数必须给全部路径。
+
+        走单值那条路只会取一个：fastqc 的 scatter 就只跑一个 FASTQ、cnvkit 的队列只算
+        一个样本。两者都不报错，只是悄悄少做——正是"错得像对"。
+        """
+        assets = [
+            {"files": "a_R1.fq.gz", "file_path": "/data/a_R1.fq.gz",
+             "read_pair": "r1", "format": "fq.gz"},
+            {"files": "b_R1.fq.gz", "file_path": "/data/b_R1.fq.gz",
+             "read_pair": "r1", "format": "fq.gz"},
+        ]
+        params, missing = self._run([
+            {"name": "raw_fastq_read_r1", "builder_param": "fastqs",
+             "cardinality": "array", "wdl_type": "Array[File]+"},
+        ], assets)
+        self.assertEqual(missing, [])
+        self.assertEqual(
+            params.get("fastqs"), ["/data/a_R1.fq.gz", "/data/b_R1.fq.gz"],
+            f"数组参数被压成了单值：{params}",
+        )
+
+    def test_two_slots_sharing_one_array_param_union_not_overwrite(self):
+        """fastqc 的 raw / clean 两个槽都对 `fastqs`，后者不能把前者冲掉。"""
+        assets = [
+            {"files": "raw_R1.fq.gz", "file_path": "/data/raw_R1.fq.gz",
+             "read_pair": "r1", "format": "fq.gz"},
+            {"files": "raw_R2.fq.gz", "file_path": "/data/raw_R2.fq.gz",
+             "read_pair": "r2", "format": "fq.gz"},
+        ]
+        params, _missing = self._run([
+            {"name": "raw_fastq_read_r1", "builder_param": "fastqs", "cardinality": "array"},
+            {"name": "raw_fastq_read_r2", "builder_param": "fastqs", "cardinality": "array"},
+        ], assets)
+        self.assertEqual(params.get("fastqs"),
+                         ["/data/raw_R1.fq.gz", "/data/raw_R2.fq.gz"])
+
+    def test_vcf_index_is_data_not_reference(self):
+        """`filtered_vcf_index` 名字里带 "index"，但它没有卡片默认值。
+
+        被当成参考资源就会既不映射也不报缺（师兄规则 4），bcftools 于是少给一个必需
+        参数还一声不吭——缺了它 `ln -sf` 读不到 .tbi，执行直接失败。
+        """
+        role = self.composer._role_for_input("filtered_vcf_index")
+        self.assertEqual(role, "vcf_file", "VCF 的伴随索引被判成了参考资源")
+        _params, missing = self._run([
+            {"name": "filtered_vcf_index", "builder_param": "filtered_vcf_index"},
+        ], [])
+        self.assertEqual([e["reason"] for e in missing], ["no_confirmed_path"])
+
+    def test_reference_index_slots_stay_silent(self):
+        """真正的参考索引仍然不报（star 的两个 STAR 索引、rsem_index）。"""
+        for name in ("rrna_star_index", "genome_star_index", "rsem_index"):
+            self.assertEqual(self.composer._role_for_input(name), "reference_file", name)
+
+
 if __name__ == "__main__":
     unittest.main()

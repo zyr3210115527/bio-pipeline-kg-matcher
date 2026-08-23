@@ -73,6 +73,8 @@ MCP 返回值同时出现在 `result.structuredContent` 和 `result.content[0].t
 | `execution_params` | `{真实参数名: 真实路径}`。键 = 该流程 `knowledge_card.yaml` 的 `interface.params[].name`（即图内 `io_slot.builder_param`，如 `maf_file`/`counts_tsv`），**不是** slot 名，也不是 `wdl_target`；值 = `data.assets` 里已被图谱确认的真实文件路径。多文件流程给多个键（如 wgcna → `counts_tsv`/`clinical_xls`/`metainfo_xlsx`）。 |
 | `execution_params_missing` | 无法解析出确认路径的数据参数清单（`param`/`slot`/`role`/`reason`）。**绝不臆造路径**。 |
 
+**值可能是字符串，也可能是字符串数组。** WDL 侧为 `Array[File]` 的参数返回**路径数组**（fastqc 的 `fastqs`、multiqc 的 `qc_files`、cnvkit 的 `tumor_bams`/`tumor_bais`/`normal_bams`/`normal_bais`、rmats 的 `group1_bams`/`group2_bams` 等），其余返回单个路径字符串。这是规格第 2 条的原有要求，0823 才真正落地——此前这些参数被压成单值，执行端按数组解会崩，或者更糟：scatter 只跑第一个样本，不报错只是少做。**消费方不要假定 `execution_params` 的值一定是 `str`**；`cnvkit` 的四个数组按同下标配对（第 i 个 tumor_bam 对第 i 个 tumor_bai），不得重排。
+
 `reason` 目前有两个取值，**处置对象不同，不要合并处理**：
 
 | `reason` | 含义 | 谁来修 |
@@ -84,6 +86,10 @@ MCP 返回值同时出现在 `result.structuredContent` 和 `result.content[0].t
 `execution_params_missing: []`——等于宣称"零个参数、且一个都不缺"，按 `not missing` 判可提交
 就会把一个绑不上参数的流程当成能跑的。新增取值是加法，不影响已有消费逻辑；但**如果你按
 `reason` 做过白名单分支，需要放行这个新值**。参考文件槽和别名行仍然不报。
+
+> 0823 收口后，`io_slot.csv` 的 122 个输入槽已全部绑定（余下 5 条是 `variant_alias_for`
+> 别名行，按设计留空且不上报），故 `slot_not_bound` 在当前目录下不应再出现。保留该取值是
+> 为了将来新接工具时不再回到"无声跳过"。
 
 规则：只映射图谱确认的**数据**输入；参考基因组 / 索引 / GTF / interval / PoN 等有卡片默认值的参考资源不出现在 `execution_params` 里（既不映射也不报缺）。用户选定某条后，可直接 `{pipeline_id, params: <execution_params>}` 投递。
 
@@ -117,6 +123,15 @@ MCP 返回值同时出现在 `result.structuredContent` 和 `result.content[0].t
 - 打乱资产数组顺序不改变绑定。
 
 当前 Knowledge Card 尚未登记 `GATK -> BCFtools` 所需的 filtered VCF index。完整过滤/注释链会严格阻断，不能由 Agent 假造索引；仅到 GATK 未过滤 VCF 的配对链可正常返回。
+> **0823 已修正，上一段作废。** GATK 的 `GatkWesSomaticWorkflow` 内部就跑了 `FilterMutectCalls`，
+> workflow 同时输出 `unfiltered_vcf` / `unfiltered_vcf_index` / `filtered_vcf` / `filtered_vcf_index`，
+> 只是槽表当初只建了前者。现已补齐 `gatk::output::filtered_vcf` + `filtered_vcf_index` 与
+> `bcftools::input::filtered_vcf_index`，`GATK -> BCFtools` 走**过滤后**的 VCF，完整链不再阻断。
+>
+> 顺带修掉一条静默错误：BCFtools 的输入槽原名 `unfiltered_vcf`，与 GATK 的同名输出对接，
+> 于是 Mutect2 的**原始** VCF 被喂给 `bcftools view -f PASS`。FILTER 注记要 `FilterMutectCalls`
+> 之后才存在——这条线不报错，只安静地给出空的 PASS 集合。如果你的下游对 0823 之前的
+> 空结果做过兜底，可以撤掉了。
 
 ## 7. 其他六个工具
 

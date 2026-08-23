@@ -2,8 +2,7 @@ tool_id,next_tool_id,kind,output,input
 T001,T002,data,clean_fastq_read,clean_fastq_read
 T002,T004,order,,
 T006,T007,data,aligned_bam,aligned_bam
-T007,T008,data,sorted_dedup_bam,sorted_dedup_bam
-T008,T009,data,unfiltered_vcf,unfiltered_vcf
+T008,T009,data,filtered_vcf,filtered_vcf
 T009,T010,data,filtered_vcf,filtered_vcf
 T004,T005,data,clean_fastq_read,clean_fastq_read
 T005,T011,data,transcriptome_bam,transcriptome_bam
@@ -17,3 +16,4 @@ T007,T008,data,sorted_dedup_bam,tumor_bam
 T007,T008,data,bai,tumor_bai
 T007,T008,data,sorted_dedup_bam,normal_bam
 T007,T008,data,bai,normal_bai
+T008,T009,data,filtered_vcf_index,filtered_vcf_index

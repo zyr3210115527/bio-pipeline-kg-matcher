@@ -68,6 +68,8 @@
 - **报缺不臆造**（规则 5）：无真实路径的数据参数进入 `execution_params_missing`（`param`/`slot`/`role`/`reason`），不编路径。
 - **未绑定的槽也要报**（0823 补）：`builder_param` 为空的**数据**槽以 `reason: "slot_not_bound"`、`param: null` 进入 `execution_params_missing`。此前这类槽是无声跳过，注释断言"无 builder_param 的都是 sample-lookup / 参考索引"——该断言在目录只收录 12 个全绑定工具时成立，0823 清点发现 128 个输入槽有 95 个为空，绝大多数是货真价实的数据输入。无声跳过的后果是回包给出 `execution_params: {}` 且 `missing: []`，即"零个参数且一个都不缺"，消费方按 `not missing` 判可提交。两个例外仍不报：canonical role 为 `reference_file` 的槽（规则 4）、`variant_alias_for` 非空的别名行（真实槽自己会报）。待确认清单见 `docs/待确认_builder_param.md`。
   - `slot_not_bound` 与 `no_confirmed_path` **不可合并**：前者是目录表缺绑定，要人补 `io_slot.csv`；后者是绑定正确但图里没有确认路径，要数据侧补 `file_path`。处置对象不同。
+- **数组参数返回路径数组**（规则 2 的后半句，0823 补）：`io_slot` 新增 `cardinality` 列，取值 `array` 表示 WDL 侧是 `Array[File]`（fastqc 的 `fastqs`、multiqc 的 `qc_files`、cnvkit 的 `tumor_bams`/`normal_bams`、rmats 的 `group1_bams`/`group2_bams`）。这类槽返回**全部**匹配到的确认路径，其余仍返回单个路径字符串。走单值那条路只会取第一个：fastqc 的 scatter 就只跑一个 FASTQ、cnvkit 的队列只算一个样本——都不报错，只是悄悄少做。两个槽可以共用一个参数（fastqc 的 raw / clean 都对 `fastqs`），故为**并集去重、保持顺序**，不是覆盖。
+- **数据文件的伴随索引按数据走**（0823 补）：`*_vcf_index` / `*_bam_index` / `*_bai` / `*_tbi` 在 `_role_for_input` 里先于 reference 规则判定。它们名字里带 `index`，原先会命中规则 4 被当成"卡片自带默认值"，于是既不映射也不报缺——bcftools 少给一个必需的 `filtered_vcf_index` 还一声不吭，而它没有默认值，缺了执行直接失败。真正的参考索引（`rrna_star_index` / `genome_star_index` / `rsem_index`）不受影响，仍走规则 4。
 - **`data.assets` 原样保留**（规则 6）。
 
 ## 三、已知数据限制

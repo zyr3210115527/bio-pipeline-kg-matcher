@@ -267,6 +267,10 @@ class RegisteredMethodCatalog:
             "dimension_value": str(slot.get("dimension_value") or ""),
             "variant": str(slot.get("variant") or ""),
             "variant_alias_for": str(slot.get("variant_alias_for") or ""),
+            # "array" 表示 WDL 侧是 Array[File]（fastqc 的 fastqs、multiqc 的
+            # qc_files、cnvkit 的 tumor_bams…）。单文件槽装不下数组，只补参数名没用：
+            # 会给出一个字符串路径，执行端按数组解就崩，或者更糟——只跑了第一个样本。
+            "cardinality": str(slot.get("cardinality") or ""),
         }
 
     def capabilities(self, include_pipelines: bool = False) -> List[Dict[str, Any]]:
@@ -1415,6 +1419,19 @@ Neo4j atomic 方法目录：
             candidates.sort(
                 key=lambda ap: 0 if str(ap[0].get("format") or "").strip().startswith(".") else 1
             )
+            if str(slot.get("cardinality") or "") == "array":
+                # 数组参数给全部匹配路径（规格第 2 条："文件数组参数返回路径数组"）。
+                # 走单值那条路会只取一个：fastqc 的 scatter 就只跑一个 FASTQ、cnvkit
+                # 的队列只算一个样本——都不报错，只是悄悄少做。
+                # 两个槽可以共用一个参数（fastqc 的 raw / clean 都对 `fastqs`），
+                # 所以是并集去重、保持顺序，不是覆盖。
+                bucket = params.setdefault(builder_param, [])
+                if not isinstance(bucket, list):
+                    bucket = params[builder_param] = [bucket]
+                for _asset, path in candidates:
+                    if path not in bucket:
+                        bucket.append(path)
+                continue
             usage_key = f"{role}:{dimension_value}" if dimension_value else role
             index = usage.get(usage_key, 0)
             if index >= len(candidates):
@@ -2680,6 +2697,12 @@ Neo4j atomic 方法目录：
             return "fastq_r1"
         if any(token in name for token in ("read2", "fastq_2", "_r2")):
             return "fastq_r2"
+        if name.endswith(("_vcf_index", "_bam_index", "_bai", "_tbi")):
+            # 数据文件的伴随索引不是参考资源。`filtered_vcf_index` 名字里带 "index"，
+            # 会先命中下面那条 reference 规则，被判成"卡片自带默认值，既不映射也不报缺"
+            # （师兄规则 4）——于是 bcftools 少给一个必需参数还一声不吭。它没有默认值，
+            # 缺了直接执行失败，必须按数据走。
+            return "vcf_file" if "vcf" in name else "bam_file"
         if any(token in name for token in (
             "ref", "reference", "index", "genome", "gtf", "gff", "annotation",
             "interval", "known_site", "pon", "resource",
