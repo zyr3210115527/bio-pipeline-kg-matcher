@@ -73,6 +73,18 @@ MCP 返回值同时出现在 `result.structuredContent` 和 `result.content[0].t
 | `execution_params` | `{真实参数名: 真实路径}`。键 = 该流程 `knowledge_card.yaml` 的 `interface.params[].name`（即图内 `io_slot.builder_param`，如 `maf_file`/`counts_tsv`），**不是** slot 名，也不是 `wdl_target`；值 = `data.assets` 里已被图谱确认的真实文件路径。多文件流程给多个键（如 wgcna → `counts_tsv`/`clinical_xls`/`metainfo_xlsx`）。 |
 | `execution_params_missing` | 无法解析出确认路径的数据参数清单（`param`/`slot`/`role`/`reason`）。**绝不臆造路径**。 |
 
+`reason` 目前有两个取值，**处置对象不同，不要合并处理**：
+
+| `reason` | 含义 | 谁来修 |
+|---|---|---|
+| `no_confirmed_path` | 参数绑定正确，但图里没有该资产的确认路径（如 T1 FASTQ 的 `file_path=NOT_FOUND`） | 数据侧补 `file_path` |
+| `slot_not_bound` | 该输入槽在 `data/csv/catalog/io_slot.csv` 里没有 `builder_param`，映射不到 WDL 参数。此时 `param` 为 `null` | MCP 侧补目录表，待确认清单见 `docs/待确认_builder_param.md` |
+
+`slot_not_bound` 是 0823 新增。此前这类槽被无声跳过，回包是 `execution_params: {}` 且
+`execution_params_missing: []`——等于宣称"零个参数、且一个都不缺"，按 `not missing` 判可提交
+就会把一个绑不上参数的流程当成能跑的。新增取值是加法，不影响已有消费逻辑；但**如果你按
+`reason` 做过白名单分支，需要放行这个新值**。参考文件槽和别名行仍然不报。
+
 规则：只映射图谱确认的**数据**输入；参考基因组 / 索引 / GTF / interval / PoN 等有卡片默认值的参考资源不出现在 `execution_params` 里（既不映射也不报缺）。用户选定某条后，可直接 `{pipeline_id, params: <execution_params>}` 投递。
 
 > 注意：上游 FASTQ（T1）在参考数据里 `file_path` 为 `NOT_FOUND`，故 rnaseq / 配对 WES 等以 fastq 为输入的流程，其 `sample_r1`/`sample_r2` 会进入 `execution_params_missing`，需数据侧补齐 `file_path` 后才能给出真实路径。maf / 表达矩阵 / 临床 / metainfo 等 T2 产物路径齐全，可直接给出。

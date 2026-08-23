@@ -62,10 +62,12 @@
 
 ## 二、落地实现
 
-- **键 = `io_slot.builder_param`**：真实参数名（`interface.params[].name`）已在上一轮并入活图 `io_slot.builder_param`，经 `_slot_spec` 透传到 `recommendation.tool.inputs[].builder_param`。`_execution_params` 只遍历带 `builder_param` 的槽（无 builder_param 的 sample-lookup / 参考索引槽跳过 → 满足规则 3/4）。
+- **键 = `io_slot.builder_param`**：真实参数名（`interface.params[].name`）已在上一轮并入活图 `io_slot.builder_param`，经 `_slot_spec` 透传到 `recommendation.tool.inputs[].builder_param`。`_execution_params` 只遍历带 `builder_param` 的槽（参考索引槽跳过 → 满足规则 3/4）。
 - **值 = 真实路径**：取自 `data.assets[].file_path`，且必须通过真实路径校验（以 `/` 开头、非 `NOT_FOUND`、非 `"<name> (<n> bytes)"` 占位）。槽↔资产按规范化 role 配对（复用 `_canonical_asset_role` / `_role_for_input` / `_execution_asset_role`）。
 - **参考资源不返回**（规则 4）：canonical role 为 `reference_file` 的槽（基因组索引 / GTF / PoN / known-sites 等，有卡片默认值）既不映射也不报缺。
 - **报缺不臆造**（规则 5）：无真实路径的数据参数进入 `execution_params_missing`（`param`/`slot`/`role`/`reason`），不编路径。
+- **未绑定的槽也要报**（0823 补）：`builder_param` 为空的**数据**槽以 `reason: "slot_not_bound"`、`param: null` 进入 `execution_params_missing`。此前这类槽是无声跳过，注释断言"无 builder_param 的都是 sample-lookup / 参考索引"——该断言在目录只收录 12 个全绑定工具时成立，0823 清点发现 128 个输入槽有 95 个为空，绝大多数是货真价实的数据输入。无声跳过的后果是回包给出 `execution_params: {}` 且 `missing: []`，即"零个参数且一个都不缺"，消费方按 `not missing` 判可提交。两个例外仍不报：canonical role 为 `reference_file` 的槽（规则 4）、`variant_alias_for` 非空的别名行（真实槽自己会报）。待确认清单见 `docs/待确认_builder_param.md`。
+  - `slot_not_bound` 与 `no_confirmed_path` **不可合并**：前者是目录表缺绑定，要人补 `io_slot.csv`；后者是绑定正确但图里没有确认路径，要数据侧补 `file_path`。处置对象不同。
 - **`data.assets` 原样保留**（规则 6）。
 
 ## 三、已知数据限制

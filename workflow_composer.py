@@ -1350,13 +1350,37 @@ Neo4j atomic 方法目录：
         assets = list((data or {}).get("assets") or [])
         usage: Dict[str, int] = {}
         for slot in method.inputs or []:
-            builder_param = str(slot.get("builder_param") or "").strip()
-            if not builder_param:
-                # slots without a builder_param are sample-lookup / reference
-                # index inputs with card defaults — not direct data params.
-                continue
             slot_name = str(slot.get("name") or "")
             role = self._canonical_asset_role(slot_name, str(slot.get("input_role") or ""))
+            builder_param = str(slot.get("builder_param") or "").strip()
+            if not builder_param:
+                if str(slot.get("variant_alias_for") or "").strip():
+                    # 别名行不是独立输入，只是旧槽名指向真实槽（bwa 的
+                    # clean_fastq_read → clean_fastq_read_r1）。真实槽自己会报，
+                    # 别名再报一次就是把同一件事说两遍，只会淹掉别的条目。
+                    continue
+                # 这里原来是无声 `continue`，注释断言"没有 builder_param 的槽都是
+                # sample-lookup / 参考索引，卡片自带默认值"。那个断言在目录只收录 12 个
+                # 全绑定工具时成立；0823 清点发现 128 个输入槽有 95 个为空，绝大多数是
+                # 货真价实的数据输入——只是 io_slot.csv 里没抄上 WDL 绑定。
+                #
+                # 后果不是报错而是**静默少给参数**：师兄那边看到的是 execution_params={}
+                # 加一份字段完整、看不出异常的回包，只能靠肉眼发现三个输入全空。
+                # 参考文件仍然不报（师兄规则 4），其余一律走 missing——缺什么说不出来，
+                # 至少要说"说不出来"，这和上面 method is None 那支是同一条原则。
+                if role == "reference_file":
+                    continue
+                missing.append({
+                    "param": None,
+                    "slot": slot_name,
+                    "role": role,
+                    "reason": "slot_not_bound",
+                    "detail": (
+                        "该输入槽在 data/csv/catalog/io_slot.csv 里没有 builder_param，"
+                        "无法映射到 WDL 参数；待确认清单见 docs/待确认_builder_param.md"
+                    ),
+                })
+                continue
             if role == "reference_file":
                 # Reference/index resources (genome index, gtf, PoN, known-sites…)
                 # carry knowledge-card defaults and are not user data — never map
