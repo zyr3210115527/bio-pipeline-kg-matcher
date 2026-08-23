@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Mapping, Optional
 
 from neo4j import GraphDatabase, READ_ACCESS, NotificationDisabledCategory
 
-from pipeline_router import CsvKGDataMatcher
+from pipeline_router import CsvKGDataMatcher, normalize_gender
 from .expectations import LEGACY_LABEL_ALIASES, load_expectations, resolve_legacy_labels
 
 
@@ -378,7 +378,9 @@ class Neo4jKGDataMatcher(CsvKGDataMatcher):
             "specimen_type": attributes.get("specimen_type", ""),
             "specimen_types": attributes.get("specimen_type", ""),
             "tissue_type": attributes.get("tissue_type", ""),
-            "gender": str(row.get("gender") or ""),
+            # 0821 数据里 Male/male/Female/female 混用，还混进一个字面量 `missing`。
+            # 归一化必须发生在这里——出了这个函数就是几十个消费点各写各的比较。
+            "gender": normalize_gender(row.get("gender")),
         }
 
     def _build_common_indexes(self, session: Any) -> None:

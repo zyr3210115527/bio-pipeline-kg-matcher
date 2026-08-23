@@ -160,6 +160,23 @@ h5 矩阵和 Seurat 对象不是一回事——后者带聚类、降维、注释
 
 `hvg_pca_gmm` 和 `bootstrap_stability` 没有任何 `HAS_INPUT_SLOT`，因此永远绑不到数据。
 
+### 4.3 0821 交付的 sample 字段口径 —— 详见 `docs/0821_sample字段口径.md`
+
+0821 那版 sample 表把若干**研究级别的默认值**覆盖到了**样本级别的事实**上：
+`tumor_descriptor` 全库压平（Metastatic 210→0、Recurrent 407→0，反而有 1476 个
+`tissue_type=Normal` 的样本被填上了肿瘤分期）、`biospecimen_anatomic_site` 变成研究级
+原发部位（HRA001272 十种转移灶全写成"肝"）、`gender` 大小写不统一、`specimen_type`
+新增分号多值 `Organoid;Patient_Solid_Tissue`（486，用等号比会静默漏掉）。
+
+坏值不是空也不是乱码，每格都填满、单看都合理，查回包发现不了——**又是一次
+"错得像对"**，和第 3 节那个 Salmon bug 同一个形状；这次是拿样本名后缀
+（`M019_LM1_` = 肺转移）当独立信号才验出来的。
+
+四条口径已落到代码：`normalize_gender()` / `specimen_tokens()` / `sample_lesion()` /
+`UNRELIABLE_SAMPLE_FIELDS`，回归防护见 `tests/test_sample_field_semantics.py`
+（11 条）。同一份结论的 light 版落在 `web/manual_compact.md`——那边 LLM 直接写
+Cypher，规则写给模型看就够；这边代码自己查图，**不改代码等于没改**。
+
 ---
 
 ## 5. 我自己写错的期望（记下来，因为这类错最容易被"改测试让它绿"糊弄过去）

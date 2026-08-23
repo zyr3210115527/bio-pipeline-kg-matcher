@@ -260,6 +260,104 @@ ROLE_LABELS = {
 }
 
 
+# ---------------------------------------------------------------------------
+# 0821 交付带来的四条字段口径
+#
+# 0821 那版 sample 表把若干「研究级别的默认值」覆盖到了「样本级别的事实」上。坏值
+# 不是空、不是乱码——每一格都填满、单看都合理，所以只有拿样本名这种独立信号交叉
+# 验证才露馅。凡是碰这四个字段的地方都走下面的 helper，别再各写各的字符串比较。
+#
+# 1. `tumor_descriptor` 不能用来分原发/转移/复发。全库被压平成 Primary 8551 /
+#    Metastasis 12 / 空 1902；HRA001272 原有的 Metastatic 176、Recurrent 28 全没了，
+#    HRA000071 的 106 个 Recurrent 也没了（那是 CGGA 原发/复发配对设计的核心）。
+#    更糟的是 1476 个 tissue_type=Normal 的样本反而被填上了 Primary。
+# 2. `biospecimen_anatomic_site` 是研究级原发部位，不是该样本的取材部位。HRA001272
+#    全部 698 个样本都写成 Liver And Intrahepatic Bile Ducts，而样本名摆明有 10 种
+#    转移灶。拿它筛转移部位必然全错。
+# 3. `gender` 大小写不统一，还混进了字面量 missing——见 `normalize_gender()`。
+# 4. `specimen_type` 各队列口径不一，且新增了分号多值——见 `specimen_tokens()`。
+#
+# 前两条在本仓库没有任何消费点，这是好事，得让它保持这样：
+# `tests/test_sample_field_semantics.py` 会在有人开始拿它们做过滤时挂掉。要分
+# 原发/转移/复发请调 `sample_lesion()`。
+UNRELIABLE_SAMPLE_FIELDS = ("tumor_descriptor", "biospecimen_anatomic_site")
+
+
+def normalize_gender(value: Any) -> str:
+    """gender 归一化到小写；无信息一律返回空串。
+
+    0821 数据里 Male 6474 / Female 3931 / male 56 / female 3，外加一个字面量
+    `missing`。不归一化的话 `== "Male"` 会静默漏掉 56 个样本，而 `missing` 会作为
+    第三种性别参与分组——它其实是「没这个信息」被写成了字符串，跟空值是一回事。
+    """
+    text = _lower(value)
+    if text in {"", "missing", "unknown", "not reported", "n/a", "na", "null", "none"}:
+        return ""
+    return text
+
+
+def specimen_tokens(value: Any) -> Set[str]:
+    """把 specimen_type 拆成可比较的词集，取代等号比较。
+
+    要同时处理三件事：0819 清洗把空格换成了下划线（`Patient_Solid_Tissue`）、0821
+    新增了分号多值（`Organoid;Patient_Solid_Tissue`，486 个，在 HRA005191 与
+    HRA006499）、以及大小写。用等号比会把这 486 个整个漏掉，而且不报错——这些样本
+    只是悄悄判不出角色，正是本项目反复出现的那类「错得像对」。
+    """
+    tokens: Set[str] = set()
+    for part in re.split(r"[;；,，/]+", _norm(value)):
+        token = part.replace("_", " ").strip().lower()
+        if token:
+            tokens.add(token)
+    return tokens
+
+
+# 样本名把取材部位编在中段：`M019_LM1_S2010-10889_2` 里的 LM = 肺转移。
+# `tumor_descriptor` 被压平之后，这是唯一还能分出原发/癌旁/转移/复发的信号——0821
+# 那批坏值最初也正是被它揭穿的（编码为 LM/BM/AGM/KM 的样本全被改写成了"肝、原发"）。
+#
+# 只登记核对过的队列。别的队列命名习惯不同，硬套会出事：BM 在这里是 Bone Metastasis，
+# 而全库有 1208 个样本的 specimen_type 就叫 Bone_Marrow。
+#
+# 与 tissue_type 的一致性已核对：HRA001272 的 NC 全部 205 个是 Normal，其余代码全部
+# 是 Tumor，无一例外。所以这张表补的是原发/转移/复发这一维，不是角色那一维。
+LESION_BY_NAME_CODE: Dict[str, Dict[str, str]] = {
+    "HRA001272": {
+        "PT": "primary",
+        "NC": "normal_adjacent",
+        "RT": "recurrent",
+        "LM": "metastasis_lung",
+        "PM": "metastasis_peritoneal",
+        "BM": "metastasis_bone",
+        "AGM": "metastasis_adrenal_gland",
+        "LNM": "metastasis_lymph_node",
+        "BRM": "metastasis_brain",
+        "KM": "metastasis_kidney",
+        "DM": "metastasis_distant",
+    },
+}
+
+_LESION_CODE_PATTERN = re.compile(r"^[A-Za-z]?\d+[_.]([A-Za-z]+)\d*[_.]")
+
+
+def sample_lesion(record: Dict[str, Any]) -> Optional[str]:
+    """从样本名解出原发/癌旁/转移/复发；解不出返回 None，不要猜。
+
+    这是 `tumor_descriptor` 的替代品，不是补充——那个字段在 0821 数据里已经没有可信的
+    样本级取值了。返回 None 的情况（队列未登记、名字不合模式）必须如实报告为"分不出"，
+    绝不能回头去读 `tumor_descriptor` 凑一个答案出来：那个字段会给出一个填满的、
+    看着合理的、错的值。
+    """
+    codes = LESION_BY_NAME_CODE.get(_norm(record.get("study_accession")))
+    if not codes:
+        return None
+    match = _LESION_CODE_PATTERN.match(_norm(record.get("sample_name")))
+    if not match:
+        return None
+    return codes.get(match.group(1).upper())
+
+
+# ---------------------------------------------------------------------------
 # 角色的第一来源是 0812 sample 表的 tissue_type（Tumor/Normal，9,143 个样本有值）。
 # 下面登记的是它标错的 study，逐个覆盖掉。核对方式是拿样本名里的 T/N 标记做仲裁：
 # 全库 3,048 个带明确标记的样本里，只有 HRA016026 与她矛盾。
@@ -296,11 +394,14 @@ def _sample_role(record: Dict[str, Any]) -> Optional[str]:
         if kind == "study_constant":
             return str(mapping)
         if kind == "specimen_type":
-            # 0819 图谱清洗把 specimen 取值的空格规范成下划线（Patient_Solid_Tissue），
-            # 查表前归一化回空格，新旧两版取值都能命中映射键。
-            specimen = (_norm(record.get("specimen_type"))
-                        or _norm(record.get("specimen_types"))).replace("_", " ")
-            return mapping.get(specimen)
+            # 0819 清洗把空格换成了下划线、0821 又加了分号多值，所以这里不能用等号
+            # 查表（详见 `specimen_tokens()`）。命中多个且指向不同角色时返回 None：
+            # 判不出要如实说判不出，别在两个角色里挑一个。
+            tokens = (specimen_tokens(record.get("specimen_type"))
+                      or specimen_tokens(record.get("specimen_types")))
+            hits = {role for key, role in mapping.items()
+                    if str(key).replace("_", " ").strip().lower() in tokens}
+            return hits.pop() if len(hits) == 1 else None
         if kind == "name_suffix":
             # 后缀写在规则里，因为每个 study 的命名习惯不同：BDESCC2-1N/T 没有
             # 分隔符，L0240_Tumor 把词拼全。长后缀优先，"_Normal" 才不会被 "N" 抢走。
@@ -971,7 +1072,7 @@ class CsvKGDataMatcher:
                 "specimen_type": attributes.get("specimen_type", ""),
                 "specimen_types": attributes.get("specimen_type", ""),
                 "tissue_type": attributes.get("tissue_type", ""),
-                "gender": row.get("gender") or "",
+                "gender": normalize_gender(row.get("gender")),
             })
         return adapted
 
