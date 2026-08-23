@@ -203,7 +203,7 @@ pipeline_id（只锁这几条）。G04/G05 只锁 4.1 节那 9 条 rds 流程，
 
 | 套件 | 结果 |
 | --- | --- |
-| 单元测试全量（含新增套件） | **Ran 156, OK (skipped=5)**（1114s） |
+| 单元测试全量（含新增套件） | **Ran 167, OK (skipped=5)**（2478s） |
 | `test_named_tool_substitution` | **7/7 OK**（446s） |
 | `probe_30_prompts` | **30/30** |
 | `probe_robustness` | **68/68** |
