@@ -108,6 +108,27 @@ PIPELINE_DATA_PROFILE_KEYS = {
     "driver_gene_gender_analysis": "mutation_clinical",
 }
 
+# `_role_diverse_selection` 的递交顺序：分析成品在前，原始数据在后。只在 cap 截断
+# 时起作用——不在表内的角色不会被丢掉，排到末尾而已。
+#
+# 唯一被**排除**的是 `other`：那不是一种数据，是 `_role_of_file` 认不出来。把认不出
+# 来的文件递给一个不知道要什么的工具的通用槽，两头都在猜。实测这么干的后果是
+# HRA000071 的 `SomaticCNV-1.0.tsv` 绑上了 `de_enrichment.expr` 并宣称
+# submittable=true——差异表达工具拿到一张体细胞 CNV 表，回包里却完全看不出异常。
+# 宁可报缺也不给跑不通的值。
+_ROLE_SELECTION_ORDER = (
+    "expression_abundance",
+    "expression_count",
+    "expression",
+    "scrna_object",
+    "maf",
+    "clinical",
+    "metainfo",
+    "vcf",
+    "bam",
+    "fastq",
+)
+
 FORMAT_HINTS = [
     (["fastq.gz", "fq.gz", "fastq", "原始测序", "原始数据", "reads"], "fq.gz"),
     (["maf", "突变文件", "somaticsnv"], "maf"),
@@ -1752,6 +1773,37 @@ class CsvKGDataMatcher:
             cases.append({"individual_accession": ind, "files": selected})
         return cases
 
+    def _role_diverse_selection(
+        self, group: Sequence[Dict[str, Any]], cap: int = 8
+    ) -> List[Dict[str, Any]]:
+        """每种数据角色各取一个代表，按分析成品优先、原始数据靠后排。
+
+        给没登记数据画像的工具用。`group` 已经是 `_match_files` 的打分序，所以
+        同一角色里取第一个就是这个研究里得分最高的那个。
+
+        `_ROLE_SELECTION_ORDER` 只决定**递交顺序**，不决定取舍——排在后面的角色
+        照样会被选中。这个顺序存在的唯一理由是 `cap` 截断时先保住分析成品：一个
+        研究能有上千个 FASTQ，但表达矩阵/临床表往往各只有一份。唯一的例外是
+        `other`（= 角色识别失败），它不在表内且被显式跳过，理由见该常量的注释。
+        """
+        by_role: Dict[str, Dict[str, Any]] = {}
+        for item in group:
+            role = _role_of_file(item)
+            if role not in _ROLE_SELECTION_ORDER:
+                continue
+            if role not in by_role:
+                by_role[role] = item
+        ordered = sorted(
+            by_role.items(),
+            key=lambda kv: _ROLE_SELECTION_ORDER.index(kv[0]),
+        )
+        selected = []
+        for role, item in ordered[:cap]:
+            copied = dict(item)
+            copied["input_role"] = copied.get("input_role") or role
+            selected.append(copied)
+        return selected
+
     def _build_combinations(self, pipeline_ids: Sequence[str], files: Sequence[Dict[str, Any]], limit: int) -> List[Dict[str, Any]]:
         """Collect one runnable combination per qualifying study, not just the first.
 
@@ -1817,10 +1869,35 @@ class CsvKGDataMatcher:
                             break
             else:
                 for st, group in by_study.items():
+                    required_roles = self._allowed_file_roles(pid)
+                    # `required_roles` 为空 = 这个 pid 不在 PIPELINE_DATA_PROFILE_KEYS 里，
+                    # 也就是**所有新接入的工具**。走下面那条 MAF 路会同时踩两个坑：
+                    #   1. `set().issubset(...)` 恒真，唯一的门槛塌成 `if maf`——于是
+                    #      "该研究有没有 MAF" 成了产出组合的必要条件，跟工具要什么无关。
+                    #      有表达矩阵没 MAF 的 8 个研究因此一个组合都出不来。
+                    #   2. `selected` 写死 maf+clinical+metainfo。HRA001272 三个表达矩阵
+                    #      都在图里，仍然只递这三件套，`expr` 报 `no_confirmed_path`——
+                    #      而按本仓的口径这个 reason 是"图里没有路径、归数据侧"。挡在
+                    #      MCP 侧的东西冒充数据缺口，是最难查的那种错。
+                    # 新工具的输入槽千差万别，这里猜不出它要什么，能做且只该做的是**别猜**：
+                    # 把该研究里每种角色各递一个代表，让下游 `_execution_params` 按 role
+                    # 去认领。多给的会被忽略，少给的才会变成假的 no_confirmed_path。
+                    if not required_roles:
+                        selected = self._role_diverse_selection(group)
+                        if selected:
+                            combos.append({
+                                "pipeline_id": pid,
+                                "study_accession": st,
+                                "kind": "role_coverage",
+                                "files": selected,
+                                "match_reason": "该工具未登记数据画像，按角色覆盖递交候选",
+                            })
+                            if len(combos) >= limit:
+                                break
+                        continue
                     maf = [f for f in group if "maf" in _lower(f.get("format")) or "somaticsnv" in _lower(f.get("files"))]
                     clinical = [f for f in group if "clinical" in _lower(f.get("files"))]
                     metainfo = [f for f in group if "metainfo" in _lower(f.get("files"))]
-                    required_roles = self._allowed_file_roles(pid)
                     available_roles = ({"maf"} if maf else set()) | ({"clinical"} if clinical else set()) | ({"metainfo"} if metainfo else set())
                     if maf and required_roles.issubset(available_roles):
                         selected = maf[:1] if pid == "wes_somatic_maf_landscape" else maf[:1] + clinical[:1] + metainfo[:1]

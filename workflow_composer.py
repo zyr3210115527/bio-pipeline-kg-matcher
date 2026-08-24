@@ -1373,6 +1373,26 @@ Neo4j atomic 方法目录：
             return "fastq_file"
         return "data_file"
 
+    @staticmethod
+    def _accepted_asset_roles(role: str) -> Tuple[str, ...]:
+        """槽位角色 -> 可以接受的资产角色，精确的排在前面。
+
+        调用方按顺序试，**前一个有结果就不再往后看**（见 `_execution_params` 里
+        那个 break）。所以这里多出来的兜底角色只可能把原本的 `no_confirmed_path`
+        变成一次绑定，改不了任何已经成立的绑定。
+
+        只有 `data_file` 需要兜底。它是 `_role_for_input` 认不出槽名时的落点，
+        典型的就是 de_enrichment 的 `expr`——io_slot 里它的 artifact 写着
+        `analysis_summary`、描述写着 `TABULAR_BIO_DATA`，目录本身就没记下"这是
+        一张表达矩阵"。而资产侧的 `HRA003107-Genes-FPKM-1.0.tsv` 判得出是
+        `expression_matrix`。两边角色严格相等就永远配不上，于是图里明明有表达矩阵
+        却报 `no_confirmed_path`——按本仓的口径这个 reason 意思是"图里没有路径、
+        归数据侧"，等于把 MCP 侧的问题甩给数据侧，最难查的那种错。
+        """
+        if role == "data_file":
+            return ("data_file", "expression_matrix", "count_matrix")
+        return (role,)
+
     def _execution_params(
         self,
         method: Optional[RegisteredMethod],
@@ -1463,15 +1483,20 @@ Neo4j atomic 方法目录：
             dimension = str(slot.get("dimension") or "")
             dimension_value = str(slot.get("dimension_value") or "").lower()
             candidates = []
-            for asset in assets:
-                if self._execution_asset_role(asset) != role:
-                    continue
-                if dimension == "sample_role" and dimension_value:
-                    if str(asset.get("sample_role") or "").lower() != dimension_value:
+            for accepted_role in self._accepted_asset_roles(role):
+                for asset in assets:
+                    if self._execution_asset_role(asset) != accepted_role:
                         continue
-                path = self._real_execution_path(asset)
-                if path:
-                    candidates.append((asset, path))
+                    if dimension == "sample_role" and dimension_value:
+                        if str(asset.get("sample_role") or "").lower() != dimension_value:
+                            continue
+                    path = self._real_execution_path(asset)
+                    if path:
+                        candidates.append((asset, path))
+                # 精确角色优先：精确匹配有结果就不看兜底角色，所以这一支只能把原本的
+                # no_confirmed_path 变成绑定，改不了任何已有绑定。
+                if candidates:
+                    break
             if not candidates:
                 missing.append({
                     "param": builder_param,
