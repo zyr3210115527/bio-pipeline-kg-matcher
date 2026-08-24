@@ -257,6 +257,7 @@ ROLE_LABELS = {
     "maf": "体细胞突变文件（MAF）",
     "bam": "BAM 比对文件",
     "vcf": "VCF 变异文件",
+    "scrna_object": "单细胞 Seurat 对象（.rds）",
 }
 
 
@@ -552,6 +553,18 @@ def _role_of_file(item: Dict[str, Any]) -> str:
     """Infer the data role of a file record from its name/format (single source of truth)."""
     name = _lower(item.get("files"))
     fmt = _lower(item.get("format"))
+    path = _lower(item.get("file_path"))
+    # 单细胞对象（Seurat/SingleCellExperiment 的 .rds）先判，且只认 rds 这一种物理
+    # 格式。放在最前面是因为它下面每一条都可能误吞它：`03_sc_obj_final_anno.rds`
+    # 落到 `count`/`genes` 那几条上会被当成表达矩阵。
+    #
+    # 只按 format/后缀判、不按文件名判，是这条规则的要点。同一批研究里
+    # `Matrix-h5`（10x 的稀疏矩阵目录，format=dir）和 `03_sc_obj_final_anno.rds`
+    # 都是单细胞产物、都在 scRNAseq 目录下，但前者不是 Seurat 对象——喂给
+    # `lung_tme_annotation_cnv` 的 `input_rds` 会在容器里 readRDS 失败。名字判别
+    # 分不开这两者，格式判别可以。
+    if fmt == "rds" or name.endswith(".rds") or path.endswith(".rds"):
+        return "scrna_object"
     if "fastq" in name or "fq" in fmt or "fastq" in fmt:
         return "fastq"
     if "clinical" in name:
@@ -698,6 +711,7 @@ CUSTOM_ASSET_TO_DATA_ROLE = {
     "maf_file": "maf",
     "bam_file": "bam",
     "vcf_file": "vcf",
+    "scrna_object": "scrna_object",
 }
 
 

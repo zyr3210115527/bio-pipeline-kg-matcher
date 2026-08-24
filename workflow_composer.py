@@ -40,6 +40,52 @@ METHOD_CATALOG_STATUS = {
 
 EXECUTION_MANAGED_ASSET_ROLES = {"reference_file"}
 
+# 师兄规则 4（"参考/索引资源自带默认值，既不映射进 execution_params 也不报缺"）的
+# 适用范围，写成 (tool_id, builder_param) 的显式二元组白名单。
+#
+# 依据是 `config/knowledge_card_execution_contracts.json` 里 `managed_by: "executor"`
+# 的 File 输入——执行端在容器里自带这些路径，正好下面 5 条。不是"名字里带
+# index/genome/gtf/annotation 就是参考资源"。
+#
+# 为什么不能按名字猜：`gene_order` 的槽名是 `genome_annotation`，命中
+# `_role_for_input` 的 "genome"/"annotation" 关键字被判成 reference_file，于是
+# `lung_tme_annotation_cnv` / `dataset_downstream` 这两张卡**已经绑好 builder_param**
+# 的必需输入被无声跳过——既不进 execution_params 也不进 missing。可它在 WDL 和
+# knowledge_card 里都是 `required: true, default: None`，执行端没有它，缺了必然失败。
+# 这就是 0823 修 `filtered_vcf_index` 时踩的同一个坑，只是从另一个关键字进来的。
+# 名字判别在这个目录里已经错过两次，所以改成白名单，新工具接入时手动加一行。
+#
+# 三条硬约束（改这张表前先看）：
+#   1. 只有执行端确实自带的资源才能进来。判据优先级：执行契约的
+#      `managed_by: "executor"` > 原子卡 `interface.params[].default` 非空。
+#      "看起来像参考数据"不是判据。
+#   2. 键的第二位是 builder_param（真实 WDL 参数名），不是槽名。同一个参数名在不同
+#      卡片下归属可以不同，所以键必须带 tool_id，不能只按参数名建集合。
+#   3. 这张表只决定"不报缺"，不决定"不校验"。
+REFERENCE_RESOURCE_PARAMS = {
+    # 执行契约里 managed_by="executor" 的 5 个 File 输入（原子卡）。
+    # star/rsem/featurecounts 三张原子卡还带着具体默认路径
+    # （/cromwell-share/.../reference_data/…），是执行端自带的直接证据。
+    ("featurecounts", "gtf_file"),
+    ("gatk", "interval_list"),
+    ("rsem", "rsem_index"),
+    ("star", "rrna_star_index"),
+    ("star", "genome_star_index"),
+    # 整卡是上面同一批物理资源的镜像：同一个 builder_param、同一份参考数据，
+    # 只是整卡的 knowledge_card 没把默认值抄下来（default: None）。按资源归属
+    # 而不是按卡片字面值判，否则 rnaseq_singletask / wes_somatic_pair 会凭空多出
+    # 5 个报缺、被判成永不可提交。
+    ("rnaseq_singletask", "gtf_file"),
+    ("rnaseq_singletask", "rrna_star_index"),
+    ("rnaseq_singletask", "rsem_index"),
+    ("rnaseq_singletask", "star_genome_index"),
+    ("wes_somatic_pair", "interval_list"),
+    # 刻意不在表内：`dataset_downstream` / `lung_tme_annotation_cnv` 的 `gene_order`。
+    # 它的槽名叫 `genome_annotation`，命中关键字启发式的 "genome"/"annotation" 被
+    # 当成参考资源吞掉，但执行契约里没有它、两张卡的 default 都是 None、WDL 里是
+    # 裸的 `File gene_order`。执行端不自带，缺了 inferCNV 跑不起来，必须报缺。
+}
+
 
 def _evidence_asset(
     item: Dict[str, Any],
@@ -1305,6 +1351,14 @@ Neo4j atomic 方法目录：
             return role
         if role != "data_file":
             return role
+        # 单细胞对象只认 rds 这一种物理格式，不按文件名判。同一批研究里
+        # `Matrix-h5`（10x 稀疏矩阵目录，format=dir）和 `03_sc_obj_final_anno.rds`
+        # 都是单细胞产物、都在 scRNAseq 目录下，但只有后者是 Seurat 对象。原先两者
+        # 都落到 `data_file`，于是 `lung_tme_annotation_cnv` 的 `input_rds` 会挑中
+        # 那个 h5 目录并给出 `missing: []`——不是"取不到参数"，是取到了一个**错的**
+        # 参数还说一个都不缺。执行端 readRDS 一个目录必然失败，而回包看不出异常。
+        if fmt == "rds" or str(asset.get("file_path") or "").lower().endswith(".rds"):
+            return "scrna_object"
         if "maf" in fmt:
             return "maf_file"
         if "vcf" in fmt:
@@ -1353,10 +1407,16 @@ Neo4j atomic 方法目录：
             return params, missing
         assets = list((data or {}).get("assets") or [])
         usage: Dict[str, int] = {}
+        tool_id = str(getattr(method, "tool_id", "") or "")
         for slot in method.inputs or []:
             slot_name = str(slot.get("name") or "")
             role = self._canonical_asset_role(slot_name, str(slot.get("input_role") or ""))
             builder_param = str(slot.get("builder_param") or "").strip()
+            # 规则 4 的判据：这个参数是不是执行端自带（REFERENCE_RESOURCE_PARAMS）。
+            # 不再用 canonical role == "reference_file" —— 那是按槽名关键字猜出来的，
+            # 会把 `genome_annotation → gene_order` 这种"名字像参考、实际必须由用户
+            # 给"的必需输入一并吞掉：既不映射也不报缺，回包看不出任何异常。
+            is_reference = (tool_id, builder_param) in REFERENCE_RESOURCE_PARAMS
             if not builder_param:
                 if str(slot.get("variant_alias_for") or "").strip():
                     # 别名行不是独立输入，只是旧槽名指向真实槽（bwa 的
@@ -1372,6 +1432,11 @@ Neo4j atomic 方法目录：
                 # 加一份字段完整、看不出异常的回包，只能靠肉眼发现三个输入全空。
                 # 参考文件仍然不报（师兄规则 4），其余一律走 missing——缺什么说不出来，
                 # 至少要说"说不出来"，这和上面 method is None 那支是同一条原则。
+                #
+                # 这一支的"参考文件"只能按 canonical role 判，因为规则 4 的白名单键是
+                # builder_param 而这里恰恰没有。所以再加一道 `is_reference` 是无效的，
+                # 只能维持 role 判据——现状是这类槽 0 条（全仓清点：builder_param 为空
+                # 且被判 reference_file 的输入槽为 0），真出现了得先补 builder_param。
                 if role == "reference_file":
                     continue
                 missing.append({
@@ -1385,10 +1450,11 @@ Neo4j atomic 方法目录：
                     ),
                 })
                 continue
-            if role == "reference_file":
+            if is_reference:
                 # Reference/index resources (genome index, gtf, PoN, known-sites…)
-                # carry knowledge-card defaults and are not user data — never map
-                # nor report them as missing (师兄 rule 4).
+                # are carried by the executor image — never map nor report them as
+                # missing (师兄 rule 4). 判据是 REFERENCE_RESOURCE_PARAMS 这张显式
+                # 白名单，不是槽名关键字；理由见该表上方的注释。
                 continue
             # A whole-card pipeline can declare several slots of the same role
             # that differ only by sample_role (wes_somatic_pair's tumor_r1 vs
@@ -1410,7 +1476,12 @@ Neo4j atomic 方法目录：
                 missing.append({
                     "param": builder_param,
                     "slot": slot_name,
-                    "role": role,
+                    # 报缺时不沿用 canonical role：`gene_order` 的槽名叫
+                    # `genome_annotation`，canonical role 是 `reference_file`，而
+                    # 消费方看到 role=reference_file 的缺项第一反应就是"执行端自带的，
+                    # 可以忽略"——正好是这条被漏了两轮的原因。既然走到了报缺这一支，
+                    # 就说明它不在规则 4 白名单里、必须由用户提供，改报 data_file。
+                    "role": "data_file" if role == "reference_file" else role,
                     "reason": "no_confirmed_path",
                 })
                 continue
@@ -2626,6 +2697,10 @@ Neo4j atomic 方法目录：
                 return "expression_matrix"
             # 文件名无 count/丰度信号的通用表达文件，两个子类型槽位都可接受
             return "expression_file"
+        if role == "scrna_object":
+            # `_role_of_file` 已按 format=rds / .rds 后缀判过，这里原样透传。
+            # 别在这里改按文件名判：Matrix-h5 目录和 .rds 文件的名字都像单细胞产物。
+            return "scrna_object"
         if role == "clinical":
             return "clinical_file"
         if role == "metainfo":
@@ -2683,6 +2758,15 @@ Neo4j atomic 方法目录：
 
     def _role_for_input(self, input_name: str) -> str:
         name = input_name.lower()
+        # 单细胞 Seurat 对象槽（`scrna_object_rds` / `input_rds`）。必须先于下面所有
+        # 规则，否则它一条都不命中、落到 `data_file`——而 `data_file` 会接受任何未分类
+        # 资产，包括 10x 的 `Matrix-h5` 目录。见 `_execution_asset_role` 的对应注释。
+        #
+        # 这里判后缀不判子串：本函数也被 `_execution_asset_role` 拿**文件名**调用，
+        # 而 `"rds"` 作为子串会命中 `…records.tsv` 这类普通表格文件。
+        if (name.endswith("_rds") or name.endswith(".rds")
+                or "scrna_object" in name or "seurat" in name):
+            return "scrna_object"
         if "count" in name:
             return "count_matrix"
         if any(token in name for token in ("expression", "fpkm", "tpm", "logcpm")):
@@ -2722,7 +2806,7 @@ Neo4j atomic 方法目录：
         canonical = {
             "count_matrix", "expression_matrix", "clinical_file", "sample_metadata",
             "maf_file", "fastq_r1", "fastq_r2", "fastq_file", "bam_file",
-            "vcf_file", "reference_file", "data_file",
+            "vcf_file", "reference_file", "data_file", "scrna_object",
         }
         if role in canonical:
             return role
