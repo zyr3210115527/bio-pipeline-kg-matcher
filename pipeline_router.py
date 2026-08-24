@@ -1639,6 +1639,24 @@ class CsvKGDataMatcher:
             if source == "T2":
                 score += 2
                 reasons.append("优先使用处理后的 T2 数据")
+            else:
+                # T1 也要有个非零底分，否则下面那句 `if score <= 0: continue` 会把
+                # 「优先 T2」这个**排序偏好**变成**过滤器**。问句一旦没带癌种/格式/
+                # strategy 信号（"我想做deg_trend" 就是），所有加分项都不触发，T2 靠
+                # 上面那 +2 保住、T1 恒为 0 被整层丢弃——0824 实测 `_match_files` 返回
+                # 35572 条，正好等于 T2 总数，T1 一条没有。
+                #
+                # 而 Clinical/MetaInfo 在这份图里恰恰是 T1 节点（20 个研究都有，
+                # `/hpcdisk1/...` 真实路径、semantic_format 是 CLINICAL_DATA_EXCEL /
+                # METADATA_SAMPLE_INFO），只有 HRA001748/HRA005191 额外多一份 T2 副本。
+                # 所以 de_enrichment 的 clinical_xls/meta_xlsx 报 `no_confirmed_path`
+                # ——按本仓口径这个 reason 是"图里没有路径、归数据侧"，实际是被这里挡
+                # 掉的。查的人会去催数据侧补文件，而文件一直都在。
+                #
+                # 底分 1 < T2 的 2，"优先 T2"照旧成立，只是降级成排序而不是排除；
+                # 常数对所有 T1 行相同，不改变任何已有的相对次序。
+                score += 1
+                reasons.append("原始 T1 数据")
             # assay mismatch guard for FASTQ
             if allowed_assay_norm and _role_of_file(row) == "fastq":
                 file_assay_norm = _normalize_assay_tokens(
