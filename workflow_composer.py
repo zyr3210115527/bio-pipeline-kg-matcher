@@ -1229,6 +1229,9 @@ Neo4j atomic 方法目录：
                 "missing_data_roles": missing_roles,
                 "study_accessions": studies,
             }
+        combinations = self._rank_by_bindable_params(
+            pipeline_id, combinations, evidence_matcher
+        )
         files = combinations[0].get("files") or []
         assets = [_evidence_asset(item, evidence_matcher._file_role) for item in files]
         studies = sorted({str(item.get("study_accession")) for item in files if item.get("study_accession")})
@@ -1242,6 +1245,37 @@ Neo4j atomic 方法目录：
             "study_accessions": studies,
             "alternatives": self._dataset_alternatives(evidence_matcher, combinations),
         })
+
+    def _rank_by_bindable_params(
+        self, pipeline_id: str, combinations: Sequence[Dict[str, Any]], matcher: Any
+    ) -> List[Dict[str, Any]]:
+        """把"这个研究能填上几个必需参数"提到排序的第一位。
+
+        `combinations[0]` 原来直接取匹配器的打分序，而那个分数衡量的是"文件跟这次
+        提问有多像"（癌种、format、strategy、词命中），跟"这张卡要的槽能不能填上"
+        无关。0824 的实测回包：主推 HRA000001（只有 vcf+bam，三个必需参数一个都填
+        不上），能填 2/3 的 HRA001748 排在 alternatives 第 10 位。用户看到的第一屏
+        就是最不能跑的那个，而它字段齐全、看不出问题——得往下翻十个才发现有更好的。
+
+        只调顺序，不增删组合：填不上参数的研究仍然在 alternatives 里（数据侧补齐
+        Clinical/MetaInfo 之后它们随时会变得可跑），只是不再占着主推位。
+
+        同分保持原有相对次序（`sorted` 稳定），所以匹配器的语义打分仍然是第二判据，
+        配对分析在同一研究内按个体拆出的多个组合也不会被打乱。
+        """
+        method = self.registered_methods.pipeline_methods.get(pipeline_id)
+        if method is None or len(combinations) < 2:
+            # 目录里没有这张卡就无从知道它要什么槽，这时任何重排都是瞎猜，
+            # 保持匹配器原序。
+            return list(combinations)
+
+        def bindable(combination: Dict[str, Any]) -> int:
+            files = combination.get("files") or []
+            assets = [_evidence_asset(item, matcher._file_role) for item in files]
+            params, _missing = self._execution_params(method, {"assets": assets})
+            return len(params)
+
+        return sorted(combinations, key=lambda c: -bindable(c))
 
     def _study_role_counts(self, matcher: Any) -> Dict[str, Dict[str, int]]:
         """Per study, how many T1 files resolve to a tumor / normal sample role.
