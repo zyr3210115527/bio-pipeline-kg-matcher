@@ -1224,7 +1224,7 @@ Neo4j atomic 方法目录：
                 "source": "neo4j",
                 "assets": assets,
                 "matched_count": len(assets),
-                "expected_count": evidence_matcher._required_file_count(pipeline_id),
+                "expected_count": self._expected_asset_count(pipeline_id, evidence_matcher),
                 "missing_asset_names": [],
                 "missing_data_roles": missing_roles,
                 "study_accessions": studies,
@@ -1237,7 +1237,7 @@ Neo4j atomic 方法目录：
             "source": "neo4j",
             "assets": assets,
             "matched_count": len(assets),
-            "expected_count": len(assets),
+            "expected_count": self._expected_asset_count(pipeline_id, evidence_matcher),
             "missing_asset_names": [],
             "study_accessions": studies,
             "alternatives": self._dataset_alternatives(evidence_matcher, combinations),
@@ -1372,6 +1372,48 @@ Neo4j atomic 方法目录：
                 return "fastq_r2"
             return "fastq_file"
         return "data_file"
+
+    def _expected_asset_count(self, pipeline_id: str, matcher: Any) -> int:
+        """这张卡真正需要几份用户数据。
+
+        原来 `available` 那支写的是 `expected_count = len(assets)`——自己等于自己，
+        于是永远 `matched_count == expected_count`。de_enrichment 只拿到一个 MAF 时
+        回包是 `matched_count: 1 / expected_count: 1 / missing_asset_names: []`，读起来
+        是"要一份、给了一份、一份不缺"，而它三个必需输入一个都填不上。这个字段存在的
+        全部意义就是让人看出差额，自等就等于把它关掉了，而且是**朝着"看起来正常"**
+        的方向关掉——比报错难查。
+
+        判据取目录里这张卡自己声明的槽，和 `_execution_params` 同源：
+          - 只数有 `builder_param` 的槽（没绑定的槽走 `slot_not_bound`，是另一回事）；
+          - 去掉规则 4 的执行端自带资源（`REFERENCE_RESOURCE_PARAMS`）；
+          - 去掉别名行（旧槽名指向真实槽，不是独立输入）；
+          - 同一个 builder_param 只数一次（fastqc 的 raw/clean 都对 `fastqs`）；
+          - `exactly_one_variant` 的卡，一组变体只需要其中一种，按 1 计。
+
+        目录取不到这张卡时才退回 `_required_file_count`——那是张按 pipeline_id 硬编码
+        的表、默认值 3，对新接入的工具本身就是猜的，所以只当兜底。
+        """
+        method = self.registered_methods.pipeline_methods.get(pipeline_id)
+        if method is None:
+            return matcher._required_file_count(pipeline_id)
+        tool_id = str(getattr(method, "tool_id", "") or "")
+        counted: Dict[str, str] = {}
+        for slot in method.inputs or []:
+            builder_param = str(slot.get("builder_param") or "").strip()
+            if not builder_param:
+                continue
+            if (tool_id, builder_param) in REFERENCE_RESOURCE_PARAMS:
+                continue
+            if str(slot.get("variant_alias_for") or "").strip():
+                continue
+            counted.setdefault(builder_param, str(slot.get("name") or ""))
+        total = len(counted)
+        if method.exactly_one_variant:
+            for names in (method.input_variants or {}).values():
+                in_group = [p for p, slot_name in counted.items() if slot_name in set(names)]
+                if len(in_group) > 1:
+                    total -= len(in_group) - 1
+        return max(total, 0)
 
     @staticmethod
     def _accepted_asset_roles(role: str) -> Tuple[str, ...]:
